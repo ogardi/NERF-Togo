@@ -1,0 +1,15 @@
+
+# Préparation
+
+## Définition des variables
+
+### Description {-}
+
+Le traitement des images ce fait par executer les scripts R, un après l'autre. Tout d'abord on ouvre et execute le script `0_set-up.R` pour charger les librairies et définir des variables qu'on utilise également dans les autres scripts.
+
+### _0_set-up.R_ {-}
+
+```{r, code=readLines("../../R/0_set-up.R"), eval=FALSE}
+```
+
+

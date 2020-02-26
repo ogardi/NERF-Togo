@@ -1,0 +1,54 @@
+
+# Organisation du travail 
+
+## Logiciel et serveur
+
+La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel [R](https://www.r-project.org), dirigé à travers [RStudio](https://rstudio.com). Les scripts R dépendent des fois des outils GDAL disponible dans l'environnement, à installer pour les systèmes Linux avec `apt-get install python-gdal`. 
+
+Le traitement et l'analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Pour le moment l'infrastructure informatique centrale de la BFH-HAFL est utilisé. L'interface R-Studio est disponible à http://r.gro1.bfh.science. Pour le transfer des fichiers on peut s'également connecter avec SFTP, pour controler le serveur avec SSH.
+
+## Structure des fichiers
+
+Le repertoire de base `NERF_Togo` est structuré comme suivant: 
+
+```
+NERF_Togo
+├── data                                    # Données de base
+│   ├── GADM                                  # frontières administratives
+│   ├── IFN                                   # inventaire forestier national
+│   ├── Landsat                               # images satellitaires
+│   ├── SRTM                                  # données topographiques
+│   └── Worldclim                             # données climatiques
+└── NERF_v1                                 # Répétoire projet
+    ├── input                                 # données spécifiques du projet
+    │   ├── 1_images                            # images pre-traités                              
+    │   ├── 2_train-plots                       # données d'entraînement                       
+    │   └── 3_val-plots                         # données de validation
+    ├── R                                     # scripts
+    │   ├── 0_set-up.R                          # initialisation
+    │   ├── 1_prepare-images.R                  # préparation des images  
+    │   ├── AGB                                 # cartographie biomasse
+    │   │   ├── 2_compile-IFN.R                   # évaluer inventaire
+    │   │   ├── 3_create-AGB-maps.R               # calibration des cartes
+    │   │   ├── 4_clean-AGB-maps.R                # nettoyage des cartes
+    │   │   └── 5_analyze-AGB.R                   # analyse des cartes
+    │   └── FCC                                 # cartographie surfaces forestiers
+    │       ├── 2_create-train-points.R           # création des point d'entraînement
+    │       ├── 3_create-fc-maps.R                # calibration des cartes
+    │       ├── 4_clean-fc-maps.R                 # nettoyage des cartes
+    │       ├── 5_create-val-points.R             # création des points de validation
+    │       ├── 6_validate-fc-maps.R              # validation des cartes
+    │       ├── 7_fc-maps-accuracy.R              # analyse de la précision des cartes
+    │       └── 8_analyse-fc-maps.R               # analyse des cartes  
+    ├── output                                # résultats
+    │   ├── 1_forest-cover                      # cartes surfaces forestiers
+    │   │   ├── 1_ref-maps                        # cartes référence
+    │   │   ├── 2_raw-maps                        # cartes brutes
+    │   │   ├── 3_clean-maps                      # cartes nettoyées
+    │   │   ├── 4_validation                      # résultats validation
+    │   │   └── 5_results                         # résultats surfaces
+    │   └── 2_biomass                           # cartes biomasse
+    │       ├── 1_ref-maps                        # cartes de référence
+    │       └── 5_results                         # résultats biomasse
+    └── report                                # rapport / manuel
+```

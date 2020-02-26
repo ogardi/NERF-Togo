@@ -1,0 +1,87 @@
+---
+title:   "REDD+ Togo — NERF"
+author:  "Oliver Gardi, Bern University of Applied Sciences"
+version: "v1"
+date:    "June 2019"
+output:  html_notebook
+---
+
+```{r include=FALSE}
+setwd("~/NERF_Togo/report")
+source("../R/0_set-up.R")
+```
+
+
+# Data Preparation
+
+Classification of forest cover is based on satellite images from the USGS Landsat Archive, that were available for different dates in the period 1985 = 2019. The cartography of forest carbon further used data from the National Forest Inventory 2015/16, SRTM elevation data and Worldclim v2 climatic data. 
+
+## Extent, CRS and Resolution
+
+The coordinate system used is WGS 84 / UTM zone 31N (EPSG: 32631). The extent considered covers the whole country Togo, including a boundary of 5 km (xmin=`r TGO.ext@xmin`, xmax=`r TGO.ext@xmax`, ymin=`r TGO.ext@ymin`, ymax=`r TGO.ext@ymax`), with a resolution of 30 x 30 meter. All data was projected to this reference extent and coordinate system.
+
+## Data Sources
+
+### Landsat Imagery
+
+Landsat imagery was downloaded from the [USGS Earthexplorer](https://earthexplorer.usgs.gov/). Images considered were those towards the end of the dry season (between December and February/March) with low cloud cover taken. Images from December were assigned to the following year.
+
+```{r}
+ff
+```
+
+
+### SRTM Digital Elevation Model
+
+### Worldclim v2
+
+### National Forest Inventory
+
+
+## Pre-Processing
+  
+
+# Forest Cover
+## Definition of Training Data
+## Calibration of Reference Maps
+## Series of Forest Cover Maps
+## Temporal Cleaning / Filtering
+## Analysis of Forest Cover Change
+## Results and Discussion
+  
+# Forest Carbon
+
+
+
+
+```{r landsat, echo=FALSE, fig.cap="Images 1985/86", out.width = '100%'}
+knitr::include_graphics("../output/1_images/p192/p192_1986.jpeg")
+knitr::include_graphics("../output/1_images/p192/p193_1985.jpeg")
+knitr::include_graphics("../output/1_images/p192/p194_1986.jpeg")
+```
+
+```{r landsat, echo=FALSE, fig.cap="Reference images 1987", out.width = '100%'}
+knitr::include_graphics("../output/1_images/p192/p192_1987.jpeg")
+knitr::include_graphics("../output/1_images/p192/p193_1987.jpeg")
+knitr::include_graphics("../output/1_images/p192/p194_1987.jpeg")
+```
+
+```{r landsat, echo=FALSE, fig.cap="Images 1990/91/97", out.width = '100%'}
+knitr::include_graphics("../output/1_images/p192/p192_1991.jpeg")
+knitr::include_graphics("../output/1_images/p192/p193_1990_1.jpeg")
+knitr::include_graphics("../output/1_images/p192/p193_1990_2.jpeg")
+knitr::include_graphics("../output/1_images/p192/p194_1997.jpeg")
+```
+
+```{r landsat, echo=FALSE, fig.cap="Images 2000/01", out.width = '100%'}
+knitr::include_graphics("../output/1_images/p192/p192_2001.jpeg")
+knitr::include_graphics("../output/1_images/p192/p193_2000.jpeg")
+knitr::include_graphics("../output/1_images/p192/p194_2000.jpeg")
+```
+
+```{r landsat, echo=FALSE, fig.cap="Reference images 2003", out.width = '100%'}
+knitr::include_graphics("../output/1_images/p192/p192_2003.jpeg")
+knitr::include_graphics("../output/1_images/p192/p193_2003.jpeg")
+knitr::include_graphics("../output/1_images/p192/p194_2003.jpeg")
+```
+

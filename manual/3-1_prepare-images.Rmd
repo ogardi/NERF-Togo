@@ -36,6 +36,6 @@ prepare.image(in.image.dirs, ext=NULL, filename=NULL, overwrite=FALSE, log=TRUE)
 
 ### _1_prepare-images.R_ {-}
 
-```{r, code=readLines("../../R/1_prepare-images.R"), eval=FALSE}
+```{r, code=readLines("../src/1_prepare-images.R"), eval=FALSE}
 ```
 

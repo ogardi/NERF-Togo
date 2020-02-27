@@ -1,13 +1,14 @@
+# Analyses NERF / MRV
 
-# Organisation du travail 
+## Organisation du travail 
 
-## Logiciel et serveur
+### Logiciel et serveur
 
-La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel [R](https://www.r-project.org), dirigé à travers [RStudio](https://rstudio.com). Les scripts R dépendent des fois des outils GDAL disponible dans l'environnement, à installer pour les systèmes Linux avec `apt-get install python-gdal`. 
+La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel [R](https://www.r-project.org), dirigé à travers [RStudio](https://rstudio.com). Les scripts R sont mis à disposition dans un [dépot GitHub](https://github.com/ogardi/NERF-Togo). Les scripts dépendent des outils GDAL disponible dans l'environnement, à installer pour les systèmes Linux avec `apt-get install python-gdal`. 
 
-Le traitement et l'analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Pour le moment l'infrastructure informatique centrale de la BFH-HAFL est utilisé. L'interface R-Studio est disponible à http://r.gro1.bfh.science. Pour le transfer des fichiers on peut s'également connecter avec SFTP, pour controler le serveur avec SSH.
+Le traitement et l'analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Pour le moment les analyses pour le Niveau des emissions de référence pour les forêts du Togo (NERF-Togo) sont éfféctués sur l'infrastructure informatique centrale de la BFH-HAFL. L'interface R-Studio est disponible à http://r.gro1.bfh.science.
 
-## Structure des fichiers
+### Structure des fichiers
 
 Le repertoire de base `NERF_Togo` est structuré comme suivant: 
 
@@ -24,7 +25,7 @@ NERF_Togo
     │   ├── 1_images                            # images pre-traités                              
     │   ├── 2_train-plots                       # données d'entraînement                       
     │   └── 3_val-plots                         # données de validation
-    ├── R                                     # scripts
+    ├── src                                 # scripts
     │   ├── 0_set-up.R                          # initialisation
     │   ├── 1_prepare-images.R                  # préparation des images  
     │   ├── AGB                                 # cartographie biomasse
@@ -50,5 +51,8 @@ NERF_Togo
     │   └── 2_biomass                           # cartes biomasse
     │       ├── 1_ref-maps                        # cartes de référence
     │       └── 5_results                         # résultats biomasse
-    └── report                                # rapport / manuel
+    ├── report                                # rapport des résultats
+    └── manuel                                # ce manuel
 ```
+
+C'est seulement les répétoires `src` et `manual` qui sont mis à diposition dans le dépôt [GitHub](https://github.com/ogardi/NERF-Togo). Les autres répétoires et données doivent être installés manuellement.

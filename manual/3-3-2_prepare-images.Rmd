@@ -1,7 +1,7 @@
 
-## Prétraitement des images
+### Prétraitement des images
 
-### Description {-}
+#### Description {-}
 
 Le premier traitement est la préparation des nouveaux images. On ouvre le script `1_prepare-images.R` et on ajoute les nouveaux images dans la liste des images:
 
@@ -30,11 +30,11 @@ prepare.image(in.image.dirs, ext=NULL, filename=NULL, overwrite=FALSE, log=TRUE)
 
 À la fin du script `1_prepare-images.R`, où c'est noté `# DO THE WORK ---------`, on commence avec le traitement des images. Les images prétraités sont sauveguarder dans le répétoire `input/1_images` du projet, ensemble avec des Thumbnails des chemins. Dans une prochaîne étape, les images sont néttoyées de l'eau, nuages et ombres en utilisant les bandes Landsat de qualité des pixels. Finalement également les données topographiques (SRTM) et climatiques (Worldclim v2) sont préparés.
 
-### Example {-}
+#### Example {-}
 
 ![Chemin 193 de l'année 2019 (composé de 4 scènes Landsat du 16 Février 2019)](images/p193_2019.jpeg)
 
-### _1_prepare-images.R_ {-}
+#### _1_prepare-images.R_ {-}
 
 ```{r, code=readLines("../src/1_prepare-images.R"), eval=FALSE}
 ```

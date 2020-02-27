@@ -1,11 +1,11 @@
 
-# Pour commencer
+## Pour commencer
 
-## Création d'un nouveau projet
+### Création d'un nouveau projet
 
 Pour la création d'un nouveau projet, le plus simple est de copier un projet existant, normalement le projet sur lequel on aimeriait continuer le travail. On peut faire ça à travers RStudio, SFTP ou directement sur le server par exemple `cp -r 2019_NERF_v1 2020_MNV_v0`. Après on efface les résultat de l'ancien projet `rm -r 2020_MNV_v0/output/*`. Les rapports on peut laisser, mais il faut les rédiger à la fin.  
 
-## Acquisition des images
+### Acquisition des images
 
 Ouvrir le site [USGS Earthexplorer](https://earthexplorer.usgs.gov). Dans la fenêtre `Search Criteria` il faut selectionner la période pour laquelle on cherche des images (Nov - Jan). Dans la fenêtre `Data Sets`, il faut sélectionner les produits Landsat Level-2 (Surface Reflectance). Dans la fenêtre `Additional Criteria` il faut choisir les scènes (chemin 192: 054-056 /  chemin 193: 052-055 / chemin 194: 052-053).
 

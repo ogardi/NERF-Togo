@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4.4.1 Analyse des données IFN | Système Nationale de Surveillance des Forêts au Togo</title>
+  <meta name="description" content="4.4.1 Analyse des données IFN | Système Nationale de Surveillance des Forêts au Togo" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4.4.1 Analyse des données IFN | Système Nationale de Surveillance des Forêts au Togo" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
+  <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
+  
+  <meta name="github-repo" content="ogardi/NERF-Togo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4.4.1 Analyse des données IFN | Système Nationale de Surveillance des Forêts au Togo" />
+  
+  
+  <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
+
+<meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
+
+
+<meta name="date" content="2020-03-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="00_analyse-AGB.html"/>
+<link rel="next" href="02_create-AGB-maps.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://github.com/ogardi/NERF-Togo"><b>SNSF Togo</b><br>v 1.0 / 24.2.2020</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Préface</a></li>
+<li class="chapter" data-level="1" data-path="00_introduction.html"><a href="00_introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="01_arrangements.html"><a href="01_arrangements.html"><i class="fa fa-check"></i><b>1.1</b> Arrangements institutionelles</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a></li>
+<li class="chapter" data-level="3" data-path="00_IFN.html"><a href="00_IFN.html"><i class="fa fa-check"></i><b>3</b> Inventaire Forestier National</a></li>
+<li class="chapter" data-level="4" data-path="00_NERF-MRV.html"><a href="00_NERF-MRV.html"><i class="fa fa-check"></i><b>4</b> Analyses NERF/MRV</a><ul>
+<li class="chapter" data-level="4.1" data-path="01-_organisation.html"><a href="01-_organisation.html"><i class="fa fa-check"></i><b>4.1</b> Organisation du travail</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="01-_organisation.html"><a href="01-_organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>4.1.1</b> Logiciel et serveur</a></li>
+<li class="chapter" data-level="4.1.2" data-path="01-_organisation.html"><a href="01-_organisation.html#structure-des-fichiers"><i class="fa fa-check"></i><b>4.1.2</b> Structure des fichiers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="00_preparation.html"><a href="00_preparation.html"><i class="fa fa-check"></i><b>4.2</b> Préparation des données</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="01_nouveau-projet.html"><a href="01_nouveau-projet.html"><i class="fa fa-check"></i><b>4.2.1</b> Création d’un nouveau projet</a></li>
+<li class="chapter" data-level="4.2.2" data-path="01_nouveau-projet.html"><a href="01_nouveau-projet.html#acquisition-des-images"><i class="fa fa-check"></i><b>4.2.2</b> Acquisition des images</a></li>
+<li class="chapter" data-level="4.2.3" data-path="02_set-up.html"><a href="02_set-up.html"><i class="fa fa-check"></i><b>4.2.3</b> Définition des variables</a></li>
+<li class="chapter" data-level="4.2.4" data-path="03_prepare-images.html"><a href="03_prepare-images.html"><i class="fa fa-check"></i><b>4.2.4</b> Prétraitement des images</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="00_analyse-FCC.html"><a href="00_analyse-FCC.html"><i class="fa fa-check"></i><b>4.3</b> Analyse surfaces forestiers</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="01_create-train-points.html"><a href="01_create-train-points.html"><i class="fa fa-check"></i><b>4.3.1</b> Parcelles d’entraînement</a></li>
+<li class="chapter" data-level="4.3.2" data-path="02_create-fc-maps.html"><a href="02_create-fc-maps.html"><i class="fa fa-check"></i><b>4.3.2</b> Calibration et classification</a></li>
+<li class="chapter" data-level="4.3.3" data-path="03_clean-fc-maps.html"><a href="03_clean-fc-maps.html"><i class="fa fa-check"></i><b>4.3.3</b> Nettoyage des cartes brutes</a></li>
+<li class="chapter" data-level="4.3.4" data-path="04_create-val-points.html"><a href="04_create-val-points.html"><i class="fa fa-check"></i><b>4.3.4</b> Parcelles de validation</a></li>
+<li class="chapter" data-level="4.3.5" data-path="05_validate-fc-maps.html"><a href="05_validate-fc-maps.html"><i class="fa fa-check"></i><b>4.3.5</b> Validation des cartes</a></li>
+<li class="chapter" data-level="4.3.6" data-path="06_fc-maps-accuracy.html"><a href="06_fc-maps-accuracy.html"><i class="fa fa-check"></i><b>4.3.6</b> Analyse de la précision</a></li>
+<li class="chapter" data-level="4.3.7" data-path="07_analyse-fc-maps.html"><a href="07_analyse-fc-maps.html"><i class="fa fa-check"></i><b>4.3.7</b> Production des résultats</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="00_analyse-AGB.html"><a href="00_analyse-AGB.html"><i class="fa fa-check"></i><b>4.4</b> Analyse biomasse aérienne</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="01_compile-IFN.html"><a href="01_compile-IFN.html"><i class="fa fa-check"></i><b>4.4.1</b> Analyse des données IFN</a></li>
+<li class="chapter" data-level="4.4.2" data-path="02_create-AGB-maps.html"><a href="02_create-AGB-maps.html"><i class="fa fa-check"></i><b>4.4.2</b> Calibration et prédiction</a></li>
+<li class="chapter" data-level="4.4.3" data-path="03_clean-AGB-maps.html"><a href="03_clean-AGB-maps.html"><i class="fa fa-check"></i><b>4.4.3</b> Nettoyage des cartes brutes</a></li>
+<li class="chapter" data-level="4.4.4" data-path="04_analyze-AGB.html"><a href="04_analyze-AGB.html"><i class="fa fa-check"></i><b>4.4.4</b> Production des résultats</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown">Fièrement publié avec bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Système Nationale de Surveillance des Forêts au Togo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="analyse-des-donnees-ifn" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> Analyse des données IFN</h3>
+<div id="description-9" class="section level4 unnumbered">
+<h4>Description</h4>
+<p>Description de la méthodologie / script</p>
+</div>
+<div id="agb2_compile-ifn.r" class="section level4 unnumbered">
+<h4><em>AGB/2_compile-IFN.R</em></h4>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">####################################################################</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># NERF_Togo/AGB/2_compile-IFN.R: evaluating AGB of IFN plots</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co"># 3 December 2019</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">PLOT.SIZE &lt;-<span class="st"> </span><span class="dv">20</span><span class="op">^</span><span class="dv">2</span><span class="op">*</span>pi          <span class="co"># Plot size in square meters</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9">RSR.Y    &lt;-<span class="st"> </span><span class="fl">0.563</span>             <span class="co"># Root-shoot ratios according Mokany</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10">RSR.Y.SE &lt;-<span class="st"> </span><span class="fl">0.086</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11">RSR.O    &lt;-<span class="st"> </span><span class="fl">0.275</span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12">RSR.O.SE &lt;-<span class="st"> </span><span class="fl">0.003</span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13">RSR.AGB  &lt;-<span class="st"> </span><span class="dv">20</span> </a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co"># read inventory data</span></a>
+<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co"># -------------------</span></a>
+<a class="sourceLine" id="cb13-17" data-line-number="17">plots &lt;-<span class="st"> </span><span class="kw">read.xlsx</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/IFN/IFN-Togo-2015.xlsx&quot;</span>), <span class="st">&quot;placettes&quot;</span>)[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
+<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="kw">names</span>(plots) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;PlotID&quot;</span>, <span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;LULC&quot;</span>)</a>
+<a class="sourceLine" id="cb13-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb13-20" data-line-number="20">trees &lt;-<span class="st"> </span><span class="kw">read.xlsx</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/IFN/IFN-Togo-2015.xlsx&quot;</span>), <span class="st">&quot;arbres&quot;</span>)[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">8</span>)]</a>
+<a class="sourceLine" id="cb13-21" data-line-number="21"><span class="kw">names</span>(trees) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;PlotID&quot;</span>, <span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Status&quot;</span>, <span class="st">&quot;DBH&quot;</span>, <span class="st">&quot;H&quot;</span>)</a>
+<a class="sourceLine" id="cb13-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb13-23" data-line-number="23"><span class="co"># merge with specific wood densities used by from Fonton et al. 2018</span></a>
+<a class="sourceLine" id="cb13-24" data-line-number="24">species &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">table</span>(trees<span class="op">$</span>Species))</a>
+<a class="sourceLine" id="cb13-25" data-line-number="25"><span class="kw">names</span>(species) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Count&quot;</span>)</a>
+<a class="sourceLine" id="cb13-26" data-line-number="26">fonton &lt;-<span class="st"> </span><span class="kw">read.csv2</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/IFN/donnees_Tg_Fonton.csv&quot;</span>), <span class="dt">encoding=</span><span class="st">&quot;latin1&quot;</span>)[,<span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">7</span>)]</a>
+<a class="sourceLine" id="cb13-27" data-line-number="27">fonton &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="kw">list</span>(<span class="dt">D=</span>fonton<span class="op">$</span>wsg), <span class="dt">by=</span><span class="kw">list</span>(<span class="dt">Species=</span>fonton<span class="op">$</span>NOM), <span class="dt">FUN=</span>modal)</a>
+<a class="sourceLine" id="cb13-28" data-line-number="28">species &lt;-<span class="st"> </span><span class="kw">merge</span>(species[,<span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Count&quot;</span>)], </a>
+<a class="sourceLine" id="cb13-29" data-line-number="29">                     fonton[,<span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;D&quot;</span>)], <span class="dt">by=</span><span class="st">&quot;Species&quot;</span>)</a>
+<a class="sourceLine" id="cb13-30" data-line-number="30">species<span class="op">$</span>Source &lt;-<span class="st"> &quot;Fonton&quot;</span></a>
+<a class="sourceLine" id="cb13-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb13-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb13-33" data-line-number="33"><span class="co"># merge tree table with species densities</span></a>
+<a class="sourceLine" id="cb13-34" data-line-number="34"><span class="co"># -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb13-35" data-line-number="35">trees &lt;-<span class="st"> </span><span class="kw">merge</span>(trees, species, <span class="dt">by=</span><span class="st">&quot;Species&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb13-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb13-37" data-line-number="37"><span class="co"># estimer la biomasse des arbres avec la fonction de Chave et al. (2014)</span></a>
+<a class="sourceLine" id="cb13-38" data-line-number="38"><span class="co"># ----------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb13-39" data-line-number="39">trees<span class="op">$</span>AGB &lt;-<span class="st"> </span><span class="fl">0.0673</span> <span class="op">*</span><span class="st"> </span>(trees<span class="op">$</span>D <span class="op">*</span><span class="st"> </span>trees<span class="op">$</span>DBH<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>trees<span class="op">$</span>H)<span class="op">^</span><span class="fl">0.976</span></a>
+<a class="sourceLine" id="cb13-40" data-line-number="40">trees<span class="op">$</span>AGBm &lt;-<span class="st"> </span>trees<span class="op">$</span>AGBv &lt;-<span class="st"> </span>trees<span class="op">$</span>AGB                <span class="co"># copier les valeurs dans une colonne bois mort</span></a>
+<a class="sourceLine" id="cb13-41" data-line-number="41">trees<span class="op">$</span>AGBv[trees<span class="op">$</span>Status <span class="op">!=</span><span class="st"> &quot;V&quot;</span>] &lt;-<span class="st"> </span><span class="dv">0</span>       <span class="co"># mettre ?? zero la biomass l?? o?? l&#39;arbre n&#39;est pas vivant</span></a>
+<a class="sourceLine" id="cb13-42" data-line-number="42">trees<span class="op">$</span>AGBm[trees<span class="op">$</span>Status <span class="op">==</span><span class="st"> &quot;V&quot;</span>] &lt;-<span class="st"> </span><span class="dv">0</span>       <span class="co"># mettre ?? zero le bois mort l?? o?? l&#39;arbre est vivant</span></a>
+<a class="sourceLine" id="cb13-43" data-line-number="43"></a>
+<a class="sourceLine" id="cb13-44" data-line-number="44"><span class="co"># aggregation de la biomasse est le bois mort par plots (somme)</span></a>
+<a class="sourceLine" id="cb13-45" data-line-number="45"><span class="co"># ----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb13-46" data-line-number="46">plots &lt;-<span class="st"> </span><span class="kw">merge</span>(plots, </a>
+<a class="sourceLine" id="cb13-47" data-line-number="47">               <span class="kw">aggregate</span>(trees[,<span class="kw">c</span>(<span class="st">&quot;AGBv&quot;</span>, <span class="st">&quot;AGBm&quot;</span>)], <span class="dt">by=</span><span class="kw">list</span>(<span class="dt">PlotID=</span>trees<span class="op">$</span>PlotID), </a>
+<a class="sourceLine" id="cb13-48" data-line-number="48">                         <span class="dt">FUN=</span><span class="cf">function</span>(x) <span class="kw">sum</span>(x) <span class="op">*</span><span class="st"> </span><span class="dv">10000</span> <span class="op">/</span><span class="st"> </span>PLOT.SIZE <span class="op">/</span><span class="st"> </span><span class="dv">1000</span>),  </a>
+<a class="sourceLine" id="cb13-49" data-line-number="49">               <span class="dt">by=</span><span class="st">&quot;PlotID&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>)                        <span class="co"># joindre tmp avec notre tableau plotss</span></a>
+<a class="sourceLine" id="cb13-50" data-line-number="50">plots<span class="op">$</span>AGBv[<span class="kw">is.na</span>(plots<span class="op">$</span>AGBv)] &lt;-<span class="st"> </span><span class="dv">0</span>                                            <span class="co"># mettre ?? zero la biomasse et le bois mort pour les plotss sans valeurs (NA)</span></a>
+<a class="sourceLine" id="cb13-51" data-line-number="51">plots<span class="op">$</span>AGBm[<span class="kw">is.na</span>(plots<span class="op">$</span>AGBm)] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb13-52" data-line-number="52">plots<span class="op">$</span>AGB &lt;-<span class="st"> </span>plots<span class="op">$</span>AGBv <span class="op">+</span><span class="st"> </span>plots<span class="op">$</span>AGBm</a>
+<a class="sourceLine" id="cb13-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb13-54" data-line-number="54"></a>
+<a class="sourceLine" id="cb13-55" data-line-number="55"><span class="co"># estimer la biomasse racinaire par plot avec les facteurs root-shoot de Mokany et al. (2006) pour les for??ts tropicales s??ches</span></a>
+<a class="sourceLine" id="cb13-56" data-line-number="56"><span class="co"># -----------------------------------------------------------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb13-57" data-line-number="57">plots<span class="op">$</span>BGB[plots<span class="op">$</span>AGBv <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>plots<span class="op">$</span>AGBv[plots<span class="op">$</span>AGBv <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.Y</a>
+<a class="sourceLine" id="cb13-58" data-line-number="58">plots<span class="op">$</span>BGB[plots<span class="op">$</span>AGBv  <span class="op">&gt;</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>plots<span class="op">$</span>AGBv[plots<span class="op">$</span>AGBv  <span class="op">&gt;</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.O </a>
+<a class="sourceLine" id="cb13-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb13-60" data-line-number="60">plots<span class="op">$</span>BM &lt;-<span class="st"> </span>plots<span class="op">$</span>AGB <span class="op">+</span><span class="st"> </span>plots<span class="op">$</span>BGB</a>
+<a class="sourceLine" id="cb13-61" data-line-number="61"></a>
+<a class="sourceLine" id="cb13-62" data-line-number="62"><span class="co"># write plot coordinates and biomass to file</span></a>
+<a class="sourceLine" id="cb13-63" data-line-number="63"><span class="co"># ------------------------------------------</span></a>
+<a class="sourceLine" id="cb13-64" data-line-number="64"></a>
+<a class="sourceLine" id="cb13-65" data-line-number="65"><span class="kw">write.csv</span>(plots, <span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/IFN-plots.csv&quot;</span>),</a>
+<a class="sourceLine" id="cb13-66" data-line-number="66">          <span class="dt">row.names =</span> <span class="ot">FALSE</span>) <span class="co">#, fileEncoding = &quot;macintosh&quot;)</span></a>
+<a class="sourceLine" id="cb13-67" data-line-number="67"></a>
+<a class="sourceLine" id="cb13-68" data-line-number="68"></a>
+<a class="sourceLine" id="cb13-69" data-line-number="69"><span class="co"># produire le tableau crois?? avec les biomasses par strate (fonctionalit?? de l&#39;extension dplyr)</span></a>
+<a class="sourceLine" id="cb13-70" data-line-number="70"><span class="co"># ---------------------------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb13-71" data-line-number="71"><span class="kw">pdf</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGB-vs-LULC.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb13-72" data-line-number="72"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">cex.axis=</span><span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb13-73" data-line-number="73"><span class="kw">boxplot</span>(plots<span class="op">$</span>AGBv<span class="op">~</span>plots<span class="op">$</span>LULC, <span class="dt">las=</span><span class="dv">2</span>, <span class="dt">ylab=</span><span class="st">&quot;AGB (t/ha)&quot;</span>, <span class="dt">xlab=</span><span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb13-74" data-line-number="74"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb13-75" data-line-number="75"></a>
+<a class="sourceLine" id="cb13-76" data-line-number="76"><span class="kw">pdf</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGBm-vs-LULC.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb13-77" data-line-number="77"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">cex.axis=</span><span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb13-78" data-line-number="78"><span class="kw">boxplot</span>(plots<span class="op">$</span>AGBm<span class="op">~</span>plots<span class="op">$</span>LULC, <span class="dt">las=</span><span class="dv">2</span>, <span class="dt">ylab=</span><span class="st">&quot;Bmort (t/ha)&quot;</span>, <span class="dt">xlab=</span><span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb13-79" data-line-number="79"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb13-80" data-line-number="80"></a>
+<a class="sourceLine" id="cb13-81" data-line-number="81"><span class="co"># biomass per LU/LC category</span></a>
+<a class="sourceLine" id="cb13-82" data-line-number="82">bm.lulc.tab &lt;-<span class="st"> </span>plots <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-83" data-line-number="83"><span class="st">  </span><span class="kw">group_by</span>(LULC) <span class="op">%&gt;%</span><span class="st">                                                       </span><span class="co"># grouper par strate</span></a>
+<a class="sourceLine" id="cb13-84" data-line-number="84"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">length</span>(AGB),</a>
+<a class="sourceLine" id="cb13-85" data-line-number="85">            <span class="dt">AGBv.mean=</span><span class="kw">mean</span>(AGBv), <span class="dt">AGBv.sd=</span><span class="kw">sd</span>(AGBv),     <span class="co"># definir les colonnes et le calcul des valeurs</span></a>
+<a class="sourceLine" id="cb13-86" data-line-number="86">            <span class="dt">BGB.mean=</span><span class="kw">mean</span>(BGB), <span class="dt">BGB.sd=</span><span class="kw">sd</span>(BGB),</a>
+<a class="sourceLine" id="cb13-87" data-line-number="87">            <span class="dt">AGBm.mean=</span><span class="kw">mean</span>(AGBm), <span class="dt">AGBm.sd=</span><span class="kw">sd</span>(AGBm),     <span class="co"># definir les colonnes et le calcul des valeurs</span></a>
+<a class="sourceLine" id="cb13-88" data-line-number="88">            <span class="dt">BM.mean =</span><span class="kw">mean</span>(BM),  <span class="dt">BM.sd =</span><span class="kw">sd</span>(BM))</a>
+<a class="sourceLine" id="cb13-89" data-line-number="89"></a>
+<a class="sourceLine" id="cb13-90" data-line-number="90"><span class="kw">write.csv</span>(bm.lulc.tab, <span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGB_LULC.csv&quot;</span>), </a>
+<a class="sourceLine" id="cb13-91" data-line-number="91">          <span class="dt">row.names =</span> <span class="ot">FALSE</span>) <span class="co">#, fileEncoding = &quot;macintosh&quot;)</span></a>
+<a class="sourceLine" id="cb13-92" data-line-number="92"></a>
+<a class="sourceLine" id="cb13-93" data-line-number="93"><span class="co"># differences biomass per LU/LC conversion</span></a>
+<a class="sourceLine" id="cb13-94" data-line-number="94">dbm.lulc.tab &lt;-<span class="st"> </span>bm.lulc.tab <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-95" data-line-number="95"><span class="st">  </span><span class="kw">expand</span>(<span class="dt">FROM=</span><span class="kw">nesting</span>(LULC, AGB.mean, AGB.sd, BGB.mean, BGB.sd, BM.mean, BM.sd), </a>
+<a class="sourceLine" id="cb13-96" data-line-number="96">         <span class="dt">TO=</span><span class="kw">nesting</span>(LULC, AGB.mean, AGB.sd, BGB.mean, BGB.sd, BM.mean, BM.sd)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-97" data-line-number="97"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">from =</span> FROM<span class="op">$</span>LULC, <span class="dt">to =</span> TO<span class="op">$</span>LULC,</a>
+<a class="sourceLine" id="cb13-98" data-line-number="98">         <span class="dt">dAGB.mean=</span>TO<span class="op">$</span>AGB.mean <span class="op">-</span><span class="st"> </span>FROM<span class="op">$</span>AGB.mean, <span class="dt">dAGB.sd=</span><span class="kw">sqrt</span>(FROM<span class="op">$</span>AGB.sd<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>TO<span class="op">$</span>AGB.sd<span class="op">^</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb13-99" data-line-number="99">         <span class="dt">dBGB.mean=</span>TO<span class="op">$</span>BGB.mean <span class="op">-</span><span class="st"> </span>FROM<span class="op">$</span>BGB.mean, <span class="dt">dBGB.sd=</span><span class="kw">sqrt</span>(FROM<span class="op">$</span>BGB.sd<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>TO<span class="op">$</span>BGB.sd<span class="op">^</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb13-100" data-line-number="100">         <span class="dt">dBM.mean =</span>TO<span class="op">$</span>BM.mean  <span class="op">-</span><span class="st"> </span>FROM<span class="op">$</span>BM.mean,  <span class="dt">dBM.sd =</span><span class="kw">sqrt</span>(FROM<span class="op">$</span>BM.sd<span class="op">^</span><span class="dv">2</span>  <span class="op">+</span><span class="st"> </span>TO<span class="op">$</span>BM.sd<span class="op">^</span><span class="dv">2</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-101" data-line-number="101"><span class="st">  </span><span class="kw">select</span>(<span class="kw">c</span>(from, to, dAGB.mean, dAGB.sd, dBGB.mean, dBGB.sd, dBM.mean, dBM.sd))</a>
+<a class="sourceLine" id="cb13-102" data-line-number="102"></a>
+<a class="sourceLine" id="cb13-103" data-line-number="103"><span class="kw">write.csv</span>(dbm.lulc.tab, <span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGB_LULC-diff.csv&quot;</span>), </a>
+<a class="sourceLine" id="cb13-104" data-line-number="104">          <span class="dt">row.names =</span> <span class="ot">FALSE</span>) <span class="co">#, fileEncoding = &quot;macintosh&quot;)</span></a></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="00_analyse-AGB.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="02_create-AGB-maps.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"search": true,
+"info": true
+});
+});
+</script>
+
+</body>
+
+</html>

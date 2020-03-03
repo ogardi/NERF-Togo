@@ -1,13 +1,13 @@
 
-### Parcelles d'entraînement
+### Analyse des données IFN
 
 #### Description {-}
 
 Description de la méthodologie / script
 
-#### _FCC/2_create-train-points.R_ {-}
+#### _AGB/2_compile-IFN.R_ {-}
 
-```{r, code=readLines("../src/FCC/2_create-train-points.R"), eval=FALSE}
+```{r, code=readLines("../src/AGB/2_compile-IFN.R"), eval=FALSE}
 ```
 
 

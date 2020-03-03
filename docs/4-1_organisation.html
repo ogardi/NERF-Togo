@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 Introduction | Système Nationale de Surveillance des Forêts au Togo</title>
-  <meta name="description" content="1 Introduction | Système Nationale de Surveillance des Forêts au Togo" />
+  <title>6 Analyses NERF / MRV | Système Nationale de Surveillance des Forêts au Togo</title>
+  <meta name="description" content="6 Analyses NERF / MRV | Système Nationale de Surveillance des Forêts au Togo" />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1 Introduction | Système Nationale de Surveillance des Forêts au Togo" />
+  <meta property="og:title" content="6 Analyses NERF / MRV | Système Nationale de Surveillance des Forêts au Togo" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 Introduction | Système Nationale de Surveillance des Forêts au Togo" />
+  <meta name="twitter:title" content="6 Analyses NERF / MRV | Système Nationale de Surveillance des Forêts au Togo" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="1-1_arrangements.html"/>
+<link rel="prev" href="4_NERF-MRV.html"/>
+<link rel="next" href="4-2_preparation.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -173,18 +173,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>Blah, blah, blah</p>
+<div id="analyses-nerf-mrv" class="section level1">
+<h1><span class="header-section-number">6</span> Analyses NERF / MRV</h1>
+<div id="organisation-du-travail" class="section level2">
+<h2><span class="header-section-number">6.1</span> Organisation du travail</h2>
+<div id="logiciel-et-serveur" class="section level3">
+<h3><span class="header-section-number">6.1.1</span> Logiciel et serveur</h3>
+<p>La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel <a href="https://www.r-project.org">R</a>, dirigé à travers <a href="https://rstudio.com">RStudio</a>. Les scripts R sont mis à disposition dans un <a href="https://github.com/ogardi/NERF-Togo">dépot GitHub</a>. Les scripts dépendent des outils GDAL disponible dans l’environnement, à installer pour les systèmes Linux avec <code>apt-get install python-gdal</code>.</p>
+<p>Le traitement et l’analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Pour le moment les analyses pour le Niveau des emissions de référence pour les forêts du Togo (NERF-Togo) sont éfféctués sur l’infrastructure informatique centrale de la BFH-HAFL. L’interface R-Studio est disponible à <a href="http://r.gro1.bfh.science" class="uri">http://r.gro1.bfh.science</a>.</p>
+</div>
+<div id="structure-des-fichiers" class="section level3">
+<h3><span class="header-section-number">6.1.2</span> Structure des fichiers</h3>
+<p>Le repertoire de base <code>NERF_Togo</code> est structuré comme suivant:</p>
+<pre><code>NERF_Togo
+├── data                                    # Données de base
+│   ├── GADM                                  # frontières administratives
+│   ├── IFN                                   # inventaire forestier national
+│   ├── Landsat                               # images satellitaires
+│   ├── SRTM                                  # données topographiques
+│   └── Worldclim                             # données climatiques
+└── NERF_v1                                 # Répétoire projet
+    ├── input                                 # données spécifiques du projet
+    │   ├── 1_images                            # images pre-traités                              
+    │   ├── 2_train-plots                       # données d&#39;entraînement                       
+    │   └── 3_val-plots                         # données de validation
+    ├── src                                 # scripts
+    │   ├── 0_set-up.R                          # initialisation
+    │   ├── 1_prepare-images.R                  # préparation des images  
+    │   ├── AGB                                 # cartographie biomasse
+    │   │   ├── 2_compile-IFN.R                   # évaluer inventaire
+    │   │   ├── 3_create-AGB-maps.R               # calibration des cartes
+    │   │   ├── 4_clean-AGB-maps.R                # nettoyage des cartes
+    │   │   └── 5_analyze-AGB.R                   # analyse des cartes
+    │   └── FCC                                 # cartographie surfaces forestiers
+    │       ├── 2_create-train-points.R           # création des point d&#39;entraînement
+    │       ├── 3_create-fc-maps.R                # calibration des cartes
+    │       ├── 4_clean-fc-maps.R                 # nettoyage des cartes
+    │       ├── 5_create-val-points.R             # création des points de validation
+    │       ├── 6_validate-fc-maps.R              # validation des cartes
+    │       ├── 7_fc-maps-accuracy.R              # analyse de la précision des cartes
+    │       └── 8_analyse-fc-maps.R               # analyse des cartes  
+    ├── output                                # résultats
+    │   ├── 1_forest-cover                      # cartes surfaces forestiers
+    │   │   ├── 1_ref-maps                        # cartes référence
+    │   │   ├── 2_raw-maps                        # cartes brutes
+    │   │   ├── 3_clean-maps                      # cartes nettoyées
+    │   │   ├── 4_validation                      # résultats validation
+    │   │   └── 5_results                         # résultats surfaces
+    │   └── 2_biomass                           # cartes biomasse
+    │       ├── 1_ref-maps                        # cartes de référence
+    │       └── 5_results                         # résultats biomasse
+    ├── report                                # rapport des résultats
+    └── manuel                                # ce manuel</code></pre>
+<p>C’est seulement les répétoires <code>src</code> et <code>manual</code> qui sont mis à diposition dans le dépôt <a href="https://github.com/ogardi/NERF-Togo">GitHub</a>. Les autres répétoires et données doivent être installés manuellement.</p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="1-1_arrangements.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="4_NERF-MRV.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="4-2_preparation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

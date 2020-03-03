@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 Introduction | Système Nationale de Surveillance des Forêts au Togo</title>
-  <meta name="description" content="1 Introduction | Système Nationale de Surveillance des Forêts au Togo" />
+  <title>6.2.1 Création d’un nouveau projet | Système Nationale de Surveillance des Forêts au Togo</title>
+  <meta name="description" content="6.2.1 Création d’un nouveau projet | Système Nationale de Surveillance des Forêts au Togo" />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1 Introduction | Système Nationale de Surveillance des Forêts au Togo" />
+  <meta property="og:title" content="6.2.1 Création d’un nouveau projet | Système Nationale de Surveillance des Forêts au Togo" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 Introduction | Système Nationale de Surveillance des Forêts au Togo" />
+  <meta name="twitter:title" content="6.2.1 Création d’un nouveau projet | Système Nationale de Surveillance des Forêts au Togo" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="1-1_arrangements.html"/>
+<link rel="prev" href="4-2_preparation.html"/>
+<link rel="next" href="4-2-2_set-up.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -173,9 +173,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>Blah, blah, blah</p>
+<div id="creation-dun-nouveau-projet" class="section level3">
+<h3><span class="header-section-number">6.2.1</span> Création d’un nouveau projet</h3>
+<p>Pour la création d’un nouveau projet, le plus simple est de copier un projet existant, normalement le projet sur lequel on aimeriait continuer le travail. On peut faire ça à travers RStudio, SFTP ou directement sur le server par exemple <code>cp -r 2019_NERF_v1 2020_MNV_v0</code>. Après on efface les résultat de l’ancien projet <code>rm -r 2020_MNV_v0/output/*</code>. Les rapports on peut laisser, mais il faut les rédiger à la fin.</p>
+</div>
+<div id="acquisition-des-images" class="section level3">
+<h3><span class="header-section-number">6.2.2</span> Acquisition des images</h3>
+<p>Ouvrir le site <a href="https://earthexplorer.usgs.gov">USGS Earthexplorer</a>. Dans la fenêtre <code>Search Criteria</code> il faut selectionner la période pour laquelle on cherche des images (Nov - Jan). Dans la fenêtre <code>Data Sets</code>, il faut sélectionner les produits Landsat Level-2 (Surface Reflectance). Dans la fenêtre <code>Additional Criteria</code> il faut choisir les scènes (chemin 192: 054-056 / chemin 193: 052-055 / chemin 194: 052-053).</p>
+<p><img src="images/Acq-EE.png" /></p>
+<p>On prend le date sur les images de tout le chemin sont de meilleure qualité. On copie les identifier des images à télécharger dans un fichier text.</p>
+<p>Ensuite on ouvre le site <a href="https://espa.cr.usgs.gov/ordering/new/">USGS ESPA</a> pour commander les scènes. On charge le fichier text avec les scènes et on commande les bandes surface reflectances et les indices. Pour commander des images, il faut qu’on a un compte USGS.</p>
+<p><img src="images/Acq-ESPA.png" /></p>
+<p>Une fois on est notifié par eMail que les images sont prêts, on les téléchargent manuellement ou tous ensemble avec le <a href="https://github.com/USGS-EROS/espa-bulk-downloader">USGS bulkdownloader</a> et la commande <code>download_espa_order.py -u oliver.gardi@gmail.com -o ALL -d NERF_Togo/data/Landsat</code>. On dézip les images et les rangent dans le répétoire <code>data/Landsat</code> sous la scène et l’année correspondante. Pour des images de l’hiver 2019/20, l’année correspondante est 2020.</p>
 
 </div>
             </section>
@@ -183,8 +192,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="1-1_arrangements.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="4-2_preparation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="4-2-2_set-up.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

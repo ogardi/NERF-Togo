@@ -1,6 +1,4 @@
 
-## Préparation
-
 ### Définition des variables
 
 #### Description {-}

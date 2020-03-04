@@ -138,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="00_NERF-MRV.html"><a href="00_NERF-MRV.html"><i class="fa fa-check"></i><b>4</b> Analyses NERF/MRV</a><ul>
 <li class="chapter" data-level="4.1" data-path="01-organisation.html"><a href="01-organisation.html"><i class="fa fa-check"></i><b>4.1</b> Organisation du travail</a><ul>
 <li class="chapter" data-level="4.1.1" data-path="01-organisation.html"><a href="01-organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>4.1.1</b> Logiciel et serveur</a></li>
-<li class="chapter" data-level="4.1.2" data-path="01-organisation.html"><a href="01-organisation.html#structure-des-fichiers"><i class="fa fa-check"></i><b>4.1.2</b> Structure des fichiers</a></li>
+<li class="chapter" data-level="4.1.2" data-path="01-organisation.html"><a href="01-organisation.html#structure-du-repetoire"><i class="fa fa-check"></i><b>4.1.2</b> Structure du répetoire</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="00_preparation.html"><a href="00_preparation.html"><i class="fa fa-check"></i><b>4.2</b> Préparation des données</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="01_nouveau-projet.html"><a href="01_nouveau-projet.html"><i class="fa fa-check"></i><b>4.2.1</b> Création d’un nouveau projet</a></li>
@@ -185,7 +185,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">4.2.3</span> Définition des variables</h3>
 <div id="description" class="section level4 unnumbered">
 <h4>Description</h4>
-<p>Le traitement des images ce fait par executer les scripts R, un après l’autre. Tout d’abord on ouvre et execute le script <code>0_set-up.R</code> pour charger les librairies et définir des variables qu’on utilise également dans les autres scripts.</p>
+<p>Le traitement des images ce fait par executer les scripts R, un après l’autre. Tout d’abord on ouvre et execute le script <code>0_set-up.R</code> pour charger les librairies et définir des variables qu’on utilise également dans les autres scripts. On peut également éxécuter l’ensemble du script par la commande R <code>source(0_set-up.R)</code>.</p>
+<p>Les noms des variables définies dans le script <code>0_set-up.R</code> sont écrits en majuscules. Ils sont stockés dans l’environnement R et sont disponibles pour tous les autres scripts après l’exécution du script.</p>
+<p>Avant l’exécution du script, les variables sont ajustées si nécessaire, notamment les informations sur la période analysée <code>PERIOD</code> et les années à prendre en compte pour les différentes évaluations <code>JNT.YEARS</code>, <code>VAL.YEARS</code> et <code>REF.YEARS</code>.</p>
 </div>
 <div id="set-up.r" class="section level4 unnumbered">
 <h4><em>0_set-up.R</em></h4>

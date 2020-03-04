@@ -138,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="00_NERF-MRV.html"><a href="00_NERF-MRV.html"><i class="fa fa-check"></i><b>4</b> Analyses NERF/MRV</a><ul>
 <li class="chapter" data-level="4.1" data-path="01-organisation.html"><a href="01-organisation.html"><i class="fa fa-check"></i><b>4.1</b> Organisation du travail</a><ul>
 <li class="chapter" data-level="4.1.1" data-path="01-organisation.html"><a href="01-organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>4.1.1</b> Logiciel et serveur</a></li>
-<li class="chapter" data-level="4.1.2" data-path="01-organisation.html"><a href="01-organisation.html#structure-des-fichiers"><i class="fa fa-check"></i><b>4.1.2</b> Structure des fichiers</a></li>
+<li class="chapter" data-level="4.1.2" data-path="01-organisation.html"><a href="01-organisation.html#structure-du-repetoire"><i class="fa fa-check"></i><b>4.1.2</b> Structure du répetoire</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="00_preparation.html"><a href="00_preparation.html"><i class="fa fa-check"></i><b>4.2</b> Préparation des données</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="01_nouveau-projet.html"><a href="01_nouveau-projet.html"><i class="fa fa-check"></i><b>4.2.1</b> Création d’un nouveau projet</a></li>
@@ -185,7 +185,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">4.2.4</span> Prétraitement des images</h3>
 <div id="description-1" class="section level4 unnumbered">
 <h4>Description</h4>
-<p>Le premier traitement est la préparation des nouveaux images. On ouvre le script <code>1_prepare-images.R</code> et on ajoute les nouveaux images dans la liste des images:</p>
+<p>Le premier traitement est la préparation des images Landsat et autres variables utilisés pour modéliser la surface forestier ou la biomasse aérienne comme les données topographique et climatiques.</p>
+<p>On ouvre le script <code>1_prepare-images.R</code> et on modifie la liste des images Landsat à utiliser (<code>in.image.list</code>), par exemple par ajouter les nouveaux image à considérer dans les analyses:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p192<span class="fl">.2019</span> =<span class="st"> </span><span class="kw">list</span>(</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2019/LC081920542018122301T1-SC20190405164258/&quot;</span>),</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2019/LC081920552018122301T1-SC20190405163359/&quot;</span>),</a>
@@ -200,16 +201,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb3-12" data-line-number="12">p194<span class="fl">.2019</span> =<span class="st"> </span><span class="kw">list</span>(</a>
 <a class="sourceLine" id="cb3-13" data-line-number="13">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2019/LC081940522019012201T1-SC20190405172019/&quot;</span>),</a>
 <a class="sourceLine" id="cb3-14" data-line-number="14">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2019/LC081940532019012201T1-SC20190405172055/&quot;</span>))</a></code></pre></div>
-<p>Le script définit une fonction pour stacker, masquer et couper les images Landsat chemin par chemin. Par défaut, les images qui ont déjà été traité (<code>filename</code> existe déjà) ne sont plus traité (<code>overwrite=FALSE</code>).</p>
+<p>Outre la définition des images à traiter, le script définit une fonction <code>prepare.image</code> pour stacker les différentes bandes des images Landsat, pour les fusioner, masquer et couper les images Landsat chemin par chemin (WRS2 paths 192, 193 et 194 pour Togo). Par défaut, les images qui ont déjà été traité (<code>filename</code> existe déjà) ne sont plus traité (<code>overwrite=FALSE</code>).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">prepare.image</span>(in.image.dirs, <span class="dt">ext=</span><span class="ot">NULL</span>, <span class="dt">filename=</span><span class="ot">NULL</span>, <span class="dt">overwrite=</span><span class="ot">FALSE</span>, <span class="dt">log=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p>À la fin du script <code>1_prepare-images.R</code>, où c’est noté <code># DO THE WORK ---------</code>, on commence avec le traitement des images. Les images prétraités sont sauveguarder dans le répétoire <code>input/1_images</code> du projet, ensemble avec des Thumbnails des chemins. Dans une prochaîne étape, les images sont néttoyées de l’eau, nuages et ombres en utilisant les bandes Landsat de qualité des pixels. Finalement également les données topographiques (SRTM) et climatiques (Worldclim v2) sont préparés.</p>
+<p>Dans la deuxième partie du script, là où c’est noté <code># DO THE WORK ---------</code>, on lance le traitement des images. Avec le code <code>foreach(...) %dopar% { ... }</code> on lance le traitement de chaque chemin pour chaque année sur des différents processeurs au parallèle. À la fin du script on</p>
+<ul>
+<li>transforme les images du chemin 194 du système de coordonnées UTM 30 vers UTM 31</li>
+<li>prépare les données topographiques SRTM et les données climatiques Worldclim v2</li>
+<li>produit des thumbnails des images Landsat et Worldclim v2 en format JPEG (voir example au-dessous)</li>
+</ul>
+<p>Les images prétraités sont sauveguarder dans le répétoire <code>input/1_images</code> du projet, ensemble avec des Thumbnails des chemins. Dans une prochaîne étape, les images sont néttoyées de l’eau, nuages et ombres en utilisant les bandes Landsat de qualité des pixels. Finalement également les données topographiques (SRTM) et climatiques (Worldclim v2) sont préparés.</p>
 </div>
 <div id="example" class="section level4 unnumbered">
 <h4>Example</h4>
-<div class="figure">
-<img src="images/p193_2019.jpeg" alt="Chemin 193 de l’année 2019 (composé de 4 scènes Landsat du 16 Février 2019)" />
-<p class="caption">Chemin 193 de l’année 2019 (composé de 4 scènes Landsat du 16 Février 2019)</p>
-</div>
+<p><img src="images/p194_2019.jpeg" width="33%" /><img src="images/p193_2019.jpeg" width="33%" /><img src="images/p192_2019.jpeg" width="33%" />
+<strong>Images Landsat de l’année 2019:</strong> chemin p194 composé de 2 scénes du 22.01.2019 / p193 avec 4 scènes du 16.02.2019 / p192 avec 3 scènes du 23.12.2018</p>
+<p><img src="images/wc2.0_30s_bio_Togo-01.jpeg" width="25%" /><img src="images/wc2.0_30s_bio_Togo-04.jpeg" width="25%" /><img src="images/wc2.0_30s_bio_Togo-12.jpeg" width="25%" /><img src="images/wc2.0_30s_bio_Togo-15.jpeg" width="25%" />
+<strong>Données bioclimatiques Worldclim v2:</strong> température annuelle moyenne (BIO1) / saisonalité de la température (BIO4) / précipitation annuelle (BIO12) / saisonalité de la précipitation (BIO15)</p>
 </div>
 <div id="prepare-images.r" class="section level4 unnumbered">
 <h4><em>1_prepare-images.R</em></h4>

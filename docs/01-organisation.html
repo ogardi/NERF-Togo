@@ -138,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="00_NERF-MRV.html"><a href="00_NERF-MRV.html"><i class="fa fa-check"></i><b>4</b> Analyses NERF/MRV</a><ul>
 <li class="chapter" data-level="4.1" data-path="01-organisation.html"><a href="01-organisation.html"><i class="fa fa-check"></i><b>4.1</b> Organisation du travail</a><ul>
 <li class="chapter" data-level="4.1.1" data-path="01-organisation.html"><a href="01-organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>4.1.1</b> Logiciel et serveur</a></li>
-<li class="chapter" data-level="4.1.2" data-path="01-organisation.html"><a href="01-organisation.html#structure-des-fichiers"><i class="fa fa-check"></i><b>4.1.2</b> Structure des fichiers</a></li>
+<li class="chapter" data-level="4.1.2" data-path="01-organisation.html"><a href="01-organisation.html#structure-du-repetoire"><i class="fa fa-check"></i><b>4.1.2</b> Structure du répetoire</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="00_preparation.html"><a href="00_preparation.html"><i class="fa fa-check"></i><b>4.2</b> Préparation des données</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="01_nouveau-projet.html"><a href="01_nouveau-projet.html"><i class="fa fa-check"></i><b>4.2.1</b> Création d’un nouveau projet</a></li>
@@ -188,8 +188,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel <a href="https://www.r-project.org">R</a>, dirigé à travers <a href="https://rstudio.com">RStudio</a>. Les scripts R sont mis à disposition dans un <a href="https://github.com/ogardi/NERF-Togo">dépot GitHub</a>. Les scripts dépendent des fois des outils GDAL disponible dans l’environnement, à installer pour les systèmes Linux avec <code>apt-get install python-gdal</code>.</p>
 <p>Le traitement et l’analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Les analyses pour le Niveau des emissions de référence pour les forêts du Togo (NERF 1.0) ont été éfféctués sur l’infrastructure informatique centrale de la BFH-HAFL (<a href="http://r.gro1.bfh.science" class="uri">http://r.gro1.bfh.science</a>, accès limité). Une fois la nouvelle infrastructure informatique puissante avec un serveur central au Ministère pour l’Environnement et Forêts (MERF) est installé et disponible, les travaux peuvent être éffectués là.</p>
 </div>
-<div id="structure-des-fichiers" class="section level3">
-<h3><span class="header-section-number">4.1.2</span> Structure des fichiers</h3>
+<div id="structure-du-repetoire" class="section level3">
+<h3><span class="header-section-number">4.1.2</span> Structure du répetoire</h3>
 <p>Les outils R dépendent d’une certaine structure des fichiers. Le repertoire de base <code>NERF_Togo</code> est structuré comme suivant:</p>
 <pre><code>NERF_Togo
 

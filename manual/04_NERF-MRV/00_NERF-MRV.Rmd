@@ -5,7 +5,7 @@ Le Togo a soumis son premier **Niveau d'émissions de référence pour les forê
 
 Les données de base qu'on a utilisé pour effectuer ce travail sont: 
 
-- **les images Landsat de l'archive USGS (1985 -- 2019)** pour la la cartographie de l'évolution des surfaces forestiers et la cartographie de la biomasse
+- **les images Landsat de l'archive USGS (1985 -- 2019)** et les **données climatiques Worldclim v2** pour la la cartographie de l'évolution des surfaces forestiers et la cartographie de la biomasse
 - **les données du SSTS (état 2019)** sur la couverture du houppier et l'utilisation des terres pour la calibration et la validation des cartes sur l'évolution des surfaces forestier
 - **les données dendrométriques du IFN-1 (2015/16)** pour déterminer le stockage de carbone dans la biomasse aérienne par parcelle et la calibration des cartes de la biomasse
 

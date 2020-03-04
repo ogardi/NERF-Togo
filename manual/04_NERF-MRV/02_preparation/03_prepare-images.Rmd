@@ -3,7 +3,9 @@
 
 #### Description {-}
 
-Le premier traitement est la préparation des nouveaux images. On ouvre le script `1_prepare-images.R` et on ajoute les nouveaux images dans la liste des images:
+Le premier traitement est la préparation des images Landsat et autres variables utilisés pour modéliser la surface forestier ou la biomasse aérienne comme les données topographique et climatiques. 
+
+On ouvre le script `1_prepare-images.R` et on modifie la liste des images Landsat à utiliser (`in.image.list`), par exemple par ajouter les nouveaux image à considérer dans les analyses:
 
 ```{r eval=FALSE, tidy=FALSE}
 p192.2019 = list(
@@ -22,17 +24,32 @@ p194.2019 = list(
   paste0(DATA.DIR, "/Landsat/194_053/2019/LC081940532019012201T1-SC20190405172055/"))
 ```
 
-Le script définit une fonction pour stacker, masquer et couper les images Landsat chemin par chemin. Par défaut, les images qui ont déjà été traité (`filename` existe déjà) ne sont plus traité (`overwrite=FALSE`).
+Outre la définition des images à traiter, le script définit une fonction `prepare.image` pour stacker les différentes bandes des images Landsat, pour les fusioner, masquer et couper les images Landsat chemin par chemin  (WRS2 paths 192, 193 et 194 pour Togo). Par défaut, les images qui ont déjà été traité (`filename` existe déjà) ne sont plus traité (`overwrite=FALSE`).
 
 ```{r eval=FALSE} 
 prepare.image(in.image.dirs, ext=NULL, filename=NULL, overwrite=FALSE, log=TRUE)
 ```
 
-À la fin du script `1_prepare-images.R`, où c'est noté `# DO THE WORK ---------`, on commence avec le traitement des images. Les images prétraités sont sauveguarder dans le répétoire `input/1_images` du projet, ensemble avec des Thumbnails des chemins. Dans une prochaîne étape, les images sont néttoyées de l'eau, nuages et ombres en utilisant les bandes Landsat de qualité des pixels. Finalement également les données topographiques (SRTM) et climatiques (Worldclim v2) sont préparés.
+Dans la deuxième partie du script, là où c'est noté `# DO THE WORK ---------`, on lance le traitement des images. Avec le code `foreach(...) %dopar% { ... }` on lance le traitement de chaque chemin pour chaque année sur des différents processeurs au parallèle. À la fin du script on 
+
+- transforme les images du chemin 194 du système de coordonnées UTM 30 vers UTM 31
+- prépare les données topographiques SRTM et les données climatiques Worldclim v2
+- produit des thumbnails des images Landsat et Worldclim v2 en format JPEG (voir example au-dessous)
+
+
+Les images prétraités sont sauveguarder dans le répétoire `input/1_images` du projet, ensemble avec des Thumbnails des chemins. Dans une prochaîne étape, les images sont néttoyées de l'eau, nuages et ombres en utilisant les bandes Landsat de qualité des pixels. Finalement également les données topographiques (SRTM) et climatiques (Worldclim v2) sont préparés.
 
 #### Example {-}
 
-![Chemin 193 de l'année 2019 (composé de 4 scènes Landsat du 16 Février 2019)](images/p193_2019.jpeg)
+```{r, echo=FALSE, out.width="33%"}
+knitr::include_graphics(c("images/p194_2019.jpeg","images/p193_2019.jpeg", "images/p192_2019.jpeg"))
+``` 
+**Images Landsat de l'année 2019:** chemin p194 composé de 2 scénes du 22.01.2019 / p193 avec 4 scènes du 16.02.2019 / p192 avec 3 scènes du 23.12.2018
+
+```{r, echo=FALSE, out.width="25%", fig.show='hold', fig.align='default'}
+knitr::include_graphics(c("images/wc2.0_30s_bio_Togo-01.jpeg","images/wc2.0_30s_bio_Togo-04.jpeg", "images/wc2.0_30s_bio_Togo-12.jpeg", "images/wc2.0_30s_bio_Togo-15.jpeg"))
+``` 
+**Données bioclimatiques Worldclim v2:** température annuelle  moyenne (BIO1) / saisonalité de la température (BIO4) / précipitation annuelle (BIO12) / saisonalité de la précipitation (BIO15)
 
 #### _1_prepare-images.R_ {-}
 

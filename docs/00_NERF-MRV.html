@@ -24,7 +24,7 @@
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-03-03" />
+<meta name="date" content="2020-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -183,7 +183,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="analyses-nerfmrv" class="section level1">
 <h1><span class="header-section-number">4</span> Analyses NERF/MRV</h1>
-<p>Blah, blah, blah</p>
+<p>Le Togo a soumis son premier <strong>Niveau d’émissions de référence pour les forêts (NERF 1.0)</strong> en Janvier 2020 (<a href="TODO"><em>Lien sur le site CCNUCC</em></a>). Il est basé sur l’évolution de la couverture forestier entre 2003 – 2018 (pertes et gains des forêts à une couverture du houppier ≥ 30%) et le stockage de carbone dans la biomasse aérienne des arbres (incl. bois mort sur pied)</p>
+<p>Les données de base qu’on a utilisé pour effectuer ce travail sont:</p>
+<ul>
+<li><strong>les images Landsat de l’archive USGS (1985 – 2019)</strong> pour la la cartographie de l’évolution des surfaces forestiers et la cartographie de la biomasse</li>
+<li><strong>les données du SSTS (état 2019)</strong> sur la couverture du houppier et l’utilisation des terres pour la calibration et la validation des cartes sur l’évolution des surfaces forestier</li>
+<li><strong>les données dendrométriques du IFN-1 (2015/16)</strong> pour déterminer le stockage de carbone dans la biomasse aérienne par parcelle et la calibration des cartes de la biomasse</li>
+</ul>
+<p>Ce chapitre décrit <strong>l’approche méthodologique et les outils techniques</strong> utilisés pour établir ce NERF. C’est un travail en cours. Le même approche sera utilisés a) pour améliorer le NERF avec des nouvelles données et/ou mèthodes et b) pour mettre à jour régulièrement les analyses dans le cadre du Monitoring, reporting et vérification (MRV).</p>
+<p>Chaque section commence par une description de la méthodologie utilisée et des références aux points clés dans le script R correspondant, suivie par une présentation exemplaire des résultats de cette étappe et enfin du code R commenté.</p>
+<ul>
+<li><strong>Section <a href="01-organisation.html#NERF-organisation">4.1</a></strong> décrit les logiciels et les infrastructures utilisés ainsi que la structure de données sur laquelle les analyses sont basées.</li>
+<li><strong>Section <a href="00_preparation.html#NERF-preparation">4.2</a></strong> couvre les différentes étapes de la préparation des données, en particulier la création d’un nouveau projet basé sur un projet existant, l’acquisition de nouvelles images satellites et leur préparation pour les analyses.</li>
+<li><strong>Section <a href="00_analyse-FCC.html#NERF-analyse-FCC">4.3</a></strong> décrit les différentes étapes nécessaires pour la cartographie des surfaces forestières et leur évolution, de la séléction des parcelles d’entraînements à la classification des séries de cartes, leur néttoyage et validation.</li>
+<li><strong>Section <a href="00_analyse-AGB.html#NERF-analyse-AGB">4.4</a></strong> décrit les différentes étapes nécessaires pour la cartographie des la biomasse aérienne, de l’évaluation des données de l’IFN, à la calibration des cartes de biomasse leur néttoyage et l’analyse de l’évolution de la biomasse dans le temps.</li>
+</ul>
 
             </section>
 

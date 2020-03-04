@@ -1,57 +1,63 @@
 
-## Organisation du travail 
+## Organisation du travail {#NERF-organisation}
 
 ### Logiciel et serveur
 
-La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel [R](https://www.r-project.org), dirigé à travers [RStudio](https://rstudio.com). Les scripts R sont mis à disposition dans un [dépot GitHub](https://github.com/ogardi/NERF-Togo). Les scripts dépendent des outils GDAL disponible dans l'environnement, à installer pour les systèmes Linux avec `apt-get install python-gdal`. 
+La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel [R](https://www.r-project.org), dirigé à travers [RStudio](https://rstudio.com). Les scripts R sont mis à disposition dans un [dépot GitHub](https://github.com/ogardi/NERF-Togo). Les scripts dépendent des fois des outils GDAL disponible dans l'environnement, à installer pour les systèmes Linux avec `apt-get install python-gdal`.
 
-Le traitement et l'analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Pour le moment les analyses pour le Niveau des emissions de référence pour les forêts du Togo (NERF-Togo) sont éfféctués sur l'infrastructure informatique centrale de la BFH-HAFL. L'interface R-Studio est disponible à http://r.gro1.bfh.science.
+Le traitement et l'analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Les analyses pour le Niveau des emissions de référence pour les forêts du Togo (NERF 1.0) ont été éfféctués sur l'infrastructure informatique centrale de la BFH-HAFL (http://r.gro1.bfh.science, accès limité). Une fois la nouvelle infrastructure informatique puissante avec un serveur central au Ministère pour l'Environnement et Forêts (MERF) est  installé et disponible, les travaux peuvent être éffectués là. 
 
-### Structure des fichiers
+### Structure du répetoire
 
-Le repertoire de base `NERF_Togo` est structuré comme suivant: 
+Les outils R dépendent d'une certaine structure des fichiers. Le repertoire de base `NERF_Togo` est structuré comme suivant: 
 
 ```
 NERF_Togo
-├── data                                    # Données de base
-│   ├── GADM                                  # frontières administratives
-│   ├── IFN                                   # inventaire forestier national
-│   ├── Landsat                               # images satellitaires
-│   ├── SRTM                                  # données topographiques
-│   └── Worldclim                             # données climatiques
-└── NERF_v1                                 # Répétoire projet
+
+├── data                                    # Données de base ########################
+    ├── GADM                                  # frontières administratives
+    ├── IFN                                   # inventaire forestier national
+    ├── Landsat                               # images satellitaires
+    ├── SRTM                                  # données topographiques
+    └── Worldclim                             # données climatiques
+    
+└── NERF_v1.0                               # Répétoire projet NERF v1.0 #############
     ├── input                                 # données spécifiques du projet
-    │   ├── 1_images                            # images pre-traités                              
-    │   ├── 2_train-plots                       # données d'entraînement                       
-    │   └── 3_val-plots                         # données de validation
-    ├── src                                 # scripts
-    │   ├── 0_set-up.R                          # initialisation
-    │   ├── 1_prepare-images.R                  # préparation des images  
-    │   ├── AGB                                 # cartographie biomasse
-    │   │   ├── 2_compile-IFN.R                   # évaluer inventaire
-    │   │   ├── 3_create-AGB-maps.R               # calibration des cartes
-    │   │   ├── 4_clean-AGB-maps.R                # nettoyage des cartes
-    │   │   └── 5_analyze-AGB.R                   # analyse des cartes
-    │   └── FCC                                 # cartographie surfaces forestiers
-    │       ├── 2_create-train-points.R           # création des point d'entraînement
-    │       ├── 3_create-fc-maps.R                # calibration des cartes
-    │       ├── 4_clean-fc-maps.R                 # nettoyage des cartes
-    │       ├── 5_create-val-points.R             # création des points de validation
-    │       ├── 6_validate-fc-maps.R              # validation des cartes
-    │       ├── 7_fc-maps-accuracy.R              # analyse de la précision des cartes
-    │       └── 8_analyse-fc-maps.R               # analyse des cartes  
-    ├── output                                # résultats
-    │   ├── 1_forest-cover                      # cartes surfaces forestiers
-    │   │   ├── 1_ref-maps                        # cartes référence
-    │   │   ├── 2_raw-maps                        # cartes brutes
-    │   │   ├── 3_clean-maps                      # cartes nettoyées
-    │   │   ├── 4_validation                      # résultats validation
-    │   │   └── 5_results                         # résultats surfaces
-    │   └── 2_biomass                           # cartes biomasse
-    │       ├── 1_ref-maps                        # cartes de référence
-    │       └── 5_results                         # résultats biomasse
-    ├── report                                # rapport des résultats
-    └── manuel                                # ce manuel
+        ├── 1_images                            # images pre-traités                              
+        ├── 2_train-plots                       # données d'entraînement                       
+        └── 3_val-plots                         # données de validation
+    ├── src                                   # scripts R ----------------------------
+        ├── 0_set-up.R                          # initialisation
+        ├── 1_prepare-images.R                  # préparation des images  
+        ├── AGB                                 # cartographie biomasse
+            ├── 2_compile-IFN.R                   # évaluer inventaire
+            ├── 3_create-AGB-maps.R               # calibration des cartes
+            ├── 4_clean-AGB-maps.R                # nettoyage des cartes
+            └── 5_analyze-AGB.R                   # analyse des cartes
+        └── FCC                                 # cartographie surfaces forestiers
+            ├── 2_create-train-points.R           # création des point d'entraînement
+            ├── 3_create-fc-maps.R                # calibration des cartes
+            ├── 4_clean-fc-maps.R                 # nettoyage des cartes
+            ├── 5_create-val-points.R             # création des points de validation
+            ├── 6_validate-fc-maps.R              # validation des cartes
+            ├── 7_fc-maps-accuracy.R              # analyse de la précision des cartes
+            └── 8_analyse-fc-maps.R               # analyse des cartes  
+    ├── output                                # résultats / cartes -------------------
+        ├── 1_forest-cover                      # cartes surfaces forestiers
+            ├── 1_ref-maps                        # cartes référence
+            ├── 2_raw-maps                        # cartes brutes
+            ├── 3_clean-maps                      # cartes nettoyées
+            ├── 4_validation                      # résultats validation
+            └── 5_results                         # résultats surfaces
+        └── 2_biomass                           # cartes biomasse
+            ├── 1_ref-maps                        # cartes de référence
+            └── 5_results                         # résultats biomasse
+    ├── report                                # rapport des résultats ----------------
+    └── manuel                                # cette documentation ------------------
+    
+└── NERF_v1.x                               # Un autre répétoire projet #########
 ```
+
+La structure du répertoire est définit dans le script [0_set-up.R](#NERF-set-up.R) et peut être ajousté.
 
 C'est seulement les répétoires `src` et `manual` qui sont mis à diposition dans le dépôt [GitHub](https://github.com/ogardi/NERF-Togo). Les autres répétoires et données doivent être installés manuellement.

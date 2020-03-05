@@ -1,6 +1,6 @@
 
 ## Analyse biomasse aérienne {#NERF-analyse-AGB}
 
-Description générale de l'approche / méthodologies
+![](images/AGB-Schema.png)
 
 

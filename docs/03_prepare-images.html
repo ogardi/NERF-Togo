@@ -24,7 +24,7 @@
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-03-04" />
+<meta name="date" content="2020-03-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -185,7 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">4.2.4</span> Prétraitement des images</h3>
 <div id="description-1" class="section level4 unnumbered">
 <h4>Description</h4>
-<p>Le premier traitement est la préparation des images Landsat et autres variables utilisés pour modéliser la surface forestier ou la biomasse aérienne comme les données topographique et climatiques.</p>
+<p>Le premier traitement est la préparation des images Landsat et autres variables utilisés pour modéliser la surface forestier ou la biomasse aérienne comme les données topographique et climatiques. L’objectif est qu’on prépare avec les données brutes un jeu de données raster complet sur le même extent (territoir du Togo) et avec la même résolution spatiale de 30 mètres (résolution de base des images Landsat).</p>
 <p>On ouvre le script <code>1_prepare-images.R</code> et on modifie la liste des images Landsat à utiliser (<code>in.image.list</code>), par exemple par ajouter les nouveaux image à considérer dans les analyses:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p192<span class="fl">.2019</span> =<span class="st"> </span><span class="kw">list</span>(</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2019/LC081920542018122301T1-SC20190405164258/&quot;</span>),</a>

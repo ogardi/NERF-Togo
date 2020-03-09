@@ -1,4 +1,4 @@
 
 # Introduction
 
-Blah, blah, blah
+![](images/SNSF-Schema.png)

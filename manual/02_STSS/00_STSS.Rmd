@@ -1,4 +1,69 @@
 
 # Système de Surveillance Terrestre
 
-Blah, blah, blah
+Le Système de Surveillance Terrestre (SSTS) consiste d'un réseau de parcelles d'échantillonnage, dont la couverture et l'utilisation du sol sont régulièrement enregistrées par photo-interprétateurs sur base des images satellitaires. Les attributs enregistrés dans le SSTS sont :
+
+- Couverture des houppiers
+- Occupation des terres (forêt, terre boisée, non-forêt)
+
+## Plan d'échantillonnage
+
+
+Les parcelles d'échantillonages couvrent une surface de 30 x 30 mètres et correspondent en taille, forme et position aux pixels des images Landsat. Les parcelles d'échantillonnage ont été régulièrement réparties sur le territoire du Togo, sur une grille d'une taille de maille de 480 mètres (tous les 16 pixels Landsat) ou 4,3 parcelles d'échantillonnage par km<sup>2</sup>. Über ganz Togo ergibt das ein Netz von insgesamt 250'000 Parzellen. 
+
+Si nécessaire, la taille de maille de 480 mètres permet de réduire la largeur de grille à 679 ou 960 mètres. D'autre part, il est également possible de comprimer la maille, à 340, 240, 170, 120, 85, ... mètres.
+
+![](images/SSTS-sampling-grid.png)
+        
+La grille d'échantillonage avec une taille de maille de 480 mètres est crée avec le code suivant:
+
+```{r eval=FALSE}
+res <- 480
+
+x.min <- res * extent(TGO)@xmin %/% res
+x.max <- res * extent(TGO)@xmax %/% res
+y.min <- res * extent(TGO)@ymin %/% res
+y.max <- res * extent(TGO)@ymax %/% res
+
+
+frame.points <- SpatialPoints(expand.grid(seq(x.min, x.max, by=res), seq(y.min, y.max, by=res)), proj4string=utm.31)[TGO]
+```
+
+## Couverture des houppiers {#SSTS-couverture-houppiers}
+
+Pour détérminer la couverture des houppiers une grille de 7 x 7 points est définit à l'intérieur de chaque parcelles d'échantillonage. Pour chaque point de ce grille, les photo-interprétateurs détérminent sur base des images de très haute résolution disponible en GoogleEarth, si le point touche l'houppier d'un arbre ou non. La couverture des houppiers est en suite détérminé par le nombre des points qui tombent sur un arbre par rapport au ombre total des points (n = 49).
+
+![](images/SSTS-tree-cover.png)
+
+La grille de 7 x 7 points est crée avec le code suivant. L'attribution est fait par les photo-interprétateurs en QGIS, avec l'image GoogleEarth comme carte de base. La date de la carte de base utilisée est également enregistré. Elle est obtenu par GoogleEarth Pro (plugin QGIS `send2google_earth`).
+
+```{r eval=FALSE}
+grid.size <- 7
+res <- res(landsat.grid)[1]
+offset <- c(res/grid.size/2 + (0:(grid.size-1))*res/grid.size)
+
+# split the plots for parallel processing
+subsets <- split(train.plots, f=1:86)
+
+train.grids <- foreach(subset=subsets, .combine=rbind, .multicombine=TRUE) %dopar% { 
+  grids <- SpatialPointsDataFrame(data.frame(x = 0, y = 0), data=data.frame(PLOTID = 0, SAMPLEID = 0, GRIDPOINT = 0))[-1,]
+  for(p in 1:length(subset)) {
+    plot <- subset[p,]
+    ext <- extent(plot)
+    grids <- bind(grids, SpatialPointsDataFrame(expand.grid(ext@xmin+offset, ext@ymin+offset), data=data.frame(PLOTID = plot$PLOTID, SAMPLEID = plot$SAMPLEID, GRIDPOINT = 1:grid.size^2)))
+  }
+  grids
+}
+```
+
+## Occupation des terres {#SSTS-occupation-terres}
+
+L'occupation des terres et le changement de l'occupation des terres est déterminé sur base des images Landsat. Trois différentes catégories sont distingués:
+
+- forêt (couverture houppier ≥ 30%)
+- terre boisée (couverture houppier entre 10% et 30%)
+- non-forêt (couverture houppier < 10%)
+
+La couverture des houppiers est utilisé pour détérminer l'occupation des terres sur l'image Landsat de la date correspondate. À partir de cette référence, l'occupation des terres est détérminé pour les autres images Landsat dans la série 1987 -- 2003 -- 2015 -- 2018. La figure suivante illustre la procédure:
+
+![](images/SSTS-land-cover.png)

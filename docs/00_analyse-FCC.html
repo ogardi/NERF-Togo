@@ -24,7 +24,7 @@
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-03-05" />
+<meta name="date" content="2020-03-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,7 +133,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="00_introduction.html"><a href="00_introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
 <li class="chapter" data-level="1.1" data-path="01_arrangements.html"><a href="01_arrangements.html"><i class="fa fa-check"></i><b>1.1</b> Arrangements institutionelles</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a></li>
+<li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a><ul>
+<li class="chapter" data-level="2.1" data-path="00_STSS.html"><a href="00_STSS.html#plan-dechantillonnage"><i class="fa fa-check"></i><b>2.1</b> Plan d’échantillonnage</a></li>
+<li class="chapter" data-level="2.2" data-path="00_STSS.html"><a href="00_STSS.html#SSTS-couverture-houppiers"><i class="fa fa-check"></i><b>2.2</b> Couverture des houppiers</a></li>
+<li class="chapter" data-level="2.3" data-path="00_STSS.html"><a href="00_STSS.html#SSTS-occupation-terres"><i class="fa fa-check"></i><b>2.3</b> Occupation des terres</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="00_IFN.html"><a href="00_IFN.html"><i class="fa fa-check"></i><b>3</b> Inventaire Forestier National</a></li>
 <li class="chapter" data-level="4" data-path="00_NERF-MRV.html"><a href="00_NERF-MRV.html"><i class="fa fa-check"></i><b>4</b> Analyses NERF/MRV</a><ul>
 <li class="chapter" data-level="4.1" data-path="01-organisation.html"><a href="01-organisation.html"><i class="fa fa-check"></i><b>4.1</b> Organisation du travail</a><ul>
@@ -183,10 +187,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="NERF-analyse-FCC" class="section level2">
 <h2><span class="header-section-number">4.3</span> Analyse surfaces forestiers</h2>
-<p>L’analyse des surfaces forestiers est fait par une <strong>classification supervisée</strong>. Les données du SSTS sur la couverture des houppier est utilisé pour calibrer un modèle de classification Random Forest sur base des images satellitaires Landsat et les données climatiques Worldclim v2. Tous les parcelles d’entraînement avec une <strong>couverture des houppiers ≥ 30%</strong> sont considérées comme forêt, les autres comme non-forêts. Le schéma au-dessous montre les étapes pour la production des cartes forêt/non-forêt sur toute la période 1986 – 2019.</p>
+<p>L’analyse des surfaces forestiers est fait par une <strong>classification supervisée</strong>. Les données du SSTS sur la couverture des houppiers (Section <a href="00_STSS.html#SSTS-couverture-houppiers">2.2</a>) est utilisé pour calibrer un modèle de classification Random Forest sur base des images satellitaires Landsat et les données climatiques Worldclim v2. Tous les parcelles d’entraînement avec une <strong>couverture des houppiers ≥ 30%</strong> sont considérées comme forêt, les autres comme non-forêts.</p>
+<p>Le schéma suivant montre les étapes pour la production des cartes forêt/non-forêt sur toute la période 1986 – 2019:</p>
 <p><img src="images/FCC-Schema.png" /></p>
 <p>Vue que les données sur la couverture des houppier et seulement disponible pour les années récentes (à cause d’une disponibilité limité des images de très haute résolution), c’est seulement la carte forêt/non-forêt 2018 qui a été produit sur base des parcelles d’entraînement du SSTS. Cette <strong>carte de référence 2018 est utilisé comme base pour la calibration des modèles de classification pour les autres dates</strong> pour lesquelles des images Landsat sont disponible.</p>
 <p>Tout d’abord la carte de référence 2018 est utilisé pour calibrer la classification d’une carte forêt/non-forêt en 2003. C’est cette <strong>carte de référence 2003 qu’on a utilisé pour calibrer les autres cartes de 1986 – 2018</strong>. On a choisi de faire la classification de toute la serie des images sur la carte de référence 2003, parce que les images Landsat 2003 sont de très bonne qualité (et donc la carte est probablement aussi de bonne qualité) et parce que l’année 2003 se trouve au milieu de la période analysée. Si on prend directement la carte forêt/non-forêt 2018 comme référence pour la calibration de la série 1986 – 2018, on observe une généralisation de la surface forestier le plus on s’éloigne de la date 2018, donc un changement de la surface forestier qui est plutôt un artefact de la méthode que une changement d’occupation des terres.</p>
+<p>Dans la suite, <strong>la série des cartes forêts/non-forêts 1986 – 2018 est nettoyé par une lyssage temporelle</strong>, pixel par pixel, avec un filtre majoritaire (fenêtre coulissante d’une taille de 5). Finalement, une reforestation est seulement constaté si on a observé la forêt pour une période de 10 ans et plus.</p>
+<p><strong>Les cartes nettoyés de 2003, 2015 et 2018 sont validés avec les données SSTS</strong> sur l’occupation des terres (Section <a href="00_STSS.html#SSTS-occupation-terres">2.3</a>) et les matrices d’erreurs sont utilisées pour détérminer la précision des cartes individuelles et des différents changements d’occupation des terres, en utilisant la méthode de <a href="https://www.sciencedirect.com/science/article/abs/pii/S0034425714000704">Olofsson et al. (2014)</a></p>
 
             </section>
 

@@ -1,7 +1,7 @@
 
 ## Analyse surfaces forestiers {#NERF-analyse-FCC}
 
-L'analyse des surfaces forestiers est fait par une **classification supervisée**. Les données du SSTS sur la couverture des houppier est utilisé pour calibrer un modèle de classification Random Forest sur base des images satellitaires Landsat et les données climatiques Worldclim v2. Tous les parcelles d'entraînement avec une **couverture des houppiers ≥ 30%** sont considérées comme forêt, les autres comme non-forêts. 
+L'analyse des surfaces forestiers est fait par une **classification supervisée**. Les données du SSTS sur la couverture des houppiers (Section \@ref(SSTS-couverture-houppiers)) est utilisé pour calibrer un modèle de classification Random Forest sur base des images satellitaires Landsat et les données climatiques Worldclim v2. Tous les parcelles d'entraînement avec une **couverture des houppiers ≥ 30%** sont considérées comme forêt, les autres comme non-forêts. 
 
 Le schéma suivant montre les étapes pour la production des cartes forêt/non-forêt sur toute la période 1986 -- 2019:
 
@@ -10,6 +10,12 @@ Le schéma suivant montre les étapes pour la production des cartes forêt/non-f
 Vue que les données sur la couverture des houppier et seulement disponible pour les années récentes (à cause d'une disponibilité limité des images de très haute résolution), c'est seulement la carte forêt/non-forêt 2018 qui a été produit sur base des parcelles d'entraînement du SSTS. Cette **carte de référence 2018 est utilisé comme base pour la calibration des modèles de classification pour les autres dates** pour lesquelles des images Landsat sont disponible.
 
 Tout d'abord la carte de référence 2018 est utilisé pour calibrer la classification d'une carte forêt/non-forêt en 2003. C'est cette **carte de référence 2003 qu'on a utilisé pour calibrer les autres cartes de 1986 -- 2018**. On a choisi de faire la classification de toute la serie des images sur la carte de référence 2003, parce que les images Landsat 2003 sont de très bonne qualité (et donc la carte est probablement aussi de bonne qualité) et parce que l'année 2003 se trouve au milieu de la période analysée. Si on prend directement la carte forêt/non-forêt 2018 comme référence pour la calibration de la série 1986 -- 2018, on observe une généralisation de la surface forestier le plus on s'éloigne de la date 2018, donc un changement de la surface forestier qui est plutôt un artefact de la méthode que une changement d'occupation des terres.
+
+Dans la suite, **la série des cartes forêts/non-forêts 1986 -- 2018 est nettoyé par une lyssage temporelle**, pixel par pixel, avec un filtre majoritaire (fenêtre coulissante d'une taille de 5). Finalement, une reforestation est seulement constaté si on a observé la forêt pour une période de 10 ans et plus.
+
+**Les cartes nettoyés de 2003, 2015 et 2018 sont validés avec les données SSTS** sur l'occupation des terres (Section \@ref(SSTS-occupation-terres)) et les matrices d'erreurs sont utilisées pour détérminer la précision des cartes individuelles et des différents changements d'occupation des terres, en utilisant la méthode de [Olofsson et al. (2014)](https://www.sciencedirect.com/science/article/abs/pii/S0034425714000704)
+
+
 
 
 

@@ -1,0 +1,7 @@
+
+# Système de Surveillance Terrestre {#SSTS}
+
+Le Système de Surveillance Terrestre par Satellite (SSTS) consiste d'un réseau de parcelles d'échantillonnage, dont la **couverture et l'utilisation des terres** sont régulièrement enregistrées par photo-interprètes sur base des images satellitaires. Pour le moment, les attributs enregistrés dans le SSTS sont :
+
+* [Couverture des houppiers](#SSTS-couverture-houppiers)
+* [Occupation des terres](#SSTS-occupation-terres)

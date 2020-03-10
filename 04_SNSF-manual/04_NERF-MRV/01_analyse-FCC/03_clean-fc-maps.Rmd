@@ -1,0 +1,13 @@
+
+### Nettoyage des cartes brutes {#NRF-clean-fc-maps}
+
+#### Description {-}
+
+Description de la méthodologie / script
+
+#### _FCC/4_clean-fc-maps.R_ {-}
+
+```{r, code=readLines("../src/FCC/4_clean-fc-maps.R"), eval=FALSE}
+```
+
+

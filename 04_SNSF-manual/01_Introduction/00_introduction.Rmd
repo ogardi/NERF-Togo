@@ -1,0 +1,30 @@
+
+# Introduction
+
+L'objectif du Système National de Surveillance des Forêts (SNSF) est d'évaluer régulièrement **l'état des forêts togolaises et leur développement**. Dans le [code forestier du Togo](http://faolex.fao.org/docs/pdf/tog85011.pdf), la forêt est définie comme:
+
+> un  espace  occupant  une  superficie  de  plus  de  0,5  hectare  avec  des arbres  atteignant  une  hauteur  supérieure  à  5  mètres  et  un  couvert arboré de plus de 10 pour cent, ou avec des arbres capables d’atteindre ces seuils in situ. 
+
+Pour l'évaluation du développement des zones forestières, le SNSF distingue entre **terres forestières** avec un couvert des houppiers ≥ 30% et les **terres boisées** avec un couvert des houppiers entre 10% -- 30%.
+
+Le SNSF combine les données recueillies sur le terrain avec les données des images satellites pour fournir des informations sur lévolution du l'ensemble des forêts dans le pays. Comme illustré dans l'image au-dessous et décrit dans les sections suivantes, **le SNSF actuel consiste de trois pilliers principaux:**
+
+* Le [**Inventaire Forestier National (IFN)**](#IFN) recueille des informations détaillées sur l'état des forêts sur un nombre limité de placettes d'échantillonnage permanentes sur le terrain. 
+
+* Au moyen du [**Système de Surveillance Terrestre par Satellite (SSTS)**](#SSTS), des informations sur la couverture et l'utilisation des sols sont recueillies sur un grand nombre de parcelles d'échantillonnage à partir d'images satellites. Avec l'aide du SSTS, les informations sur l'IFN peuvent être extrapolées à l'ensemble du pays.
+
+* Le [**Niveau de Référence des Forêts (NRF) ainsi que le Monitoring, Reporting et Vérification (MRV)**](#NRF-MRV) des changements dans le réservoirs carbone forestiersest une applications du SNSF pour informer la communauté internationale sur l'engagement du Togo dans le cadre du mécanisme REDD+. Dans ce cadre, les données de la IFN sont utilisées pour déterminer le stockage du carbone dans la biomasse des arbres, tandis que les données de la SSTS sont utilisées pour déterminer le changement de la superficie forestière. Ensemble, cela se traduit par les pertes de carbone dues à la déforestation et la séquestration du carbone provenant du reboisement.
+
+![](images/SNSF-Schema.png)
+
+**En future, d'autres sources de données pourraient être intégrées au SNSF**, telles que
+
+* le carbone organique du sol (prévu à rélever dans l'IFN-2)
+* feux de brousse (base de données SANGE)
+* dégradation des forêts (utilisation des images de haute résolution Sentinel-2)
+* droits fonciers
+* plantations
+* exploitation du bois
+* ...
+
+Pour l'avenir, il est également prévu d'impliquer la population locale dans la surveillance des forêts, par exemple en signalant les activités irrégulières à l'aide d'une application pour smartphone.

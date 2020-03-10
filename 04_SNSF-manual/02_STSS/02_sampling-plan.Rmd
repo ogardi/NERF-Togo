@@ -1,0 +1,76 @@
+
+
+## Réseau d'échantillonnage
+
+Les parcelles d'échantillonages couvrent une surface de 30 x 30 mètres et **correspondent en taille, forme et position aux pixels des images Landsat**. Les parcelles d'échantillonnage ont été régulièrement réparties sur le territoire du Togo, sur une grille d'une taille de maille de 480 mètres (tous les 16 pixels Landsat) ou 4,3 parcelles d'échantillonnage par km^2^. Sur l'ensemble du territoire togolais, cela donne un réseau de 250 000 parcelles. 
+
+Si nécessaire pour autres utilisation, la taille de maille de 480 mètres permet d'enlargir la maille à 679 ou 960 mètres. D'autre part, il est également possible de comprimer la maille à 340, 240, 170, 120, 85, ... mètres.
+
+![](images/SSTS-sampling-grid.png)
+        
+La réseau d'échantillonage avec une taille de maille de 480 mètres est crée avec le code R suivant:
+
+```{r eval=FALSE}
+res <- 480
+
+x.min <- res * extent(TGO)@xmin %/% res
+x.max <- res * extent(TGO)@xmax %/% res
+y.min <- res * extent(TGO)@ymin %/% res
+y.max <- res * extent(TGO)@ymax %/% res
+
+
+frame.points <- SpatialPoints(expand.grid(seq(x.min, x.max, by=res), seq(y.min, y.max, by=res)), proj4string=utm.31)[TGO]
+```
+
+
+## Attributs enregistrés
+
+
+### Couverture des houppiers {#SSTS-couverture-houppiers}
+
+Pour détérminer la couverture des houppiers une **grille de 7 x 7 points** est définit à l'intérieur de chaque parcelles d'échantillonage. Pour chaque point de ce grille, les photo-interprètes détérminent sur base des images de très haute résolution disponible en GoogleEarth, si **le point touche l'houppier d'un arbre ou non**. La couverture des houppiers est en suite détérminé par le nombre des points qui tombent sur un arbre par rapport au ombre total des points (n = 49).
+
+![](images/SSTS-tree-cover.png)
+
+La grille de 7 x 7 points est crée avec le code suivant. L'attribution est fait par les photo-interprètes en QGIS, avec l'image GoogleEarth comme carte de base. La date d'acquistion de l'image GoogleEarth utilisé est également enregistré. Elle est obtenu par GoogleEarth Pro (plugin QGIS `send2google_earth`).
+
+```{r eval=FALSE}
+grid.size <- 7
+res <- res(landsat.grid)[1]
+offset <- c(res/grid.size/2 + (0:(grid.size-1))*res/grid.size)
+
+# split the plots for parallel processing
+subsets <- split(train.plots, f=1:86)
+
+train.grids <- foreach(subset=subsets, .combine=rbind, .multicombine=TRUE) %dopar% { 
+  grids <- SpatialPointsDataFrame(data.frame(x = 0, y = 0), data=data.frame(PLOTID = 0, SAMPLEID = 0, GRIDPOINT = 0))[-1,]
+  for(p in 1:length(subset)) {
+    plot <- subset[p,]
+    ext <- extent(plot)
+    grids <- bind(grids, SpatialPointsDataFrame(expand.grid(ext@xmin+offset, ext@ymin+offset), data=data.frame(PLOTID = plot$PLOTID, SAMPLEID = plot$SAMPLEID, GRIDPOINT = 1:grid.size^2)))
+  }
+  grids
+}
+```
+
+### Occupation des terres {#SSTS-occupation-terres}
+
+L'occupation des terres et le changement de l'occupation des terres est **déterminé sur base des images Landsat**. Trois différentes catégories sont distingués:
+
+- forêt (couverture houppier ≥ 30%)
+- terre boisée (couverture houppier entre 10% et 30%)
+- non-forêt (couverture houppier < 10%)
+
+**La couverture des houppiers est utilisé pour détérminer l'occupation des terres sur l'image Landsat de la date correspondate.** À partir de cette référence, l'occupation des terres est détérminé pour les autres dates de référence 1987 -- 2003 -- 2015 -- 2018. La figure suivante illustre la procédure:
+
+![](images/SSTS-land-cover.png)
+
+## Mise en oeuvre du SSTS
+
+Actuellement, les parcelles d'échantillonnage du SSTS ainsi que la grille de points pour déterminer la couverture des houppiers sont stockées sous forme des fichiers Shapefile. L'acquisition des attributs est effectuée par les photo-interprètes à l'aide d'un formulaire défini dans un projet QGIS.
+
+![](images/SSTS-qgis-form.png)
+
+Un SSTS basé sur des fichiers limite la complexité de la structure des données (par exemple, l'enregistrement récurrent des mêmes parcelles sur des images de différentes années) ainsi que le travail parallèle de différents photo-interprètes sur les mêmes données. Actuellement, des travaux sont en cours pour transférer le SSTS vers une base de données géographiques (PostGIS) sur un serveur central au Ministère de l'Environnement et des Ressources Forestières (MERF) et pour définir un formulaire QGIS qui permet à plusieurs personnes de travailler simultanément sur les données.
+
+

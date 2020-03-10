@@ -1,4 +1,0 @@
-
-## Préparation des données {#NERF-preparation}
-
-Blah, blah, blah ...

@@ -1,4 +1,0 @@
-
-# Introduction
-
-![](images/SNSF-Schema.png)

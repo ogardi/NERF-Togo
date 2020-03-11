@@ -135,18 +135,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1" data-path="01_arrangements.html"><a href="01_arrangements.html"><i class="fa fa-check"></i><b>1.1</b> Arrangements institutionelles</a></li>
 <li class="chapter" data-level="1.2" data-path="02_organisation.html"><a href="02_organisation.html"><i class="fa fa-check"></i><b>1.2</b> Organisation du travail</a><ul>
 <li class="chapter" data-level="1.2.1" data-path="02_organisation.html"><a href="02_organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>1.2.1</b> Logiciel et serveur</a></li>
-<li class="chapter" data-level="1.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-répértoire"><i class="fa fa-check"></i><b>1.2.2</b> Structure du répértoire</a></li>
-<li class="chapter" data-level="1.2.3" data-path="02_organisation.html"><a href="02_organisation.html#création-dun-nouveau-projet"><i class="fa fa-check"></i><b>1.2.3</b> Création d’un nouveau projet</a></li>
+<li class="chapter" data-level="1.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-repertoire"><i class="fa fa-check"></i><b>1.2.2</b> Structure du répértoire</a></li>
+<li class="chapter" data-level="1.2.3" data-path="02_organisation.html"><a href="02_organisation.html#creation-dun-nouveau-projet"><i class="fa fa-check"></i><b>1.2.3</b> Création d’un nouveau projet</a></li>
 <li class="chapter" data-level="1.2.4" data-path="02_organisation.html"><a href="02_organisation.html#NRF-set-up.R"><i class="fa fa-check"></i><b>1.2.4</b> Définition des variables</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a><ul>
 <li class="chapter" data-level="2.1" data-path="01_data.html"><a href="01_data.html"><i class="fa fa-check"></i><b>2.1</b> Images satellitaires</a><ul>
 <li class="chapter" data-level="2.1.1" data-path="01_data.html"><a href="01_data.html#acquisition-des-images"><i class="fa fa-check"></i><b>2.1.1</b> Acquisition des images</a></li>
-<li class="chapter" data-level="2.1.2" data-path="01_data.html"><a href="01_data.html#prétraitement-des-images"><i class="fa fa-check"></i><b>2.1.2</b> Prétraitement des images</a></li>
+<li class="chapter" data-level="2.1.2" data-path="01_data.html"><a href="01_data.html#pretraitement-des-images"><i class="fa fa-check"></i><b>2.1.2</b> Prétraitement des images</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html"><i class="fa fa-check"></i><b>2.2</b> Réseau d’échantillonnage</a></li>
-<li class="chapter" data-level="2.3" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#attributs-enregistrés"><i class="fa fa-check"></i><b>2.3</b> Attributs enregistrés</a><ul>
+<li class="chapter" data-level="2.3" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#attributs-enregistres"><i class="fa fa-check"></i><b>2.3</b> Attributs enregistrés</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-couverture-houppiers"><i class="fa fa-check"></i><b>2.3.1</b> Couverture des houppiers</a></li>
 <li class="chapter" data-level="2.3.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-occupation-terres"><i class="fa fa-check"></i><b>2.3.2</b> Occupation des terres</a></li>
 </ul></li>
@@ -197,7 +197,7 @@ Système Nationale de Surveillance des Forêts</div></a>
 <p>La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel <a href="https://www.r-project.org">R</a>, dirigé à travers <a href="https://rstudio.com">RStudio</a>. Les scripts R sont mis à disposition dans un <a href="https://github.com/ogardi/NERF-Togo">dépot GitHub</a>. Les scripts dépendent des fois des outils GDAL disponible dans l’environnement, à installer pour les systèmes Linux avec <code>apt-get install python-gdal</code>.</p>
 <p>Le traitement et l’analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Les analyses pour le Niveau des emissions de référence pour les forêts du Togo (NERF 1.0) ont été éfféctués sur l’infrastructure informatique centrale de la BFH-HAFL (<a href="http://r.gro1.bfh.science" class="uri">http://r.gro1.bfh.science</a>, accès limité). Une fois la nouvelle infrastructure informatique puissante avec un serveur central au Ministère pour l’Environnement et Forêts (MERF) est installé et disponible, les travaux peuvent être éffectués là.</p>
 </div>
-<div id="structure-du-répértoire" class="section level3">
+<div id="structure-du-repertoire" class="section level3">
 <h3><span class="header-section-number">1.2.2</span> Structure du répértoire</h3>
 <p>Les outils R dépendent d’une certaine structure des fichiers. Le répértoire de base <code>SNSF_Togo</code> est structuré comme suivant:</p>
 <pre><code>SNSF_Togo
@@ -314,7 +314,7 @@ NRF_Togo
 <p>La structure du répertoire est définit dans le script <a href="02_organisation.html#NRF-set-up.R">0_set-up.R</a> et peut être ajousté.</p>
 <p>C’est seulement les répétoires <code>src</code> et <code>manual</code> qui sont mis à diposition dans le dépôt <a href="https://github.com/ogardi/NERF-Togo">GitHub</a>. Les autres répétoires et données doivent être installés manuellement.</p>
 </div>
-<div id="création-dun-nouveau-projet" class="section level3">
+<div id="creation-dun-nouveau-projet" class="section level3">
 <h3><span class="header-section-number">1.2.3</span> Création d’un nouveau projet</h3>
 <p>Pour la création d’un nouveau projet, le plus simple est de copier un projet existant, normalement le projet sur lequel on aimeriait continuer le travail. On peut faire ça à travers RStudio, SFTP ou directement sur le server par exemple <code>cp -r 2019_NERF_v1 2020_MNV_v0</code>. Après on efface les résultat de l’ancien projet <code>rm -r 2020_MNV_v0/output/*</code>. Les rapports on peut laisser, mais il faut les rédiger à la fin.</p>
 </div>

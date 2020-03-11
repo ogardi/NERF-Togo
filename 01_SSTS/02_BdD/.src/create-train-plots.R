@@ -6,7 +6,7 @@
 # 11 March 2020
 
 
-OUT.DIR <- paste0(DIR.SST.BDD, "02_train-plots/empty")
+OUT.DIR <- paste0(DIR.SST.BDD, "/02_train-plots/empty")
 if(!dir.exists(OUT.DIR)) dir.create(OUT.DIR, recursive=TRUE)
 
 

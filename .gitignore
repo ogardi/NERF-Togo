@@ -2,8 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-input
-output
-report
 *.Rproj
 **/.DS_Store

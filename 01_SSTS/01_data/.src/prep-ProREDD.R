@@ -7,6 +7,7 @@
 
 IN.DIR  <- paste0(DIR.RAW.DAT, "/RapidEye/shapefiles")
 OUT.DIR <- paste0(DIR.SST.DAT, "/ProREDD")
+if(!dir.exists(OUT.DIR)) dir.create(OUT.DIR)
 
 # Rasterize RapidEye map
 

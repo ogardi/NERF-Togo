@@ -8,6 +8,7 @@
 
 IN.DIR  <- paste0(DIR.RAW.DAT, "/SRTM")
 OUT.DIR <- paste0(DIR.SST.DAT, "/SRTM")
+if(!dir.exists(OUT.DIR)) dir.create(OUT.DIR)
 
 
 # Prepare SRTM DEM ----------------------------

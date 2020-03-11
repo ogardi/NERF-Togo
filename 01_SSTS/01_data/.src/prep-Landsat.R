@@ -7,6 +7,7 @@
 
 IN.DIR  <- paste0(DIR.RAW.DAT, "/Landsat")
 OUT.DIR <- paste0(DIR.SST.DAT, "/Landsat")
+if(!dir.exists(OUT.DIR)) dir.create(OUT.DIR)
 
 # load WRS scenes
 WRS     <- readOGR(paste0(IN.DIR, "/WRS2/WRS2_descending.shp"))

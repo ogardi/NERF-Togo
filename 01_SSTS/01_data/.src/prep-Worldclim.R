@@ -8,6 +8,7 @@
 
 IN.DIR  <- paste0(DIR.RAW.DAT, "/Worldclim")
 OUT.DIR <- paste0(DIR.SST.DAT, "/Worldclim")
+if(!dir.exists(OUT.DIR)) dir.create(OUT.DIR)
 
 
 # Prepare Worldclim v2 Data ----------------------------

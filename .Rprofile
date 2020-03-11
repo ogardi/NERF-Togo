@@ -22,6 +22,7 @@ library("doParallel")
 library("gdalUtils")
 library("stringr")
 library("maptools")     # kmlPolygon
+library("spsurvey")
 
 .snsf = new.env()
 
@@ -40,8 +41,8 @@ library("maptools")     # kmlPolygon
 .snsf$DIR.MRV       <- "./03_NRF-MRV"
 
 .snsf$DIR.SST.DAT   <- paste0(.snsf$DIR.SST, "/01_data")
-.snsf$DIR.SST.BDD   <- paste0(.snsf$DIR.SST, "02_BdD")
-.snsf$DIR.IFN.DAT   <- paste0(.snsf$DIR.IFN, "01_field-data")
+.snsf$DIR.SST.BDD   <- paste0(.snsf$DIR.SST, "/02_BdD")
+.snsf$DIR.IFN.DAT   <- paste0(.snsf$DIR.IFN, "/01_field-data")
 
 # CRS, AOI, Extents -------------------
 .snsf$UTM.30 <- crs("+proj=utm +zone=30 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")

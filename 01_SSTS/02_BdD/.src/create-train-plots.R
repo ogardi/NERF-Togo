@@ -1,51 +1,28 @@
 ##################################################################################
-# NERF_Togo/FCC/2_create-train-points.R: create a set of tree cover training plots
+# SSTS/BdD/create-train-plots.R: create a set of training plots
 # --------------------------------------------------------------------------------
 # Bern University of Applied Sciences
 # Oliver Gardi, <oliver.gardi@bfh.ch>
-# 20 May 2019
-
-library("spsurvey")
-
-TRNPTS <- c(paste0(TRNPTS.DIR, "/1_trn10k-s10ndvi_rev/2_assessed"),
-            paste0(TRNPTS.DIR, "/2_trn05k-prob040-060/2_assessed"),
-            paste0(TRNPTS.DIR, "/3_trn1k-prob040-060/2_assessed"))
-
-# Create a grid of observation points over whole Togo, based on Landsat images (30 x 30m) each 480 m -------------------
-
-res <- 480
-
-x.min <- res * extent(TGO)@xmin %/% res
-x.max <- res * extent(TGO)@xmax %/% res
-y.min <- res * extent(TGO)@ymin %/% res
-y.max <- res * extent(TGO)@ymax %/% res
+# 11 March 2020
 
 
-frame.points <- SpatialPoints(expand.grid(seq(x.min, x.max, by=res), seq(y.min, y.max, by=res)), proj4string=utm.31)[TGO]
-# add attributes
-frame.points$PLOTID  <- paste0(str_pad(frame.points@coords[,1], 7, "left", "0"), "_", str_pad(frame.points@coords[,2], 7, "left", "0"))
-frame.points$xcoords <- frame.points@coords[,1]
-frame.points$ycoords <- frame.points@coords[,2]
+OUT.DIR <- paste0(DIR.SST.BDD, "/02_train-plots/empty")
+if(!dir.exists(OUT.DIR)) dir.create(OUT.DIR, recursive=TRUE)
 
-# load 2018 NDVI and mask with water, clouds and shadow 
-ndvi.p192 <- mask(raster(paste0(OUTPUT.DIR, "/1_images/p192/p192_2018.tif"), band=12),
-                  raster(paste0(OUTPUT.DIR, "/1_images/p192/p192_2018_qaLC08.tif")) %in% c(qa.cloud, qa.shadow, qa.water, qa.ice),
-                  maskvalue=TRUE)
-ndvi.p193 <- mask(raster(paste0(OUTPUT.DIR, "/1_images/p193/p193_2018.tif"), band=12),
-                  raster(paste0(OUTPUT.DIR, "/1_images/p193/p193_2018_qaLC08.tif")) %in% c(qa.cloud, qa.shadow, qa.water, qa.ice),
-                  maskvalue=TRUE)
-ndvi.p194 <- mask(raster(paste0(OUTPUT.DIR, "/1_images/p194/p194_2018.tif"), band=12),
-                  raster(paste0(OUTPUT.DIR, "/1_images/p194/p194_2018_qaLC08.tif")) %in% c(qa.cloud, qa.shadow, qa.water, qa.ice),
-                  maskvalue=TRUE)
-ndvi <- merge(ndvi.p192, ndvi.p193, ndvi.p194)
 
-rm(ndvi.p192, ndvi.p193, ndvi.p194)
+# load SSTS sampling grid
+frame.points <- readOGR(paste0(DIR.SST.BDD, "/01_reseau-SSTS/TGO_frame_480m.shp"))
+
+
+# load masked 2018 NDVI 
+ndvi <- merge(raster(paste0(DIR.SST.DAT, "/Landsat/p192/p192_2018_m.tif"), band=12), 
+              raster(paste0(DIR.SST.DAT, "/Landsat/p193/p193_2018_m.tif"), band=12),
+              raster(paste0(DIR.SST.DAT, "/Landsat/p194/p194_2018_m.tif"), band=12))
+  
 
 # read sampling frame and add NDVI for each plot
 frame.points$ndvi   <- raster::extract(ndvi, frame.points)
 frame.points$ndvi_c <- cut(frame.points$ndvi, 10, labels=paste0("s", 0:9))
-
-writeOGR(frame.points, dsn=paste0(INPUT.DIR, "/Train-Val/201908"), layer="TGO_frame_480m", driver="ESRI Shapefile", overwrite=TRUE)
 
 
 
@@ -101,9 +78,10 @@ train.plots$ccov                            <- as.character(NA)
 train.plots$img_src <- train.plots$img_date <- as.character(NA)
 train.plots$author  <- train.plots$mod_date <- as.character(NA)
 
-# # write plots as Shapefile and KML
-writeOGR(train.plots, dsn=paste0(INPUT.DIR, "/Train-Val/201908/trn10k-s10ndvi/empty"), layer="COV_parcelles", driver="ESRI Shapefile", overwrite=TRUE)
-writeKML(train.plots, kmlname="COV_parcelles", filename=paste0(INPUT.DIR, "/Train-Val/201908/trn10k-s10ndvi/empty/COV_parcelles.kml"))
+# write plots as Shapefile and KML
+writeOGR(train.plots, dsn=OUT.DIR, layer="COV_parcelles", driver="ESRI Shapefile", overwrite=TRUE)
+writeKML(train.plots, kmlname="COV_parcelles", filename=paste0(OUT.DIR, "/COV_parcelles.kml"))
+
 
 # Create 7x7 sample grid ------------------------------------
 
@@ -112,8 +90,8 @@ res <- res(landsat.grid)[1]
 offset <- c(res/grid.size/2 + (0:(grid.size-1))*res/grid.size)
 
 # split the plots for parallel processing
-subsets <- split(train.plots, f=1:86)
-
+subsets <- split(train.plots, f=1:(CORES-1))
+registerDoParallel(CORES-1)
 train.grids <- foreach(subset=subsets, .combine=rbind, .multicombine=TRUE) %dopar% { 
   grids <- SpatialPointsDataFrame(data.frame(x = 0, y = 0), data=data.frame(PLOTID = 0, SAMPLEID = 0, GRIDPOINT = 0))[-1,]
   for(p in 1:length(subset)) {
@@ -127,85 +105,19 @@ train.grids <- foreach(subset=subsets, .combine=rbind, .multicombine=TRUE) %dopa
 proj4string(train.grids) <- proj4string(train.plots)
 train.grids$tree <- as.integer(NA) # 1 or 0
 
-writeOGR(train.grids, dsn=paste0(INPUT.DIR, "/Train-Val/201908/trn10k-s10ndvi/empty"), layer="COV_parcelles_grid", driver="ESRI Shapefile", overwrite=TRUE)
+writeOGR(train.grids, dsn=OUT.DIR, layer="COV_parcelles_grid", driver="ESRI Shapefile", overwrite=TRUE)
 
 
 # Divide into 10 subsets and export --------------------
 
 subsets <- split(train.plots, f=1:10)
 for(i in 1:length(subsets)) {
-  writeOGR(subsets[[i]], dsn=paste0(INPUT.DIR, "/Train-Val/201908/trn10k-s10ndvi/empty"), layer=paste0("COV_parcelles_", i), driver="ESRI Shapefile", overwrite=TRUE)
-  writeKML(subsets[[i]], kmlname=paste0("COV_parcelles_", i) , filename=paste0(INPUT.DIR, "/Train-Val/201908/trn10k-s10ndvi/empty/COV_parcelles_", i, ".kml"))
+  writeOGR(subsets[[i]], dsn=OUT.DIR, layer=paste0("COV_parcelles_", i), driver="ESRI Shapefile", overwrite=TRUE)
+  writeKML(subsets[[i]], kmlname=paste0("COV_parcelles_", i) , filename=paste0(OUT.DIR, "/COV_parcelles_", i, ".kml"))
   subset.grids <- train.grids[train.grids$PLOTID %in% subsets[[i]]$PLOTID,]
-  writeOGR(subset.grids, dsn=paste0(INPUT.DIR, "/Train-Val/201908/trn10k-s10ndvi/empty"), layer=paste0("COV_parcelles_", i, "_grid"), driver="ESRI Shapefile", overwrite=TRUE)
+  writeOGR(subset.grids, dsn=OUT.DIR, layer=paste0("COV_parcelles_", i, "_grid"), driver="ESRI Shapefile", overwrite=TRUE)
 }
 
-
-
-
-# read and merge assessed training-plots ------------------------
-
-subsets <- dir(TRNPTS, pattern="[[:digit:]]\\.shp$", recursive=TRUE, full.names=TRUE)
-train.plots.in <- lapply(subsets, readOGR)
-
-names(train.plots.in) <- list.dirs(TRNPTS, recursive=FALSE)
-
-for(i in 1:length(train.plots.in)) {
-  train.plots.in[[i]]$author <- as.character(train.plots.in[[i]]$author)
-  train.plots.in[[i]]$author[!is.na(train.plots.in[[i]]$author)] <- names(train.plots.in[i])
-  train.plots.in[[i]] <- train.plots.in[[i]][, c("PLOTID", "SAMPLEID", "xcoords", "ycoords", "ccov", "img_date", "img_src", "mod_date", "author")]
-  proj4string(train.plots.in[[i]]) <- utm.31
-}
-
-train.plots.in <- do.call(rbind, train.plots.in)
-
-
-
-subsets.grids <- dir(TRNPTS, pattern=".*[[:digit:]]+_grid\\.shp$", recursive=TRUE, full.names=TRUE)
-train.grids.in <- lapply(subsets.grids, readOGR)
-
-for(i in 1:length(train.grids.in)) {
-    proj4string(train.grids.in[[i]]) <- utm.31
-}
-
-train.grids.in <- do.call(rbind, train.grids.in)
-
-# recalculate crown-cover and merge
-train.plots.in <- train.plots.in[, names(train.plots.in) != "ccov"]
-tmp <- aggregate(list(ccov=train.grids.in$tree), by=list(PLOTID=train.grids.in$PLOTID), FUN=function(x) sum(!is.na(x) & x==1)/sum(!is.na(x)))
-tmp$ccov[is.nan(tmp$ccov)] <- NA
-train.plots.in <- merge(train.plots.in, tmp, by="PLOTID")
-
-# clean training plot data ---------------------
-
-# remove plots without ccov
-train.plots.in <- train.plots.in[!is.na(train.plots.in$ccov),]
-
-# remove plots with strange dates
-year <- as.numeric(sub("-.*$", "", as.character(train.plots.in$img_date)))
-train.plots.in <- train.plots.in[!is.na(year) & year >= 2000 & year <= 2019, ]
-
-# clean grid accordingly
-train.grids.in <- train.grids.in[train.grids.in$PLOTID %in% unique(train.plots.in$PLOTID), ]
-
-# Write clean training plots -----------------
-writeOGR(train.plots.in, dsn=TRNPTS.DIR, layer="COV_parcelles", driver="ESRI Shapefile", overwrite=TRUE)
-writeOGR(train.grids.in, dsn=TRNPTS.DIR, layer="COV_parcelles_grid", driver="ESRI Shapefile", overwrite=TRUE)
-
-dir.create(paste0(TRNPTS.DIR, "/descr"), showWarnings = FALSE)
-
-# Write some descriptive information
-pdf(paste0(TRNPTS.DIR, "/descr/hist-years.pdf"))
-hist(as.numeric(sub("-.*$", "", as.character(train.plots.in$img_date))), breaks=2000:2019)
-dev.off()
-
-pdf(paste0(TRNPTS.DIR, "/descr/hist-ccov.pdf"))
-hist(train.plots.in$ccov)
-dev.off()
-
-sink(paste0(INPUT.DIR, "/Train-Val/201908/trn10k-s10ndvi/descr/author-stats.txt"), split=TRUE)
-table(train.plots.in$author)
-sink()
 
 
 # # Create additional 500 traininplots for regions of ambiquity (for Ayele) ------------------------
@@ -314,19 +226,3 @@ sink()
 # amb.grids$tree <- as.integer(NA) # 1 or 0
 # 
 # writeOGR(amb.grids, dsn=paste0(REFMAPS.DIR, "/3_trn1k-prob040-060/1_empty"), layer="COV_parcelles_add2_grid", driver="ESRI Shapefile", overwrite=TRUE)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

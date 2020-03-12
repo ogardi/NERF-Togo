@@ -1,8 +1,28 @@
+# Système nationale de surveillance des forêts (SNSF)
 
 ## Arrangements institutionelles
 
 L'arrangement institutionnel propose pour le système national de suivi des forêts se presente comme ci-dessous. 
 
-.	Le Ministère de l'Environnement, du Developpement Durable et de la Protection de la Nature (MEDDPN) &agrave travers la direction de l'environnement (DE) est chargee de la soumission des rapports (Communication Nationale et rapports biennaux) a la Convention cadre des nations unies sur le changement climatique
+*	Le Ministère de l'Environnement, du Developpement Durable et de la Protection de la Nature (MEDDPN) &agrave travers la direction de l'environnement (DE) est chargee de la soumission des rapports (Communication Nationale et rapports biennaux) a la Convention cadre des nations unies sur le changement climatique
 
-le minstere de lenvironnemnt 
+*	La cellule MRV de la Coordination nationale REDD+ situee a l'ODEF est responsable de la coordination de toutes les institutions et organisations impliquees dans l'alimentation du syst?me MRV. Cette cellule est l'entit? cl? charg? de faciliter et de soutenir les communications sur NRF/NERF du Togo. 
+
+*	Le Groupe de travail (GT) NERF/MRV et l'?quipe nationale de suivi des for?ts sont charg?s du travail et des d?cisions et choix techniques sur les donn?es, r?sultats et m?thodologie adopt?s pour le NRF/MRV. C'est la cheville ouvri?re de la cellule MRV. Elles sont constitu?es des cadres des institutions qui interviennent dans le syst?me national de suivi des for?ts (SNSF).
+
+*	La Direction de l'Environnement (DE) se charge des inventaires de gaz ? effet de serre (I-GES) de tous les secteurs mais assure la coh?rence des donn?es d'I-GES du secteur Agriculture, foresterie et autres affectations des terres (AFAT) avec les rapports qui seront soumis ? la CCNUCC. La DE se chargera d'assurer la coh?rence entre la m?thodologie utilis?e dans le cadre du NRF avec les donn?es d'I-GES du secteur AFAT.
+
+*	L'Unit? de gestion de bases de donn?es cartographiques (UGBDC) de la Direction des ?tudes et de la planification (DEP), charg?e de la gestion de la cartographie des domaines forestiers du Togo ainsi que la Division cartographie et T?l?d?tection (DCT) de l'Officie de d?veloppement et d'exploitation des for?ts (ODEF) charg?e de la cartographie des for?ts class?es et plantations ?tatique se chargeront de produire les donn?es d'activit?s ? travers le syst?me de suivi des terres par satellite (SSTS).
+
+*	La Ccellule de gestion de la base des donn?es des ressources foresti?res et des r?sultats de l'inventaire forestier national (CBDR-IFN) de la Direction des ressources foresti?res (DRF) et la Division cartographie et t?l?d?tection (DCT) de l'ODEF sont charg? de produire les facteurs d'?mission ? travers les inventaires forestier nationaux et les inventaires des plantations.
+
+*	L'Agence nationale de gestion de l'environnement (ANGE) est charg?e de fournir les donn?es sur les feux de v?g?tation, 
+
+*	la Direction g?n?rale de l'?nergie du minist?re des mines et ?nergie DGE/MME se chargera de fournir les donn?es sur la consommation en bois ?nergie, 
+
+*	la Direction de la Statistique agricole de l'Informatique et de la Documentation (DCID) et l'Institut Togolais de Recherche Agronomique (ITRA) produiront des donn?es sur l'agriculture (superficie emblav?es et le cheptel), 
+
+*	les donn?es de recherche des universit?s du Togo alimenteront le m?canisme MRV ainsi que le NRF 
+
+*	L'Institut national de la statistique et des ?tudes ?conomiques et d?mographiques (INSEED) donnera des compl?ments d'informations sur la d?mographie et autres. 
+L'assurance qualit? et le contr?le qualit? se fera ? travers l'?valuation ind?pendante interne du Laboratoire de biologie et ?cologie v?g?tale (LBEV) et le Laboratoire de recherche foresti?re (LRF) de l'universit? de Lom? (LBEV/UL) ainsi que la Direction g?n?rale de la cartographie (DGC). Les laboratoires universitaires LRF et LBEV ?valueront les m?thodes et nouveaux donn?es au fur et ? mesure qu'ils seront g?n?r?s.

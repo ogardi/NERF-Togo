@@ -146,5 +146,5 @@ Avant l'exécution du script, les variables sont ajustées si nécessaire, notam
 
 #### *0_set-up.R* {-}
 
-```{r, code=readLines("../src/0_set-up.R"), eval=FALSE}
+```{r, code=readLines("../.Rprofile"), eval=FALSE}
 ```

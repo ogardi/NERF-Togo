@@ -118,6 +118,6 @@ knitr::include_graphics(c("images/wc2.0_30s_bio_Togo-01.jpeg","images/wc2.0_30s_
 
 #### _1_prepare-images.R_ {-}
 
-```{r, code=readLines("../src/1_prepare-images.R"), eval=FALSE}
+```{r, code=readLines("../01_SSTS/01_data/_src/prep-Landsat.R"), eval=FALSE}
 ```
 

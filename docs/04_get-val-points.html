@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5.1.4 Parcelles de validation | _main.utf8</title>
+  <meta name="description" content="République Togolaise —<br />
+Système Nationale de Surveillance des Forêts</div>" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5.1.4 Parcelles de validation | _main.utf8" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
+  <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
+  
+  <meta name="github-repo" content="ogardi/NERF-Togo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5.1.4 Parcelles de validation | _main.utf8" />
+  
+  
+  <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
+
+<meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
+
+
+<meta name="date" content="2020-03-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="03_clean-FC-maps.html"/>
+<link rel="next" href="05_validate-FC-maps.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://github.com/ogardi/NERF-Togo"><b>SNSF Togo</b><br>v 1.0 / en développement</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Préface</a></li>
+<li class="chapter" data-level="1" data-path="00_introduction.html"><a href="00_introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="01_arrangements.html"><a href="01_arrangements.html"><i class="fa fa-check"></i><b>2</b> Système nationale de surveillance des forêts (SNSF)</a><ul>
+<li class="chapter" data-level="2.1" data-path="01_arrangements.html"><a href="01_arrangements.html#arrangements-institutionelles"><i class="fa fa-check"></i><b>2.1</b> Arrangements institutionelles</a></li>
+<li class="chapter" data-level="2.2" data-path="02_organisation.html"><a href="02_organisation.html"><i class="fa fa-check"></i><b>2.2</b> Organisation du travail</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="02_organisation.html"><a href="02_organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>2.2.1</b> Logiciel et serveur</a></li>
+<li class="chapter" data-level="2.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-repertoire"><i class="fa fa-check"></i><b>2.2.2</b> Structure du répértoire</a></li>
+<li class="chapter" data-level="2.2.3" data-path="02_organisation.html"><a href="02_organisation.html#creation-dun-nouveau-projet"><i class="fa fa-check"></i><b>2.2.3</b> Création d’un nouveau projet</a></li>
+<li class="chapter" data-level="2.2.4" data-path="02_organisation.html"><a href="02_organisation.html#NRF-set-up.R"><i class="fa fa-check"></i><b>2.2.4</b> Définition des variables</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>3</b> Système de Surveillance Terrestre</a><ul>
+<li class="chapter" data-level="3.1" data-path="01_data.html"><a href="01_data.html"><i class="fa fa-check"></i><b>3.1</b> Images satellitaires</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="01_data.html"><a href="01_data.html#acquisition-des-images"><i class="fa fa-check"></i><b>3.1.1</b> Acquisition des images</a></li>
+<li class="chapter" data-level="3.1.2" data-path="01_data.html"><a href="01_data.html#pretraitement-des-images"><i class="fa fa-check"></i><b>3.1.2</b> Prétraitement des images</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html"><i class="fa fa-check"></i><b>3.2</b> Réseau d’échantillonnage</a></li>
+<li class="chapter" data-level="3.3" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#attributs-enregistres"><i class="fa fa-check"></i><b>3.3</b> Attributs enregistrés</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-couverture-houppiers"><i class="fa fa-check"></i><b>3.3.1</b> Couverture des houppiers</a></li>
+<li class="chapter" data-level="3.3.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-occupation-terres"><i class="fa fa-check"></i><b>3.3.2</b> Occupation des terres</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#mise-en-oeuvre-du-ssts"><i class="fa fa-check"></i><b>3.4</b> Mise en oeuvre du SSTS</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="00_IFN.html"><a href="00_IFN.html"><i class="fa fa-check"></i><b>4</b> Inventaire Forestier National</a></li>
+<li class="chapter" data-level="5" data-path="00_NERF-MRV.html"><a href="00_NERF-MRV.html"><i class="fa fa-check"></i><b>5</b> Analyses NRF/MRV</a><ul>
+<li class="chapter" data-level="5.1" data-path="00_analyse-FCC.html"><a href="00_analyse-FCC.html"><i class="fa fa-check"></i><b>5.1</b> Analyse surfaces forestiers</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="01_get-train-points.html"><a href="01_get-train-points.html"><i class="fa fa-check"></i><b>5.1.1</b> Parcelles d’entraînement</a></li>
+<li class="chapter" data-level="5.1.2" data-path="02_create-FC-maps.html"><a href="02_create-FC-maps.html"><i class="fa fa-check"></i><b>5.1.2</b> Calibration et classification</a></li>
+<li class="chapter" data-level="5.1.3" data-path="03_clean-FC-maps.html"><a href="03_clean-FC-maps.html"><i class="fa fa-check"></i><b>5.1.3</b> Nettoyage des cartes brutes</a></li>
+<li class="chapter" data-level="5.1.4" data-path="04_get-val-points.html"><a href="04_get-val-points.html"><i class="fa fa-check"></i><b>5.1.4</b> Parcelles de validation</a></li>
+<li class="chapter" data-level="5.1.5" data-path="05_validate-FC-maps.html"><a href="05_validate-FC-maps.html"><i class="fa fa-check"></i><b>5.1.5</b> Validation des cartes</a></li>
+<li class="chapter" data-level="5.1.6" data-path="06_FC-maps-accuracy.html"><a href="06_FC-maps-accuracy.html"><i class="fa fa-check"></i><b>5.1.6</b> Analyse de la précision</a></li>
+<li class="chapter" data-level="5.1.7" data-path="07_analyse-FC-maps.html"><a href="07_analyse-FC-maps.html"><i class="fa fa-check"></i><b>5.1.7</b> Production des résultats</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="00_analyse-AGB.html"><a href="00_analyse-AGB.html"><i class="fa fa-check"></i><b>5.2</b> Analyse biomasse aérienne</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="01_compile-IFN.html"><a href="01_compile-IFN.html"><i class="fa fa-check"></i><b>5.2.1</b> Analyse des données IFN</a></li>
+<li class="chapter" data-level="5.2.2" data-path="02_create-AGB-maps.html"><a href="02_create-AGB-maps.html"><i class="fa fa-check"></i><b>5.2.2</b> Calibration et prédiction</a></li>
+<li class="chapter" data-level="5.2.3" data-path="03_clean-AGB-maps.html"><a href="03_clean-AGB-maps.html"><i class="fa fa-check"></i><b>5.2.3</b> Nettoyage des cartes brutes</a></li>
+<li class="chapter" data-level="5.2.4" data-path="04_analyze-AGB-maps.html"><a href="04_analyze-AGB-maps.html"><i class="fa fa-check"></i><b>5.2.4</b> Production des résultats</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown">Fièrement publié avec bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><div class="line-block">République Togolaise —<br />
+Système Nationale de Surveillance des Forêts</div></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="parcelles-de-validation" class="section level3">
+<h3><span class="header-section-number">5.1.4</span> Parcelles de validation</h3>
+<div id="description-5" class="section level4 unnumbered">
+<h4>Description</h4>
+<p>Description de la méthodologie / script</p>
+</div>
+<div id="fcc5_create-val-points.r" class="section level4 unnumbered">
+<h4><em>FCC/5_create-val-points.R</em></h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">##########################################################################</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># NERF_Togo/FCC/5_create-val-points.R: validate clean forest cover maps</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co"># 20 May 2019</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co"># merge the 1987, 2003, 2015 and 2018 maps</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">maps.p192 &lt;-<span class="st"> </span><span class="kw">do.call</span>(stack, <span class="kw">lapply</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/2_forest-maps/TGO/2_raw-maps/p192&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)[<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">12</span>)], raster))</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">maps.p193 &lt;-<span class="st"> </span><span class="kw">do.call</span>(stack, <span class="kw">lapply</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/2_forest-maps/TGO/2_raw-maps/p193&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)[<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">11</span>,<span class="dv">13</span>)], raster))</a>
+<a class="sourceLine" id="cb11-12" data-line-number="12">maps.p194 &lt;-<span class="st"> </span><span class="kw">do.call</span>(stack, <span class="kw">lapply</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/2_forest-maps/TGO/2_raw-maps/p194&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)[<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">12</span>)], raster))</a>
+<a class="sourceLine" id="cb11-13" data-line-number="13">maps &lt;-<span class="st"> </span><span class="kw">merge</span>(maps.p193, maps.p194, maps.p192)</a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="kw">writeRaster</span>(maps, <span class="dt">filename=</span><span class="kw">paste0</span>(VALIDTN.DIR, <span class="st">&quot;/1_val4k-s16trans/TGO.tif&quot;</span>), <span class="dt">bylayer=</span><span class="ot">TRUE</span>, <span class="dt">suffix=</span><span class="kw">paste0</span>(<span class="kw">c</span>(<span class="dv">1987</span>, <span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2018</span>), <span class="st">&quot;_FC30r&quot;</span>))</a>
+<a class="sourceLine" id="cb11-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co"># maps &lt;- stack(dir(MAPS.DIR, pattern=paste0(&quot;.*c&quot;, MAPS.SUFFIX, &quot;[.]tif$&quot;), full.names=TRUE))[[c(1,4,12,14)]]</span></a>
+<a class="sourceLine" id="cb11-18" data-line-number="18">change.map &lt;-<span class="st"> </span>maps[[<span class="dv">1</span>]] <span class="op">+</span><span class="st"> </span>maps[[<span class="dv">2</span>]]<span class="op">*</span><span class="dv">10</span> <span class="op">+</span><span class="st"> </span>maps[[<span class="dv">3</span>]]<span class="op">*</span><span class="dv">100</span> <span class="op">+</span><span class="st"> </span>maps[[<span class="dv">4</span>]]<span class="op">*</span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb11-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="co"># Allocation of validation points</span></a>
+<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="co"># ================================</span></a>
+<a class="sourceLine" id="cb11-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb11-24" data-line-number="24">n &lt;-<span class="st"> </span><span class="dv">4000</span></a>
+<a class="sourceLine" id="cb11-25" data-line-number="25">alloc &lt;-<span class="st"> </span><span class="kw">freq</span>(change.map)[<span class="dv">1</span><span class="op">:</span><span class="dv">16</span>,]</a>
+<a class="sourceLine" id="cb11-26" data-line-number="26">alloc &lt;-<span class="st"> </span><span class="kw">cbind</span>(alloc, <span class="dt">prop=</span><span class="kw">round</span>(n<span class="op">*</span>alloc[,<span class="st">&quot;count&quot;</span>]<span class="op">/</span><span class="kw">sum</span>(alloc[,<span class="st">&quot;count&quot;</span>])), <span class="dt">equal=</span><span class="kw">round</span>(n<span class="op">/</span><span class="kw">nrow</span>(alloc)))</a>
+<a class="sourceLine" id="cb11-27" data-line-number="27">alloc &lt;-<span class="st"> </span><span class="kw">cbind</span>(alloc, <span class="dt">balanced=</span><span class="kw">round</span>((alloc[,<span class="st">&quot;prop&quot;</span>] <span class="op">+</span><span class="st"> </span>alloc[,<span class="st">&quot;equal&quot;</span>])<span class="op">/</span><span class="st"> </span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb11-28" data-line-number="28"><span class="kw">sum</span>(alloc[,<span class="st">&quot;balanced&quot;</span>])</a>
+<a class="sourceLine" id="cb11-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb11-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb11-31" data-line-number="31"><span class="co"># Read the frame</span></a>
+<a class="sourceLine" id="cb11-32" data-line-number="32"><span class="co"># ==============</span></a>
+<a class="sourceLine" id="cb11-33" data-line-number="33">frame.points        &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/SSTS/TGO_frame_480m.shp&quot;</span>))</a>
+<a class="sourceLine" id="cb11-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb11-35" data-line-number="35"><span class="co"># extract forest transitions</span></a>
+<a class="sourceLine" id="cb11-36" data-line-number="36">frame.points<span class="op">$</span>trans  &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(change.map, frame.points)</a>
+<a class="sourceLine" id="cb11-37" data-line-number="37"></a>
+<a class="sourceLine" id="cb11-38" data-line-number="38"><span class="co"># writeOGR(frame.points, dsn=paste0(INPUT.DIR, &quot;/Train-Val/201908&quot;), layer=&quot;TGO_frame_480m&quot;, driver=&quot;ESRI Shapefile&quot;, overwrite=TRUE)</span></a>
+<a class="sourceLine" id="cb11-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb11-40" data-line-number="40"></a>
+<a class="sourceLine" id="cb11-41" data-line-number="41"><span class="co"># merge with training-plots data</span></a>
+<a class="sourceLine" id="cb11-42" data-line-number="42">train.plots         &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="kw">paste0</span>(REFMAPS.DIR, <span class="st">&quot;/1_trn10k-s10ndvi/assessed_v1/COV_parcelles.shp&quot;</span>))</a>
+<a class="sourceLine" id="cb11-43" data-line-number="43">frame.points        &lt;-<span class="st"> </span><span class="kw">merge</span>(frame.points, train.plots<span class="op">@</span>data[,<span class="kw">c</span>(<span class="st">&quot;PLOTID&quot;</span>, <span class="st">&quot;img_date&quot;</span>, <span class="st">&quot;img_src&quot;</span>, <span class="st">&quot;mod_date&quot;</span>, <span class="st">&quot;author&quot;</span>, <span class="st">&quot;ccov&quot;</span>)], <span class="dt">by=</span><span class="st">&quot;PLOTID&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-44" data-line-number="44"></a>
+<a class="sourceLine" id="cb11-45" data-line-number="45"><span class="co"># initiate the sample</span></a>
+<a class="sourceLine" id="cb11-46" data-line-number="46">val.points &lt;-<span class="st"> </span>frame.points[<span class="dv">0</span>,]</a>
+<a class="sourceLine" id="cb11-47" data-line-number="47"></a>
+<a class="sourceLine" id="cb11-48" data-line-number="48"><span class="co"># Initialize random number generator</span></a>
+<a class="sourceLine" id="cb11-49" data-line-number="49"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb11-50" data-line-number="50"></a>
+<a class="sourceLine" id="cb11-51" data-line-number="51"><span class="co"># for each stratum ...</span></a>
+<a class="sourceLine" id="cb11-52" data-line-number="52"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(alloc)) {</a>
+<a class="sourceLine" id="cb11-53" data-line-number="53">  </a>
+<a class="sourceLine" id="cb11-54" data-line-number="54">  strat.n &lt;-<span class="st">  </span>alloc[i, <span class="st">&quot;balanced&quot;</span>]   <span class="co"># stratum sample size</span></a>
+<a class="sourceLine" id="cb11-55" data-line-number="55">  sample.ids &lt;-<span class="st"> </span><span class="ot">NULL</span>                 <span class="co"># vectors with ids to sample</span></a>
+<a class="sourceLine" id="cb11-56" data-line-number="56">  </a>
+<a class="sourceLine" id="cb11-57" data-line-number="57">  <span class="co"># take as much samples already used as training-points</span></a>
+<a class="sourceLine" id="cb11-58" data-line-number="58">  ids.tp &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="op">!</span><span class="kw">is.na</span>(frame.points<span class="op">$</span>trans) <span class="op">&amp;</span><span class="st"> </span>frame.points<span class="op">$</span>trans<span class="op">==</span>alloc[i, <span class="st">&quot;value&quot;</span>] <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(frame.points<span class="op">$</span>ccov))</a>
+<a class="sourceLine" id="cb11-59" data-line-number="59">  n.tp   &lt;-<span class="st"> </span><span class="kw">min</span>(<span class="kw">length</span>(ids.tp), strat.n)</a>
+<a class="sourceLine" id="cb11-60" data-line-number="60">  <span class="cf">if</span> (n.tp <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) sample.ids &lt;-<span class="st"> </span><span class="kw">c</span>(sample.ids, <span class="kw">sample</span>(ids.tp, n.tp))</a>
+<a class="sourceLine" id="cb11-61" data-line-number="61">  </a>
+<a class="sourceLine" id="cb11-62" data-line-number="62">  <span class="co"># and complete with other samples from the grid</span></a>
+<a class="sourceLine" id="cb11-63" data-line-number="63">  ids.r  &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="op">!</span><span class="kw">is.na</span>(frame.points<span class="op">$</span>trans) <span class="op">&amp;</span><span class="st"> </span>frame.points<span class="op">$</span>trans<span class="op">==</span>alloc[i, <span class="st">&quot;value&quot;</span>] <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(frame.points<span class="op">$</span>ccov))</a>
+<a class="sourceLine" id="cb11-64" data-line-number="64">  n.r    &lt;-<span class="st"> </span><span class="kw">min</span>(<span class="kw">length</span>(ids.r), strat.n <span class="op">-</span><span class="st"> </span>n.tp)</a>
+<a class="sourceLine" id="cb11-65" data-line-number="65">  <span class="cf">if</span> (n.r <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) sample.ids &lt;-<span class="st"> </span><span class="kw">c</span>(sample.ids, <span class="kw">sample</span>(ids.r, n.r)) </a>
+<a class="sourceLine" id="cb11-66" data-line-number="66">  </a>
+<a class="sourceLine" id="cb11-67" data-line-number="67">  val.points &lt;-<span class="st"> </span><span class="kw">rbind</span>(val.points, frame.points[sample.ids, ])</a>
+<a class="sourceLine" id="cb11-68" data-line-number="68">}</a>
+<a class="sourceLine" id="cb11-69" data-line-number="69"></a>
+<a class="sourceLine" id="cb11-70" data-line-number="70"><span class="co"># shuffle the data</span></a>
+<a class="sourceLine" id="cb11-71" data-line-number="71">val.points &lt;-<span class="st"> </span>val.points[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(val.points)), ]</a>
+<a class="sourceLine" id="cb11-72" data-line-number="72"><span class="co"># add ID</span></a>
+<a class="sourceLine" id="cb11-73" data-line-number="73">val.points<span class="op">$</span>SAMPLEID &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;val-&quot;</span>, <span class="kw">str_pad</span>(<span class="dt">string=</span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(val.points), <span class="dt">width =</span> <span class="dv">4</span>, <span class="dt">pad =</span> <span class="st">&quot;0&quot;</span>, <span class="dt">side =</span> <span class="st">&quot;left&quot;</span>))</a>
+<a class="sourceLine" id="cb11-74" data-line-number="74"></a>
+<a class="sourceLine" id="cb11-75" data-line-number="75"></a>
+<a class="sourceLine" id="cb11-76" data-line-number="76"><span class="co"># Convert to plots and add attributes</span></a>
+<a class="sourceLine" id="cb11-77" data-line-number="77"><span class="co"># ===================================</span></a>
+<a class="sourceLine" id="cb11-78" data-line-number="78"></a>
+<a class="sourceLine" id="cb11-79" data-line-number="79">landsat.grid &lt;-<span class="st"> </span><span class="kw">raster</span>(change.map)</a>
+<a class="sourceLine" id="cb11-80" data-line-number="80"><span class="kw">values</span>(landsat.grid) &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb11-81" data-line-number="81"></a>
+<a class="sourceLine" id="cb11-82" data-line-number="82"><span class="co"># convert to polygons</span></a>
+<a class="sourceLine" id="cb11-83" data-line-number="83">val.plots &lt;-<span class="st"> </span><span class="kw">rasterToPolygons</span>(<span class="kw">mask</span>(landsat.grid, val.points))</a>
+<a class="sourceLine" id="cb11-84" data-line-number="84"></a>
+<a class="sourceLine" id="cb11-85" data-line-number="85"><span class="co"># fetch attributes</span></a>
+<a class="sourceLine" id="cb11-86" data-line-number="86">val.plots<span class="op">@</span>data &lt;-<span class="st"> </span><span class="kw">over</span>(val.plots, val.points[, <span class="kw">c</span>(<span class="st">&quot;PLOTID&quot;</span>, <span class="st">&quot;SAMPLEID&quot;</span>, <span class="st">&quot;xcoords&quot;</span>, <span class="st">&quot;ycoords&quot;</span>, <span class="st">&quot;trans&quot;</span>, <span class="st">&quot;ccov&quot;</span>, <span class="st">&quot;img_src&quot;</span>, <span class="st">&quot;img_date&quot;</span>, <span class="st">&quot;author&quot;</span>, <span class="st">&quot;mod_date&quot;</span>)])</a>
+<a class="sourceLine" id="cb11-87" data-line-number="87"></a>
+<a class="sourceLine" id="cb11-88" data-line-number="88"><span class="co"># add attributes</span></a>
+<a class="sourceLine" id="cb11-89" data-line-number="89">val.plots<span class="op">$</span>ccov                          &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">round</span>(<span class="dv">100</span><span class="op">*</span>val.plots<span class="op">$</span>ccov, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb11-90" data-line-number="90">val.plots<span class="op">$</span>ccov[val.plots<span class="op">$</span>ccov <span class="op">==</span><span class="st"> &quot;  NA&quot;</span>]&lt;-<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb11-91" data-line-number="91">val.plots<span class="op">$</span>lc_<span class="dv">18</span>   &lt;-<span class="st"> </span>val.plots<span class="op">$</span>lc_<span class="dv">15</span>    &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb11-92" data-line-number="92">val.plots<span class="op">$</span>lc_<span class="dv">03</span>   &lt;-<span class="st"> </span>val.plots<span class="op">$</span>lc_<span class="dv">87</span>    &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb11-93" data-line-number="93"></a>
+<a class="sourceLine" id="cb11-94" data-line-number="94"><span class="co"># write plots as Shapefile and KML</span></a>
+<a class="sourceLine" id="cb11-95" data-line-number="95"><span class="co"># writeOGR(val.plots, dsn=paste0(INPUT.DIR, &quot;/Train-Val/201908/val9k-s16trans/empty&quot;), layer=&quot;UOT_parcelles&quot;, driver=&quot;ESRI Shapefile&quot;, overwrite=TRUE)</span></a>
+<a class="sourceLine" id="cb11-96" data-line-number="96"><span class="co"># writeKML(val.plots, kmlname=&quot;UOT_parcelles&quot;, filename=paste0(INPUT.DIR, &quot;/Train-Val/201908/val9k-s16trans/empty/UOT_parcelles.kml&quot;))</span></a>
+<a class="sourceLine" id="cb11-97" data-line-number="97"></a>
+<a class="sourceLine" id="cb11-98" data-line-number="98"><span class="kw">writeOGR</span>(val.plots, <span class="dt">dsn=</span><span class="st">&quot;.&quot;</span>, <span class="dt">layer=</span><span class="st">&quot;UOT_parcelles&quot;</span>, <span class="dt">driver=</span><span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-99" data-line-number="99"><span class="kw">writeKML</span>(val.plots, <span class="dt">kmlname=</span><span class="st">&quot;UOT_parcelles&quot;</span>, <span class="dt">filename=</span><span class="st">&quot;UOT_parcelles.kml&quot;</span>)</a>
+<a class="sourceLine" id="cb11-100" data-line-number="100"></a>
+<a class="sourceLine" id="cb11-101" data-line-number="101"></a>
+<a class="sourceLine" id="cb11-102" data-line-number="102"><span class="co"># Create sample grid</span></a>
+<a class="sourceLine" id="cb11-103" data-line-number="103"><span class="co"># ==================</span></a>
+<a class="sourceLine" id="cb11-104" data-line-number="104"></a>
+<a class="sourceLine" id="cb11-105" data-line-number="105">grid.size &lt;-<span class="st"> </span><span class="dv">7</span></a>
+<a class="sourceLine" id="cb11-106" data-line-number="106">res &lt;-<span class="st"> </span><span class="kw">res</span>(landsat.grid)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb11-107" data-line-number="107">offset &lt;-<span class="st"> </span><span class="kw">c</span>(res<span class="op">/</span>grid.size<span class="op">/</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">0</span><span class="op">:</span>(grid.size<span class="dv">-1</span>))<span class="op">*</span>res<span class="op">/</span>grid.size)</a>
+<a class="sourceLine" id="cb11-108" data-line-number="108"></a>
+<a class="sourceLine" id="cb11-109" data-line-number="109"><span class="co"># split the plots for parallel processing</span></a>
+<a class="sourceLine" id="cb11-110" data-line-number="110">subsets &lt;-<span class="st"> </span><span class="kw">split</span>(val.plots, <span class="dt">f=</span><span class="dv">1</span><span class="op">:</span><span class="dv">86</span>)</a>
+<a class="sourceLine" id="cb11-111" data-line-number="111"></a>
+<a class="sourceLine" id="cb11-112" data-line-number="112">val.grids &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">subset=</span>subsets, <span class="dt">.combine=</span>bind, <span class="dt">.multicombine=</span><span class="ot">TRUE</span>) <span class="op">%dopar%</span><span class="st"> </span>{ </a>
+<a class="sourceLine" id="cb11-113" data-line-number="113">  grids &lt;-<span class="st"> </span><span class="kw">SpatialPointsDataFrame</span>(<span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">y =</span> <span class="dv">0</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">PLOTID =</span> <span class="dv">0</span>, <span class="dt">SAMPLEID =</span> <span class="dv">0</span>, <span class="dt">GRIDPOINT =</span> <span class="dv">0</span>))[<span class="op">-</span><span class="dv">1</span>,]</a>
+<a class="sourceLine" id="cb11-114" data-line-number="114">  <span class="cf">for</span>(p <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(subset)) {</a>
+<a class="sourceLine" id="cb11-115" data-line-number="115">    plot &lt;-<span class="st"> </span>subset[p,]</a>
+<a class="sourceLine" id="cb11-116" data-line-number="116">    ext &lt;-<span class="st"> </span><span class="kw">extent</span>(plot)</a>
+<a class="sourceLine" id="cb11-117" data-line-number="117">    grids &lt;-<span class="st"> </span><span class="kw">bind</span>(grids, <span class="kw">SpatialPointsDataFrame</span>(<span class="kw">expand.grid</span>(ext<span class="op">@</span>xmin<span class="op">+</span>offset, ext<span class="op">@</span>ymin<span class="op">+</span>offset), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">PLOTID =</span> plot<span class="op">$</span>PLOTID, <span class="dt">SAMPLEID =</span> plot<span class="op">$</span>SAMPLEID,<span class="dt">GRIDPOINT =</span> <span class="dv">1</span><span class="op">:</span>grid.size<span class="op">^</span><span class="dv">2</span>)))</a>
+<a class="sourceLine" id="cb11-118" data-line-number="118">  }</a>
+<a class="sourceLine" id="cb11-119" data-line-number="119">  grids</a>
+<a class="sourceLine" id="cb11-120" data-line-number="120">}</a>
+<a class="sourceLine" id="cb11-121" data-line-number="121"></a>
+<a class="sourceLine" id="cb11-122" data-line-number="122"><span class="kw">proj4string</span>(val.grids) &lt;-<span class="st"> </span><span class="kw">proj4string</span>(val.plots)</a>
+<a class="sourceLine" id="cb11-123" data-line-number="123"></a>
+<a class="sourceLine" id="cb11-124" data-line-number="124"><span class="co"># merge with already collected tree attributes from train.grid</span></a>
+<a class="sourceLine" id="cb11-125" data-line-number="125">train.grids &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/Train-Val/201908/trn10k-s10ndvi/assessed_v1/COV_parcelles_grid.shp&quot;</span>))</a>
+<a class="sourceLine" id="cb11-126" data-line-number="126">val.grids &lt;-<span class="st"> </span><span class="kw">merge</span>(val.grids, train.grids<span class="op">@</span>data[, <span class="kw">c</span>(<span class="st">&quot;PLOTID&quot;</span>, <span class="st">&quot;GRIDPOINT&quot;</span>, <span class="st">&quot;tree&quot;</span>)], <span class="dt">all.x=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-127" data-line-number="127"></a>
+<a class="sourceLine" id="cb11-128" data-line-number="128"></a>
+<a class="sourceLine" id="cb11-129" data-line-number="129"><span class="kw">writeOGR</span>(val.grids, <span class="dt">dsn=</span><span class="st">&quot;.&quot;</span>, <span class="dt">layer=</span><span class="st">&quot;UOT_parcelles_grid&quot;</span>, <span class="dt">driver=</span><span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-130" data-line-number="130"></a>
+<a class="sourceLine" id="cb11-131" data-line-number="131"></a>
+<a class="sourceLine" id="cb11-132" data-line-number="132"><span class="co"># Divide into 10 subsets and export</span></a>
+<a class="sourceLine" id="cb11-133" data-line-number="133"><span class="co"># =================================</span></a>
+<a class="sourceLine" id="cb11-134" data-line-number="134"></a>
+<a class="sourceLine" id="cb11-135" data-line-number="135">subsets &lt;-<span class="st"> </span><span class="kw">split</span>(val.plots, <span class="dt">f=</span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb11-136" data-line-number="136"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(subsets)) {</a>
+<a class="sourceLine" id="cb11-137" data-line-number="137">  <span class="kw">writeOGR</span>(subsets[[i]], <span class="dt">dsn=</span><span class="st">&quot;.&quot;</span>, <span class="dt">layer=</span><span class="kw">paste0</span>(<span class="st">&quot;UOT_parcelles_&quot;</span>, i), <span class="dt">driver=</span><span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-138" data-line-number="138">  <span class="kw">writeKML</span>(subsets[[i]], <span class="dt">kmlname=</span><span class="kw">paste0</span>(<span class="st">&quot;UOT_parcelles_&quot;</span>, i) , <span class="dt">filename=</span><span class="kw">paste0</span>(<span class="st">&quot;UOT_parcelles_&quot;</span>, i, <span class="st">&quot;.kml&quot;</span>))</a>
+<a class="sourceLine" id="cb11-139" data-line-number="139">  subset.grids &lt;-<span class="st"> </span>val.grids[val.grids<span class="op">$</span>PLOTID <span class="op">%in%</span><span class="st"> </span>subsets[[i]]<span class="op">$</span>PLOTID,]</a>
+<a class="sourceLine" id="cb11-140" data-line-number="140">  <span class="kw">writeOGR</span>(subset.grids, <span class="dt">dsn=</span><span class="st">&quot;.&quot;</span>, <span class="dt">layer=</span><span class="kw">paste0</span>(<span class="st">&quot;UOT_parcelles_&quot;</span>, i, <span class="st">&quot;_grid&quot;</span>), <span class="dt">driver=</span><span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-141" data-line-number="141">}</a>
+<a class="sourceLine" id="cb11-142" data-line-number="142"></a>
+<a class="sourceLine" id="cb11-143" data-line-number="143"></a>
+<a class="sourceLine" id="cb11-144" data-line-number="144"></a>
+<a class="sourceLine" id="cb11-145" data-line-number="145"></a>
+<a class="sourceLine" id="cb11-146" data-line-number="146"><span class="co"># do the assessment</span></a>
+<a class="sourceLine" id="cb11-147" data-line-number="147"><span class="co"># =================</span></a>
+<a class="sourceLine" id="cb11-148" data-line-number="148"></a>
+<a class="sourceLine" id="cb11-149" data-line-number="149"></a>
+<a class="sourceLine" id="cb11-150" data-line-number="150"></a>
+<a class="sourceLine" id="cb11-151" data-line-number="151"></a>
+<a class="sourceLine" id="cb11-152" data-line-number="152"><span class="co"># read and merge assessed validation-plots</span></a>
+<a class="sourceLine" id="cb11-153" data-line-number="153"><span class="co"># ========================================</span></a>
+<a class="sourceLine" id="cb11-154" data-line-number="154"></a>
+<a class="sourceLine" id="cb11-155" data-line-number="155">subsets &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="kw">paste0</span>(VALIDTN.DIR, <span class="st">&quot;/1_val4k-s16trans/3_assessed&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*_[[:digit:]]+</span><span class="ch">\\</span><span class="st">.shp$&quot;</span>, <span class="dt">recursive=</span><span class="ot">TRUE</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-156" data-line-number="156">val.plots.in &lt;-<span class="st"> </span><span class="kw">lapply</span>(subsets, readOGR)</a>
+<a class="sourceLine" id="cb11-157" data-line-number="157"></a>
+<a class="sourceLine" id="cb11-158" data-line-number="158"><span class="kw">names</span>(val.plots.in) &lt;-<span class="st"> </span><span class="kw">list.dirs</span>(<span class="kw">paste0</span>(VALIDTN.DIR, <span class="st">&quot;/1_val4k-s16trans/3_assessed&quot;</span>), <span class="dt">recursive=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-159" data-line-number="159"></a>
+<a class="sourceLine" id="cb11-160" data-line-number="160"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(val.plots.in)) {</a>
+<a class="sourceLine" id="cb11-161" data-line-number="161">  val.plots.in[[i]]<span class="op">$</span>author &lt;-<span class="st"> </span><span class="kw">as.character</span>(val.plots.in[[i]]<span class="op">$</span>author)</a>
+<a class="sourceLine" id="cb11-162" data-line-number="162">  val.plots.in[[i]]<span class="op">$</span>author[<span class="op">!</span><span class="kw">is.na</span>(val.plots.in[[i]]<span class="op">$</span>author)] &lt;-<span class="st"> </span><span class="kw">names</span>(val.plots.in[i])</a>
+<a class="sourceLine" id="cb11-163" data-line-number="163">}</a>
+<a class="sourceLine" id="cb11-164" data-line-number="164"></a>
+<a class="sourceLine" id="cb11-165" data-line-number="165">val.plots.in &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind, val.plots.in)</a>
+<a class="sourceLine" id="cb11-166" data-line-number="166"></a>
+<a class="sourceLine" id="cb11-167" data-line-number="167">subsets.grids &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="kw">paste0</span>(VALIDTN.DIR, <span class="st">&quot;/1_val4k-s16trans/3_assessed&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*_[[:digit:]]+_grid</span><span class="ch">\\</span><span class="st">.shp$&quot;</span>, <span class="dt">recursive=</span><span class="ot">TRUE</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-168" data-line-number="168">val.grids.in &lt;-<span class="st"> </span><span class="kw">do.call</span>(bind, <span class="kw">lapply</span>(subsets.grids, readOGR))</a>
+<a class="sourceLine" id="cb11-169" data-line-number="169"></a>
+<a class="sourceLine" id="cb11-170" data-line-number="170"></a>
+<a class="sourceLine" id="cb11-171" data-line-number="171"><span class="co"># recalculate crown-cover and merge</span></a>
+<a class="sourceLine" id="cb11-172" data-line-number="172">val.plots.in &lt;-<span class="st"> </span>val.plots.in[, <span class="kw">names</span>(val.plots.in) <span class="op">!=</span><span class="st"> &quot;ccov&quot;</span>]</a>
+<a class="sourceLine" id="cb11-173" data-line-number="173">tmp &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="kw">list</span>(<span class="dt">ccov=</span>val.grids.in<span class="op">$</span>tree), <span class="dt">by=</span><span class="kw">list</span>(<span class="dt">PLOTID=</span>val.grids.in<span class="op">$</span>PLOTID), <span class="dt">FUN=</span><span class="cf">function</span>(x) <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(x) <span class="op">&amp;</span><span class="st"> </span>x<span class="op">==</span><span class="dv">1</span>)<span class="op">/</span><span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(x)))</a>
+<a class="sourceLine" id="cb11-174" data-line-number="174">tmp<span class="op">$</span>ccov[<span class="kw">is.nan</span>(tmp<span class="op">$</span>ccov)] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb11-175" data-line-number="175">val.plots.in &lt;-<span class="st"> </span><span class="kw">merge</span>(val.plots.in, tmp, <span class="dt">by=</span><span class="st">&quot;PLOTID&quot;</span>)</a>
+<a class="sourceLine" id="cb11-176" data-line-number="176"></a>
+<a class="sourceLine" id="cb11-177" data-line-number="177"><span class="co"># clean validation plots</span></a>
+<a class="sourceLine" id="cb11-178" data-line-number="178"><span class="co">#-----------------------</span></a>
+<a class="sourceLine" id="cb11-179" data-line-number="179"></a>
+<a class="sourceLine" id="cb11-180" data-line-number="180"><span class="co"># remove plots without ccov</span></a>
+<a class="sourceLine" id="cb11-181" data-line-number="181">val.plots.in &lt;-<span class="st"> </span>val.plots.in[<span class="op">!</span><span class="kw">is.na</span>(val.plots.in<span class="op">$</span>ccov),]</a>
+<a class="sourceLine" id="cb11-182" data-line-number="182"></a>
+<a class="sourceLine" id="cb11-183" data-line-number="183"><span class="co"># remove plots with strange dates</span></a>
+<a class="sourceLine" id="cb11-184" data-line-number="184">year &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">sub</span>(<span class="st">&quot;-.*$&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">as.character</span>(val.plots.in<span class="op">$</span>img_date)))</a>
+<a class="sourceLine" id="cb11-185" data-line-number="185">val.plots.in &lt;-<span class="st"> </span>val.plots.in[<span class="op">!</span><span class="kw">is.na</span>(year) <span class="op">&amp;</span><span class="st"> </span>year <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2000</span> <span class="op">&amp;</span><span class="st"> </span>year <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2019</span>, ]</a>
+<a class="sourceLine" id="cb11-186" data-line-number="186"></a>
+<a class="sourceLine" id="cb11-187" data-line-number="187"><span class="co"># clean grid accordingly</span></a>
+<a class="sourceLine" id="cb11-188" data-line-number="188">val.grids.in &lt;-<span class="st"> </span>val.grids.in[val.grids.in<span class="op">$</span>PLOTID <span class="op">%in%</span><span class="st"> </span><span class="kw">unique</span>(val.plots.in<span class="op">$</span>PLOTID), ]</a>
+<a class="sourceLine" id="cb11-189" data-line-number="189"></a>
+<a class="sourceLine" id="cb11-190" data-line-number="190"></a>
+<a class="sourceLine" id="cb11-191" data-line-number="191"><span class="co"># Write clean files</span></a>
+<a class="sourceLine" id="cb11-192" data-line-number="192"><span class="co"># -----------------</span></a>
+<a class="sourceLine" id="cb11-193" data-line-number="193"><span class="kw">writeOGR</span>(val.plots.in, <span class="dt">dsn=</span><span class="kw">paste0</span>(VALIDTN.DIR, <span class="st">&quot;/1_val4k-s16trans/3_assessed&quot;</span>), <span class="dt">layer=</span><span class="st">&quot;UOT_parcelles&quot;</span>, <span class="dt">driver=</span><span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-194" data-line-number="194"><span class="kw">writeOGR</span>(val.grids.in, <span class="dt">dsn=</span><span class="kw">paste0</span>(VALIDTN.DIR, <span class="st">&quot;/1_val4k-s16trans/3_assessed&quot;</span>), <span class="dt">layer=</span><span class="st">&quot;UOT_parcelles_grid&quot;</span>, <span class="dt">driver=</span><span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-195" data-line-number="195"></a>
+<a class="sourceLine" id="cb11-196" data-line-number="196"></a>
+<a class="sourceLine" id="cb11-197" data-line-number="197"><span class="co"># Write some descriptive information</span></a>
+<a class="sourceLine" id="cb11-198" data-line-number="198"><span class="co"># ----------------------------------</span></a>
+<a class="sourceLine" id="cb11-199" data-line-number="199"><span class="kw">sink</span>(<span class="kw">paste0</span>(VALIDTN.DIR, <span class="st">&quot;/1_val4k-s16trans/4_descr/author-stats.txt&quot;</span>), <span class="dt">split=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-200" data-line-number="200"><span class="kw">table</span>(val.plots.in<span class="op">$</span>author)</a>
+<a class="sourceLine" id="cb11-201" data-line-number="201"><span class="kw">sink</span>()</a></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="03_clean-FC-maps.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="05_validate-FC-maps.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"search": true,
+"info": true
+});
+});
+</script>
+
+</body>
+
+</html>

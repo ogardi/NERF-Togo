@@ -7,7 +7,7 @@ Description de la méthodologie / script
 
 #### _AGB/3_create-AGB-maps.R_ {-}
 
-```{r, code=readLines("../src/AGB/3_create-AGB-maps.R"), eval=FALSE}
+```{r, code=readLines("../03_NRF-MRV/02_AGB/_src/02_create-AGB-maps.R"), eval=FALSE}
 ```
 
 

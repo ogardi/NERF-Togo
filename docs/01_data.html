@@ -7,7 +7,7 @@
   <title>2.1 Images satellitaires | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.1 Images satellitaires | _main.utf8" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-03-10" />
+<meta name="date" content="2020-03-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -70,7 +70,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -135,18 +135,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1" data-path="01_arrangements.html"><a href="01_arrangements.html"><i class="fa fa-check"></i><b>1.1</b> Arrangements institutionelles</a></li>
 <li class="chapter" data-level="1.2" data-path="02_organisation.html"><a href="02_organisation.html"><i class="fa fa-check"></i><b>1.2</b> Organisation du travail</a><ul>
 <li class="chapter" data-level="1.2.1" data-path="02_organisation.html"><a href="02_organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>1.2.1</b> Logiciel et serveur</a></li>
-<li class="chapter" data-level="1.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-repertoire"><i class="fa fa-check"></i><b>1.2.2</b> Structure du répértoire</a></li>
-<li class="chapter" data-level="1.2.3" data-path="02_organisation.html"><a href="02_organisation.html#creation-dun-nouveau-projet"><i class="fa fa-check"></i><b>1.2.3</b> Création d’un nouveau projet</a></li>
+<li class="chapter" data-level="1.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-répértoire"><i class="fa fa-check"></i><b>1.2.2</b> Structure du répértoire</a></li>
+<li class="chapter" data-level="1.2.3" data-path="02_organisation.html"><a href="02_organisation.html#création-dun-nouveau-projet"><i class="fa fa-check"></i><b>1.2.3</b> Création d’un nouveau projet</a></li>
 <li class="chapter" data-level="1.2.4" data-path="02_organisation.html"><a href="02_organisation.html#NRF-set-up.R"><i class="fa fa-check"></i><b>1.2.4</b> Définition des variables</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a><ul>
 <li class="chapter" data-level="2.1" data-path="01_data.html"><a href="01_data.html"><i class="fa fa-check"></i><b>2.1</b> Images satellitaires</a><ul>
 <li class="chapter" data-level="2.1.1" data-path="01_data.html"><a href="01_data.html#acquisition-des-images"><i class="fa fa-check"></i><b>2.1.1</b> Acquisition des images</a></li>
-<li class="chapter" data-level="2.1.2" data-path="01_data.html"><a href="01_data.html#pretraitement-des-images"><i class="fa fa-check"></i><b>2.1.2</b> Prétraitement des images</a></li>
+<li class="chapter" data-level="2.1.2" data-path="01_data.html"><a href="01_data.html#prétraitement-des-images"><i class="fa fa-check"></i><b>2.1.2</b> Prétraitement des images</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html"><i class="fa fa-check"></i><b>2.2</b> Réseau d’échantillonnage</a></li>
-<li class="chapter" data-level="2.3" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#attributs-enregistres"><i class="fa fa-check"></i><b>2.3</b> Attributs enregistrés</a><ul>
+<li class="chapter" data-level="2.3" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#attributs-enregistrés"><i class="fa fa-check"></i><b>2.3</b> Attributs enregistrés</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-couverture-houppiers"><i class="fa fa-check"></i><b>2.3.1</b> Couverture des houppiers</a></li>
 <li class="chapter" data-level="2.3.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-occupation-terres"><i class="fa fa-check"></i><b>2.3.2</b> Occupation des terres</a></li>
 </ul></li>
@@ -418,28 +418,28 @@ On copie les identifier des images à télécharger dans un fichier txt.</p>
 <p><img src="images/Acq-ESPA.png" /></p>
 <p>Une fois on est notifié par eMail que les images sont prêts, on les téléchargent manuellement ou tous ensemble avec le <a href="https://github.com/USGS-EROS/espa-bulk-downloader">USGS bulkdownloader</a> et la commande <code>download_espa_order.py -u [nom d'utilisateur] -o ALL -d [répértoire]</code>. On dézip les images et les rangent dans le répétoire <code>data/Landsat</code> sous la scène et l’année correspondante. Pour des images de l’hiver 2019/20, l’année correspondante est 2020.</p>
 </div>
-<div id="pretraitement-des-images" class="section level3">
+<div id="prétraitement-des-images" class="section level3">
 <h3><span class="header-section-number">2.1.2</span> Prétraitement des images</h3>
 <div id="description-1" class="section level4 unnumbered">
 <h4>Description</h4>
 <p>Le premier traitement est la préparation des images Landsat et autres variables utilisés pour modéliser la surface forestier ou la biomasse aérienne comme les données topographique et climatiques. L’objectif est qu’on prépare avec les données brutes un jeu de données raster complet sur le même extent (territoir du Togo) et avec la même résolution spatiale de 30 mètres (résolution de base des images Landsat).</p>
 <p>On ouvre le script <code>1_prepare-images.R</code> et on modifie la liste des images Landsat à utiliser (<code>in.image.list</code>), par exemple par ajouter les nouveaux image à considérer dans les analyses:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p192<span class="fl">.2019</span> =<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2019/LC081920542018122301T1-SC20190405164258/&quot;</span>),</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2019/LC081920552018122301T1-SC20190405163359/&quot;</span>),</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2019/LC081920562018122301T1-SC20190405163342/&quot;</span>))</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">...</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">p193<span class="fl">.2019</span> =<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2019/LC081930522019021601T1-SC20190405183839/&quot;</span>),</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2019/LC081930532019021601T1-SC20190405181518/&quot;</span>),</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2019/LC081930542019021601T1-SC20190405183609/&quot;</span>),</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2019/LC081930552019021601T1-SC20190405181507/&quot;</span>))</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">...</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">p194<span class="fl">.2019</span> =<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2019/LC081940522019012201T1-SC20190405172019/&quot;</span>),</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2019/LC081940532019012201T1-SC20190405172055/&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">p192<span class="fl">.2019</span> =<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2019/LC081920542018122301T1-SC20190405164258/&quot;</span>),</a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2019/LC081920552018122301T1-SC20190405163359/&quot;</span>),</a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2019/LC081920562018122301T1-SC20190405163342/&quot;</span>))</a>
+<a class="sourceLine" id="cb3-5" title="5">...</a>
+<a class="sourceLine" id="cb3-6" title="6">p193<span class="fl">.2019</span> =<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2019/LC081930522019021601T1-SC20190405183839/&quot;</span>),</a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2019/LC081930532019021601T1-SC20190405181518/&quot;</span>),</a>
+<a class="sourceLine" id="cb3-9" title="9">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2019/LC081930542019021601T1-SC20190405183609/&quot;</span>),</a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2019/LC081930552019021601T1-SC20190405181507/&quot;</span>))</a>
+<a class="sourceLine" id="cb3-11" title="11">...</a>
+<a class="sourceLine" id="cb3-12" title="12">p194<span class="fl">.2019</span> =<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb3-13" title="13">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2019/LC081940522019012201T1-SC20190405172019/&quot;</span>),</a>
+<a class="sourceLine" id="cb3-14" title="14">  <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2019/LC081940532019012201T1-SC20190405172055/&quot;</span>))</a></code></pre></div>
 <p>Outre la définition des images à traiter, le script définit une fonction <code>prepare.image</code> pour stacker les différentes bandes des images Landsat, pour les fusioner, masquer et couper les images Landsat chemin par chemin (WRS2 paths 192, 193 et 194 pour Togo). Par défaut, les images qui ont déjà été traité (<code>filename</code> existe déjà) ne sont plus traité (<code>overwrite=FALSE</code>).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">prepare.image</span>(in.image.dirs, <span class="dt">ext=</span><span class="ot">NULL</span>, <span class="dt">filename=</span><span class="ot">NULL</span>, <span class="dt">overwrite=</span><span class="ot">FALSE</span>, <span class="dt">log=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">prepare.image</span>(in.image.dirs, <span class="dt">ext=</span><span class="ot">NULL</span>, <span class="dt">filename=</span><span class="ot">NULL</span>, <span class="dt">overwrite=</span><span class="ot">FALSE</span>, <span class="dt">log=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <p>Dans la deuxième partie du script, là où c’est noté <code># DO THE WORK ---------</code>, on lance le traitement des images. Avec le code <code>foreach(...) %dopar% { ... }</code> on lance le traitement de chaque chemin pour chaque année sur des différents processeurs au parallèle. À la fin du script on</p>
 <ul>
 <li>transforme les images du chemin 194 du système de coordonnées UTM 30 vers UTM 31</li>
@@ -457,532 +457,532 @@ On copie les identifier des images à télécharger dans un fichier txt.</p>
 </div>
 <div id="prepare-images.r" class="section level4 unnumbered">
 <h4><em>1_prepare-images.R</em></h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">####################################################################</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># NERF_Togo/1_prepare-images.R: cleaning and stacking Landsat images</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co"># 13 November 2019</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">## @knitr load.images</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co"># load WRS scenes</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">WRS &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/WRS2/WRS2_descending.shp&quot;</span>))</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># Selection of images to prepare and to merge -------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">in.image.list &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">  <span class="co"># Path 192</span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19">  <span class="dt">p192.1986 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/1986/LT051920541986011301T1-SC20190405164223/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-20" data-line-number="20">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/1986/LT051920551986011301T1-SC20190405164227/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-21" data-line-number="21">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/1986/LT051920561986011301T1-SC20190405164153/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb5-23" data-line-number="23">  <span class="dt">p192.1987 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/1987/LT051920541986123101T1-SC20190405164150/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-24" data-line-number="24">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/1987/LT051920551986123101T1-SC20190405163521/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-25" data-line-number="25">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/1987/LT051920561986123101T1-SC20190405164444/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb5-27" data-line-number="27">  <span class="dt">p192.1991 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/1991/LT041920541991010301T1-SC20190405164201/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-28" data-line-number="28">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/1991/LT041920551991010301T1-SC20190405165911/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-29" data-line-number="29">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/1991/LT041920561991010301T1-SC20190405163911/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb5-31" data-line-number="31">  <span class="dt">p192.2001 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2001/LE071920542000121301T1-SC20190405165521/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-32" data-line-number="32">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2001/LE071920552000121301T1-SC20190405165645/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-33" data-line-number="33">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2001/LE071920562000121301T1-SC20190405164029/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-34" data-line-number="34"></a>
-<a class="sourceLine" id="cb5-35" data-line-number="35">  <span class="dt">p192.2003 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2003/LE071920542003010401T1-SC20190520111322/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-36" data-line-number="36">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2003/LE071920552003010401T1-SC20190520100402/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-37" data-line-number="37">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2003/LE071920562003010401T1-SC20190520100206/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-38" data-line-number="38"></a>
-<a class="sourceLine" id="cb5-39" data-line-number="39">  <span class="dt">p192.2005 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2005/LE071920542004122401T1-SC20190405165520/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-40" data-line-number="40">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2005/LE071920552004122401T1-SC20190405164050/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-41" data-line-number="41">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2005/LE071920562004122401T1-SC20190405164030/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb5-43" data-line-number="43">  <span class="dt">p192.2007 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2007/LE071920542006123001T1-SC20190406034211/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-44" data-line-number="44">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2007/LE071920552006123001T1-SC20190406034231/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-45" data-line-number="45">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2007/LE071920562006123001T1-SC20190406034202/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-46" data-line-number="46"></a>
-<a class="sourceLine" id="cb5-47" data-line-number="47">  <span class="dt">p192.2011 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2011/LE071920542011011001T1-SC20190406034214/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-48" data-line-number="48">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2011/LE071920552011011001T1-SC20190406034114/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-49" data-line-number="49">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2011/LE071920562011011001T1-SC20190406034155/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-50" data-line-number="50"></a>
-<a class="sourceLine" id="cb5-51" data-line-number="51">  <span class="dt">p192.2013 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2013/LE071920542013013101T1-SC20190406034224/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-52" data-line-number="52">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2013/LE071920552013013101T1-SC20190406034046/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-53" data-line-number="53">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2013/LE071920562013013101T1-SC20190406034057/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-54" data-line-number="54"></a>
-<a class="sourceLine" id="cb5-55" data-line-number="55">  <span class="dt">p192.2015 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2015/LC081920542015011301T1-SC20190405163446/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-56" data-line-number="56">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2015/LC081920552015011301T1-SC20190405163723/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-57" data-line-number="57">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2015/LC081920562015011301T1-SC20190405164231/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-58" data-line-number="58"></a>
-<a class="sourceLine" id="cb5-59" data-line-number="59">  <span class="dt">p192.2017 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2017/LC081920542017021901T1-SC20190405163339/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-60" data-line-number="60">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2017/LC081920552017021901T1-SC20190405163342/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-61" data-line-number="61">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2017/LC081920562017021901T1-SC20190405163222/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-62" data-line-number="62"></a>
-<a class="sourceLine" id="cb5-63" data-line-number="63">  <span class="dt">p192.2018 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2018/LC081920542018010501T1-SC20190405164304/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-64" data-line-number="64">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2018/LC081920552018010501T1-SC20190405163402/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-65" data-line-number="65">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2018/LC081920562018010501T1-SC20190405163250/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-66" data-line-number="66"></a>
-<a class="sourceLine" id="cb5-67" data-line-number="67">  <span class="dt">p192.2019 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2019/LC081920542018122301T1-SC20190405164258/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-68" data-line-number="68">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2019/LC081920552018122301T1-SC20190405163359/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-69" data-line-number="69">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2019/LC081920562018122301T1-SC20190405163342/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-70" data-line-number="70"></a>
-<a class="sourceLine" id="cb5-71" data-line-number="71">  <span class="co"># # Path 193</span></a>
-<a class="sourceLine" id="cb5-72" data-line-number="72"></a>
-<a class="sourceLine" id="cb5-73" data-line-number="73">  <span class="dt">p193.1985 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/1985/LT051930521985030601T1-SC20190520100259/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-74" data-line-number="74">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/1985/LT051930531985030601T1-SC20190520100324/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-75" data-line-number="75">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/1985/LT051930541985030601T1-SC20190520100340/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-76" data-line-number="76">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/1985/LT051930551985030601T1-SC20190520100140/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-77" data-line-number="77"></a>
-<a class="sourceLine" id="cb5-78" data-line-number="78">  <span class="dt">p193.1987 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/1987/LT051930521987012301T1-SC20190405182322/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-79" data-line-number="79">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/1987/LT051930531987012301T1-SC20190405182335/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-80" data-line-number="80">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/1987/LT051930541987012301T1-SC20190405182331/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-81" data-line-number="81">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/1987/LT051930551987012301T1-SC20190405182328/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-82" data-line-number="82"></a>
-<a class="sourceLine" id="cb5-83" data-line-number="83">  <span class="co"># images of two different dates!</span></a>
-<a class="sourceLine" id="cb5-84" data-line-number="84">  <span class="dt">p193.1990.1 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/1990/LT051930521989112801T1-SC20190520100201/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-85" data-line-number="85">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/1990/LT051930531989112801T1-SC20190520100233/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-86" data-line-number="86">  </a>
-<a class="sourceLine" id="cb5-87" data-line-number="87">  <span class="dt">p193.1990.2 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/1991/LT041930541991011001T1-SC20190402043117/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-88" data-line-number="88">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/1991/LT041930551991011001T1-SC20190402042453/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-89" data-line-number="89"></a>
-<a class="sourceLine" id="cb5-90" data-line-number="90">  <span class="dt">p193.2000 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2000/LE071930522000020401T1-SC20190520100729/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-91" data-line-number="91">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2000/LE071930532000020401T1-SC20190520100345/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-92" data-line-number="92">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2000/LE071930542000020401T1-SC20190402045232/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-93" data-line-number="93">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2000/LE071930552000020401T1-SC20190402043121/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-94" data-line-number="94"></a>
-<a class="sourceLine" id="cb5-95" data-line-number="95">  <span class="dt">p193.2003 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2003/LE071930522002122601T1-SC20190405182352/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-96" data-line-number="96">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2003/LE071930532002122601T1-SC20190405182309/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-97" data-line-number="97">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2003/LE071930542002122601T1-SC20190405182226/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-98" data-line-number="98">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2003/LE071930552002122601T1-SC20190405190255/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-99" data-line-number="99"></a>
-<a class="sourceLine" id="cb5-100" data-line-number="100">  <span class="dt">p193.2005 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2005/LE071930522005021701T1-SC20190405190117/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-101" data-line-number="101">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2005/LE071930532005021701T1-SC20190405190003/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-102" data-line-number="102">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2005/LE071930542005021701T1-SC20190405182210/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-103" data-line-number="103">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2005/LE071930552005021701T1-SC20190405190021/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-104" data-line-number="104"></a>
-<a class="sourceLine" id="cb5-105" data-line-number="105">  <span class="dt">p193.2007 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2007/LE071930522007012201T1-SC20190405182221/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-106" data-line-number="106">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2007/LE071930532007012201T1-SC20190405182607/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-107" data-line-number="107">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2007/LE071930542007012201T1-SC20190405182139/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-108" data-line-number="108">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2007/LE071930552007012201T1-SC20190405182418/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-109" data-line-number="109"></a>
-<a class="sourceLine" id="cb5-110" data-line-number="110">  <span class="dt">p193.2009 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2009/LE071930522009012701T1-SC20190405182143/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-111" data-line-number="111">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2009/LE071930532009012701T1-SC20190405182301/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-112" data-line-number="112">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2009/LE071930542009012701T1-SC20190405182103/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-113" data-line-number="113">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2009/LE071930552009012701T1-SC20190405182754/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-114" data-line-number="114"></a>
-<a class="sourceLine" id="cb5-115" data-line-number="115">  <span class="dt">p193.2013 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2013/LE071930522013022301T1-SC20190405182200/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-116" data-line-number="116">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2013/LE071930532013022301T1-SC20190405182213/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-117" data-line-number="117">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2013/LE071930542013022301T1-SC20190405182152/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-118" data-line-number="118">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2013/LE071930552013022301T1-SC20190405182331/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-119" data-line-number="119"></a>
-<a class="sourceLine" id="cb5-120" data-line-number="120">  <span class="dt">p193.2015 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2015/LC081930522015010401T1-SC20190405181512/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-121" data-line-number="121">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2015/LC081930532015010401T1-SC20190405181751/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-122" data-line-number="122">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2015/LC081930542015010401T1-SC20190402042510/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-123" data-line-number="123">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2015/LC081930552015010401T1-SC20190402042446/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-124" data-line-number="124"></a>
-<a class="sourceLine" id="cb5-125" data-line-number="125">  <span class="dt">p193.2017 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2017/LC081930522017012501T1-SC20190405181511/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-126" data-line-number="126">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2017/LC081930532017012501T1-SC20190405181440/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-127" data-line-number="127">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2017/LC081930542017012501T1-SC20190405181458/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-128" data-line-number="128">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2017/LC081930552017012501T1-SC20190405181444/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-129" data-line-number="129"></a>
-<a class="sourceLine" id="cb5-130" data-line-number="130">  <span class="dt">p193.2018 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2018/LC081930522018011201T1-SC20190405181524/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-131" data-line-number="131">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2018/LC081930532018011201T1-SC20190405181459/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-132" data-line-number="132">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2018/LC081930542018011201T1-SC20190405181510/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-133" data-line-number="133">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2018/LC081930552018011201T1-SC20190405181442/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-134" data-line-number="134"></a>
-<a class="sourceLine" id="cb5-135" data-line-number="135">  <span class="dt">p193.2019 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2019/LC081930522019021601T1-SC20190405183839/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-136" data-line-number="136">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2019/LC081930532019021601T1-SC20190405181518/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-137" data-line-number="137">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2019/LC081930542019021601T1-SC20190405183609/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-138" data-line-number="138">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2019/LC081930552019021601T1-SC20190405181507/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-139" data-line-number="139"></a>
-<a class="sourceLine" id="cb5-140" data-line-number="140">  <span class="co"># # Path 194</span></a>
-<a class="sourceLine" id="cb5-141" data-line-number="141"></a>
-<a class="sourceLine" id="cb5-142" data-line-number="142">  <span class="dt">p194.1986 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/1986/LT051940521986011101T1-SC20190405172804/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-143" data-line-number="143">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/1986/LT051940531986011101T1-SC20190405172758/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-144" data-line-number="144"></a>
-<a class="sourceLine" id="cb5-145" data-line-number="145">  <span class="dt">p194.1987 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/1987/LT051940521986122901T1-SC20190405172903/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-146" data-line-number="146">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/1987/LT051940531986122901T1-SC20190405174433/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-147" data-line-number="147"></a>
-<a class="sourceLine" id="cb5-148" data-line-number="148">  <span class="dt">p194.1997 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/1997/LT051940521997021001T1-SC20190405181746/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-149" data-line-number="149">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/1997/LT051940531997021001T1-SC20190405173130/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-150" data-line-number="150"></a>
-<a class="sourceLine" id="cb5-151" data-line-number="151">  <span class="dt">p194.2000 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2000/LE071940522000012601T1-SC20190405172721/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-152" data-line-number="152">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2000/LE071940532000012601T1-SC20190405172733/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-153" data-line-number="153"></a>
-<a class="sourceLine" id="cb5-154" data-line-number="154">  <span class="dt">p194.2003 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2003/LE071940522002121701T1-SC20190405172823/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-155" data-line-number="155">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2003/LE071940532002121701T1-SC20190405172739/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-156" data-line-number="156"></a>
-<a class="sourceLine" id="cb5-157" data-line-number="157">  <span class="dt">p194.2005 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2005/LE071940522004122201T1-SC20190405172700/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-158" data-line-number="158">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2005/LE071940532004122201T1-SC20190405172612/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-159" data-line-number="159"></a>
-<a class="sourceLine" id="cb5-160" data-line-number="160">  <span class="dt">p194.2007 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2007/LT051940522007010501T1-SC20190405172919/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-161" data-line-number="161">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2007/LT051940532007010501T1-SC20190405172216/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-162" data-line-number="162"></a>
-<a class="sourceLine" id="cb5-163" data-line-number="163">  <span class="dt">p194.2010 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2010/LE071940522010012101T1-SC20190405172745/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-164" data-line-number="164">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2010/LE071940532010012101T1-SC20190405173304/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-165" data-line-number="165">  </a>
-<a class="sourceLine" id="cb5-166" data-line-number="166">  <span class="dt">p194.2012 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2012/LE071940522012011101T1-SC20190405173146/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-167" data-line-number="167">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2012/LE071940532012011101T1-SC20190405172236/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-168" data-line-number="168"></a>
-<a class="sourceLine" id="cb5-169" data-line-number="169">  <span class="co"># Indices not available!</span></a>
-<a class="sourceLine" id="cb5-170" data-line-number="170">  <span class="co"># p194.2013 = list(paste0(DATA.DIR, &quot;/Landsat/194_052/2013/LE071940522012122801T1-SC20190405172704/&quot;),</span></a>
-<a class="sourceLine" id="cb5-171" data-line-number="171">  <span class="co">#                   paste0(DATA.DIR, &quot;/Landsat/194_053/2013/LE071940532012122801T1-SC20190405172717/&quot;)),</span></a>
-<a class="sourceLine" id="cb5-172" data-line-number="172"></a>
-<a class="sourceLine" id="cb5-173" data-line-number="173">  <span class="dt">p194.2015 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2015/LC081940522015012701T1-SC20190405172055/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-174" data-line-number="174">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2015/LC081940532015012701T1-SC20190405172042/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-175" data-line-number="175"></a>
-<a class="sourceLine" id="cb5-176" data-line-number="176">  <span class="dt">p194.2017 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2017/LC081940522016123101T1-SC20190405172058/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-177" data-line-number="177">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2017/LC081940532016123101T1-SC20190405172040/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-178" data-line-number="178"></a>
-<a class="sourceLine" id="cb5-179" data-line-number="179">  <span class="dt">p194.2018 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2018/LC081940522017121801T1-SC20190405172038/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-180" data-line-number="180">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2018/LC081940532017121801T1-SC20190405174114/&quot;</span>)),</a>
-<a class="sourceLine" id="cb5-181" data-line-number="181"></a>
-<a class="sourceLine" id="cb5-182" data-line-number="182">  <span class="dt">p194.2019 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2019/LC081940522019012201T1-SC20190405172019/&quot;</span>),</a>
-<a class="sourceLine" id="cb5-183" data-line-number="183">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2019/LC081940532019012201T1-SC20190405172055/&quot;</span>))</a>
-<a class="sourceLine" id="cb5-184" data-line-number="184"></a>
-<a class="sourceLine" id="cb5-185" data-line-number="185">)</a>
-<a class="sourceLine" id="cb5-186" data-line-number="186"></a>
-<a class="sourceLine" id="cb5-187" data-line-number="187"><span class="co"># create scene list ----------</span></a>
-<a class="sourceLine" id="cb5-188" data-line-number="188"><span class="co"># sink(paste0(INPUT.DIR, &quot;/Landsat/scenes.txt&quot;)</span></a>
-<a class="sourceLine" id="cb5-189" data-line-number="189"><span class="co"># for(image.dirs in in.image.list) {</span></a>
-<a class="sourceLine" id="cb5-190" data-line-number="190"><span class="co">#   </span></a>
-<a class="sourceLine" id="cb5-191" data-line-number="191"><span class="co">#   for(image.dir in image.dirs) {</span></a>
-<a class="sourceLine" id="cb5-192" data-line-number="192"><span class="co">#     </span></a>
-<a class="sourceLine" id="cb5-193" data-line-number="193"><span class="co">#     cat(sub(&quot;_ANG[.]txt&quot;, &quot;&quot;, dir(image.dir)[1]),&quot;\n&quot;)</span></a>
-<a class="sourceLine" id="cb5-194" data-line-number="194"><span class="co">#   }</span></a>
-<a class="sourceLine" id="cb5-195" data-line-number="195"><span class="co"># }</span></a>
-<a class="sourceLine" id="cb5-196" data-line-number="196"><span class="co"># sink()</span></a>
-<a class="sourceLine" id="cb5-197" data-line-number="197"></a>
-<a class="sourceLine" id="cb5-198" data-line-number="198"><span class="co"># Function for processing and merging a set of Landsat images -----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-199" data-line-number="199"><span class="co">## @knitr prepare.image</span></a>
-<a class="sourceLine" id="cb5-200" data-line-number="200"></a>
-<a class="sourceLine" id="cb5-201" data-line-number="201">prepare.image &lt;-<span class="st"> </span><span class="cf">function</span>(in.image.dirs, <span class="dt">ext=</span><span class="ot">NULL</span>, <span class="dt">filename=</span><span class="ot">NULL</span>, <span class="dt">overwrite=</span><span class="ot">FALSE</span>, <span class="dt">log=</span><span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb5-202" data-line-number="202">  </a>
-<a class="sourceLine" id="cb5-203" data-line-number="203">  <span class="co"># load file, if filename already exists and overwrite=FALSE</span></a>
-<a class="sourceLine" id="cb5-204" data-line-number="204">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename) <span class="op">&amp;&amp;</span><span class="st"> </span><span class="kw">file.exists</span>(filename) <span class="op">&amp;&amp;</span><span class="st"> </span>overwrite<span class="op">==</span><span class="ot">FALSE</span>) {</a>
-<a class="sourceLine" id="cb5-205" data-line-number="205">    <span class="kw">message</span>(<span class="st">&quot;- loading from file &quot;</span>, filename)</a>
-<a class="sourceLine" id="cb5-206" data-line-number="206">    out.image &lt;-<span class="st"> </span><span class="kw">stack</span>(filename)</a>
-<a class="sourceLine" id="cb5-207" data-line-number="207">    </a>
-<a class="sourceLine" id="cb5-208" data-line-number="208">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb5-209" data-line-number="209">    </a>
-<a class="sourceLine" id="cb5-210" data-line-number="210">    <span class="co"># open logfile</span></a>
-<a class="sourceLine" id="cb5-211" data-line-number="211">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename) <span class="op">&amp;</span><span class="st"> </span>log<span class="op">==</span><span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb5-212" data-line-number="212">      <span class="kw">dir.create</span>(<span class="kw">dirname</span>(filename), <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-213" data-line-number="213">      logfile &lt;-<span class="st"> </span><span class="kw">file</span>(<span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.[[:alnum:]]+$&quot;</span>, <span class="st">&quot;.log&quot;</span>, filename), <span class="dt">open=</span><span class="st">&quot;wt&quot;</span>)</a>
-<a class="sourceLine" id="cb5-214" data-line-number="214">      <span class="kw">sink</span>(logfile, <span class="dt">type=</span><span class="st">&quot;output&quot;</span>)</a>
-<a class="sourceLine" id="cb5-215" data-line-number="215">      <span class="kw">sink</span>(logfile, <span class="dt">type=</span><span class="st">&quot;message&quot;</span>)</a>
-<a class="sourceLine" id="cb5-216" data-line-number="216">      <span class="kw">message</span>(<span class="kw">date</span>())</a>
-<a class="sourceLine" id="cb5-217" data-line-number="217">    }</a>
-<a class="sourceLine" id="cb5-218" data-line-number="218">    </a>
-<a class="sourceLine" id="cb5-219" data-line-number="219">    <span class="co"># list for the imported and cleaned images</span></a>
-<a class="sourceLine" id="cb5-220" data-line-number="220">    images &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb5-221" data-line-number="221">    qas &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb5-222" data-line-number="222">    </a>
-<a class="sourceLine" id="cb5-223" data-line-number="223">    <span class="co"># read and process the individual images </span></a>
-<a class="sourceLine" id="cb5-224" data-line-number="224">    <span class="cf">for</span>(image.dir <span class="cf">in</span> in.image.dirs) {</a>
-<a class="sourceLine" id="cb5-225" data-line-number="225">      </a>
-<a class="sourceLine" id="cb5-226" data-line-number="226">      image.sensor &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="kw">basename</span>(image.dir), <span class="dv">0</span>,<span class="dv">4</span>) </a>
-<a class="sourceLine" id="cb5-227" data-line-number="227">      <span class="cf">if</span>(image.sensor<span class="op">==</span><span class="st">&quot;LC08&quot;</span>) {</a>
-<a class="sourceLine" id="cb5-228" data-line-number="228">        image &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">grep</span>(<span class="st">&quot;^.*_(pixel_qa|band2|band3|band4|band5|band6|band7|evi|msavi|nbr|nbr2|ndmi|ndvi|savi).tif$&quot;</span>, <span class="kw">dir</span>(image.dir, <span class="dt">full.names=</span><span class="ot">TRUE</span>), <span class="dt">value=</span><span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb5-229" data-line-number="229">      } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb5-230" data-line-number="230">        image &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">grep</span>(<span class="st">&quot;^.*_(pixel_qa|band1|band2|band3|band4|band5|band7|evi|msavi|nbr|nbr2|ndmi|ndvi|savi).tif$&quot;</span>, <span class="kw">dir</span>(image.dir, <span class="dt">full.names=</span><span class="ot">TRUE</span>), <span class="dt">value=</span><span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb5-231" data-line-number="231">      }</a>
-<a class="sourceLine" id="cb5-232" data-line-number="232">      </a>
-<a class="sourceLine" id="cb5-233" data-line-number="233">      image.bands  &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;^.*_&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(image))</a>
-<a class="sourceLine" id="cb5-234" data-line-number="234">      </a>
-<a class="sourceLine" id="cb5-235" data-line-number="235">      <span class="co"># check the number and order of stack-layers</span></a>
-<a class="sourceLine" id="cb5-236" data-line-number="236">      <span class="cf">if</span>(<span class="kw">nlayers</span>(image)<span class="op">!=</span><span class="dv">14</span> <span class="op">||</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-237" data-line-number="237"><span class="st">         </span>(image.sensor<span class="op">==</span><span class="st">&quot;LC08&quot;</span> <span class="op">&amp;&amp;</span><span class="st"> </span>image.bands<span class="op">!=</span><span class="kw">c</span>(<span class="st">&quot;qa&quot;</span>, <span class="st">&quot;band2&quot;</span>, <span class="st">&quot;band3&quot;</span>, <span class="st">&quot;band4&quot;</span>, <span class="st">&quot;band5&quot;</span>, <span class="st">&quot;band6&quot;</span>, <span class="st">&quot;band7&quot;</span>, <span class="st">&quot;evi&quot;</span>, <span class="st">&quot;msavi&quot;</span>, <span class="st">&quot;nbr&quot;</span>, <span class="st">&quot;nbr2&quot;</span>, <span class="st">&quot;ndmi&quot;</span>, <span class="st">&quot;ndvi&quot;</span>, <span class="st">&quot;savi&quot;</span>)) <span class="op">||</span></a>
-<a class="sourceLine" id="cb5-238" data-line-number="238"><span class="st">         </span>(image.sensor<span class="op">!=</span><span class="st">&quot;LC08&quot;</span> <span class="op">&amp;&amp;</span><span class="st"> </span>image.bands<span class="op">!=</span><span class="kw">c</span>(<span class="st">&quot;qa&quot;</span>, <span class="st">&quot;band1&quot;</span>, <span class="st">&quot;band2&quot;</span>, <span class="st">&quot;band3&quot;</span>, <span class="st">&quot;band4&quot;</span>, <span class="st">&quot;band5&quot;</span>, <span class="st">&quot;band7&quot;</span>, <span class="st">&quot;evi&quot;</span>, <span class="st">&quot;msavi&quot;</span>, <span class="st">&quot;nbr&quot;</span>, <span class="st">&quot;nbr2&quot;</span>, <span class="st">&quot;ndmi&quot;</span>, <span class="st">&quot;ndvi&quot;</span>, <span class="st">&quot;savi&quot;</span>)))</a>
-<a class="sourceLine" id="cb5-239" data-line-number="239">        <span class="kw">stop</span>(<span class="st">&quot;image does not have the correct number/order of bands (qa, B, G, R, NIR, SWIR1, SWIR2, evi, msavi, nbr, nbr2, ndmi, ndvi, savi)&quot;</span>)</a>
-<a class="sourceLine" id="cb5-240" data-line-number="240">      </a>
-<a class="sourceLine" id="cb5-241" data-line-number="241">      image.name   &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="kw">names</span>(image)[<span class="dv">1</span>], <span class="dv">1</span>, <span class="dv">40</span>)</a>
-<a class="sourceLine" id="cb5-242" data-line-number="242">      image.scene  &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">substr</span>(image.name, <span class="dv">11</span>, <span class="dv">13</span>), <span class="st">&quot;_&quot;</span>, <span class="kw">substr</span>(image.name, <span class="dv">14</span>, <span class="dv">16</span>))</a>
-<a class="sourceLine" id="cb5-243" data-line-number="243">      image.date   &lt;-<span class="st"> </span><span class="kw">substr</span>(image.name, <span class="dv">18</span>, <span class="dv">21</span>)</a>
-<a class="sourceLine" id="cb5-244" data-line-number="244">      </a>
-<a class="sourceLine" id="cb5-245" data-line-number="245">      image.path   &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(image.scene, <span class="dv">1</span>, <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb5-246" data-line-number="246">      image.row    &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(image.scene, <span class="dv">5</span>, <span class="dv">7</span>))</a>
-<a class="sourceLine" id="cb5-247" data-line-number="247">      </a>
-<a class="sourceLine" id="cb5-248" data-line-number="248">      <span class="kw">message</span>(<span class="st">&quot;- &quot;</span>, image.name, <span class="st">&quot;: &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-249" data-line-number="249">      </a>
-<a class="sourceLine" id="cb5-250" data-line-number="250">      <span class="co"># image &lt;- image[[1]]</span></a>
-<a class="sourceLine" id="cb5-251" data-line-number="251">      </a>
-<a class="sourceLine" id="cb5-252" data-line-number="252">      <span class="co"># crop and mask the image with extent (if any)</span></a>
-<a class="sourceLine" id="cb5-253" data-line-number="253">      <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(ext)) {</a>
-<a class="sourceLine" id="cb5-254" data-line-number="254">        <span class="kw">message</span>(<span class="st">&quot;crop ext ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-255" data-line-number="255">        image &lt;-<span class="st"> </span><span class="kw">crop</span>(image, ext)</a>
-<a class="sourceLine" id="cb5-256" data-line-number="256">      }</a>
-<a class="sourceLine" id="cb5-257" data-line-number="257">      </a>
-<a class="sourceLine" id="cb5-258" data-line-number="258">      <span class="co"># crop/mask with WRS</span></a>
-<a class="sourceLine" id="cb5-259" data-line-number="259">      <span class="kw">message</span>(<span class="st">&quot;crop/mask WRS2 ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-260" data-line-number="260">      wrs &lt;-<span class="st"> </span><span class="kw">spTransform</span>(WRS[WRS<span class="op">$</span>PATH<span class="op">==</span>image.path <span class="op">&amp;</span><span class="st"> </span>WRS<span class="op">$</span>ROW<span class="op">==</span>image.row, ], <span class="dt">CRS=</span><span class="kw">crs</span>(image))</a>
-<a class="sourceLine" id="cb5-261" data-line-number="261">      image &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(image, wrs), wrs)</a>
-<a class="sourceLine" id="cb5-262" data-line-number="262">      </a>
-<a class="sourceLine" id="cb5-263" data-line-number="263">      <span class="co"># extract and mask with quality band</span></a>
-<a class="sourceLine" id="cb5-264" data-line-number="264">      qa &lt;-<span class="st"> </span>image[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb5-265" data-line-number="265">      image &lt;-<span class="st"> </span><span class="kw">dropLayer</span>(image, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb5-266" data-line-number="266">      </a>
-<a class="sourceLine" id="cb5-267" data-line-number="267">      <span class="co"># message(&quot;mask cloud/shadow ... &quot;, appendLF = FALSE)</span></a>
-<a class="sourceLine" id="cb5-268" data-line-number="268">      <span class="co"># if(image.sensor==&quot;LC08&quot;) {</span></a>
-<a class="sourceLine" id="cb5-269" data-line-number="269">      <span class="co">#   # Landsat 8: values 392 -  480 / 840 - 880 / 904 - 992 are medium to high confidence cloud/ice/shadow</span></a>
-<a class="sourceLine" id="cb5-270" data-line-number="270">      <span class="co">#   # https://prd-wret.s3-us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/LSDS-1368_%20L8_Surface-Reflectance-Code-LASRC-Product-Guide.pdf (p. 22)</span></a>
-<a class="sourceLine" id="cb5-271" data-line-number="271">      <span class="co">#   qa[qa %in% c(392, 400, 416, 432, 480,</span></a>
-<a class="sourceLine" id="cb5-272" data-line-number="272">      <span class="co">#                840, 848, 864, 880,</span></a>
-<a class="sourceLine" id="cb5-273" data-line-number="273">      <span class="co">#                904, 912, 928, 944, 992)] &lt;- NA</span></a>
-<a class="sourceLine" id="cb5-274" data-line-number="274">      <span class="co">#   </span></a>
-<a class="sourceLine" id="cb5-275" data-line-number="275">      <span class="co"># } else {</span></a>
-<a class="sourceLine" id="cb5-276" data-line-number="276">      <span class="co">#   # Landsat 4-7: values ≥ 136 are medium to high confidence cloud/ice/shadow</span></a>
-<a class="sourceLine" id="cb5-277" data-line-number="277">      <span class="co">#   # https://prd-wret.s3-us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/LSDS-1370_L4-7_Surface%20Reflectance-LEDAPS-Product-Guide.pdf</span></a>
-<a class="sourceLine" id="cb5-278" data-line-number="278">      <span class="co">#   qa[qa &gt;= 136] &lt;- NA</span></a>
-<a class="sourceLine" id="cb5-279" data-line-number="279">      <span class="co"># }</span></a>
-<a class="sourceLine" id="cb5-280" data-line-number="280">      <span class="co"># image &lt;- mask(image, qa)</span></a>
-<a class="sourceLine" id="cb5-281" data-line-number="281">      </a>
-<a class="sourceLine" id="cb5-282" data-line-number="282">      <span class="co"># remove non-valid reflectance values</span></a>
-<a class="sourceLine" id="cb5-283" data-line-number="283">      <span class="kw">message</span>(<span class="st">&quot;clean sr ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-284" data-line-number="284">      <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>) {</a>
-<a class="sourceLine" id="cb5-285" data-line-number="285">        image[[i]] &lt;-<span class="st"> </span><span class="kw">reclassify</span>(image[[i]], <span class="kw">cbind</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="dv">0</span>, <span class="ot">NA</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-286" data-line-number="286">        image[[i]] &lt;-<span class="st"> </span><span class="kw">reclassify</span>(image[[i]], <span class="kw">cbind</span>(<span class="dv">10000</span>, <span class="ot">Inf</span>, <span class="ot">NA</span>), <span class="dt">right=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-287" data-line-number="287">      }</a>
-<a class="sourceLine" id="cb5-288" data-line-number="288">      <span class="co"># remove non-valid index values</span></a>
-<a class="sourceLine" id="cb5-289" data-line-number="289">      <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">7</span><span class="op">:</span><span class="dv">13</span>) {</a>
-<a class="sourceLine" id="cb5-290" data-line-number="290">        image[[i]] &lt;-<span class="st"> </span><span class="kw">reclassify</span>(image[[i]], <span class="kw">cbind</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="dv">-10000</span>, <span class="ot">NA</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-291" data-line-number="291">        image[[i]] &lt;-<span class="st"> </span><span class="kw">reclassify</span>(image[[i]], <span class="kw">cbind</span>(<span class="dv">10000</span>, <span class="ot">Inf</span>, <span class="ot">NA</span>), <span class="dt">right=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-292" data-line-number="292">      }</a>
-<a class="sourceLine" id="cb5-293" data-line-number="293"></a>
-<a class="sourceLine" id="cb5-294" data-line-number="294">      <span class="co"># set whole stack to NA where one single layer is NA</span></a>
-<a class="sourceLine" id="cb5-295" data-line-number="295">      m &lt;-<span class="st"> </span><span class="kw">sum</span>(image)</a>
-<a class="sourceLine" id="cb5-296" data-line-number="296">      image &lt;-<span class="st"> </span><span class="kw">mask</span>(image, m)</a>
-<a class="sourceLine" id="cb5-297" data-line-number="297"></a>
-<a class="sourceLine" id="cb5-298" data-line-number="298">      <span class="kw">names</span>(image) &lt;-<span class="st"> </span>BANDS[<span class="op">-</span><span class="kw">c</span>(<span class="kw">length</span>(BANDS)<span class="op">-</span><span class="dv">1</span><span class="op">:</span><span class="dv">0</span>)]</a>
-<a class="sourceLine" id="cb5-299" data-line-number="299"></a>
-<a class="sourceLine" id="cb5-300" data-line-number="300">      <span class="co"># write out the individual images</span></a>
-<a class="sourceLine" id="cb5-301" data-line-number="301">      <span class="co"># message(&quot;writing scene ... &quot;, appendLF = FALSE)</span></a>
-<a class="sourceLine" id="cb5-302" data-line-number="302">      <span class="co"># filename.scene &lt;- sub(&quot;complete&quot;, paste0(&quot;r0&quot;, image.row), sub(paste0(&quot;p&quot;, image.path, &quot;_&quot;), paste0(&quot;p&quot;, image.path, &quot;_r0&quot;, image.row, &quot;_&quot;), filename))</span></a>
-<a class="sourceLine" id="cb5-303" data-line-number="303">      <span class="co"># image &lt;- writeRaster(image, filename = filename.scene, overwrite = TRUE, datatype=&quot;INT2S&quot;, options=c(&quot;COMPRESS=NONE&quot;))</span></a>
-<a class="sourceLine" id="cb5-304" data-line-number="304">      <span class="co"># qa    &lt;- writeRaster(qa,    filename = sub(&quot;[.]tif$&quot;, paste0(&quot;_qa&quot;, image.sensor, &quot;.tif&quot;), filename.scene), overwrite = TRUE, datatype=&quot;INT2S&quot;, options=c(&quot;COMPRESS=NONE&quot;))</span></a>
-<a class="sourceLine" id="cb5-305" data-line-number="305">      <span class="co"># message(&quot;done&quot;)</span></a>
-<a class="sourceLine" id="cb5-306" data-line-number="306">      </a>
-<a class="sourceLine" id="cb5-307" data-line-number="307">      images[[<span class="kw">length</span>(images)<span class="op">+</span><span class="dv">1</span>]] &lt;-<span class="st"> </span>image</a>
-<a class="sourceLine" id="cb5-308" data-line-number="308">      qas[[<span class="kw">length</span>(qas)<span class="op">+</span><span class="dv">1</span>]] &lt;-<span class="st"> </span>qa</a>
-<a class="sourceLine" id="cb5-309" data-line-number="309">    }</a>
-<a class="sourceLine" id="cb5-310" data-line-number="310">    </a>
-<a class="sourceLine" id="cb5-311" data-line-number="311">    </a>
-<a class="sourceLine" id="cb5-312" data-line-number="312">    <span class="co"># merge the images in the list</span></a>
-<a class="sourceLine" id="cb5-313" data-line-number="313">    <span class="kw">message</span>(<span class="st">&quot;- merging scenes ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-314" data-line-number="314">    out.image &lt;-<span class="st"> </span><span class="kw">do.call</span>(merge, images)</a>
-<a class="sourceLine" id="cb5-315" data-line-number="315">    out.qa &lt;-<span class="st"> </span><span class="kw">do.call</span>(merge, qas)</a>
-<a class="sourceLine" id="cb5-316" data-line-number="316">    </a>
-<a class="sourceLine" id="cb5-317" data-line-number="317">    </a>
-<a class="sourceLine" id="cb5-318" data-line-number="318">    <span class="co"># write it to a file</span></a>
-<a class="sourceLine" id="cb5-319" data-line-number="319">    <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(filename) <span class="op">&amp;&amp;</span><span class="st"> </span>(<span class="op">!</span><span class="kw">file.exists</span>(filename) <span class="op">||</span><span class="st"> </span>overwrite <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb5-320" data-line-number="320">      <span class="kw">message</span>(<span class="st">&quot;writing to file &quot;</span>, filename, <span class="st">&quot; ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-321" data-line-number="321">      out.image &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(out.image, <span class="dt">filename =</span> filename, <span class="dt">overwrite =</span> overwrite, <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">options=</span><span class="kw">c</span>(<span class="st">&quot;COMPRESS=NONE&quot;</span>))</a>
-<a class="sourceLine" id="cb5-322" data-line-number="322">      <span class="kw">names</span>(out.image) &lt;-<span class="st"> </span>BANDS[<span class="op">-</span><span class="kw">c</span>(<span class="kw">length</span>(BANDS)<span class="op">-</span><span class="dv">1</span><span class="op">:</span><span class="dv">0</span>)]</a>
-<a class="sourceLine" id="cb5-323" data-line-number="323">      out.qa &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(out.qa, <span class="dt">filename =</span> <span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_qa&quot;</span>, image.sensor, <span class="st">&quot;.tif&quot;</span>), filename), <span class="dt">overwrite =</span> overwrite, <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>)</a>
-<a class="sourceLine" id="cb5-324" data-line-number="324">    }</a>
-<a class="sourceLine" id="cb5-325" data-line-number="325">  }</a>
-<a class="sourceLine" id="cb5-326" data-line-number="326">  </a>
-<a class="sourceLine" id="cb5-327" data-line-number="327">  <span class="kw">message</span>(<span class="st">&quot;done&quot;</span>)</a>
-<a class="sourceLine" id="cb5-328" data-line-number="328">  </a>
-<a class="sourceLine" id="cb5-329" data-line-number="329">  <span class="kw">print</span>(out.image)</a>
-<a class="sourceLine" id="cb5-330" data-line-number="330">  </a>
-<a class="sourceLine" id="cb5-331" data-line-number="331">  <span class="co"># close the logfile</span></a>
-<a class="sourceLine" id="cb5-332" data-line-number="332">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename) <span class="op">&amp;</span><span class="st"> </span>log<span class="op">==</span><span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb5-333" data-line-number="333">    <span class="kw">sink</span>(<span class="dt">type=</span><span class="st">&quot;output&quot;</span>)</a>
-<a class="sourceLine" id="cb5-334" data-line-number="334">    <span class="kw">sink</span>(<span class="dt">type=</span><span class="st">&quot;message&quot;</span>)</a>
-<a class="sourceLine" id="cb5-335" data-line-number="335">  }</a>
-<a class="sourceLine" id="cb5-336" data-line-number="336">  </a>
-<a class="sourceLine" id="cb5-337" data-line-number="337">  <span class="co"># return image invisibly</span></a>
-<a class="sourceLine" id="cb5-338" data-line-number="338">  <span class="kw">invisible</span>(out.image)</a>
-<a class="sourceLine" id="cb5-339" data-line-number="339">  </a>
-<a class="sourceLine" id="cb5-340" data-line-number="340">}</a>
-<a class="sourceLine" id="cb5-341" data-line-number="341"></a>
-<a class="sourceLine" id="cb5-342" data-line-number="342"></a>
-<a class="sourceLine" id="cb5-343" data-line-number="343"></a>
-<a class="sourceLine" id="cb5-344" data-line-number="344"></a>
-<a class="sourceLine" id="cb5-345" data-line-number="345"></a>
-<a class="sourceLine" id="cb5-346" data-line-number="346"></a>
-<a class="sourceLine" id="cb5-347" data-line-number="347"><span class="co"># DO THE WORK ---------</span></a>
-<a class="sourceLine" id="cb5-348" data-line-number="348"><span class="co">## @knitr execute</span></a>
-<a class="sourceLine" id="cb5-349" data-line-number="349"><span class="co"># be careful, can easily fill the tmp directory! Maybe only for a part of the images and then restart R</span></a>
-<a class="sourceLine" id="cb5-350" data-line-number="350"></a>
-<a class="sourceLine" id="cb5-351" data-line-number="351"><span class="co"># extent of Togo + 5km buffer</span></a>
-<a class="sourceLine" id="cb5-352" data-line-number="352">TGO.ext<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">extent</span>(<span class="kw">spTransform</span>(TGO, utm<span class="fl">.30</span>)) <span class="op">+</span><span class="st"> </span><span class="dv">10000</span></a>
-<a class="sourceLine" id="cb5-353" data-line-number="353"></a>
-<a class="sourceLine" id="cb5-354" data-line-number="354"><span class="co"># go through all scenes (path/row) ...</span></a>
-<a class="sourceLine" id="cb5-355" data-line-number="355"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb5-356" data-line-number="356"><span class="co">#foreach(i=1:length(in.image.list)) %dopar% { # 1) %do% { </span></a>
-<a class="sourceLine" id="cb5-357" data-line-number="357"><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="dv">13</span>) <span class="op">%dopar%</span><span class="st"> </span>{ <span class="co"># 1) %do% { </span></a>
-<a class="sourceLine" id="cb5-358" data-line-number="358">  </a>
-<a class="sourceLine" id="cb5-359" data-line-number="359">  in.image.dirs &lt;-<span class="st"> </span>in.image.list[[i]]</a>
-<a class="sourceLine" id="cb5-360" data-line-number="360">  </a>
-<a class="sourceLine" id="cb5-361" data-line-number="361">  name &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">strsplit</span>(<span class="kw">names</span>(in.image.list[i]), <span class="st">&quot;[.]&quot;</span>))</a>
-<a class="sourceLine" id="cb5-362" data-line-number="362">  path &lt;-<span class="st"> </span>name[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb5-363" data-line-number="363">  year &lt;-<span class="st"> </span>name[<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb5-364" data-line-number="364">  tile &lt;-<span class="st"> </span>name[<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb5-365" data-line-number="365">  </a>
-<a class="sourceLine" id="cb5-366" data-line-number="366">  <span class="cf">if</span>(path <span class="op">==</span><span class="st"> &quot;p194&quot;</span>) tmp.ext &lt;-<span class="st"> </span>TGO.ext<span class="fl">.30</span> <span class="cf">else</span> tmp.ext &lt;-<span class="st"> </span>TGO.ext</a>
-<a class="sourceLine" id="cb5-367" data-line-number="367">  </a>
-<a class="sourceLine" id="cb5-368" data-line-number="368">  out.image.dir &lt;-<span class="st"> </span><span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/&quot;</span>, path)</a>
-<a class="sourceLine" id="cb5-369" data-line-number="369">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">dir.exists</span>(out.image.dir)) <span class="kw">dir.create</span>(out.image.dir)</a>
-<a class="sourceLine" id="cb5-370" data-line-number="370">  </a>
-<a class="sourceLine" id="cb5-371" data-line-number="371">  <span class="cf">if</span>(<span class="kw">is.na</span>(tile)) {</a>
-<a class="sourceLine" id="cb5-372" data-line-number="372">    filename &lt;-<span class="st"> </span><span class="kw">paste0</span>(out.image.dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_&quot;</span>, year, <span class="st">&quot;.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb5-373" data-line-number="373">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb5-374" data-line-number="374">    filename &lt;-<span class="st"> </span><span class="kw">paste0</span>(out.image.dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_&quot;</span>, year, <span class="st">&quot;_&quot;</span>, tile, <span class="st">&quot;.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb5-375" data-line-number="375">  }</a>
-<a class="sourceLine" id="cb5-376" data-line-number="376">  </a>
-<a class="sourceLine" id="cb5-377" data-line-number="377">  <span class="kw">message</span>(<span class="st">&quot;Processing &quot;</span>, path, <span class="st">&quot;_&quot;</span>, year)</a>
-<a class="sourceLine" id="cb5-378" data-line-number="378">  <span class="kw">prepare.image</span>(in.image.dirs, <span class="dt">ext =</span> tmp.ext, <span class="dt">filename =</span> filename, <span class="dt">overwrite=</span><span class="ot">FALSE</span>, <span class="dt">log=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-379" data-line-number="379">  </a>
-<a class="sourceLine" id="cb5-380" data-line-number="380">}</a>
-<a class="sourceLine" id="cb5-381" data-line-number="381"></a>
-<a class="sourceLine" id="cb5-382" data-line-number="382"></a>
-<a class="sourceLine" id="cb5-383" data-line-number="383"><span class="co"># remove temporary files</span></a>
-<a class="sourceLine" id="cb5-384" data-line-number="384">tmp_dir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</a>
-<a class="sourceLine" id="cb5-385" data-line-number="385">files &lt;-<span class="st"> </span><span class="kw">list.files</span>(tmp_dir, <span class="dt">full.names =</span> T, <span class="dt">recursive=</span>T)</a>
-<a class="sourceLine" id="cb5-386" data-line-number="386"><span class="kw">file.remove</span>(files)</a>
-<a class="sourceLine" id="cb5-387" data-line-number="387"></a>
-<a class="sourceLine" id="cb5-388" data-line-number="388"><span class="co"># merge logfiles -------------------</span></a>
-<a class="sourceLine" id="cb5-389" data-line-number="389"></a>
-<a class="sourceLine" id="cb5-390" data-line-number="390"><span class="cf">for</span>(dir <span class="cf">in</span> <span class="kw">dir</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/&quot;</span>), <span class="dt">full.names=</span><span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb5-391" data-line-number="391">  path &lt;-<span class="st"> </span><span class="kw">basename</span>(dir)</a>
-<a class="sourceLine" id="cb5-392" data-line-number="392">  <span class="kw">system</span>(<span class="kw">paste0</span>(<span class="st">&quot;tail -n +1 &quot;</span>, dir, <span class="st">&quot;/*.log &gt; &quot;</span>, dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;.tmp&quot;</span>))</a>
-<a class="sourceLine" id="cb5-393" data-line-number="393">  <span class="kw">system</span>(<span class="kw">paste0</span>(<span class="st">&quot;rm &quot;</span>, dir, <span class="st">&quot;/*.log&quot;</span>))</a>
-<a class="sourceLine" id="cb5-394" data-line-number="394">  <span class="kw">system</span>(<span class="kw">paste0</span>(<span class="st">&quot;mv &quot;</span>, dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;.tmp &quot;</span>, dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;.log&quot;</span>))</a>
-<a class="sourceLine" id="cb5-395" data-line-number="395">}</a>
-<a class="sourceLine" id="cb5-396" data-line-number="396"></a>
-<a class="sourceLine" id="cb5-397" data-line-number="397"></a>
-<a class="sourceLine" id="cb5-398" data-line-number="398"><span class="co"># Reprojection of p194 images from UTM 30 to UTM 31 --------------------------</span></a>
-<a class="sourceLine" id="cb5-399" data-line-number="399">in.dir  &lt;-<span class="st"> &quot;../output/1_images/p194&quot;</span></a>
-<a class="sourceLine" id="cb5-400" data-line-number="400"></a>
-<a class="sourceLine" id="cb5-401" data-line-number="401"></a>
-<a class="sourceLine" id="cb5-402" data-line-number="402"><span class="co"># warp p194 UTM 30 images to UTM 31</span></a>
-<a class="sourceLine" id="cb5-403" data-line-number="403"><span class="kw">foreach</span>(<span class="dt">image=</span><span class="kw">dir</span>(in.dir, <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb5-404" data-line-number="404">  </a>
-<a class="sourceLine" id="cb5-405" data-line-number="405">  image  &lt;-<span class="st"> </span><span class="kw">paste0</span>(in.dir,  <span class="st">&quot;/&quot;</span>, image)</a>
-<a class="sourceLine" id="cb5-406" data-line-number="406">  image.utm30 &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="st">&quot;utm30.tif&quot;</span>, image)</a>
-<a class="sourceLine" id="cb5-407" data-line-number="407">  <span class="kw">file.rename</span>(image, image.utm30)</a>
-<a class="sourceLine" id="cb5-408" data-line-number="408">  </a>
-<a class="sourceLine" id="cb5-409" data-line-number="409">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
-<a class="sourceLine" id="cb5-410" data-line-number="410">               image.utm30,</a>
-<a class="sourceLine" id="cb5-411" data-line-number="411">               <span class="st">&quot;-t_srs &#39;+proj=utm +zone=31 +datum=WGS84&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-412" data-line-number="412">               <span class="st">&quot;-tr 30 30&quot;</span>,</a>
-<a class="sourceLine" id="cb5-413" data-line-number="413">               <span class="st">&quot;-te 147255 1017495 222165 1238265&quot;</span>,</a>
-<a class="sourceLine" id="cb5-414" data-line-number="414">               image,</a>
-<a class="sourceLine" id="cb5-415" data-line-number="415">               <span class="st">&quot;-ot &#39;Int16&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-416" data-line-number="416">               <span class="st">&quot;-overwrite&quot;</span>))</a>
-<a class="sourceLine" id="cb5-417" data-line-number="417">  </a>
-<a class="sourceLine" id="cb5-418" data-line-number="418">  <span class="kw">file.remove</span>(image.utm30)</a>
-<a class="sourceLine" id="cb5-419" data-line-number="419">}</a>
-<a class="sourceLine" id="cb5-420" data-line-number="420"></a>
-<a class="sourceLine" id="cb5-421" data-line-number="421"></a>
-<a class="sourceLine" id="cb5-422" data-line-number="422"><span class="co"># cloud/shadow mask the images ----------------------------</span></a>
-<a class="sourceLine" id="cb5-423" data-line-number="423"></a>
-<a class="sourceLine" id="cb5-424" data-line-number="424"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb5-425" data-line-number="425"><span class="kw">foreach</span>(<span class="dt">file=</span> <span class="kw">c</span>(<span class="kw">dir</span>(<span class="st">&quot;../output/1_images/p192&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;.*</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb5-426" data-line-number="426">                <span class="kw">dir</span>(<span class="st">&quot;../output/1_images/p193&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;.*</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb5-427" data-line-number="427">                <span class="kw">dir</span>(<span class="st">&quot;../output/1_images/p194&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;.*</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>))) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb5-428" data-line-number="428">    qa    &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">dir</span>(<span class="kw">dirname</span>(file), <span class="dt">pattern=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">_&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="st">&quot;_qa*&quot;</span>, <span class="kw">basename</span>(file))), <span class="dt">full.names=</span><span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb5-429" data-line-number="429">    image &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">brick</span>(file), qa <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(qa.cloud, qa.shadow, qa.water, qa.ice), <span class="dt">maskvalue=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-430" data-line-number="430">    <span class="kw">writeRaster</span>(image, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="st">&quot;_m.tif&quot;</span>, file), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">options=</span><span class="kw">c</span>(<span class="st">&quot;COMPRESS=NONE&quot;</span>))</a>
-<a class="sourceLine" id="cb5-431" data-line-number="431">}</a>
-<a class="sourceLine" id="cb5-432" data-line-number="432"></a>
-<a class="sourceLine" id="cb5-433" data-line-number="433"></a>
-<a class="sourceLine" id="cb5-434" data-line-number="434"><span class="co"># Thumbnails of each scene -------------------------------</span></a>
-<a class="sourceLine" id="cb5-435" data-line-number="435"><span class="kw">foreach</span>(<span class="dt">filename=</span><span class="kw">dir</span>(<span class="st">&quot;../output/1_images&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;p19.*[.]tif$&quot;</span>, <span class="dt">recursive=</span><span class="ot">TRUE</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb5-436" data-line-number="436">  image &lt;-<span class="st"> </span><span class="kw">brick</span>(filename)</a>
-<a class="sourceLine" id="cb5-437" data-line-number="437">  <span class="kw">jpeg</span>(<span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="st">&quot;.jpeg&quot;</span>, filename), <span class="dt">width=</span><span class="dv">1350</span>, <span class="dt">height=</span><span class="dv">3000</span>)</a>
-<a class="sourceLine" id="cb5-438" data-line-number="438">  <span class="kw">par</span>(<span class="dt">plt=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb5-439" data-line-number="439">  <span class="kw">plot</span>(<span class="kw">spTransform</span>(TGO, utm<span class="fl">.31</span>))</a>
-<a class="sourceLine" id="cb5-440" data-line-number="440">  <span class="kw">plotRGB</span>(image, <span class="dt">r=</span><span class="dv">6</span>, <span class="dt">g=</span><span class="dv">5</span>, <span class="dt">b=</span><span class="dv">3</span>, <span class="dt">stretch=</span><span class="st">&quot;lin&quot;</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-441" data-line-number="441">  <span class="kw">plot</span>(<span class="kw">mask</span>(image[[<span class="dv">1</span>]], <span class="kw">spTransform</span>(TGO, utm<span class="fl">.31</span>), <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-442" data-line-number="442">  <span class="kw">plot</span>(<span class="kw">spTransform</span>(TGO, utm<span class="fl">.31</span>), <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb5-443" data-line-number="443">  <span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb5-444" data-line-number="444">  </a>
-<a class="sourceLine" id="cb5-445" data-line-number="445">}</a>
-<a class="sourceLine" id="cb5-446" data-line-number="446"></a>
-<a class="sourceLine" id="cb5-447" data-line-number="447"></a>
-<a class="sourceLine" id="cb5-448" data-line-number="448"><span class="co"># Prepare SRTM DEM ----------------------------</span></a>
-<a class="sourceLine" id="cb5-449" data-line-number="449"></a>
-<a class="sourceLine" id="cb5-450" data-line-number="450"><span class="co"># Load 90m SRTM DEM (source: CGIAR),</span></a>
-<a class="sourceLine" id="cb5-451" data-line-number="451">dem<span class="fl">.90</span> &lt;-<span class="st"> </span><span class="kw">do.call</span>(merge, <span class="kw">lapply</span>(<span class="kw">as.list</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/SRTM/3arcsecond&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)), raster))</a>
-<a class="sourceLine" id="cb5-452" data-line-number="452"></a>
-<a class="sourceLine" id="cb5-453" data-line-number="453"></a>
-<a class="sourceLine" id="cb5-454" data-line-number="454"><span class="co"># Merge 30m SRTM DEM and fill voids with 90m SRTM (source: USGS)</span></a>
-<a class="sourceLine" id="cb5-455" data-line-number="455">dem<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">tile=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/SRTM/1arcsecond&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb5-456" data-line-number="456">                  <span class="dt">.combine=</span>merge, <span class="dt">.multicombine=</span><span class="ot">TRUE</span>) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb5-457" data-line-number="457">                    dem.<span class="fl">30.</span>t &lt;-<span class="st"> </span><span class="kw">raster</span>(tile)</a>
-<a class="sourceLine" id="cb5-458" data-line-number="458">                    dem.<span class="fl">90.</span>t &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">projectRaster</span>(dem<span class="fl">.90</span>, dem.<span class="fl">30.</span>t))</a>
-<a class="sourceLine" id="cb5-459" data-line-number="459">                    <span class="kw">merge</span>(dem.<span class="fl">30.</span>t, dem.<span class="fl">90.</span>t)</a>
-<a class="sourceLine" id="cb5-460" data-line-number="460">                  }</a>
-<a class="sourceLine" id="cb5-461" data-line-number="461"></a>
-<a class="sourceLine" id="cb5-462" data-line-number="462"><span class="co"># write it to the disk and reproject to reference Landsat image</span></a>
-<a class="sourceLine" id="cb5-463" data-line-number="463"><span class="kw">writeRaster</span>(dem<span class="fl">.30</span>, <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec_raw.tif&quot;</span>), <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-464" data-line-number="464"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
-<a class="sourceLine" id="cb5-465" data-line-number="465">             <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec_raw.tif&quot;</span>),</a>
-<a class="sourceLine" id="cb5-466" data-line-number="466">             <span class="st">&quot;-t_srs &#39;+proj=utm +zone=31 +datum=WGS84&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-467" data-line-number="467">             <span class="st">&quot;-tr 30 30&quot;</span>,</a>
-<a class="sourceLine" id="cb5-468" data-line-number="468">             <span class="kw">paste</span>(<span class="st">&quot;-te&quot;</span>, TGO.ext<span class="op">@</span>xmin, TGO.ext<span class="op">@</span>ymin, TGO.ext<span class="op">@</span>xmax, TGO.ext<span class="op">@</span>ymax),</a>
-<a class="sourceLine" id="cb5-469" data-line-number="469">             <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec.tif&quot;</span>),</a>
-<a class="sourceLine" id="cb5-470" data-line-number="470">             <span class="st">&quot;-ot &#39;Int16&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-471" data-line-number="471">             <span class="st">&quot;-co COMPRESS=&#39;LZW&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-472" data-line-number="472">             <span class="st">&quot;-co INTERLEAVE=&#39;BAND&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-473" data-line-number="473">             <span class="st">&quot;-overwrite&quot;</span>))</a>
-<a class="sourceLine" id="cb5-474" data-line-number="474"></a>
-<a class="sourceLine" id="cb5-475" data-line-number="475"><span class="kw">file.remove</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec_raw.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb5-476" data-line-number="476"></a>
-<a class="sourceLine" id="cb5-477" data-line-number="477"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalinfo -stats&quot;</span>,</a>
-<a class="sourceLine" id="cb5-478" data-line-number="478">             <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec.tif&quot;</span>)))</a>
-<a class="sourceLine" id="cb5-479" data-line-number="479"></a>
-<a class="sourceLine" id="cb5-480" data-line-number="480">dem &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb5-481" data-line-number="481"></a>
-<a class="sourceLine" id="cb5-482" data-line-number="482"><span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">1350</span>, <span class="dt">height=</span><span class="dv">3000</span>)</a>
-<a class="sourceLine" id="cb5-483" data-line-number="483"><span class="kw">par</span>(<span class="dt">plt=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb5-484" data-line-number="484"><span class="kw">plot</span>(dem)</a>
-<a class="sourceLine" id="cb5-485" data-line-number="485"><span class="kw">plot</span>(<span class="kw">mask</span>(dem, TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-486" data-line-number="486"><span class="kw">plot</span>(TGO, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb5-487" data-line-number="487"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb5-488" data-line-number="488"></a>
-<a class="sourceLine" id="cb5-489" data-line-number="489"></a>
-<a class="sourceLine" id="cb5-490" data-line-number="490"></a>
-<a class="sourceLine" id="cb5-491" data-line-number="491"><span class="co"># Prepare Worldclim v2 Data ----------------------------</span></a>
-<a class="sourceLine" id="cb5-492" data-line-number="492"></a>
-<a class="sourceLine" id="cb5-493" data-line-number="493"><span class="kw">foreach</span>(<span class="dt">file=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/Worldclim&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*Togo[.]tif$&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb5-494" data-line-number="494">  <span class="co"># wc.raster &lt;- raster(paste0(INPUT.DIR, &quot;/Worldclim/&quot;, file))</span></a>
-<a class="sourceLine" id="cb5-495" data-line-number="495">  <span class="co"># raster.downscale(raster(paste0(INPUT.DIR, &quot;/Worldclim/&quot;, file)), dem.30, ...)</span></a>
-<a class="sourceLine" id="cb5-496" data-line-number="496">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
-<a class="sourceLine" id="cb5-497" data-line-number="497">               <span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/Worldclim/&quot;</span>, file),</a>
-<a class="sourceLine" id="cb5-498" data-line-number="498">               <span class="st">&quot;-t_srs &#39;+proj=utm +zone=31 +datum=WGS84&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-499" data-line-number="499">               <span class="st">&quot;-tr 30 30&quot;</span>,</a>
-<a class="sourceLine" id="cb5-500" data-line-number="500">               <span class="kw">paste</span>(<span class="st">&quot;-te&quot;</span>, TGO.ext<span class="op">@</span>xmin, TGO.ext<span class="op">@</span>ymin, TGO.ext<span class="op">@</span>xmax, TGO.ext<span class="op">@</span>ymax),</a>
-<a class="sourceLine" id="cb5-501" data-line-number="501">               <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2/&quot;</span>, file),</a>
-<a class="sourceLine" id="cb5-502" data-line-number="502">               <span class="st">&quot;-dstnodata -3.4e+38&quot;</span>,</a>
-<a class="sourceLine" id="cb5-503" data-line-number="503">               <span class="st">&quot;-co COMPRESS=&#39;LZW&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-504" data-line-number="504">               <span class="st">&quot;-co INTERLEAVE=&#39;BAND&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-505" data-line-number="505">               <span class="st">&quot;-overwrite&quot;</span>))</a>
-<a class="sourceLine" id="cb5-506" data-line-number="506">  </a>
-<a class="sourceLine" id="cb5-507" data-line-number="507">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalinfo -stats&quot;</span>,</a>
-<a class="sourceLine" id="cb5-508" data-line-number="508">               <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2/&quot;</span>, file)))</a>
-<a class="sourceLine" id="cb5-509" data-line-number="509">}</a>
-<a class="sourceLine" id="cb5-510" data-line-number="510"></a>
-<a class="sourceLine" id="cb5-511" data-line-number="511"><span class="kw">foreach</span>(<span class="dt">file=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb5-512" data-line-number="512">  image &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2/&quot;</span>, file))</a>
-<a class="sourceLine" id="cb5-513" data-line-number="513">  type &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">strsplit</span>(file, <span class="st">&quot;_&quot;</span>))[<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb5-514" data-line-number="514">  <span class="cf">if</span>      (type <span class="op">==</span><span class="st"> &quot;prec&quot;</span>) { zlim &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">320</span>);     col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">topo.colors</span>(<span class="dv">255</span>)) }</a>
-<a class="sourceLine" id="cb5-515" data-line-number="515">  <span class="cf">else</span> <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &quot;tmin&quot;</span>) { zlim &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">14.0</span>,<span class="fl">27.8</span>); col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">heat.colors</span>(<span class="dv">255</span>)) }</a>
-<a class="sourceLine" id="cb5-516" data-line-number="516">  <span class="cf">else</span> <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &quot;tmax&quot;</span>) { zlim &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">24.9</span>,<span class="fl">37.5</span>); col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">heat.colors</span>(<span class="dv">255</span>)) }</a>
-<a class="sourceLine" id="cb5-517" data-line-number="517">  <span class="cf">else</span> <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &quot;tavg&quot;</span>) { zlim &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">19.7</span>,<span class="fl">32.7</span>); col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">heat.colors</span>(<span class="dv">255</span>)) }</a>
-<a class="sourceLine" id="cb5-518" data-line-number="518">  <span class="cf">else</span>                     { zlim &lt;-<span class="st"> </span><span class="ot">NA</span>;           col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">cm.colors</span>(<span class="dv">255</span>)) }</a>
-<a class="sourceLine" id="cb5-519" data-line-number="519">  <span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="kw">nlayers</span>(image)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb5-520" data-line-number="520">    <span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="st">&quot;&quot;</span>, file), <span class="st">&quot;-&quot;</span>, <span class="kw">str_pad</span>(i, <span class="dv">2</span>, <span class="st">&quot;left&quot;</span>, <span class="dv">0</span>), <span class="st">&quot;.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">1350</span>, <span class="dt">height=</span><span class="dv">3000</span>)</a>
-<a class="sourceLine" id="cb5-521" data-line-number="521">    <span class="kw">plot</span>(image[[i]], <span class="dt">col=</span>col, <span class="dt">zlim=</span>zlim)</a>
-<a class="sourceLine" id="cb5-522" data-line-number="522">    <span class="kw">plot</span>(<span class="kw">mask</span>(image[[i]], TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-523" data-line-number="523">    <span class="kw">plot</span>(TGO, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb5-524" data-line-number="524">    <span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb5-525" data-line-number="525">  }</a>
-<a class="sourceLine" id="cb5-526" data-line-number="526">}</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">####################################################################</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co"># NERF_Togo/1_prepare-images.R: cleaning and stacking Landsat images</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co"># ------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co"># Bern University of Applied Sciences</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co"># 13 November 2019</span></a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">## @knitr load.images</span></a>
+<a class="sourceLine" id="cb5-9" title="9"></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co"># load WRS scenes</span></a>
+<a class="sourceLine" id="cb5-11" title="11">WRS &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/WRS2/WRS2_descending.shp&quot;</span>))</a>
+<a class="sourceLine" id="cb5-12" title="12"></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co"># Selection of images to prepare and to merge -------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-14" title="14"></a>
+<a class="sourceLine" id="cb5-15" title="15">in.image.list &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb5-16" title="16"></a>
+<a class="sourceLine" id="cb5-17" title="17">  <span class="co"># Path 192</span></a>
+<a class="sourceLine" id="cb5-18" title="18"></a>
+<a class="sourceLine" id="cb5-19" title="19">  <span class="dt">p192.1986 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/1986/LT051920541986011301T1-SC20190405164223/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-20" title="20">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/1986/LT051920551986011301T1-SC20190405164227/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-21" title="21">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/1986/LT051920561986011301T1-SC20190405164153/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-22" title="22"></a>
+<a class="sourceLine" id="cb5-23" title="23">  <span class="dt">p192.1987 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/1987/LT051920541986123101T1-SC20190405164150/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-24" title="24">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/1987/LT051920551986123101T1-SC20190405163521/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-25" title="25">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/1987/LT051920561986123101T1-SC20190405164444/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-26" title="26"></a>
+<a class="sourceLine" id="cb5-27" title="27">  <span class="dt">p192.1991 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/1991/LT041920541991010301T1-SC20190405164201/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-28" title="28">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/1991/LT041920551991010301T1-SC20190405165911/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-29" title="29">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/1991/LT041920561991010301T1-SC20190405163911/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-30" title="30"></a>
+<a class="sourceLine" id="cb5-31" title="31">  <span class="dt">p192.2001 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2001/LE071920542000121301T1-SC20190405165521/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-32" title="32">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2001/LE071920552000121301T1-SC20190405165645/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-33" title="33">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2001/LE071920562000121301T1-SC20190405164029/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-34" title="34"></a>
+<a class="sourceLine" id="cb5-35" title="35">  <span class="dt">p192.2003 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2003/LE071920542003010401T1-SC20190520111322/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-36" title="36">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2003/LE071920552003010401T1-SC20190520100402/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-37" title="37">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2003/LE071920562003010401T1-SC20190520100206/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-38" title="38"></a>
+<a class="sourceLine" id="cb5-39" title="39">  <span class="dt">p192.2005 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2005/LE071920542004122401T1-SC20190405165520/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-40" title="40">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2005/LE071920552004122401T1-SC20190405164050/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-41" title="41">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2005/LE071920562004122401T1-SC20190405164030/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-42" title="42"></a>
+<a class="sourceLine" id="cb5-43" title="43">  <span class="dt">p192.2007 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2007/LE071920542006123001T1-SC20190406034211/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-44" title="44">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2007/LE071920552006123001T1-SC20190406034231/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-45" title="45">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2007/LE071920562006123001T1-SC20190406034202/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-46" title="46"></a>
+<a class="sourceLine" id="cb5-47" title="47">  <span class="dt">p192.2011 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2011/LE071920542011011001T1-SC20190406034214/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-48" title="48">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2011/LE071920552011011001T1-SC20190406034114/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-49" title="49">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2011/LE071920562011011001T1-SC20190406034155/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-50" title="50"></a>
+<a class="sourceLine" id="cb5-51" title="51">  <span class="dt">p192.2013 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2013/LE071920542013013101T1-SC20190406034224/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-52" title="52">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2013/LE071920552013013101T1-SC20190406034046/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-53" title="53">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2013/LE071920562013013101T1-SC20190406034057/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-54" title="54"></a>
+<a class="sourceLine" id="cb5-55" title="55">  <span class="dt">p192.2015 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2015/LC081920542015011301T1-SC20190405163446/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-56" title="56">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2015/LC081920552015011301T1-SC20190405163723/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-57" title="57">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2015/LC081920562015011301T1-SC20190405164231/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-58" title="58"></a>
+<a class="sourceLine" id="cb5-59" title="59">  <span class="dt">p192.2017 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2017/LC081920542017021901T1-SC20190405163339/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-60" title="60">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2017/LC081920552017021901T1-SC20190405163342/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-61" title="61">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2017/LC081920562017021901T1-SC20190405163222/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-62" title="62"></a>
+<a class="sourceLine" id="cb5-63" title="63">  <span class="dt">p192.2018 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2018/LC081920542018010501T1-SC20190405164304/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-64" title="64">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2018/LC081920552018010501T1-SC20190405163402/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-65" title="65">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2018/LC081920562018010501T1-SC20190405163250/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-66" title="66"></a>
+<a class="sourceLine" id="cb5-67" title="67">  <span class="dt">p192.2019 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_054/2019/LC081920542018122301T1-SC20190405164258/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-68" title="68">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_055/2019/LC081920552018122301T1-SC20190405163359/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-69" title="69">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/192_056/2019/LC081920562018122301T1-SC20190405163342/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-70" title="70"></a>
+<a class="sourceLine" id="cb5-71" title="71">  <span class="co"># # Path 193</span></a>
+<a class="sourceLine" id="cb5-72" title="72"></a>
+<a class="sourceLine" id="cb5-73" title="73">  <span class="dt">p193.1985 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/1985/LT051930521985030601T1-SC20190520100259/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-74" title="74">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/1985/LT051930531985030601T1-SC20190520100324/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-75" title="75">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/1985/LT051930541985030601T1-SC20190520100340/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-76" title="76">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/1985/LT051930551985030601T1-SC20190520100140/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-77" title="77"></a>
+<a class="sourceLine" id="cb5-78" title="78">  <span class="dt">p193.1987 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/1987/LT051930521987012301T1-SC20190405182322/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-79" title="79">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/1987/LT051930531987012301T1-SC20190405182335/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-80" title="80">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/1987/LT051930541987012301T1-SC20190405182331/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-81" title="81">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/1987/LT051930551987012301T1-SC20190405182328/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-82" title="82"></a>
+<a class="sourceLine" id="cb5-83" title="83">  <span class="co"># images of two different dates!</span></a>
+<a class="sourceLine" id="cb5-84" title="84">  <span class="dt">p193.1990.1 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/1990/LT051930521989112801T1-SC20190520100201/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-85" title="85">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/1990/LT051930531989112801T1-SC20190520100233/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-86" title="86">  </a>
+<a class="sourceLine" id="cb5-87" title="87">  <span class="dt">p193.1990.2 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/1991/LT041930541991011001T1-SC20190402043117/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-88" title="88">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/1991/LT041930551991011001T1-SC20190402042453/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-89" title="89"></a>
+<a class="sourceLine" id="cb5-90" title="90">  <span class="dt">p193.2000 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2000/LE071930522000020401T1-SC20190520100729/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-91" title="91">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2000/LE071930532000020401T1-SC20190520100345/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-92" title="92">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2000/LE071930542000020401T1-SC20190402045232/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-93" title="93">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2000/LE071930552000020401T1-SC20190402043121/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-94" title="94"></a>
+<a class="sourceLine" id="cb5-95" title="95">  <span class="dt">p193.2003 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2003/LE071930522002122601T1-SC20190405182352/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-96" title="96">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2003/LE071930532002122601T1-SC20190405182309/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-97" title="97">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2003/LE071930542002122601T1-SC20190405182226/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-98" title="98">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2003/LE071930552002122601T1-SC20190405190255/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-99" title="99"></a>
+<a class="sourceLine" id="cb5-100" title="100">  <span class="dt">p193.2005 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2005/LE071930522005021701T1-SC20190405190117/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-101" title="101">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2005/LE071930532005021701T1-SC20190405190003/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-102" title="102">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2005/LE071930542005021701T1-SC20190405182210/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-103" title="103">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2005/LE071930552005021701T1-SC20190405190021/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-104" title="104"></a>
+<a class="sourceLine" id="cb5-105" title="105">  <span class="dt">p193.2007 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2007/LE071930522007012201T1-SC20190405182221/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-106" title="106">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2007/LE071930532007012201T1-SC20190405182607/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-107" title="107">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2007/LE071930542007012201T1-SC20190405182139/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-108" title="108">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2007/LE071930552007012201T1-SC20190405182418/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-109" title="109"></a>
+<a class="sourceLine" id="cb5-110" title="110">  <span class="dt">p193.2009 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2009/LE071930522009012701T1-SC20190405182143/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-111" title="111">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2009/LE071930532009012701T1-SC20190405182301/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-112" title="112">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2009/LE071930542009012701T1-SC20190405182103/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-113" title="113">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2009/LE071930552009012701T1-SC20190405182754/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-114" title="114"></a>
+<a class="sourceLine" id="cb5-115" title="115">  <span class="dt">p193.2013 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2013/LE071930522013022301T1-SC20190405182200/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-116" title="116">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2013/LE071930532013022301T1-SC20190405182213/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-117" title="117">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2013/LE071930542013022301T1-SC20190405182152/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-118" title="118">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2013/LE071930552013022301T1-SC20190405182331/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-119" title="119"></a>
+<a class="sourceLine" id="cb5-120" title="120">  <span class="dt">p193.2015 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2015/LC081930522015010401T1-SC20190405181512/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-121" title="121">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2015/LC081930532015010401T1-SC20190405181751/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-122" title="122">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2015/LC081930542015010401T1-SC20190402042510/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-123" title="123">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2015/LC081930552015010401T1-SC20190402042446/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-124" title="124"></a>
+<a class="sourceLine" id="cb5-125" title="125">  <span class="dt">p193.2017 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2017/LC081930522017012501T1-SC20190405181511/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-126" title="126">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2017/LC081930532017012501T1-SC20190405181440/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-127" title="127">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2017/LC081930542017012501T1-SC20190405181458/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-128" title="128">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2017/LC081930552017012501T1-SC20190405181444/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-129" title="129"></a>
+<a class="sourceLine" id="cb5-130" title="130">  <span class="dt">p193.2018 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2018/LC081930522018011201T1-SC20190405181524/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-131" title="131">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2018/LC081930532018011201T1-SC20190405181459/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-132" title="132">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2018/LC081930542018011201T1-SC20190405181510/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-133" title="133">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2018/LC081930552018011201T1-SC20190405181442/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-134" title="134"></a>
+<a class="sourceLine" id="cb5-135" title="135">  <span class="dt">p193.2019 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_052/2019/LC081930522019021601T1-SC20190405183839/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-136" title="136">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_053/2019/LC081930532019021601T1-SC20190405181518/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-137" title="137">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_054/2019/LC081930542019021601T1-SC20190405183609/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-138" title="138">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/193_055/2019/LC081930552019021601T1-SC20190405181507/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-139" title="139"></a>
+<a class="sourceLine" id="cb5-140" title="140">  <span class="co"># # Path 194</span></a>
+<a class="sourceLine" id="cb5-141" title="141"></a>
+<a class="sourceLine" id="cb5-142" title="142">  <span class="dt">p194.1986 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/1986/LT051940521986011101T1-SC20190405172804/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-143" title="143">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/1986/LT051940531986011101T1-SC20190405172758/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-144" title="144"></a>
+<a class="sourceLine" id="cb5-145" title="145">  <span class="dt">p194.1987 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/1987/LT051940521986122901T1-SC20190405172903/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-146" title="146">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/1987/LT051940531986122901T1-SC20190405174433/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-147" title="147"></a>
+<a class="sourceLine" id="cb5-148" title="148">  <span class="dt">p194.1997 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/1997/LT051940521997021001T1-SC20190405181746/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-149" title="149">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/1997/LT051940531997021001T1-SC20190405173130/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-150" title="150"></a>
+<a class="sourceLine" id="cb5-151" title="151">  <span class="dt">p194.2000 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2000/LE071940522000012601T1-SC20190405172721/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-152" title="152">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2000/LE071940532000012601T1-SC20190405172733/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-153" title="153"></a>
+<a class="sourceLine" id="cb5-154" title="154">  <span class="dt">p194.2003 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2003/LE071940522002121701T1-SC20190405172823/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-155" title="155">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2003/LE071940532002121701T1-SC20190405172739/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-156" title="156"></a>
+<a class="sourceLine" id="cb5-157" title="157">  <span class="dt">p194.2005 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2005/LE071940522004122201T1-SC20190405172700/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-158" title="158">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2005/LE071940532004122201T1-SC20190405172612/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-159" title="159"></a>
+<a class="sourceLine" id="cb5-160" title="160">  <span class="dt">p194.2007 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2007/LT051940522007010501T1-SC20190405172919/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-161" title="161">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2007/LT051940532007010501T1-SC20190405172216/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-162" title="162"></a>
+<a class="sourceLine" id="cb5-163" title="163">  <span class="dt">p194.2010 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2010/LE071940522010012101T1-SC20190405172745/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-164" title="164">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2010/LE071940532010012101T1-SC20190405173304/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-165" title="165">  </a>
+<a class="sourceLine" id="cb5-166" title="166">  <span class="dt">p194.2012 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2012/LE071940522012011101T1-SC20190405173146/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-167" title="167">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2012/LE071940532012011101T1-SC20190405172236/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-168" title="168"></a>
+<a class="sourceLine" id="cb5-169" title="169">  <span class="co"># Indices not available!</span></a>
+<a class="sourceLine" id="cb5-170" title="170">  <span class="co"># p194.2013 = list(paste0(DATA.DIR, &quot;/Landsat/194_052/2013/LE071940522012122801T1-SC20190405172704/&quot;),</span></a>
+<a class="sourceLine" id="cb5-171" title="171">  <span class="co">#                   paste0(DATA.DIR, &quot;/Landsat/194_053/2013/LE071940532012122801T1-SC20190405172717/&quot;)),</span></a>
+<a class="sourceLine" id="cb5-172" title="172"></a>
+<a class="sourceLine" id="cb5-173" title="173">  <span class="dt">p194.2015 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2015/LC081940522015012701T1-SC20190405172055/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-174" title="174">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2015/LC081940532015012701T1-SC20190405172042/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-175" title="175"></a>
+<a class="sourceLine" id="cb5-176" title="176">  <span class="dt">p194.2017 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2017/LC081940522016123101T1-SC20190405172058/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-177" title="177">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2017/LC081940532016123101T1-SC20190405172040/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-178" title="178"></a>
+<a class="sourceLine" id="cb5-179" title="179">  <span class="dt">p194.2018 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2018/LC081940522017121801T1-SC20190405172038/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-180" title="180">                    <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2018/LC081940532017121801T1-SC20190405174114/&quot;</span>)),</a>
+<a class="sourceLine" id="cb5-181" title="181"></a>
+<a class="sourceLine" id="cb5-182" title="182">  <span class="dt">p194.2019 =</span> <span class="kw">list</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_052/2019/LC081940522019012201T1-SC20190405172019/&quot;</span>),</a>
+<a class="sourceLine" id="cb5-183" title="183">                   <span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/Landsat/194_053/2019/LC081940532019012201T1-SC20190405172055/&quot;</span>))</a>
+<a class="sourceLine" id="cb5-184" title="184"></a>
+<a class="sourceLine" id="cb5-185" title="185">)</a>
+<a class="sourceLine" id="cb5-186" title="186"></a>
+<a class="sourceLine" id="cb5-187" title="187"><span class="co"># create scene list ----------</span></a>
+<a class="sourceLine" id="cb5-188" title="188"><span class="co"># sink(paste0(INPUT.DIR, &quot;/Landsat/scenes.txt&quot;)</span></a>
+<a class="sourceLine" id="cb5-189" title="189"><span class="co"># for(image.dirs in in.image.list) {</span></a>
+<a class="sourceLine" id="cb5-190" title="190"><span class="co">#   </span></a>
+<a class="sourceLine" id="cb5-191" title="191"><span class="co">#   for(image.dir in image.dirs) {</span></a>
+<a class="sourceLine" id="cb5-192" title="192"><span class="co">#     </span></a>
+<a class="sourceLine" id="cb5-193" title="193"><span class="co">#     cat(sub(&quot;_ANG[.]txt&quot;, &quot;&quot;, dir(image.dir)[1]),&quot;\n&quot;)</span></a>
+<a class="sourceLine" id="cb5-194" title="194"><span class="co">#   }</span></a>
+<a class="sourceLine" id="cb5-195" title="195"><span class="co"># }</span></a>
+<a class="sourceLine" id="cb5-196" title="196"><span class="co"># sink()</span></a>
+<a class="sourceLine" id="cb5-197" title="197"></a>
+<a class="sourceLine" id="cb5-198" title="198"><span class="co"># Function for processing and merging a set of Landsat images -----------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-199" title="199"><span class="co">## @knitr prepare.image</span></a>
+<a class="sourceLine" id="cb5-200" title="200"></a>
+<a class="sourceLine" id="cb5-201" title="201">prepare.image &lt;-<span class="st"> </span><span class="cf">function</span>(in.image.dirs, <span class="dt">ext=</span><span class="ot">NULL</span>, <span class="dt">filename=</span><span class="ot">NULL</span>, <span class="dt">overwrite=</span><span class="ot">FALSE</span>, <span class="dt">log=</span><span class="ot">TRUE</span>) {</a>
+<a class="sourceLine" id="cb5-202" title="202">  </a>
+<a class="sourceLine" id="cb5-203" title="203">  <span class="co"># load file, if filename already exists and overwrite=FALSE</span></a>
+<a class="sourceLine" id="cb5-204" title="204">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename) <span class="op">&amp;&amp;</span><span class="st"> </span><span class="kw">file.exists</span>(filename) <span class="op">&amp;&amp;</span><span class="st"> </span>overwrite<span class="op">==</span><span class="ot">FALSE</span>) {</a>
+<a class="sourceLine" id="cb5-205" title="205">    <span class="kw">message</span>(<span class="st">&quot;- loading from file &quot;</span>, filename)</a>
+<a class="sourceLine" id="cb5-206" title="206">    out.image &lt;-<span class="st"> </span><span class="kw">stack</span>(filename)</a>
+<a class="sourceLine" id="cb5-207" title="207">    </a>
+<a class="sourceLine" id="cb5-208" title="208">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb5-209" title="209">    </a>
+<a class="sourceLine" id="cb5-210" title="210">    <span class="co"># open logfile</span></a>
+<a class="sourceLine" id="cb5-211" title="211">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename) <span class="op">&amp;</span><span class="st"> </span>log<span class="op">==</span><span class="ot">TRUE</span>) {</a>
+<a class="sourceLine" id="cb5-212" title="212">      <span class="kw">dir.create</span>(<span class="kw">dirname</span>(filename), <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb5-213" title="213">      logfile &lt;-<span class="st"> </span><span class="kw">file</span>(<span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.[[:alnum:]]+$&quot;</span>, <span class="st">&quot;.log&quot;</span>, filename), <span class="dt">open=</span><span class="st">&quot;wt&quot;</span>)</a>
+<a class="sourceLine" id="cb5-214" title="214">      <span class="kw">sink</span>(logfile, <span class="dt">type=</span><span class="st">&quot;output&quot;</span>)</a>
+<a class="sourceLine" id="cb5-215" title="215">      <span class="kw">sink</span>(logfile, <span class="dt">type=</span><span class="st">&quot;message&quot;</span>)</a>
+<a class="sourceLine" id="cb5-216" title="216">      <span class="kw">message</span>(<span class="kw">date</span>())</a>
+<a class="sourceLine" id="cb5-217" title="217">    }</a>
+<a class="sourceLine" id="cb5-218" title="218">    </a>
+<a class="sourceLine" id="cb5-219" title="219">    <span class="co"># list for the imported and cleaned images</span></a>
+<a class="sourceLine" id="cb5-220" title="220">    images &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb5-221" title="221">    qas &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb5-222" title="222">    </a>
+<a class="sourceLine" id="cb5-223" title="223">    <span class="co"># read and process the individual images </span></a>
+<a class="sourceLine" id="cb5-224" title="224">    <span class="cf">for</span>(image.dir <span class="cf">in</span> in.image.dirs) {</a>
+<a class="sourceLine" id="cb5-225" title="225">      </a>
+<a class="sourceLine" id="cb5-226" title="226">      image.sensor &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="kw">basename</span>(image.dir), <span class="dv">0</span>,<span class="dv">4</span>) </a>
+<a class="sourceLine" id="cb5-227" title="227">      <span class="cf">if</span>(image.sensor<span class="op">==</span><span class="st">&quot;LC08&quot;</span>) {</a>
+<a class="sourceLine" id="cb5-228" title="228">        image &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">grep</span>(<span class="st">&quot;^.*_(pixel_qa|band2|band3|band4|band5|band6|band7|evi|msavi|nbr|nbr2|ndmi|ndvi|savi).tif$&quot;</span>, <span class="kw">dir</span>(image.dir, <span class="dt">full.names=</span><span class="ot">TRUE</span>), <span class="dt">value=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb5-229" title="229">      } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb5-230" title="230">        image &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">grep</span>(<span class="st">&quot;^.*_(pixel_qa|band1|band2|band3|band4|band5|band7|evi|msavi|nbr|nbr2|ndmi|ndvi|savi).tif$&quot;</span>, <span class="kw">dir</span>(image.dir, <span class="dt">full.names=</span><span class="ot">TRUE</span>), <span class="dt">value=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb5-231" title="231">      }</a>
+<a class="sourceLine" id="cb5-232" title="232">      </a>
+<a class="sourceLine" id="cb5-233" title="233">      image.bands  &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;^.*_&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(image))</a>
+<a class="sourceLine" id="cb5-234" title="234">      </a>
+<a class="sourceLine" id="cb5-235" title="235">      <span class="co"># check the number and order of stack-layers</span></a>
+<a class="sourceLine" id="cb5-236" title="236">      <span class="cf">if</span>(<span class="kw">nlayers</span>(image)<span class="op">!=</span><span class="dv">14</span> <span class="op">||</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-237" title="237"><span class="st">         </span>(image.sensor<span class="op">==</span><span class="st">&quot;LC08&quot;</span> <span class="op">&amp;&amp;</span><span class="st"> </span>image.bands<span class="op">!=</span><span class="kw">c</span>(<span class="st">&quot;qa&quot;</span>, <span class="st">&quot;band2&quot;</span>, <span class="st">&quot;band3&quot;</span>, <span class="st">&quot;band4&quot;</span>, <span class="st">&quot;band5&quot;</span>, <span class="st">&quot;band6&quot;</span>, <span class="st">&quot;band7&quot;</span>, <span class="st">&quot;evi&quot;</span>, <span class="st">&quot;msavi&quot;</span>, <span class="st">&quot;nbr&quot;</span>, <span class="st">&quot;nbr2&quot;</span>, <span class="st">&quot;ndmi&quot;</span>, <span class="st">&quot;ndvi&quot;</span>, <span class="st">&quot;savi&quot;</span>)) <span class="op">||</span></a>
+<a class="sourceLine" id="cb5-238" title="238"><span class="st">         </span>(image.sensor<span class="op">!=</span><span class="st">&quot;LC08&quot;</span> <span class="op">&amp;&amp;</span><span class="st"> </span>image.bands<span class="op">!=</span><span class="kw">c</span>(<span class="st">&quot;qa&quot;</span>, <span class="st">&quot;band1&quot;</span>, <span class="st">&quot;band2&quot;</span>, <span class="st">&quot;band3&quot;</span>, <span class="st">&quot;band4&quot;</span>, <span class="st">&quot;band5&quot;</span>, <span class="st">&quot;band7&quot;</span>, <span class="st">&quot;evi&quot;</span>, <span class="st">&quot;msavi&quot;</span>, <span class="st">&quot;nbr&quot;</span>, <span class="st">&quot;nbr2&quot;</span>, <span class="st">&quot;ndmi&quot;</span>, <span class="st">&quot;ndvi&quot;</span>, <span class="st">&quot;savi&quot;</span>)))</a>
+<a class="sourceLine" id="cb5-239" title="239">        <span class="kw">stop</span>(<span class="st">&quot;image does not have the correct number/order of bands (qa, B, G, R, NIR, SWIR1, SWIR2, evi, msavi, nbr, nbr2, ndmi, ndvi, savi)&quot;</span>)</a>
+<a class="sourceLine" id="cb5-240" title="240">      </a>
+<a class="sourceLine" id="cb5-241" title="241">      image.name   &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="kw">names</span>(image)[<span class="dv">1</span>], <span class="dv">1</span>, <span class="dv">40</span>)</a>
+<a class="sourceLine" id="cb5-242" title="242">      image.scene  &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">substr</span>(image.name, <span class="dv">11</span>, <span class="dv">13</span>), <span class="st">&quot;_&quot;</span>, <span class="kw">substr</span>(image.name, <span class="dv">14</span>, <span class="dv">16</span>))</a>
+<a class="sourceLine" id="cb5-243" title="243">      image.date   &lt;-<span class="st"> </span><span class="kw">substr</span>(image.name, <span class="dv">18</span>, <span class="dv">21</span>)</a>
+<a class="sourceLine" id="cb5-244" title="244">      </a>
+<a class="sourceLine" id="cb5-245" title="245">      image.path   &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(image.scene, <span class="dv">1</span>, <span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb5-246" title="246">      image.row    &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(image.scene, <span class="dv">5</span>, <span class="dv">7</span>))</a>
+<a class="sourceLine" id="cb5-247" title="247">      </a>
+<a class="sourceLine" id="cb5-248" title="248">      <span class="kw">message</span>(<span class="st">&quot;- &quot;</span>, image.name, <span class="st">&quot;: &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb5-249" title="249">      </a>
+<a class="sourceLine" id="cb5-250" title="250">      <span class="co"># image &lt;- image[[1]]</span></a>
+<a class="sourceLine" id="cb5-251" title="251">      </a>
+<a class="sourceLine" id="cb5-252" title="252">      <span class="co"># crop and mask the image with extent (if any)</span></a>
+<a class="sourceLine" id="cb5-253" title="253">      <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(ext)) {</a>
+<a class="sourceLine" id="cb5-254" title="254">        <span class="kw">message</span>(<span class="st">&quot;crop ext ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb5-255" title="255">        image &lt;-<span class="st"> </span><span class="kw">crop</span>(image, ext)</a>
+<a class="sourceLine" id="cb5-256" title="256">      }</a>
+<a class="sourceLine" id="cb5-257" title="257">      </a>
+<a class="sourceLine" id="cb5-258" title="258">      <span class="co"># crop/mask with WRS</span></a>
+<a class="sourceLine" id="cb5-259" title="259">      <span class="kw">message</span>(<span class="st">&quot;crop/mask WRS2 ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb5-260" title="260">      wrs &lt;-<span class="st"> </span><span class="kw">spTransform</span>(WRS[WRS<span class="op">$</span>PATH<span class="op">==</span>image.path <span class="op">&amp;</span><span class="st"> </span>WRS<span class="op">$</span>ROW<span class="op">==</span>image.row, ], <span class="dt">CRS=</span><span class="kw">crs</span>(image))</a>
+<a class="sourceLine" id="cb5-261" title="261">      image &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(image, wrs), wrs)</a>
+<a class="sourceLine" id="cb5-262" title="262">      </a>
+<a class="sourceLine" id="cb5-263" title="263">      <span class="co"># extract and mask with quality band</span></a>
+<a class="sourceLine" id="cb5-264" title="264">      qa &lt;-<span class="st"> </span>image[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb5-265" title="265">      image &lt;-<span class="st"> </span><span class="kw">dropLayer</span>(image, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb5-266" title="266">      </a>
+<a class="sourceLine" id="cb5-267" title="267">      <span class="co"># message(&quot;mask cloud/shadow ... &quot;, appendLF = FALSE)</span></a>
+<a class="sourceLine" id="cb5-268" title="268">      <span class="co"># if(image.sensor==&quot;LC08&quot;) {</span></a>
+<a class="sourceLine" id="cb5-269" title="269">      <span class="co">#   # Landsat 8: values 392 -  480 / 840 - 880 / 904 - 992 are medium to high confidence cloud/ice/shadow</span></a>
+<a class="sourceLine" id="cb5-270" title="270">      <span class="co">#   # https://prd-wret.s3-us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/LSDS-1368_%20L8_Surface-Reflectance-Code-LASRC-Product-Guide.pdf (p. 22)</span></a>
+<a class="sourceLine" id="cb5-271" title="271">      <span class="co">#   qa[qa %in% c(392, 400, 416, 432, 480,</span></a>
+<a class="sourceLine" id="cb5-272" title="272">      <span class="co">#                840, 848, 864, 880,</span></a>
+<a class="sourceLine" id="cb5-273" title="273">      <span class="co">#                904, 912, 928, 944, 992)] &lt;- NA</span></a>
+<a class="sourceLine" id="cb5-274" title="274">      <span class="co">#   </span></a>
+<a class="sourceLine" id="cb5-275" title="275">      <span class="co"># } else {</span></a>
+<a class="sourceLine" id="cb5-276" title="276">      <span class="co">#   # Landsat 4-7: values â‰¥ 136 are medium to high confidence cloud/ice/shadow</span></a>
+<a class="sourceLine" id="cb5-277" title="277">      <span class="co">#   # https://prd-wret.s3-us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/LSDS-1370_L4-7_Surface%20Reflectance-LEDAPS-Product-Guide.pdf</span></a>
+<a class="sourceLine" id="cb5-278" title="278">      <span class="co">#   qa[qa &gt;= 136] &lt;- NA</span></a>
+<a class="sourceLine" id="cb5-279" title="279">      <span class="co"># }</span></a>
+<a class="sourceLine" id="cb5-280" title="280">      <span class="co"># image &lt;- mask(image, qa)</span></a>
+<a class="sourceLine" id="cb5-281" title="281">      </a>
+<a class="sourceLine" id="cb5-282" title="282">      <span class="co"># remove non-valid reflectance values</span></a>
+<a class="sourceLine" id="cb5-283" title="283">      <span class="kw">message</span>(<span class="st">&quot;clean sr ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb5-284" title="284">      <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>) {</a>
+<a class="sourceLine" id="cb5-285" title="285">        image[[i]] &lt;-<span class="st"> </span><span class="kw">reclassify</span>(image[[i]], <span class="kw">cbind</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="dv">0</span>, <span class="ot">NA</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb5-286" title="286">        image[[i]] &lt;-<span class="st"> </span><span class="kw">reclassify</span>(image[[i]], <span class="kw">cbind</span>(<span class="dv">10000</span>, <span class="ot">Inf</span>, <span class="ot">NA</span>), <span class="dt">right=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-287" title="287">      }</a>
+<a class="sourceLine" id="cb5-288" title="288">      <span class="co"># remove non-valid index values</span></a>
+<a class="sourceLine" id="cb5-289" title="289">      <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">7</span><span class="op">:</span><span class="dv">13</span>) {</a>
+<a class="sourceLine" id="cb5-290" title="290">        image[[i]] &lt;-<span class="st"> </span><span class="kw">reclassify</span>(image[[i]], <span class="kw">cbind</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="dv">-10000</span>, <span class="ot">NA</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb5-291" title="291">        image[[i]] &lt;-<span class="st"> </span><span class="kw">reclassify</span>(image[[i]], <span class="kw">cbind</span>(<span class="dv">10000</span>, <span class="ot">Inf</span>, <span class="ot">NA</span>), <span class="dt">right=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-292" title="292">      }</a>
+<a class="sourceLine" id="cb5-293" title="293"></a>
+<a class="sourceLine" id="cb5-294" title="294">      <span class="co"># set whole stack to NA where one single layer is NA</span></a>
+<a class="sourceLine" id="cb5-295" title="295">      m &lt;-<span class="st"> </span><span class="kw">sum</span>(image)</a>
+<a class="sourceLine" id="cb5-296" title="296">      image &lt;-<span class="st"> </span><span class="kw">mask</span>(image, m)</a>
+<a class="sourceLine" id="cb5-297" title="297"></a>
+<a class="sourceLine" id="cb5-298" title="298">      <span class="kw">names</span>(image) &lt;-<span class="st"> </span>BANDS[<span class="op">-</span><span class="kw">c</span>(<span class="kw">length</span>(BANDS)<span class="op">-</span><span class="dv">1</span><span class="op">:</span><span class="dv">0</span>)]</a>
+<a class="sourceLine" id="cb5-299" title="299"></a>
+<a class="sourceLine" id="cb5-300" title="300">      <span class="co"># write out the individual images</span></a>
+<a class="sourceLine" id="cb5-301" title="301">      <span class="co"># message(&quot;writing scene ... &quot;, appendLF = FALSE)</span></a>
+<a class="sourceLine" id="cb5-302" title="302">      <span class="co"># filename.scene &lt;- sub(&quot;complete&quot;, paste0(&quot;r0&quot;, image.row), sub(paste0(&quot;p&quot;, image.path, &quot;_&quot;), paste0(&quot;p&quot;, image.path, &quot;_r0&quot;, image.row, &quot;_&quot;), filename))</span></a>
+<a class="sourceLine" id="cb5-303" title="303">      <span class="co"># image &lt;- writeRaster(image, filename = filename.scene, overwrite = TRUE, datatype=&quot;INT2S&quot;, options=c(&quot;COMPRESS=NONE&quot;))</span></a>
+<a class="sourceLine" id="cb5-304" title="304">      <span class="co"># qa    &lt;- writeRaster(qa,    filename = sub(&quot;[.]tif$&quot;, paste0(&quot;_qa&quot;, image.sensor, &quot;.tif&quot;), filename.scene), overwrite = TRUE, datatype=&quot;INT2S&quot;, options=c(&quot;COMPRESS=NONE&quot;))</span></a>
+<a class="sourceLine" id="cb5-305" title="305">      <span class="co"># message(&quot;done&quot;)</span></a>
+<a class="sourceLine" id="cb5-306" title="306">      </a>
+<a class="sourceLine" id="cb5-307" title="307">      images[[<span class="kw">length</span>(images)<span class="op">+</span><span class="dv">1</span>]] &lt;-<span class="st"> </span>image</a>
+<a class="sourceLine" id="cb5-308" title="308">      qas[[<span class="kw">length</span>(qas)<span class="op">+</span><span class="dv">1</span>]] &lt;-<span class="st"> </span>qa</a>
+<a class="sourceLine" id="cb5-309" title="309">    }</a>
+<a class="sourceLine" id="cb5-310" title="310">    </a>
+<a class="sourceLine" id="cb5-311" title="311">    </a>
+<a class="sourceLine" id="cb5-312" title="312">    <span class="co"># merge the images in the list</span></a>
+<a class="sourceLine" id="cb5-313" title="313">    <span class="kw">message</span>(<span class="st">&quot;- merging scenes ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb5-314" title="314">    out.image &lt;-<span class="st"> </span><span class="kw">do.call</span>(merge, images)</a>
+<a class="sourceLine" id="cb5-315" title="315">    out.qa &lt;-<span class="st"> </span><span class="kw">do.call</span>(merge, qas)</a>
+<a class="sourceLine" id="cb5-316" title="316">    </a>
+<a class="sourceLine" id="cb5-317" title="317">    </a>
+<a class="sourceLine" id="cb5-318" title="318">    <span class="co"># write it to a file</span></a>
+<a class="sourceLine" id="cb5-319" title="319">    <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(filename) <span class="op">&amp;&amp;</span><span class="st"> </span>(<span class="op">!</span><span class="kw">file.exists</span>(filename) <span class="op">||</span><span class="st"> </span>overwrite <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>)) {</a>
+<a class="sourceLine" id="cb5-320" title="320">      <span class="kw">message</span>(<span class="st">&quot;writing to file &quot;</span>, filename, <span class="st">&quot; ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb5-321" title="321">      out.image &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(out.image, <span class="dt">filename =</span> filename, <span class="dt">overwrite =</span> overwrite, <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">options=</span><span class="kw">c</span>(<span class="st">&quot;COMPRESS=NONE&quot;</span>))</a>
+<a class="sourceLine" id="cb5-322" title="322">      <span class="kw">names</span>(out.image) &lt;-<span class="st"> </span>BANDS[<span class="op">-</span><span class="kw">c</span>(<span class="kw">length</span>(BANDS)<span class="op">-</span><span class="dv">1</span><span class="op">:</span><span class="dv">0</span>)]</a>
+<a class="sourceLine" id="cb5-323" title="323">      out.qa &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(out.qa, <span class="dt">filename =</span> <span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_qa&quot;</span>, image.sensor, <span class="st">&quot;.tif&quot;</span>), filename), <span class="dt">overwrite =</span> overwrite, <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>)</a>
+<a class="sourceLine" id="cb5-324" title="324">    }</a>
+<a class="sourceLine" id="cb5-325" title="325">  }</a>
+<a class="sourceLine" id="cb5-326" title="326">  </a>
+<a class="sourceLine" id="cb5-327" title="327">  <span class="kw">message</span>(<span class="st">&quot;done&quot;</span>)</a>
+<a class="sourceLine" id="cb5-328" title="328">  </a>
+<a class="sourceLine" id="cb5-329" title="329">  <span class="kw">print</span>(out.image)</a>
+<a class="sourceLine" id="cb5-330" title="330">  </a>
+<a class="sourceLine" id="cb5-331" title="331">  <span class="co"># close the logfile</span></a>
+<a class="sourceLine" id="cb5-332" title="332">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename) <span class="op">&amp;</span><span class="st"> </span>log<span class="op">==</span><span class="ot">TRUE</span>) {</a>
+<a class="sourceLine" id="cb5-333" title="333">    <span class="kw">sink</span>(<span class="dt">type=</span><span class="st">&quot;output&quot;</span>)</a>
+<a class="sourceLine" id="cb5-334" title="334">    <span class="kw">sink</span>(<span class="dt">type=</span><span class="st">&quot;message&quot;</span>)</a>
+<a class="sourceLine" id="cb5-335" title="335">  }</a>
+<a class="sourceLine" id="cb5-336" title="336">  </a>
+<a class="sourceLine" id="cb5-337" title="337">  <span class="co"># return image invisibly</span></a>
+<a class="sourceLine" id="cb5-338" title="338">  <span class="kw">invisible</span>(out.image)</a>
+<a class="sourceLine" id="cb5-339" title="339">  </a>
+<a class="sourceLine" id="cb5-340" title="340">}</a>
+<a class="sourceLine" id="cb5-341" title="341"></a>
+<a class="sourceLine" id="cb5-342" title="342"></a>
+<a class="sourceLine" id="cb5-343" title="343"></a>
+<a class="sourceLine" id="cb5-344" title="344"></a>
+<a class="sourceLine" id="cb5-345" title="345"></a>
+<a class="sourceLine" id="cb5-346" title="346"></a>
+<a class="sourceLine" id="cb5-347" title="347"><span class="co"># DO THE WORK ---------</span></a>
+<a class="sourceLine" id="cb5-348" title="348"><span class="co">## @knitr execute</span></a>
+<a class="sourceLine" id="cb5-349" title="349"><span class="co"># be careful, can easily fill the tmp directory! Maybe only for a part of the images and then restart R</span></a>
+<a class="sourceLine" id="cb5-350" title="350"></a>
+<a class="sourceLine" id="cb5-351" title="351"><span class="co"># extent of Togo + 5km buffer</span></a>
+<a class="sourceLine" id="cb5-352" title="352">TGO.ext<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">extent</span>(<span class="kw">spTransform</span>(TGO, utm<span class="fl">.30</span>)) <span class="op">+</span><span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb5-353" title="353"></a>
+<a class="sourceLine" id="cb5-354" title="354"><span class="co"># go through all scenes (path/row) ...</span></a>
+<a class="sourceLine" id="cb5-355" title="355"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb5-356" title="356"><span class="co">#foreach(i=1:length(in.image.list)) %dopar% { # 1) %do% { </span></a>
+<a class="sourceLine" id="cb5-357" title="357"><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="dv">13</span>) <span class="op">%dopar%</span><span class="st"> </span>{ <span class="co"># 1) %do% { </span></a>
+<a class="sourceLine" id="cb5-358" title="358">  </a>
+<a class="sourceLine" id="cb5-359" title="359">  in.image.dirs &lt;-<span class="st"> </span>in.image.list[[i]]</a>
+<a class="sourceLine" id="cb5-360" title="360">  </a>
+<a class="sourceLine" id="cb5-361" title="361">  name &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">strsplit</span>(<span class="kw">names</span>(in.image.list[i]), <span class="st">&quot;[.]&quot;</span>))</a>
+<a class="sourceLine" id="cb5-362" title="362">  path &lt;-<span class="st"> </span>name[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb5-363" title="363">  year &lt;-<span class="st"> </span>name[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb5-364" title="364">  tile &lt;-<span class="st"> </span>name[<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb5-365" title="365">  </a>
+<a class="sourceLine" id="cb5-366" title="366">  <span class="cf">if</span>(path <span class="op">==</span><span class="st"> &quot;p194&quot;</span>) tmp.ext &lt;-<span class="st"> </span>TGO.ext<span class="fl">.30</span> <span class="cf">else</span> tmp.ext &lt;-<span class="st"> </span>TGO.ext</a>
+<a class="sourceLine" id="cb5-367" title="367">  </a>
+<a class="sourceLine" id="cb5-368" title="368">  out.image.dir &lt;-<span class="st"> </span><span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/&quot;</span>, path)</a>
+<a class="sourceLine" id="cb5-369" title="369">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">dir.exists</span>(out.image.dir)) <span class="kw">dir.create</span>(out.image.dir)</a>
+<a class="sourceLine" id="cb5-370" title="370">  </a>
+<a class="sourceLine" id="cb5-371" title="371">  <span class="cf">if</span>(<span class="kw">is.na</span>(tile)) {</a>
+<a class="sourceLine" id="cb5-372" title="372">    filename &lt;-<span class="st"> </span><span class="kw">paste0</span>(out.image.dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_&quot;</span>, year, <span class="st">&quot;.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb5-373" title="373">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb5-374" title="374">    filename &lt;-<span class="st"> </span><span class="kw">paste0</span>(out.image.dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_&quot;</span>, year, <span class="st">&quot;_&quot;</span>, tile, <span class="st">&quot;.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb5-375" title="375">  }</a>
+<a class="sourceLine" id="cb5-376" title="376">  </a>
+<a class="sourceLine" id="cb5-377" title="377">  <span class="kw">message</span>(<span class="st">&quot;Processing &quot;</span>, path, <span class="st">&quot;_&quot;</span>, year)</a>
+<a class="sourceLine" id="cb5-378" title="378">  <span class="kw">prepare.image</span>(in.image.dirs, <span class="dt">ext =</span> tmp.ext, <span class="dt">filename =</span> filename, <span class="dt">overwrite=</span><span class="ot">FALSE</span>, <span class="dt">log=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-379" title="379">  </a>
+<a class="sourceLine" id="cb5-380" title="380">}</a>
+<a class="sourceLine" id="cb5-381" title="381"></a>
+<a class="sourceLine" id="cb5-382" title="382"></a>
+<a class="sourceLine" id="cb5-383" title="383"><span class="co"># remove temporary files</span></a>
+<a class="sourceLine" id="cb5-384" title="384">tmp_dir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</a>
+<a class="sourceLine" id="cb5-385" title="385">files &lt;-<span class="st"> </span><span class="kw">list.files</span>(tmp_dir, <span class="dt">full.names =</span> T, <span class="dt">recursive=</span>T)</a>
+<a class="sourceLine" id="cb5-386" title="386"><span class="kw">file.remove</span>(files)</a>
+<a class="sourceLine" id="cb5-387" title="387"></a>
+<a class="sourceLine" id="cb5-388" title="388"><span class="co"># merge logfiles -------------------</span></a>
+<a class="sourceLine" id="cb5-389" title="389"></a>
+<a class="sourceLine" id="cb5-390" title="390"><span class="cf">for</span>(dir <span class="cf">in</span> <span class="kw">dir</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/&quot;</span>), <span class="dt">full.names=</span><span class="ot">TRUE</span>)) {</a>
+<a class="sourceLine" id="cb5-391" title="391">  path &lt;-<span class="st"> </span><span class="kw">basename</span>(dir)</a>
+<a class="sourceLine" id="cb5-392" title="392">  <span class="kw">system</span>(<span class="kw">paste0</span>(<span class="st">&quot;tail -n +1 &quot;</span>, dir, <span class="st">&quot;/*.log &gt; &quot;</span>, dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;.tmp&quot;</span>))</a>
+<a class="sourceLine" id="cb5-393" title="393">  <span class="kw">system</span>(<span class="kw">paste0</span>(<span class="st">&quot;rm &quot;</span>, dir, <span class="st">&quot;/*.log&quot;</span>))</a>
+<a class="sourceLine" id="cb5-394" title="394">  <span class="kw">system</span>(<span class="kw">paste0</span>(<span class="st">&quot;mv &quot;</span>, dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;.tmp &quot;</span>, dir, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;.log&quot;</span>))</a>
+<a class="sourceLine" id="cb5-395" title="395">}</a>
+<a class="sourceLine" id="cb5-396" title="396"></a>
+<a class="sourceLine" id="cb5-397" title="397"></a>
+<a class="sourceLine" id="cb5-398" title="398"><span class="co"># Reprojection of p194 images from UTM 30 to UTM 31 --------------------------</span></a>
+<a class="sourceLine" id="cb5-399" title="399">in.dir  &lt;-<span class="st"> &quot;../output/1_images/p194&quot;</span></a>
+<a class="sourceLine" id="cb5-400" title="400"></a>
+<a class="sourceLine" id="cb5-401" title="401"></a>
+<a class="sourceLine" id="cb5-402" title="402"><span class="co"># warp p194 UTM 30 images to UTM 31</span></a>
+<a class="sourceLine" id="cb5-403" title="403"><span class="kw">foreach</span>(<span class="dt">image=</span><span class="kw">dir</span>(in.dir, <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb5-404" title="404">  </a>
+<a class="sourceLine" id="cb5-405" title="405">  image  &lt;-<span class="st"> </span><span class="kw">paste0</span>(in.dir,  <span class="st">&quot;/&quot;</span>, image)</a>
+<a class="sourceLine" id="cb5-406" title="406">  image.utm30 &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="st">&quot;utm30.tif&quot;</span>, image)</a>
+<a class="sourceLine" id="cb5-407" title="407">  <span class="kw">file.rename</span>(image, image.utm30)</a>
+<a class="sourceLine" id="cb5-408" title="408">  </a>
+<a class="sourceLine" id="cb5-409" title="409">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
+<a class="sourceLine" id="cb5-410" title="410">               image.utm30,</a>
+<a class="sourceLine" id="cb5-411" title="411">               <span class="st">&quot;-t_srs &#39;+proj=utm +zone=31 +datum=WGS84&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb5-412" title="412">               <span class="st">&quot;-tr 30 30&quot;</span>,</a>
+<a class="sourceLine" id="cb5-413" title="413">               <span class="st">&quot;-te 147255 1017495 222165 1238265&quot;</span>,</a>
+<a class="sourceLine" id="cb5-414" title="414">               image,</a>
+<a class="sourceLine" id="cb5-415" title="415">               <span class="st">&quot;-ot &#39;Int16&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb5-416" title="416">               <span class="st">&quot;-overwrite&quot;</span>))</a>
+<a class="sourceLine" id="cb5-417" title="417">  </a>
+<a class="sourceLine" id="cb5-418" title="418">  <span class="kw">file.remove</span>(image.utm30)</a>
+<a class="sourceLine" id="cb5-419" title="419">}</a>
+<a class="sourceLine" id="cb5-420" title="420"></a>
+<a class="sourceLine" id="cb5-421" title="421"></a>
+<a class="sourceLine" id="cb5-422" title="422"><span class="co"># cloud/shadow mask the images ----------------------------</span></a>
+<a class="sourceLine" id="cb5-423" title="423"></a>
+<a class="sourceLine" id="cb5-424" title="424"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb5-425" title="425"><span class="kw">foreach</span>(<span class="dt">file=</span> <span class="kw">c</span>(<span class="kw">dir</span>(<span class="st">&quot;../output/1_images/p192&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;.*</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb5-426" title="426">                <span class="kw">dir</span>(<span class="st">&quot;../output/1_images/p193&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;.*</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb5-427" title="427">                <span class="kw">dir</span>(<span class="st">&quot;../output/1_images/p194&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;.*</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>))) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb5-428" title="428">    qa    &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">dir</span>(<span class="kw">dirname</span>(file), <span class="dt">pattern=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">_&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="st">&quot;_qa*&quot;</span>, <span class="kw">basename</span>(file))), <span class="dt">full.names=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb5-429" title="429">    image &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">brick</span>(file), qa <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(qa.cloud, qa.shadow, qa.water, qa.ice), <span class="dt">maskvalue=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-430" title="430">    <span class="kw">writeRaster</span>(image, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="st">&quot;_m.tif&quot;</span>, file), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">options=</span><span class="kw">c</span>(<span class="st">&quot;COMPRESS=NONE&quot;</span>))</a>
+<a class="sourceLine" id="cb5-431" title="431">}</a>
+<a class="sourceLine" id="cb5-432" title="432"></a>
+<a class="sourceLine" id="cb5-433" title="433"></a>
+<a class="sourceLine" id="cb5-434" title="434"><span class="co"># Thumbnails of each scene -------------------------------</span></a>
+<a class="sourceLine" id="cb5-435" title="435"><span class="kw">foreach</span>(<span class="dt">filename=</span><span class="kw">dir</span>(<span class="st">&quot;../output/1_images&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;p19.*[.]tif$&quot;</span>, <span class="dt">recursive=</span><span class="ot">TRUE</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb5-436" title="436">  image &lt;-<span class="st"> </span><span class="kw">brick</span>(filename)</a>
+<a class="sourceLine" id="cb5-437" title="437">  <span class="kw">jpeg</span>(<span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="st">&quot;.jpeg&quot;</span>, filename), <span class="dt">width=</span><span class="dv">1350</span>, <span class="dt">height=</span><span class="dv">3000</span>)</a>
+<a class="sourceLine" id="cb5-438" title="438">  <span class="kw">par</span>(<span class="dt">plt=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb5-439" title="439">  <span class="kw">plot</span>(<span class="kw">spTransform</span>(TGO, utm<span class="fl">.31</span>))</a>
+<a class="sourceLine" id="cb5-440" title="440">  <span class="kw">plotRGB</span>(image, <span class="dt">r=</span><span class="dv">6</span>, <span class="dt">g=</span><span class="dv">5</span>, <span class="dt">b=</span><span class="dv">3</span>, <span class="dt">stretch=</span><span class="st">&quot;lin&quot;</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-441" title="441">  <span class="kw">plot</span>(<span class="kw">mask</span>(image[[<span class="dv">1</span>]], <span class="kw">spTransform</span>(TGO, utm<span class="fl">.31</span>), <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-442" title="442">  <span class="kw">plot</span>(<span class="kw">spTransform</span>(TGO, utm<span class="fl">.31</span>), <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb5-443" title="443">  <span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb5-444" title="444">  </a>
+<a class="sourceLine" id="cb5-445" title="445">}</a>
+<a class="sourceLine" id="cb5-446" title="446"></a>
+<a class="sourceLine" id="cb5-447" title="447"></a>
+<a class="sourceLine" id="cb5-448" title="448"><span class="co"># Prepare SRTM DEM ----------------------------</span></a>
+<a class="sourceLine" id="cb5-449" title="449"></a>
+<a class="sourceLine" id="cb5-450" title="450"><span class="co"># Load 90m SRTM DEM (source: CGIAR),</span></a>
+<a class="sourceLine" id="cb5-451" title="451">dem<span class="fl">.90</span> &lt;-<span class="st"> </span><span class="kw">do.call</span>(merge, <span class="kw">lapply</span>(<span class="kw">as.list</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/SRTM/3arcsecond&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)), raster))</a>
+<a class="sourceLine" id="cb5-452" title="452"></a>
+<a class="sourceLine" id="cb5-453" title="453"></a>
+<a class="sourceLine" id="cb5-454" title="454"><span class="co"># Merge 30m SRTM DEM and fill voids with 90m SRTM (source: USGS)</span></a>
+<a class="sourceLine" id="cb5-455" title="455">dem<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">tile=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/SRTM/1arcsecond&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb5-456" title="456">                  <span class="dt">.combine=</span>merge, <span class="dt">.multicombine=</span><span class="ot">TRUE</span>) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb5-457" title="457">                    dem.<span class="fl">30.</span>t &lt;-<span class="st"> </span><span class="kw">raster</span>(tile)</a>
+<a class="sourceLine" id="cb5-458" title="458">                    dem.<span class="fl">90.</span>t &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">projectRaster</span>(dem<span class="fl">.90</span>, dem.<span class="fl">30.</span>t))</a>
+<a class="sourceLine" id="cb5-459" title="459">                    <span class="kw">merge</span>(dem.<span class="fl">30.</span>t, dem.<span class="fl">90.</span>t)</a>
+<a class="sourceLine" id="cb5-460" title="460">                  }</a>
+<a class="sourceLine" id="cb5-461" title="461"></a>
+<a class="sourceLine" id="cb5-462" title="462"><span class="co"># write it to the disk and reproject to reference Landsat image</span></a>
+<a class="sourceLine" id="cb5-463" title="463"><span class="kw">writeRaster</span>(dem<span class="fl">.30</span>, <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec_raw.tif&quot;</span>), <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-464" title="464"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
+<a class="sourceLine" id="cb5-465" title="465">             <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec_raw.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb5-466" title="466">             <span class="st">&quot;-t_srs &#39;+proj=utm +zone=31 +datum=WGS84&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb5-467" title="467">             <span class="st">&quot;-tr 30 30&quot;</span>,</a>
+<a class="sourceLine" id="cb5-468" title="468">             <span class="kw">paste</span>(<span class="st">&quot;-te&quot;</span>, TGO.ext<span class="op">@</span>xmin, TGO.ext<span class="op">@</span>ymin, TGO.ext<span class="op">@</span>xmax, TGO.ext<span class="op">@</span>ymax),</a>
+<a class="sourceLine" id="cb5-469" title="469">             <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb5-470" title="470">             <span class="st">&quot;-ot &#39;Int16&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb5-471" title="471">             <span class="st">&quot;-co COMPRESS=&#39;LZW&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb5-472" title="472">             <span class="st">&quot;-co INTERLEAVE=&#39;BAND&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb5-473" title="473">             <span class="st">&quot;-overwrite&quot;</span>))</a>
+<a class="sourceLine" id="cb5-474" title="474"></a>
+<a class="sourceLine" id="cb5-475" title="475"><span class="kw">file.remove</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec_raw.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb5-476" title="476"></a>
+<a class="sourceLine" id="cb5-477" title="477"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalinfo -stats&quot;</span>,</a>
+<a class="sourceLine" id="cb5-478" title="478">             <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec.tif&quot;</span>)))</a>
+<a class="sourceLine" id="cb5-479" title="479"></a>
+<a class="sourceLine" id="cb5-480" title="480">dem &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb5-481" title="481"></a>
+<a class="sourceLine" id="cb5-482" title="482"><span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/SRTM/SRTM-1arcsec.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">1350</span>, <span class="dt">height=</span><span class="dv">3000</span>)</a>
+<a class="sourceLine" id="cb5-483" title="483"><span class="kw">par</span>(<span class="dt">plt=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb5-484" title="484"><span class="kw">plot</span>(dem)</a>
+<a class="sourceLine" id="cb5-485" title="485"><span class="kw">plot</span>(<span class="kw">mask</span>(dem, TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-486" title="486"><span class="kw">plot</span>(TGO, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb5-487" title="487"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb5-488" title="488"></a>
+<a class="sourceLine" id="cb5-489" title="489"></a>
+<a class="sourceLine" id="cb5-490" title="490"></a>
+<a class="sourceLine" id="cb5-491" title="491"><span class="co"># Prepare Worldclim v2 Data ----------------------------</span></a>
+<a class="sourceLine" id="cb5-492" title="492"></a>
+<a class="sourceLine" id="cb5-493" title="493"><span class="kw">foreach</span>(<span class="dt">file=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/Worldclim&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*Togo[.]tif$&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb5-494" title="494">  <span class="co"># wc.raster &lt;- raster(paste0(INPUT.DIR, &quot;/Worldclim/&quot;, file))</span></a>
+<a class="sourceLine" id="cb5-495" title="495">  <span class="co"># raster.downscale(raster(paste0(INPUT.DIR, &quot;/Worldclim/&quot;, file)), dem.30, ...)</span></a>
+<a class="sourceLine" id="cb5-496" title="496">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
+<a class="sourceLine" id="cb5-497" title="497">               <span class="kw">paste0</span>(INPUT.DIR, <span class="st">&quot;/Worldclim/&quot;</span>, file),</a>
+<a class="sourceLine" id="cb5-498" title="498">               <span class="st">&quot;-t_srs &#39;+proj=utm +zone=31 +datum=WGS84&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb5-499" title="499">               <span class="st">&quot;-tr 30 30&quot;</span>,</a>
+<a class="sourceLine" id="cb5-500" title="500">               <span class="kw">paste</span>(<span class="st">&quot;-te&quot;</span>, TGO.ext<span class="op">@</span>xmin, TGO.ext<span class="op">@</span>ymin, TGO.ext<span class="op">@</span>xmax, TGO.ext<span class="op">@</span>ymax),</a>
+<a class="sourceLine" id="cb5-501" title="501">               <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2/&quot;</span>, file),</a>
+<a class="sourceLine" id="cb5-502" title="502">               <span class="st">&quot;-dstnodata -3.4e+38&quot;</span>,</a>
+<a class="sourceLine" id="cb5-503" title="503">               <span class="st">&quot;-co COMPRESS=&#39;LZW&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb5-504" title="504">               <span class="st">&quot;-co INTERLEAVE=&#39;BAND&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb5-505" title="505">               <span class="st">&quot;-overwrite&quot;</span>))</a>
+<a class="sourceLine" id="cb5-506" title="506">  </a>
+<a class="sourceLine" id="cb5-507" title="507">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalinfo -stats&quot;</span>,</a>
+<a class="sourceLine" id="cb5-508" title="508">               <span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2/&quot;</span>, file)))</a>
+<a class="sourceLine" id="cb5-509" title="509">}</a>
+<a class="sourceLine" id="cb5-510" title="510"></a>
+<a class="sourceLine" id="cb5-511" title="511"><span class="kw">foreach</span>(<span class="dt">file=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb5-512" title="512">  image &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2/&quot;</span>, file))</a>
+<a class="sourceLine" id="cb5-513" title="513">  type &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">strsplit</span>(file, <span class="st">&quot;_&quot;</span>))[<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb5-514" title="514">  <span class="cf">if</span>      (type <span class="op">==</span><span class="st"> &quot;prec&quot;</span>) { zlim &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">320</span>);     col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">topo.colors</span>(<span class="dv">255</span>)) }</a>
+<a class="sourceLine" id="cb5-515" title="515">  <span class="cf">else</span> <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &quot;tmin&quot;</span>) { zlim &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">14.0</span>,<span class="fl">27.8</span>); col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">heat.colors</span>(<span class="dv">255</span>)) }</a>
+<a class="sourceLine" id="cb5-516" title="516">  <span class="cf">else</span> <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &quot;tmax&quot;</span>) { zlim &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">24.9</span>,<span class="fl">37.5</span>); col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">heat.colors</span>(<span class="dv">255</span>)) }</a>
+<a class="sourceLine" id="cb5-517" title="517">  <span class="cf">else</span> <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &quot;tavg&quot;</span>) { zlim &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">19.7</span>,<span class="fl">32.7</span>); col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">heat.colors</span>(<span class="dv">255</span>)) }</a>
+<a class="sourceLine" id="cb5-518" title="518">  <span class="cf">else</span>                     { zlim &lt;-<span class="st"> </span><span class="ot">NA</span>;           col &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">cm.colors</span>(<span class="dv">255</span>)) }</a>
+<a class="sourceLine" id="cb5-519" title="519">  <span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="kw">nlayers</span>(image)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb5-520" title="520">    <span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUTPUT.DIR, <span class="st">&quot;/1_images/WCv2/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="st">&quot;&quot;</span>, file), <span class="st">&quot;-&quot;</span>, <span class="kw">str_pad</span>(i, <span class="dv">2</span>, <span class="st">&quot;left&quot;</span>, <span class="dv">0</span>), <span class="st">&quot;.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">1350</span>, <span class="dt">height=</span><span class="dv">3000</span>)</a>
+<a class="sourceLine" id="cb5-521" title="521">    <span class="kw">plot</span>(image[[i]], <span class="dt">col=</span>col, <span class="dt">zlim=</span>zlim)</a>
+<a class="sourceLine" id="cb5-522" title="522">    <span class="kw">plot</span>(<span class="kw">mask</span>(image[[i]], TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-523" title="523">    <span class="kw">plot</span>(TGO, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb5-524" title="524">    <span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb5-525" title="525">  }</a>
+<a class="sourceLine" id="cb5-526" title="526">}</a></code></pre></div>
 
 </div>
 </div>

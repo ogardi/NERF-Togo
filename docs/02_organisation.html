@@ -25,7 +25,11 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
+<<<<<<< HEAD
 <meta name="date" content="2020-03-12" />
+=======
+<meta name="date" content="2020-03-11" />
+>>>>>>> f6844ea3840170391219bc2c968b04dff92643f0
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -203,34 +207,36 @@ Système Nationale de Surveillance des Forêts</div></a>
 <pre><code>SNSF_Togo
 =========
 ├── data                                # Données de base #############################
-    ├── GADM                              # frontières administratives
-    ├── Landsat                           # images satellitaires
-    ├── SRTM                              # données topographiques
-    └── Worldclim                         # données climatiques
+    ├── GADM                              # &lt;- frontières administratives
+    ├── Landsat                           # &lt;- images satellitaires
+    ├── SRTM                              # &lt;- données topographiques
+    └── Worldclim                         # &lt;- données climatiques
     
 └── SNSF_v1.0_20200106                  # Répértoire SNSF v1.0 ########################
     ├── _set-up.R                         # [R] initialisation
     
     ├── 01_SSTS                           # SYSTÈME DE SURVEILLANCE TERRESTRE =========
-        ├── 01_data                         # images et autres données pré-traités ----
+        ├── 01_data                         #:: images et autres données pré-traités --
             ├── _prep-data.R                  # [R] prétraitement
             └── ...
-        ├── 02_BdD                          # base de données SSTS --------------------
-             ├── 01_reseau-SSTS               # réseau de parcelles SSTS
+            
+        ├── 02_BdD                          #:: base de données SSTS ------------------
+             ├── 01_reseau-SSTS               #:: réseau de parcelles SSTS
                  ├── _create-grid.R             # [R] création réseau SSTS    
                  └── ...
-             ├── 02_train-plots               # parcelles d&#39;entraînement 
+             ├── 02_train-plots               #:: parcelles d&#39;entraînement 
                  ├── _create-train-plots.R      # [R] création parcelles d&#39;entraînement                                
                  └── ...             
-             └── 03_val-plots                 # parcelles de validation
-                 ├── _create-val-plots.R        # [R] création parcelles de validation  
+             └── 03_val-plots                 #:: parcelles de validation
+                 ├── _create-val-plots.R        # [R] création parcelles de validation
                  └── ... 
         
     ├── 02_IFN                            # INVENTAIRE FORESTIER NATIONAL =============
-        ├── 01_field-data                   # données d&#39;inventaire --------------------
+        ├── 01_field-data                   # &lt;- données d&#39;inventaire -----------------
+        └── ... 
     
     ├── 03_NRF-MRV                        # NIVEAU DE REFERENCE / MRV  ================
-        └── 01_MCF                          # Modification Couvert Forestier ----------
+        └── 01_MCF                          #:: Modification Couvert Forestier --------
             ├── _01_get-train-points.R        # [R] création des point d&#39;entraînement
             ├── _02_create-FC-maps.R          # [R] calibration des cartes
             ├── _03_clean-FC-maps.R           # [R] nettoyage des cartes
@@ -238,26 +244,26 @@ Système Nationale de Surveillance des Forêts</div></a>
             ├── _05_validate-FC-maps.R        # [R] validation des cartes
             ├── _06_FC-maps-accuracy.R        # [R] analyse de la précision des cartes
             ├── _07_analyse-FC-maps.R         # [R] analyse des cartes 
-            └── output                        # résultats / cartes
-                ├── 01_ref-maps                 # cartes référence
-                ├── 02_raw-maps                 # cartes brutes
-                ├── 03_clean-maps               # cartes nettoyées
-                ├── 04_validation               # résultats validation
-                └── 05_results                  # résultats surfaces
+            └── output                        #:: résultats / cartes
+                ├── 01_ref-maps                 # =&gt; cartes référence
+                ├── 02_raw-maps                 # =&gt; cartes brutes
+                ├── 03_clean-maps               # =&gt; cartes nettoyées
+                ├── 04_validation               # =&gt; résultats validation
+                └── 05_results                  # =&gt; résultats surfaces
         
-        ├── 02_AGB                          # cartographie biomasse -------------------
+        ├── 02_AGB                          #:: cartographie biomasse -----------------
             ├── _1_compile-AGB.R              # [R] évaluer inventaire
             ├── _2_create-AGB-maps.R          # [R] calibration des cartes
             ├── _3_clean-AGB-maps.R           # [R] nettoyage des cartes
             ├── _4_analyze-AGB.R              # [R] analyse des cartes
-            └── output                        # cartes biomasse
-                ├── 01_ref-maps                 # cartes de référence
-                └── 02_results                  # résultats biomasse
+            └── output                        #:: cartes biomasse
+                ├── 01_ref-maps                 # =&gt; cartes de référence
+                └── 02_results                  # =&gt; résultats biomasse
         
-        └── report                          # rapport NRF/MRV -------------------------
+        └── report                          #:: rapport NRF/MRV -----------------------
         
-    ├── 04_manual                         # cette documentation du SNSF ===============
-    └── docs                              # cette documentation en HTML
+    ├── 04_manual                         #:: cette documentation du SNSF =============
+    └── docs                              #:: cette documentation en HTML
     
     
 └── SNSF_v1.x                           # Répértoire SNSF version actualisé ###########</code></pre>

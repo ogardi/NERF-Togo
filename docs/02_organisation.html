@@ -7,7 +7,7 @@
   <title>2.2 Organisation du travail | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.2 Organisation du travail | _main.utf8" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-03-12" />
+<meta name="date" content="2020-03-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -70,7 +70,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -136,18 +136,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1" data-path="01_arrangements.html"><a href="01_arrangements.html#arrangements-institutionelles"><i class="fa fa-check"></i><b>2.1</b> Arrangements institutionelles</a></li>
 <li class="chapter" data-level="2.2" data-path="02_organisation.html"><a href="02_organisation.html"><i class="fa fa-check"></i><b>2.2</b> Organisation du travail</a><ul>
 <li class="chapter" data-level="2.2.1" data-path="02_organisation.html"><a href="02_organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>2.2.1</b> Logiciel et serveur</a></li>
-<li class="chapter" data-level="2.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-repertoire"><i class="fa fa-check"></i><b>2.2.2</b> Structure du répértoire</a></li>
-<li class="chapter" data-level="2.2.3" data-path="02_organisation.html"><a href="02_organisation.html#creation-dun-nouveau-projet"><i class="fa fa-check"></i><b>2.2.3</b> Création d’un nouveau projet</a></li>
+<li class="chapter" data-level="2.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-répértoire"><i class="fa fa-check"></i><b>2.2.2</b> Structure du répértoire</a></li>
+<li class="chapter" data-level="2.2.3" data-path="02_organisation.html"><a href="02_organisation.html#création-dun-nouveau-projet"><i class="fa fa-check"></i><b>2.2.3</b> Création d’un nouveau projet</a></li>
 <li class="chapter" data-level="2.2.4" data-path="02_organisation.html"><a href="02_organisation.html#NRF-set-up.R"><i class="fa fa-check"></i><b>2.2.4</b> Définition des variables</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>3</b> Système de Surveillance Terrestre</a><ul>
 <li class="chapter" data-level="3.1" data-path="01_data.html"><a href="01_data.html"><i class="fa fa-check"></i><b>3.1</b> Images satellitaires</a><ul>
 <li class="chapter" data-level="3.1.1" data-path="01_data.html"><a href="01_data.html#acquisition-des-images"><i class="fa fa-check"></i><b>3.1.1</b> Acquisition des images</a></li>
-<li class="chapter" data-level="3.1.2" data-path="01_data.html"><a href="01_data.html#pretraitement-des-images"><i class="fa fa-check"></i><b>3.1.2</b> Prétraitement des images</a></li>
+<li class="chapter" data-level="3.1.2" data-path="01_data.html"><a href="01_data.html#prétraitement-des-images"><i class="fa fa-check"></i><b>3.1.2</b> Prétraitement des images</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html"><i class="fa fa-check"></i><b>3.2</b> Réseau d’échantillonnage</a></li>
-<li class="chapter" data-level="3.3" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#attributs-enregistres"><i class="fa fa-check"></i><b>3.3</b> Attributs enregistrés</a><ul>
+<li class="chapter" data-level="3.3" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#attributs-enregistrés"><i class="fa fa-check"></i><b>3.3</b> Attributs enregistrés</a><ul>
 <li class="chapter" data-level="3.3.1" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-couverture-houppiers"><i class="fa fa-check"></i><b>3.3.1</b> Couverture des houppiers</a></li>
 <li class="chapter" data-level="3.3.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-occupation-terres"><i class="fa fa-check"></i><b>3.3.2</b> Occupation des terres</a></li>
 </ul></li>
@@ -198,7 +198,7 @@ Système Nationale de Surveillance des Forêts</div></a>
 <p>La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel <a href="https://www.r-project.org">R</a>, dirigé à travers <a href="https://rstudio.com">RStudio</a>. Les scripts R sont mis à disposition dans un <a href="https://github.com/ogardi/NERF-Togo">dépot GitHub</a>. Les scripts dépendent des fois des outils GDAL disponible dans l’environnement, à installer pour les systèmes Linux avec <code>apt-get install python-gdal</code>.</p>
 <p>Le traitement et l’analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Les analyses pour le Niveau des emissions de référence pour les forêts du Togo (NERF 1.0) ont été éfféctués sur l’infrastructure informatique centrale de la BFH-HAFL (<a href="http://r.gro1.bfh.science" class="uri">http://r.gro1.bfh.science</a>, accès limité). Une fois la nouvelle infrastructure informatique puissante avec un serveur central au Ministère pour l’Environnement et Forêts (MERF) est installé et disponible, les travaux peuvent être éffectués là.</p>
 </div>
-<div id="structure-du-repertoire" class="section level3">
+<div id="structure-du-répértoire" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> Structure du répértoire</h3>
 <p>Les outils R dépendent d’une certaine structure des fichiers. Le répértoire de base <code>SNSF_Togo</code> est structuré comme suivant:</p>
 <pre><code>SNSF_Togo
@@ -315,7 +315,7 @@ NRF_Togo
 <p>La structure du répertoire est définit dans le script <a href="02_organisation.html#NRF-set-up.R">0_set-up.R</a> et peut être ajousté.</p>
 <p>C’est seulement les répétoires <code>src</code> et <code>manual</code> qui sont mis à diposition dans le dépôt <a href="https://github.com/ogardi/NERF-Togo">GitHub</a>. Les autres répétoires et données doivent être installés manuellement.</p>
 </div>
-<div id="creation-dun-nouveau-projet" class="section level3">
+<div id="création-dun-nouveau-projet" class="section level3">
 <h3><span class="header-section-number">2.2.3</span> Création d’un nouveau projet</h3>
 <p>Pour la création d’un nouveau projet, le plus simple est de copier un projet existant, normalement le projet sur lequel on aimeriait continuer le travail. On peut faire ça à travers RStudio, SFTP ou directement sur le server par exemple <code>cp -r 2019_NERF_v1 2020_MNV_v0</code>. Après on efface les résultat de l’ancien projet <code>rm -r 2020_MNV_v0/output/*</code>. Les rapports on peut laisser, mais il faut les rédiger à la fin.</p>
 </div>
@@ -329,85 +329,85 @@ NRF_Togo
 </div>
 <div id="set-up.r" class="section level4 unnumbered">
 <h4><em>0_set-up.R</em></h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">################################################################</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># .Rprofile: oading libraries and defining functions</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># --------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co"># 11 March 2019</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co"># Libraries  -----------------</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">library</span>(<span class="st">&quot;sp&quot;</span>)           <span class="co"># Classes and methods for spatial data</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw">library</span>(<span class="st">&quot;rgdal&quot;</span>)        <span class="co"># Bindings for the Geospatial Data Abstraction Library</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw">library</span>(<span class="st">&quot;rgeos&quot;</span>)        <span class="co"># Interface to Geometry Engine - Open Source</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw">library</span>(<span class="st">&quot;raster&quot;</span>)       <span class="co"># Geographic Data Analysis and Modeling</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>) <span class="co"># Breiman and Cutler&#39;s random forests for classification and regression</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="kw">library</span>(<span class="st">&quot;RStoolbox&quot;</span>)    <span class="co"># for terrain correction (topCor)</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="kw">library</span>(<span class="st">&quot;caret&quot;</span>)        <span class="co"># for confusion matrix</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="kw">library</span>(<span class="st">&quot;openxlsx&quot;</span>)     <span class="co"># pour directement lire des fichiers excel (xlsx)</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)        <span class="co"># pour cr??er des tableaux crois??s</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="kw">library</span>(<span class="st">&quot;tidyr&quot;</span>)</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="kw">library</span>(<span class="st">&quot;gdalUtils&quot;</span>)</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="kw">library</span>(<span class="st">&quot;stringr&quot;</span>)</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="kw">library</span>(<span class="st">&quot;maptools&quot;</span>)     <span class="co"># kmlPolygon</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="kw">library</span>(<span class="st">&quot;spsurvey&quot;</span>)</a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27">.snsf =<span class="st"> </span><span class="kw">new.env</span>()</a>
-<a class="sourceLine" id="cb2-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co"># Years ----------------------------------</span></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31">.snsf<span class="op">$</span>YEARS.ALL   &lt;-<span class="st">   </span><span class="dv">1985</span><span class="op">:</span><span class="dv">2019</span></a>
-<a class="sourceLine" id="cb2-32" data-line-number="32">.snsf<span class="op">$</span>YEARS.JNT   &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>,             <span class="dv">2003</span>, <span class="dv">2005</span>, <span class="dv">2007</span>,             <span class="dv">2015</span>, <span class="dv">2017</span>, <span class="dv">2018</span>)</a>
-<a class="sourceLine" id="cb2-33" data-line-number="33">.snsf<span class="op">$</span>YEARS.REF   &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>,             <span class="dv">2003</span>,                         <span class="dv">2015</span>,       <span class="dv">2018</span>)</a>
-<a class="sourceLine" id="cb2-34" data-line-number="34">.snsf<span class="op">$</span>YEARS.NRF   &lt;-<span class="st"> </span><span class="kw">c</span>(                  <span class="dv">2003</span>,                         <span class="dv">2015</span>,       <span class="dv">2018</span>)</a>
-<a class="sourceLine" id="cb2-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb2-36" data-line-number="36"><span class="co"># Directories ----------------------------------</span></a>
-<a class="sourceLine" id="cb2-37" data-line-number="37"></a>
-<a class="sourceLine" id="cb2-38" data-line-number="38">.snsf<span class="op">$</span>DIR.RAW.DAT   &lt;-<span class="st"> &quot;../data&quot;</span></a>
-<a class="sourceLine" id="cb2-39" data-line-number="39">.snsf<span class="op">$</span>DIR.SST       &lt;-<span class="st"> &quot;./01_SSTS&quot;</span></a>
-<a class="sourceLine" id="cb2-40" data-line-number="40">.snsf<span class="op">$</span>DIR.IFN       &lt;-<span class="st"> &quot;./02_IFN&quot;</span></a>
-<a class="sourceLine" id="cb2-41" data-line-number="41">.snsf<span class="op">$</span>DIR.MRV       &lt;-<span class="st"> &quot;./03_NRF-MRV&quot;</span></a>
-<a class="sourceLine" id="cb2-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb2-43" data-line-number="43">.snsf<span class="op">$</span>DIR.SST.DAT   &lt;-<span class="st"> </span><span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.SST, <span class="st">&quot;/01_data&quot;</span>)</a>
-<a class="sourceLine" id="cb2-44" data-line-number="44">.snsf<span class="op">$</span>DIR.SST.BDD   &lt;-<span class="st"> </span><span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.SST, <span class="st">&quot;/02_BdD&quot;</span>)</a>
-<a class="sourceLine" id="cb2-45" data-line-number="45">.snsf<span class="op">$</span>DIR.IFN.DAT   &lt;-<span class="st"> </span><span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.IFN, <span class="st">&quot;/01_field-data&quot;</span>)</a>
-<a class="sourceLine" id="cb2-46" data-line-number="46"></a>
-<a class="sourceLine" id="cb2-47" data-line-number="47"><span class="co"># CRS, AOI, Extents -------------------</span></a>
-<a class="sourceLine" id="cb2-48" data-line-number="48">.snsf<span class="op">$</span>UTM<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">crs</span>(<span class="st">&quot;+proj=utm +zone=30 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span>)</a>
-<a class="sourceLine" id="cb2-49" data-line-number="49">.snsf<span class="op">$</span>UTM<span class="fl">.31</span> &lt;-<span class="st"> </span><span class="kw">crs</span>(<span class="st">&quot;+proj=utm +zone=31 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span>)</a>
-<a class="sourceLine" id="cb2-50" data-line-number="50"></a>
-<a class="sourceLine" id="cb2-51" data-line-number="51"><span class="co"># Layers of SSTS images</span></a>
-<a class="sourceLine" id="cb2-52" data-line-number="52">.snsf<span class="op">$</span>SST.LSBANDS     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;B&quot;</span>, <span class="st">&quot;G&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;NIR&quot;</span>, <span class="st">&quot;SWIR1&quot;</span>, <span class="st">&quot;SWIR2&quot;</span>, <span class="st">&quot;evi&quot;</span>, <span class="st">&quot;msavi&quot;</span>, <span class="st">&quot;nbr&quot;</span>, <span class="st">&quot;nbr2&quot;</span>, <span class="st">&quot;ndmi&quot;</span>, <span class="st">&quot;ndvi&quot;</span>, <span class="st">&quot;savi&quot;</span>)</a>
-<a class="sourceLine" id="cb2-53" data-line-number="53">.snsf<span class="op">$</span>SST.BIOCLIM     &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;BIO&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">19</span>)</a>
-<a class="sourceLine" id="cb2-54" data-line-number="54"></a>
-<a class="sourceLine" id="cb2-55" data-line-number="55"><span class="co"># Boundary of Togo</span></a>
-<a class="sourceLine" id="cb2-56" data-line-number="56">.snsf<span class="op">$</span>TGO     &lt;-<span class="st"> </span><span class="kw">spTransform</span>(<span class="kw">readOGR</span>(<span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.RAW.DAT, <span class="st">&quot;/GADM/gadm36_TGO_0.shp&quot;</span>)), .snsf<span class="op">$</span>UTM<span class="fl">.31</span>)</a>
-<a class="sourceLine" id="cb2-57" data-line-number="57">.snsf<span class="op">$</span>TGO.REG &lt;-<span class="st"> </span><span class="kw">spTransform</span>(<span class="kw">readOGR</span>(<span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.RAW.DAT, <span class="st">&quot;/GADM/gadm36_TGO_1.shp&quot;</span>)), .snsf<span class="op">$</span>UTM<span class="fl">.31</span>)</a>
-<a class="sourceLine" id="cb2-58" data-line-number="58">.snsf<span class="op">$</span>TGO.EXT &lt;-<span class="st"> </span><span class="kw">extent</span>(<span class="dv">151155</span>, <span class="dv">373005</span>, <span class="dv">670665</span>, <span class="dv">1238175</span>)  <span class="co"># define extent by xmin, xmax, ymin and ymax</span></a>
-<a class="sourceLine" id="cb2-59" data-line-number="59"></a>
-<a class="sourceLine" id="cb2-60" data-line-number="60"></a>
-<a class="sourceLine" id="cb2-61" data-line-number="61"><span class="co"># Misc -------------------</span></a>
-<a class="sourceLine" id="cb2-62" data-line-number="62"><span class="co"># prepare for parallel computing</span></a>
-<a class="sourceLine" id="cb2-63" data-line-number="63">.snsf<span class="op">$</span>CORES &lt;-<span class="st"> </span><span class="kw">detectCores</span>()</a>
-<a class="sourceLine" id="cb2-64" data-line-number="64"></a>
-<a class="sourceLine" id="cb2-65" data-line-number="65"><span class="co"># Seed for random number generator</span></a>
-<a class="sourceLine" id="cb2-66" data-line-number="66">.snsf<span class="op">$</span>RSEED &lt;-<span class="st"> </span><span class="dv">20191114</span></a>
-<a class="sourceLine" id="cb2-67" data-line-number="67"></a>
-<a class="sourceLine" id="cb2-68" data-line-number="68"><span class="kw">attach</span>(.snsf)</a>
-<a class="sourceLine" id="cb2-69" data-line-number="69"></a>
-<a class="sourceLine" id="cb2-70" data-line-number="70"><span class="kw">message</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb2-71" data-line-number="71"><span class="st">=&gt; chargé librairies et variables définit en .Rprofile</span></a>
-<a class="sourceLine" id="cb2-72" data-line-number="72"><span class="st">  </span></a>
-<a class="sourceLine" id="cb2-73" data-line-number="73"><span class="st">###############################</span></a>
-<a class="sourceLine" id="cb2-74" data-line-number="74"><span class="st"># BIENVENUE DANS LE SNSF TOGO #</span></a>
-<a class="sourceLine" id="cb2-75" data-line-number="75"><span class="st">###############################</span></a>
-<a class="sourceLine" id="cb2-76" data-line-number="76"><span class="ch">\n</span><span class="st">&quot;</span>,</a>
-<a class="sourceLine" id="cb2-77" data-line-number="77"><span class="kw">date</span>(),</a>
-<a class="sourceLine" id="cb2-78" data-line-number="78"><span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb2-79" data-line-number="79">)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">################################################################</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># .Rprofile: oading libraries and defining functions</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co"># --------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co"># Bern University of Applied Sciences</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co"># 11 March 2019</span></a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="co"># Libraries  -----------------</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="kw">library</span>(<span class="st">&quot;sp&quot;</span>)           <span class="co"># Classes and methods for spatial data</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="kw">library</span>(<span class="st">&quot;rgdal&quot;</span>)        <span class="co"># Bindings for the Geospatial Data Abstraction Library</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="kw">library</span>(<span class="st">&quot;rgeos&quot;</span>)        <span class="co"># Interface to Geometry Engine - Open Source</span></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="kw">library</span>(<span class="st">&quot;raster&quot;</span>)       <span class="co"># Geographic Data Analysis and Modeling</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="kw">library</span>(<span class="st">&quot;randomForest&quot;</span>) <span class="co"># Breiman and Cutler&#39;s random forests for classification and regression</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="kw">library</span>(<span class="st">&quot;RStoolbox&quot;</span>)    <span class="co"># for terrain correction (topCor)</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="kw">library</span>(<span class="st">&quot;caret&quot;</span>)        <span class="co"># for confusion matrix</span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="kw">library</span>(<span class="st">&quot;openxlsx&quot;</span>)     <span class="co"># pour directement lire des fichiers excel (xlsx)</span></a>
+<a class="sourceLine" id="cb2-17" title="17"><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)        <span class="co"># pour cr??er des tableaux crois??s</span></a>
+<a class="sourceLine" id="cb2-18" title="18"><span class="kw">library</span>(<span class="st">&quot;tidyr&quot;</span>)</a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</a>
+<a class="sourceLine" id="cb2-20" title="20"><span class="kw">library</span>(<span class="st">&quot;foreach&quot;</span>)</a>
+<a class="sourceLine" id="cb2-21" title="21"><span class="kw">library</span>(<span class="st">&quot;doParallel&quot;</span>)</a>
+<a class="sourceLine" id="cb2-22" title="22"><span class="kw">library</span>(<span class="st">&quot;gdalUtils&quot;</span>)</a>
+<a class="sourceLine" id="cb2-23" title="23"><span class="kw">library</span>(<span class="st">&quot;stringr&quot;</span>)</a>
+<a class="sourceLine" id="cb2-24" title="24"><span class="kw">library</span>(<span class="st">&quot;maptools&quot;</span>)     <span class="co"># kmlPolygon</span></a>
+<a class="sourceLine" id="cb2-25" title="25"><span class="kw">library</span>(<span class="st">&quot;spsurvey&quot;</span>)</a>
+<a class="sourceLine" id="cb2-26" title="26"></a>
+<a class="sourceLine" id="cb2-27" title="27">.snsf =<span class="st"> </span><span class="kw">new.env</span>()</a>
+<a class="sourceLine" id="cb2-28" title="28"></a>
+<a class="sourceLine" id="cb2-29" title="29"><span class="co"># Years ----------------------------------</span></a>
+<a class="sourceLine" id="cb2-30" title="30"></a>
+<a class="sourceLine" id="cb2-31" title="31">.snsf<span class="op">$</span>YEARS.ALL   &lt;-<span class="st">   </span><span class="dv">1985</span><span class="op">:</span><span class="dv">2019</span></a>
+<a class="sourceLine" id="cb2-32" title="32">.snsf<span class="op">$</span>YEARS.JNT   &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>,             <span class="dv">2003</span>, <span class="dv">2005</span>, <span class="dv">2007</span>,             <span class="dv">2015</span>, <span class="dv">2017</span>, <span class="dv">2018</span>)</a>
+<a class="sourceLine" id="cb2-33" title="33">.snsf<span class="op">$</span>YEARS.REF   &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>,             <span class="dv">2003</span>,                         <span class="dv">2015</span>,       <span class="dv">2018</span>)</a>
+<a class="sourceLine" id="cb2-34" title="34">.snsf<span class="op">$</span>YEARS.NRF   &lt;-<span class="st"> </span><span class="kw">c</span>(                  <span class="dv">2003</span>,                         <span class="dv">2015</span>,       <span class="dv">2018</span>)</a>
+<a class="sourceLine" id="cb2-35" title="35"></a>
+<a class="sourceLine" id="cb2-36" title="36"><span class="co"># Directories ----------------------------------</span></a>
+<a class="sourceLine" id="cb2-37" title="37"></a>
+<a class="sourceLine" id="cb2-38" title="38">.snsf<span class="op">$</span>DIR.RAW.DAT   &lt;-<span class="st"> &quot;../data&quot;</span></a>
+<a class="sourceLine" id="cb2-39" title="39">.snsf<span class="op">$</span>DIR.SST       &lt;-<span class="st"> &quot;./01_SSTS&quot;</span></a>
+<a class="sourceLine" id="cb2-40" title="40">.snsf<span class="op">$</span>DIR.IFN       &lt;-<span class="st"> &quot;./02_IFN&quot;</span></a>
+<a class="sourceLine" id="cb2-41" title="41">.snsf<span class="op">$</span>DIR.MRV       &lt;-<span class="st"> &quot;./03_NRF-MRV&quot;</span></a>
+<a class="sourceLine" id="cb2-42" title="42"></a>
+<a class="sourceLine" id="cb2-43" title="43">.snsf<span class="op">$</span>DIR.SST.DAT   &lt;-<span class="st"> </span><span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.SST, <span class="st">&quot;/01_data&quot;</span>)</a>
+<a class="sourceLine" id="cb2-44" title="44">.snsf<span class="op">$</span>DIR.SST.BDD   &lt;-<span class="st"> </span><span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.SST, <span class="st">&quot;/02_BdD&quot;</span>)</a>
+<a class="sourceLine" id="cb2-45" title="45">.snsf<span class="op">$</span>DIR.IFN.DAT   &lt;-<span class="st"> </span><span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.IFN, <span class="st">&quot;/01_field-data&quot;</span>)</a>
+<a class="sourceLine" id="cb2-46" title="46"></a>
+<a class="sourceLine" id="cb2-47" title="47"><span class="co"># CRS, AOI, Extents -------------------</span></a>
+<a class="sourceLine" id="cb2-48" title="48">.snsf<span class="op">$</span>UTM<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">crs</span>(<span class="st">&quot;+proj=utm +zone=30 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span>)</a>
+<a class="sourceLine" id="cb2-49" title="49">.snsf<span class="op">$</span>UTM<span class="fl">.31</span> &lt;-<span class="st"> </span><span class="kw">crs</span>(<span class="st">&quot;+proj=utm +zone=31 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span>)</a>
+<a class="sourceLine" id="cb2-50" title="50"></a>
+<a class="sourceLine" id="cb2-51" title="51"><span class="co"># Layers of SSTS images</span></a>
+<a class="sourceLine" id="cb2-52" title="52">.snsf<span class="op">$</span>SST.LSBANDS     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;B&quot;</span>, <span class="st">&quot;G&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;NIR&quot;</span>, <span class="st">&quot;SWIR1&quot;</span>, <span class="st">&quot;SWIR2&quot;</span>, <span class="st">&quot;evi&quot;</span>, <span class="st">&quot;msavi&quot;</span>, <span class="st">&quot;nbr&quot;</span>, <span class="st">&quot;nbr2&quot;</span>, <span class="st">&quot;ndmi&quot;</span>, <span class="st">&quot;ndvi&quot;</span>, <span class="st">&quot;savi&quot;</span>)</a>
+<a class="sourceLine" id="cb2-53" title="53">.snsf<span class="op">$</span>SST.BIOCLIM     &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;BIO&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">19</span>)</a>
+<a class="sourceLine" id="cb2-54" title="54"></a>
+<a class="sourceLine" id="cb2-55" title="55"><span class="co"># Boundary of Togo</span></a>
+<a class="sourceLine" id="cb2-56" title="56">.snsf<span class="op">$</span>TGO     &lt;-<span class="st"> </span><span class="kw">spTransform</span>(<span class="kw">readOGR</span>(<span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.RAW.DAT, <span class="st">&quot;/GADM/gadm36_TGO_0.shp&quot;</span>)), .snsf<span class="op">$</span>UTM<span class="fl">.31</span>)</a>
+<a class="sourceLine" id="cb2-57" title="57">.snsf<span class="op">$</span>TGO.REG &lt;-<span class="st"> </span><span class="kw">spTransform</span>(<span class="kw">readOGR</span>(<span class="kw">paste0</span>(.snsf<span class="op">$</span>DIR.RAW.DAT, <span class="st">&quot;/GADM/gadm36_TGO_1.shp&quot;</span>)), .snsf<span class="op">$</span>UTM<span class="fl">.31</span>)</a>
+<a class="sourceLine" id="cb2-58" title="58">.snsf<span class="op">$</span>TGO.EXT &lt;-<span class="st"> </span><span class="kw">extent</span>(<span class="dv">151155</span>, <span class="dv">373005</span>, <span class="dv">670665</span>, <span class="dv">1238175</span>)  <span class="co"># define extent by xmin, xmax, ymin and ymax</span></a>
+<a class="sourceLine" id="cb2-59" title="59"></a>
+<a class="sourceLine" id="cb2-60" title="60"></a>
+<a class="sourceLine" id="cb2-61" title="61"><span class="co"># Misc -------------------</span></a>
+<a class="sourceLine" id="cb2-62" title="62"><span class="co"># prepare for parallel computing</span></a>
+<a class="sourceLine" id="cb2-63" title="63">.snsf<span class="op">$</span>CORES &lt;-<span class="st"> </span><span class="kw">detectCores</span>()</a>
+<a class="sourceLine" id="cb2-64" title="64"></a>
+<a class="sourceLine" id="cb2-65" title="65"><span class="co"># Seed for random number generator</span></a>
+<a class="sourceLine" id="cb2-66" title="66">.snsf<span class="op">$</span>RSEED &lt;-<span class="st"> </span><span class="dv">20191114</span></a>
+<a class="sourceLine" id="cb2-67" title="67"></a>
+<a class="sourceLine" id="cb2-68" title="68"><span class="kw">attach</span>(.snsf)</a>
+<a class="sourceLine" id="cb2-69" title="69"></a>
+<a class="sourceLine" id="cb2-70" title="70"><span class="kw">message</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb2-71" title="71"><span class="st">=&gt; chargÃ© librairies et variables dÃ©finit en .Rprofile</span></a>
+<a class="sourceLine" id="cb2-72" title="72"><span class="st">  </span></a>
+<a class="sourceLine" id="cb2-73" title="73"><span class="st">###############################</span></a>
+<a class="sourceLine" id="cb2-74" title="74"><span class="st"># BIENVENUE DANS LE SNSF TOGO #</span></a>
+<a class="sourceLine" id="cb2-75" title="75"><span class="st">###############################</span></a>
+<a class="sourceLine" id="cb2-76" title="76"><span class="ch">\n</span><span class="st">&quot;</span>,</a>
+<a class="sourceLine" id="cb2-77" title="77"><span class="kw">date</span>(),</a>
+<a class="sourceLine" id="cb2-78" title="78"><span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb2-79" title="79">)</a></code></pre></div>
 
 </div>
 </div>

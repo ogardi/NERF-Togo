@@ -1,5 +1,5 @@
 
-## Images satellitaires
+## Images Landsat
 
 Actuellement, l'analyse de l'évolution du couvert forestier est principalement basée sur les **images satellitaires Landsat**, qui sont disponibles gratuitement dans les archives de l'USGS. Les missions Landsat-4 à Landsat-8 produisent des images de résolution spatiale et radiométrique comparable depuis les années 1980.  Les images brutes sont corrigées géométriquement et radiométriquement par l'USGS ([USGS Collection 1 Level-2 Surface Reflection Product](https://www.usgs.gov/land-resources/nli/landsat/landsat-surface-reflectance)).
 
@@ -66,8 +66,6 @@ Une fois on est notifié par eMail que les images sont prêts, on les téléchar
 
 ### Prétraitement des images
 
-#### Description {-}
-
 Le premier traitement est la préparation des images Landsat et autres variables utilisés pour modéliser la surface forestier ou la biomasse aérienne comme les données topographique et climatiques. L'objectif est qu'on prépare avec les données brutes un jeu de données raster complet sur le même extent (territoir du Togo) et avec la même résolution spatiale de 30 mètres (résolution de base des images Landsat).
 
 On ouvre le script `1_prepare-images.R` et on modifie la liste des images Landsat à utiliser (`in.image.list`), par exemple par ajouter les nouveaux image à considérer dans les analyses:
@@ -98,11 +96,10 @@ prepare.image(in.image.dirs, ext=NULL, filename=NULL, overwrite=FALSE, log=TRUE)
 Dans la deuxième partie du script, là où c'est noté `# DO THE WORK ---------`, on lance le traitement des images. Avec le code `foreach(...) %dopar% { ... }` on lance le traitement de chaque chemin pour chaque année sur des différents processeurs au parallèle. À la fin du script on 
 
 - transforme les images du chemin 194 du système de coordonnées UTM 30 vers UTM 31
-- prépare les données topographiques SRTM et les données climatiques Worldclim v2
-- produit des thumbnails des images Landsat et Worldclim v2 en format JPEG (voir example au-dessous)
+- produit des thumbnails des images Landsat
 
 
-Les images prétraités sont sauveguarder dans le répétoire `input/1_images` du projet, ensemble avec des Thumbnails des chemins. Dans une prochaîne étape, les images sont néttoyées de l'eau, nuages et ombres en utilisant les bandes Landsat de qualité des pixels. Finalement également les données topographiques (SRTM) et climatiques (Worldclim v2) sont préparés.
+Les images prétraités sont sauveguarder dans le répétoire `input/1_images` du projet, ensemble avec des Thumbnails des chemins. Dans une prochaîne étape, les images sont néttoyées de l'eau, nuages et ombres en utilisant les bandes Landsat de qualité des pixels.
 
 #### Example {-}
 
@@ -111,13 +108,8 @@ knitr::include_graphics(c("images/p194_2019.jpeg","images/p193_2019.jpeg", "imag
 ``` 
 **Images Landsat de l'année 2019:** chemin p194 composé de 2 scénes du 22.01.2019 / p193 avec 4 scènes du 16.02.2019 / p192 avec 3 scènes du 23.12.2018
 
-```{r, echo=FALSE, out.width="25%", fig.show='hold', fig.align='default'}
-knitr::include_graphics(c("images/wc2.0_30s_bio_Togo-01.jpeg","images/wc2.0_30s_bio_Togo-04.jpeg", "images/wc2.0_30s_bio_Togo-12.jpeg", "images/wc2.0_30s_bio_Togo-15.jpeg"))
-``` 
-**Données bioclimatiques Worldclim v2:** température annuelle  moyenne (BIO1) / saisonalité de la température (BIO4) / précipitation annuelle (BIO12) / saisonalité de la précipitation (BIO15)
 
-#### _1_prepare-images.R_ {-}
-
+#### *prep-Landsat.R* {-}
 ```{r, code=readLines("../01_SSTS/01_data/_src/prep-Landsat.R"), eval=FALSE}
 ```
 

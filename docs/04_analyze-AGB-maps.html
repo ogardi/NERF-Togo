@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>5.2.4 Production des résultats | _main.utf8</title>
+  <title>4.2.4 Production des résultats | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
-  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="5.2.4 Production des résultats | _main.utf8" />
+  <meta property="og:title" content="4.2.4 Production des résultats | _main.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -17,7 +17,7 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="5.2.4 Production des résultats | _main.utf8" />
+  <meta name="twitter:title" content="4.2.4 Production des résultats | _main.utf8" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-03-13" />
+<meta name="date" content="2020-03-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -70,7 +70,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -116,6 +116,7 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 
 <body>
@@ -131,44 +132,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="https://github.com/ogardi/NERF-Togo"><b>SNSF Togo</b><br>v 1.0 / en développement</a></li>
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Préface</a></li>
-<li class="chapter" data-level="1" data-path="00_introduction.html"><a href="00_introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="01_arrangements.html"><a href="01_arrangements.html"><i class="fa fa-check"></i><b>2</b> Système nationale de surveillance des forêts (SNSF)</a><ul>
-<li class="chapter" data-level="2.1" data-path="01_arrangements.html"><a href="01_arrangements.html#arrangements-institutionelles"><i class="fa fa-check"></i><b>2.1</b> Arrangements institutionelles</a></li>
-<li class="chapter" data-level="2.2" data-path="02_organisation.html"><a href="02_organisation.html"><i class="fa fa-check"></i><b>2.2</b> Organisation du travail</a><ul>
-<li class="chapter" data-level="2.2.1" data-path="02_organisation.html"><a href="02_organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>2.2.1</b> Logiciel et serveur</a></li>
-<li class="chapter" data-level="2.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-répértoire"><i class="fa fa-check"></i><b>2.2.2</b> Structure du répértoire</a></li>
-<li class="chapter" data-level="2.2.3" data-path="02_organisation.html"><a href="02_organisation.html#création-dun-nouveau-projet"><i class="fa fa-check"></i><b>2.2.3</b> Création d’un nouveau projet</a></li>
-<li class="chapter" data-level="2.2.4" data-path="02_organisation.html"><a href="02_organisation.html#NRF-set-up.R"><i class="fa fa-check"></i><b>2.2.4</b> Définition des variables</a></li>
+<li class="chapter" data-level="1" data-path="00_introduction.html"><a href="00_introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="01_arrangements.html"><a href="01_arrangements.html"><i class="fa fa-check"></i><b>1.1</b> Arrangements institutionelles</a></li>
+<li class="chapter" data-level="1.2" data-path="02_organisation.html"><a href="02_organisation.html"><i class="fa fa-check"></i><b>1.2</b> Organisation du travail</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="02_organisation.html"><a href="02_organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>1.2.1</b> Logiciel et serveur</a></li>
+<li class="chapter" data-level="1.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-repertoire"><i class="fa fa-check"></i><b>1.2.2</b> Structure du répértoire</a></li>
+<li class="chapter" data-level="1.2.3" data-path="02_organisation.html"><a href="02_organisation.html#creation-dun-nouveau-projet"><i class="fa fa-check"></i><b>1.2.3</b> Création d’un nouveau projet</a></li>
+<li class="chapter" data-level="1.2.4" data-path="02_organisation.html"><a href="02_organisation.html#NRF-set-up.R"><i class="fa fa-check"></i><b>1.2.4</b> Définition des variables</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>3</b> Système de Surveillance Terrestre</a><ul>
-<li class="chapter" data-level="3.1" data-path="01_data.html"><a href="01_data.html"><i class="fa fa-check"></i><b>3.1</b> Images satellitaires</a><ul>
-<li class="chapter" data-level="3.1.1" data-path="01_data.html"><a href="01_data.html#acquisition-des-images"><i class="fa fa-check"></i><b>3.1.1</b> Acquisition des images</a></li>
-<li class="chapter" data-level="3.1.2" data-path="01_data.html"><a href="01_data.html#prétraitement-des-images"><i class="fa fa-check"></i><b>3.1.2</b> Prétraitement des images</a></li>
+<li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a><ul>
+<li class="chapter" data-level="2.1" data-path="01_Landsat.html"><a href="01_Landsat.html"><i class="fa fa-check"></i><b>2.1</b> Images Landsat</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="01_Landsat.html"><a href="01_Landsat.html#acquisition-des-images"><i class="fa fa-check"></i><b>2.1.1</b> Acquisition des images</a></li>
+<li class="chapter" data-level="2.1.2" data-path="01_Landsat.html"><a href="01_Landsat.html#pretraitement-des-images"><i class="fa fa-check"></i><b>2.1.2</b> Prétraitement des images</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html"><i class="fa fa-check"></i><b>3.2</b> Réseau d’échantillonnage</a></li>
-<li class="chapter" data-level="3.3" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#attributs-enregistrés"><i class="fa fa-check"></i><b>3.3</b> Attributs enregistrés</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-couverture-houppiers"><i class="fa fa-check"></i><b>3.3.1</b> Couverture des houppiers</a></li>
-<li class="chapter" data-level="3.3.2" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#SSTS-occupation-terres"><i class="fa fa-check"></i><b>3.3.2</b> Occupation des terres</a></li>
+<li class="chapter" data-level="2.2" data-path="02_other-data.html"><a href="02_other-data.html"><i class="fa fa-check"></i><b>2.2</b> Autres données</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="02_other-data.html"><a href="02_other-data.html#srtm"><i class="fa fa-check"></i><b>2.2.1</b> SRTM</a></li>
+<li class="chapter" data-level="2.2.2" data-path="02_other-data.html"><a href="02_other-data.html#worldclim"><i class="fa fa-check"></i><b>2.2.2</b> WorldClim</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="02_sampling-plan.html"><a href="02_sampling-plan.html#mise-en-oeuvre-du-ssts"><i class="fa fa-check"></i><b>3.4</b> Mise en oeuvre du SSTS</a></li>
+<li class="chapter" data-level="2.3" data-path="03_sampling-plan.html"><a href="03_sampling-plan.html"><i class="fa fa-check"></i><b>2.3</b> Réseau d’échantillonnage</a></li>
+<li class="chapter" data-level="2.4" data-path="03_sampling-plan.html"><a href="03_sampling-plan.html#attributs-enregistres"><i class="fa fa-check"></i><b>2.4</b> Attributs enregistrés</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="03_sampling-plan.html"><a href="03_sampling-plan.html#SSTS-couverture-houppiers"><i class="fa fa-check"></i><b>2.4.1</b> Couverture des houppiers</a></li>
+<li class="chapter" data-level="2.4.2" data-path="03_sampling-plan.html"><a href="03_sampling-plan.html#SSTS-occupation-terres"><i class="fa fa-check"></i><b>2.4.2</b> Occupation des terres</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="00_IFN.html"><a href="00_IFN.html"><i class="fa fa-check"></i><b>4</b> Inventaire Forestier National</a></li>
-<li class="chapter" data-level="5" data-path="00_NERF-MRV.html"><a href="00_NERF-MRV.html"><i class="fa fa-check"></i><b>5</b> Analyses NRF/MRV</a><ul>
-<li class="chapter" data-level="5.1" data-path="00_analyse-FCC.html"><a href="00_analyse-FCC.html"><i class="fa fa-check"></i><b>5.1</b> Analyse surfaces forestiers</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="01_get-train-points.html"><a href="01_get-train-points.html"><i class="fa fa-check"></i><b>5.1.1</b> Parcelles d’entraînement</a></li>
-<li class="chapter" data-level="5.1.2" data-path="02_create-FC-maps.html"><a href="02_create-FC-maps.html"><i class="fa fa-check"></i><b>5.1.2</b> Calibration et classification</a></li>
-<li class="chapter" data-level="5.1.3" data-path="03_clean-FC-maps.html"><a href="03_clean-FC-maps.html"><i class="fa fa-check"></i><b>5.1.3</b> Nettoyage des cartes brutes</a></li>
-<li class="chapter" data-level="5.1.4" data-path="04_get-val-points.html"><a href="04_get-val-points.html"><i class="fa fa-check"></i><b>5.1.4</b> Parcelles de validation</a></li>
-<li class="chapter" data-level="5.1.5" data-path="05_validate-FC-maps.html"><a href="05_validate-FC-maps.html"><i class="fa fa-check"></i><b>5.1.5</b> Validation des cartes</a></li>
-<li class="chapter" data-level="5.1.6" data-path="06_FC-maps-accuracy.html"><a href="06_FC-maps-accuracy.html"><i class="fa fa-check"></i><b>5.1.6</b> Analyse de la précision</a></li>
-<li class="chapter" data-level="5.1.7" data-path="07_analyse-FC-maps.html"><a href="07_analyse-FC-maps.html"><i class="fa fa-check"></i><b>5.1.7</b> Production des résultats</a></li>
+<li class="chapter" data-level="2.5" data-path="03_sampling-plan.html"><a href="03_sampling-plan.html#mise-en-oeuvre-du-ssts"><i class="fa fa-check"></i><b>2.5</b> Mise en oeuvre du SSTS</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="00_analyse-AGB.html"><a href="00_analyse-AGB.html"><i class="fa fa-check"></i><b>5.2</b> Analyse biomasse aérienne</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="01_compile-IFN.html"><a href="01_compile-IFN.html"><i class="fa fa-check"></i><b>5.2.1</b> Analyse des données IFN</a></li>
-<li class="chapter" data-level="5.2.2" data-path="02_create-AGB-maps.html"><a href="02_create-AGB-maps.html"><i class="fa fa-check"></i><b>5.2.2</b> Calibration et prédiction</a></li>
-<li class="chapter" data-level="5.2.3" data-path="03_clean-AGB-maps.html"><a href="03_clean-AGB-maps.html"><i class="fa fa-check"></i><b>5.2.3</b> Nettoyage des cartes brutes</a></li>
-<li class="chapter" data-level="5.2.4" data-path="04_analyze-AGB-maps.html"><a href="04_analyze-AGB-maps.html"><i class="fa fa-check"></i><b>5.2.4</b> Production des résultats</a></li>
+<li class="chapter" data-level="3" data-path="00_IFN.html"><a href="00_IFN.html"><i class="fa fa-check"></i><b>3</b> Inventaire Forestier National</a></li>
+<li class="chapter" data-level="4" data-path="00_NERF-MRV.html"><a href="00_NERF-MRV.html"><i class="fa fa-check"></i><b>4</b> Analyses NRF/MRV</a><ul>
+<li class="chapter" data-level="4.1" data-path="00_analyse-FCC.html"><a href="00_analyse-FCC.html"><i class="fa fa-check"></i><b>4.1</b> Analyse surfaces forestiers</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="01_get-train-points.html"><a href="01_get-train-points.html"><i class="fa fa-check"></i><b>4.1.1</b> Parcelles d’entraînement</a></li>
+<li class="chapter" data-level="4.1.2" data-path="02_create-FC-maps.html"><a href="02_create-FC-maps.html"><i class="fa fa-check"></i><b>4.1.2</b> Calibration et classification</a></li>
+<li class="chapter" data-level="4.1.3" data-path="03_clean-FC-maps.html"><a href="03_clean-FC-maps.html"><i class="fa fa-check"></i><b>4.1.3</b> Nettoyage des cartes brutes</a></li>
+<li class="chapter" data-level="4.1.4" data-path="04_get-val-points.html"><a href="04_get-val-points.html"><i class="fa fa-check"></i><b>4.1.4</b> Parcelles de validation</a></li>
+<li class="chapter" data-level="4.1.5" data-path="05_validate-FC-maps.html"><a href="05_validate-FC-maps.html"><i class="fa fa-check"></i><b>4.1.5</b> Validation des cartes</a></li>
+<li class="chapter" data-level="4.1.6" data-path="06_FC-maps-accuracy.html"><a href="06_FC-maps-accuracy.html"><i class="fa fa-check"></i><b>4.1.6</b> Analyse de la précision</a></li>
+<li class="chapter" data-level="4.1.7" data-path="07_analyse-FC-maps.html"><a href="07_analyse-FC-maps.html"><i class="fa fa-check"></i><b>4.1.7</b> Production des résultats</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="00_analyse-AGB.html"><a href="00_analyse-AGB.html"><i class="fa fa-check"></i><b>4.2</b> Analyse biomasse aérienne</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="01_compile-IFN.html"><a href="01_compile-IFN.html"><i class="fa fa-check"></i><b>4.2.1</b> Analyse des données IFN</a></li>
+<li class="chapter" data-level="4.2.2" data-path="02_create-AGB-maps.html"><a href="02_create-AGB-maps.html"><i class="fa fa-check"></i><b>4.2.2</b> Calibration et prédiction</a></li>
+<li class="chapter" data-level="4.2.3" data-path="03_clean-AGB-maps.html"><a href="03_clean-AGB-maps.html"><i class="fa fa-check"></i><b>4.2.3</b> Nettoyage des cartes brutes</a></li>
+<li class="chapter" data-level="4.2.4" data-path="04_analyze-AGB-maps.html"><a href="04_analyze-AGB-maps.html"><i class="fa fa-check"></i><b>4.2.4</b> Production des résultats</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -191,201 +195,201 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="production-des-résultats-1" class="section level3">
-<h3><span class="header-section-number">5.2.4</span> Production des résultats</h3>
-<div id="description-12" class="section level4 unnumbered">
+<div id="production-des-resultats-1" class="section level3">
+<h3><span class="header-section-number">4.2.4</span> Production des résultats</h3>
+<div id="description-10" class="section level4 unnumbered">
 <h4>Description</h4>
 <p>Description de la méthodologie / script</p>
 </div>
 <div id="agb5_analyze-agb.r" class="section level4 unnumbered">
 <h4><em>AGB/5_analyze-AGB.R</em></h4>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co">####################################################################</span></a>
-<a class="sourceLine" id="cb18-2" title="2"><span class="co"># NERF_Togo/AGB/5_analyze-AGB.R: analyze AGB maps</span></a>
-<a class="sourceLine" id="cb18-3" title="3"><span class="co"># ------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb18-4" title="4"><span class="co"># Bern University of Applied Sciences</span></a>
-<a class="sourceLine" id="cb18-5" title="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
-<a class="sourceLine" id="cb18-6" title="6"><span class="co"># 10 October 2019</span></a>
-<a class="sourceLine" id="cb18-7" title="7"></a>
-<a class="sourceLine" id="cb18-8" title="8">RSR.Y    &lt;-<span class="st"> </span><span class="fl">0.563</span></a>
-<a class="sourceLine" id="cb18-9" title="9">RSR.Y.SE &lt;-<span class="st"> </span><span class="fl">0.086</span></a>
-<a class="sourceLine" id="cb18-10" title="10">RSR.O    &lt;-<span class="st"> </span><span class="fl">0.275</span></a>
-<a class="sourceLine" id="cb18-11" title="11">RSR.O.SE &lt;-<span class="st"> </span><span class="fl">0.003</span></a>
-<a class="sourceLine" id="cb18-12" title="12">RSR.AGB  &lt;-<span class="st"> </span><span class="dv">20</span></a>
-<a class="sourceLine" id="cb18-13" title="13">C.RATIO  &lt;-<span class="st"> </span><span class="fl">0.47</span></a>
-<a class="sourceLine" id="cb18-14" title="14"></a>
-<a class="sourceLine" id="cb18-15" title="15"></a>
-<a class="sourceLine" id="cb18-16" title="16"><span class="co"># evaluate 2015 biomass map with IFN strata ------------------</span></a>
-<a class="sourceLine" id="cb18-17" title="17"></a>
-<a class="sourceLine" id="cb18-18" title="18">agb<span class="fl">.2015</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/TGO_2015_AGB_R.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb18-19" title="19">strata  &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/RapidEye/TGO_30m.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb18-20" title="20"></a>
-<a class="sourceLine" id="cb18-21" title="21"><span class="kw">zonal</span>(agb<span class="fl">.2015</span>, strata, <span class="dt">fun=</span><span class="st">&quot;mean&quot;</span>)</a>
-<a class="sourceLine" id="cb18-22" title="22"><span class="kw">zonal</span>(agb<span class="fl">.2015</span>, strata, <span class="dt">fun=</span><span class="st">&quot;sd&quot;</span>)</a>
-<a class="sourceLine" id="cb18-23" title="23"></a>
-<a class="sourceLine" id="cb18-24" title="24"><span class="co"># AGB density plots ---------</span></a>
-<a class="sourceLine" id="cb18-25" title="25"></a>
-<a class="sourceLine" id="cb18-26" title="26">files &lt;-<span class="st"> </span><span class="kw">dir</span>(AGB.REF.DIR, <span class="dt">pattern=</span><span class="st">&quot;^TGO.*</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb18-27" title="27">maps &lt;-<span class="st"> </span><span class="kw">stack</span>(files)</a>
-<a class="sourceLine" id="cb18-28" title="28"><span class="kw">names</span>(maps) &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="kw">names</span>(maps), <span class="dv">5</span>, <span class="dv">8</span>)</a>
-<a class="sourceLine" id="cb18-29" title="29"></a>
-<a class="sourceLine" id="cb18-30" title="30">maps.dat &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">na.omit</span>(maps[[<span class="kw">c</span>(<span class="st">&quot;X2003&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]][]))</a>
-<a class="sourceLine" id="cb18-31" title="31"></a>
-<a class="sourceLine" id="cb18-32" title="32">dens.plot &lt;-<span class="st"> </span>maps.dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X2003, X2018) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-33" title="33"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>value, <span class="dt">color=</span>variable, <span class="dt">linetype=</span>variable)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb18-34" title="34"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb18-35" title="35"><span class="st">  </span><span class="kw">theme_light</span>() </a>
-<a class="sourceLine" id="cb18-36" title="36"></a>
-<a class="sourceLine" id="cb18-37" title="37"><span class="co"># print(dens.plot)</span></a>
-<a class="sourceLine" id="cb18-38" title="38"></a>
-<a class="sourceLine" id="cb18-39" title="39"><span class="kw">pdf</span>(<span class="kw">paste0</span>(AGB.RES.DIR, <span class="st">&quot;/AGB-densities_03-18.pdf&quot;</span>))</a>
-<a class="sourceLine" id="cb18-40" title="40"><span class="kw">print</span>(dens.plot)</a>
-<a class="sourceLine" id="cb18-41" title="41"><span class="kw">dev.off</span>() </a>
-<a class="sourceLine" id="cb18-42" title="42"></a>
-<a class="sourceLine" id="cb18-43" title="43"></a>
-<a class="sourceLine" id="cb18-44" title="44"><span class="co"># Analyze emissions and enhancements 2003/2018 ----------------</span></a>
-<a class="sourceLine" id="cb18-45" title="45"></a>
-<a class="sourceLine" id="cb18-46" title="46">agb<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/TGO_2003_AGB_R.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb18-47" title="47">bgb<span class="fl">.2003</span> &lt;-<span class="st"> </span>agb<span class="fl">.2003</span> <span class="op">*</span><span class="st"> </span>RSR.O</a>
-<a class="sourceLine" id="cb18-48" title="48">bgb<span class="fl">.2003</span>[agb<span class="fl">.2003</span> <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>agb<span class="fl">.2003</span>[agb<span class="fl">.2003</span> <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.Y</a>
-<a class="sourceLine" id="cb18-49" title="49"></a>
-<a class="sourceLine" id="cb18-50" title="50">agb<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/TGO_2018_AGB_R.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb18-51" title="51">bgb<span class="fl">.2018</span> &lt;-<span class="st"> </span>agb<span class="fl">.2018</span> <span class="op">*</span><span class="st"> </span>RSR.O</a>
-<a class="sourceLine" id="cb18-52" title="52">bgb<span class="fl">.2018</span>[agb<span class="fl">.2018</span> <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>agb<span class="fl">.2018</span>[agb<span class="fl">.2018</span> <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.Y</a>
-<a class="sourceLine" id="cb18-53" title="53"></a>
-<a class="sourceLine" id="cb18-54" title="54">fc<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC30/TGO/TGO_2003_F30cf.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb18-55" title="55">fc<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC30/TGO/TGO_2018_F30cf.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb18-56" title="56"></a>
-<a class="sourceLine" id="cb18-57" title="57"></a>
-<a class="sourceLine" id="cb18-58" title="58"></a>
-<a class="sourceLine" id="cb18-59" title="59"></a>
-<a class="sourceLine" id="cb18-60" title="60"></a>
-<a class="sourceLine" id="cb18-61" title="61"><span class="co"># emissions from deforestation</span></a>
-<a class="sourceLine" id="cb18-62" title="62"></a>
-<a class="sourceLine" id="cb18-63" title="63">defor &lt;-<span class="st"> </span>fc<span class="fl">.2003</span> <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>fc<span class="fl">.2018</span> <span class="op">!=</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb18-64" title="64"></a>
-<a class="sourceLine" id="cb18-65" title="65">nf.agb &lt;-<span class="st"> </span><span class="kw">mean</span>(agb<span class="fl">.2018</span>[fc<span class="fl">.2018</span> <span class="op">==</span><span class="st"> </span><span class="dv">3</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)   <span class="co"># average non-forest AGB</span></a>
-<a class="sourceLine" id="cb18-66" title="66">pd.agb &lt;-<span class="st"> </span><span class="kw">mean</span>(agb<span class="fl">.2018</span>[defor], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)        <span class="co"># average post-defor AGB</span></a>
-<a class="sourceLine" id="cb18-67" title="67">defor.agb &lt;-<span class="st"> </span><span class="kw">mask</span>(agb<span class="fl">.2003</span>, defor, <span class="dt">maskvalue=</span><span class="dv">0</span>) <span class="op">-</span><span class="st"> </span>nf.agb</a>
-<a class="sourceLine" id="cb18-68" title="68">defor.agb[defor.agb <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb18-69" title="69"></a>
-<a class="sourceLine" id="cb18-70" title="70">nf.bgb &lt;-<span class="st"> </span><span class="kw">mean</span>(bgb<span class="fl">.2018</span>[fc<span class="fl">.2018</span> <span class="op">==</span><span class="st"> </span><span class="dv">3</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)   <span class="co"># average non-forest BGB</span></a>
-<a class="sourceLine" id="cb18-71" title="71">pd.bgb &lt;-<span class="st"> </span><span class="kw">mean</span>(bgb<span class="fl">.2018</span>[defor], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)        <span class="co"># average post-defor BGB</span></a>
-<a class="sourceLine" id="cb18-72" title="72">defor.bgb &lt;-<span class="st"> </span><span class="kw">mask</span>(bgb<span class="fl">.2003</span>, defor, <span class="dt">maskvalue=</span><span class="dv">0</span>) <span class="op">-</span><span class="st"> </span>nf.bgb</a>
-<a class="sourceLine" id="cb18-73" title="73">defor.bgb[defor.bgb <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span> </a>
-<a class="sourceLine" id="cb18-74" title="74"></a>
-<a class="sourceLine" id="cb18-75" title="75"><span class="co"># enhancements from reforestation</span></a>
-<a class="sourceLine" id="cb18-76" title="76"></a>
-<a class="sourceLine" id="cb18-77" title="77">regen &lt;-<span class="st"> </span>fc<span class="fl">.2003</span> <span class="op">!=</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>fc<span class="fl">.2018</span> <span class="op">==</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb18-78" title="78"></a>
-<a class="sourceLine" id="cb18-79" title="79">regen.agb<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(agb<span class="fl">.2003</span>, regen, <span class="dt">maskvalue=</span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb18-80" title="80">regen.agb<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(agb<span class="fl">.2018</span>, regen, <span class="dt">maskvalue=</span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb18-81" title="81">regen.agb &lt;-<span class="st"> </span>regen.agb<span class="fl">.2018</span> <span class="op">-</span><span class="st"> </span>regen.agb<span class="fl">.2003</span></a>
-<a class="sourceLine" id="cb18-82" title="82">regen.agb[regen.agb <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb18-83" title="83"></a>
-<a class="sourceLine" id="cb18-84" title="84">regen.agb<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(bgb<span class="fl">.2003</span>, regen, <span class="dt">maskvalue=</span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb18-85" title="85">regen.agb<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(bgb<span class="fl">.2018</span>, regen, <span class="dt">maskvalue=</span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb18-86" title="86">regen.bgb &lt;-<span class="st"> </span>regen.bgb<span class="fl">.2018</span> <span class="op">-</span><span class="st"> </span>regen.bgb<span class="fl">.2003</span></a>
-<a class="sourceLine" id="cb18-87" title="87">regen.bgb[regen.bgb <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb18-88" title="88"></a>
-<a class="sourceLine" id="cb18-89" title="89"></a>
-<a class="sourceLine" id="cb18-90" title="90"></a>
-<a class="sourceLine" id="cb18-91" title="91"><span class="co"># statistics for TGO and regions</span></a>
-<a class="sourceLine" id="cb18-92" title="92"></a>
-<a class="sourceLine" id="cb18-93" title="93">emissions &lt;-<span class="st"> </span><span class="cf">function</span>(defor, defor.agb, defor.bgb, </a>
-<a class="sourceLine" id="cb18-94" title="94">                      regen, regen.agb, regen.bgb, <span class="dt">aoi=</span><span class="ot">NULL</span>, <span class="dt">years=</span><span class="dv">15</span>) {</a>
-<a class="sourceLine" id="cb18-95" title="95">  </a>
-<a class="sourceLine" id="cb18-96" title="96">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(aoi)) {</a>
-<a class="sourceLine" id="cb18-97" title="97">    defor     &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(defor, aoi), aoi)</a>
-<a class="sourceLine" id="cb18-98" title="98">    defor.agb &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(defor.agb, aoi), aoi)</a>
-<a class="sourceLine" id="cb18-99" title="99">    defor.bgb &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(defor.agb, aoi), aoi)</a>
-<a class="sourceLine" id="cb18-100" title="100">    regen     &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(regen, aoi), aoi)</a>
-<a class="sourceLine" id="cb18-101" title="101">    regen.agb &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(regen.agb, aoi), aoi)</a>
-<a class="sourceLine" id="cb18-102" title="102">    regen.bgb &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(regen.bgb, aoi), aoi)</a>
-<a class="sourceLine" id="cb18-103" title="103">  }</a>
-<a class="sourceLine" id="cb18-104" title="104">  </a>
-<a class="sourceLine" id="cb18-105" title="105">  defor.co2    &lt;-<span class="st"> </span>(defor.agb <span class="op">+</span><span class="st"> </span>defor.bgb) <span class="op">*</span><span class="st"> </span>C.RATIO <span class="op">*</span><span class="st"> </span><span class="dv">44</span><span class="op">/</span><span class="dv">12</span></a>
-<a class="sourceLine" id="cb18-106" title="106">  defor.area   &lt;-<span class="st"> </span><span class="kw">sum</span>(defor[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span><span class="dv">10000</span></a>
-<a class="sourceLine" id="cb18-107" title="107">  defor.area.a &lt;-<span class="st"> </span>defor.area <span class="op">/</span><span class="st"> </span>years</a>
-<a class="sourceLine" id="cb18-108" title="108">  defor.agb.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(defor.agb[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb18-109" title="109">  defor.bgb.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(defor.bgb[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb18-110" title="110">  defor.co2.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(defor.co2[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb18-111" title="111">  </a>
-<a class="sourceLine" id="cb18-112" title="112">  regen.co2    &lt;-<span class="st"> </span>(regen.agb <span class="op">+</span><span class="st"> </span>regen.bgb) <span class="op">*</span><span class="st"> </span>C.RATIO <span class="op">*</span><span class="st"> </span><span class="dv">44</span><span class="op">/</span><span class="dv">12</span></a>
-<a class="sourceLine" id="cb18-113" title="113">  regen.area   &lt;-<span class="st"> </span><span class="kw">sum</span>(regen[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span><span class="dv">10000</span></a>
-<a class="sourceLine" id="cb18-114" title="114">  regen.area.a &lt;-<span class="st"> </span>regen.area <span class="op">/</span><span class="st"> </span>years</a>
-<a class="sourceLine" id="cb18-115" title="115">  regen.agb.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(regen.agb[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb18-116" title="116">  regen.bgb.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(regen.bgb[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb18-117" title="117">  regen.co2.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(regen.co2[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb18-118" title="118">  </a>
-<a class="sourceLine" id="cb18-119" title="119">  <span class="kw">return</span>(<span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb18-120" title="120">    <span class="dt">defor.area   =</span> defor.area, </a>
-<a class="sourceLine" id="cb18-121" title="121">    <span class="dt">defor.area.a =</span> defor.area.a,</a>
-<a class="sourceLine" id="cb18-122" title="122">    </a>
-<a class="sourceLine" id="cb18-123" title="123">    <span class="dt">defor.agb.ha =</span> defor.agb.ha,</a>
-<a class="sourceLine" id="cb18-124" title="124">    <span class="dt">defor.agb.a  =</span> defor.agb.ha <span class="op">*</span><span class="st"> </span>defor.area.a,</a>
-<a class="sourceLine" id="cb18-125" title="125">    </a>
-<a class="sourceLine" id="cb18-126" title="126">    <span class="dt">defor.bgb.ha =</span> defor.bgb.ha,</a>
-<a class="sourceLine" id="cb18-127" title="127">    <span class="dt">defor.bgb.a  =</span> defor.bgb.ha <span class="op">*</span><span class="st"> </span>defor.area.a,</a>
-<a class="sourceLine" id="cb18-128" title="128">    </a>
-<a class="sourceLine" id="cb18-129" title="129">    <span class="dt">defor.co2.ha =</span> defor.co2.ha,</a>
-<a class="sourceLine" id="cb18-130" title="130">    <span class="dt">defor.co2.a  =</span> defor.co2.ha <span class="op">*</span><span class="st"> </span>defor.area.a,</a>
-<a class="sourceLine" id="cb18-131" title="131">    </a>
-<a class="sourceLine" id="cb18-132" title="132">    <span class="dt">regen.area   =</span> regen.area, </a>
-<a class="sourceLine" id="cb18-133" title="133">    <span class="dt">regen.area.a =</span> regen.area.a,</a>
-<a class="sourceLine" id="cb18-134" title="134">    </a>
-<a class="sourceLine" id="cb18-135" title="135">    <span class="dt">regen.agb.ha =</span> regen.agb.ha,</a>
-<a class="sourceLine" id="cb18-136" title="136">    <span class="dt">regen.agb.a  =</span> regen.agb.ha <span class="op">*</span><span class="st"> </span>regen.area.a,</a>
-<a class="sourceLine" id="cb18-137" title="137">    </a>
-<a class="sourceLine" id="cb18-138" title="138">    <span class="dt">regen.bgb.ha =</span> regen.bgb.ha,</a>
-<a class="sourceLine" id="cb18-139" title="139">    <span class="dt">regen.bgb.a  =</span> regen.bgb.ha <span class="op">*</span><span class="st"> </span>regen.area.a,</a>
-<a class="sourceLine" id="cb18-140" title="140">    </a>
-<a class="sourceLine" id="cb18-141" title="141">    <span class="dt">regen.co2.ha =</span> regen.co2.ha,</a>
-<a class="sourceLine" id="cb18-142" title="142">    <span class="dt">regen.co2.a  =</span> regen.co2.ha <span class="op">*</span><span class="st"> </span>regen.area.a</a>
-<a class="sourceLine" id="cb18-143" title="143">  ))</a>
-<a class="sourceLine" id="cb18-144" title="144">  </a>
-<a class="sourceLine" id="cb18-145" title="145">}</a>
-<a class="sourceLine" id="cb18-146" title="146"></a>
-<a class="sourceLine" id="cb18-147" title="147"></a>
-<a class="sourceLine" id="cb18-148" title="148"></a>
-<a class="sourceLine" id="cb18-149" title="149"><span class="co"># DO THE WORK</span></a>
-<a class="sourceLine" id="cb18-150" title="150"></a>
-<a class="sourceLine" id="cb18-151" title="151"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb18-152" title="152">res &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">0</span><span class="op">:</span><span class="kw">length</span>(TGO.reg), <span class="dt">.combine=</span>rbind) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb18-153" title="153">  </a>
-<a class="sourceLine" id="cb18-154" title="154">  <span class="cf">if</span>(i<span class="op">==</span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb18-155" title="155">    <span class="kw">data.frame</span>(<span class="dt">reg =</span> <span class="st">&quot;TGO&quot;</span>, <span class="kw">emissions</span>(defor, defor.agb, defor.bgb, regen, regen.agb, regen.bgb))</a>
-<a class="sourceLine" id="cb18-156" title="156">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb18-157" title="157">    region &lt;-<span class="st"> </span>TGO.reg[i,]</a>
-<a class="sourceLine" id="cb18-158" title="158">    <span class="kw">data.frame</span>(<span class="dt">reg =</span> region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="kw">emissions</span>(defor, defor.agb, defor.bgb, regen, regen.agb, regen.bgb, <span class="dt">aoi=</span>region))</a>
-<a class="sourceLine" id="cb18-159" title="159">  }</a>
-<a class="sourceLine" id="cb18-160" title="160">}</a>
-<a class="sourceLine" id="cb18-161" title="161"></a>
-<a class="sourceLine" id="cb18-162" title="162"><span class="kw">write.csv</span>(res, <span class="kw">paste0</span>(AGB.RES.DIR, <span class="st">&quot;/NERF-Results.csv&quot;</span>), <span class="dt">row.names=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb18-163" title="163"></a>
-<a class="sourceLine" id="cb18-164" title="164"></a>
-<a class="sourceLine" id="cb18-165" title="165"></a>
-<a class="sourceLine" id="cb18-166" title="166"></a>
-<a class="sourceLine" id="cb18-167" title="167"></a>
-<a class="sourceLine" id="cb18-168" title="168"></a>
-<a class="sourceLine" id="cb18-169" title="169"></a>
-<a class="sourceLine" id="cb18-170" title="170"></a>
-<a class="sourceLine" id="cb18-171" title="171"><span class="co"># Aggregated uncertainty (Monte Carlo Simulation)</span></a>
-<a class="sourceLine" id="cb18-172" title="172"></a>
-<a class="sourceLine" id="cb18-173" title="173"><span class="co"># activity data (uncertainty)</span></a>
-<a class="sourceLine" id="cb18-174" title="174"></a>
-<a class="sourceLine" id="cb18-175" title="175">mc.defor  &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, mean.defor, sd)</a>
-<a class="sourceLine" id="cb18-176" title="176">mc.regen  &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, mean.regen, sd)</a>
-<a class="sourceLine" id="cb18-177" title="177"></a>
-<a class="sourceLine" id="cb18-178" title="178"></a>
-<a class="sourceLine" id="cb18-179" title="179"><span class="co"># emission factor</span></a>
-<a class="sourceLine" id="cb18-180" title="180">mean.agb<span class="fl">.2003</span> &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb18-181" title="181">mean.agb<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">mean</span>(agb<span class="fl">.2018</span>[defor])</a>
-<a class="sourceLine" id="cb18-182" title="182"></a>
-<a class="sourceLine" id="cb18-183" title="183">mc.agb<span class="fl">.2003</span>   &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="kw">mean</span>(agb<span class="fl">.2003</span>[defor]), <span class="kw">sqrt</span>((RMSE<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>n) ) </a>
-<a class="sourceLine" id="cb18-184" title="184">mc.bgb<span class="fl">.2003</span>   &lt;-<span class="st"> </span>mc.agb<span class="fl">.2003</span> <span class="op">*</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="kw">mean</span>(bgb<span class="fl">.2003</span>), RSR.O.SE)</a>
-<a class="sourceLine" id="cb18-185" title="185"></a>
-<a class="sourceLine" id="cb18-186" title="186">mc.agb<span class="fl">.2018</span>   &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="kw">mean</span>(agb<span class="fl">.2018</span>[defor]), <span class="kw">sqrt</span>((RMSE<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>n) ) </a>
-<a class="sourceLine" id="cb18-187" title="187">mc.bgb<span class="fl">.2018</span>   &lt;-<span class="st"> </span>mc.agb<span class="fl">.2003</span> <span class="op">*</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="kw">mean</span>(bgb<span class="fl">.2003</span>), RSR.O.SE)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co">####################################################################</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="co"># NERF_Togo/AGB/5_analyze-AGB.R: analyze AGB maps</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="co"># 10 October 2019</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8">RSR.Y    &lt;-<span class="st"> </span><span class="fl">0.563</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9">RSR.Y.SE &lt;-<span class="st"> </span><span class="fl">0.086</span></a>
+<a class="sourceLine" id="cb22-10" data-line-number="10">RSR.O    &lt;-<span class="st"> </span><span class="fl">0.275</span></a>
+<a class="sourceLine" id="cb22-11" data-line-number="11">RSR.O.SE &lt;-<span class="st"> </span><span class="fl">0.003</span></a>
+<a class="sourceLine" id="cb22-12" data-line-number="12">RSR.AGB  &lt;-<span class="st"> </span><span class="dv">20</span></a>
+<a class="sourceLine" id="cb22-13" data-line-number="13">C.RATIO  &lt;-<span class="st"> </span><span class="fl">0.47</span></a>
+<a class="sourceLine" id="cb22-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb22-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb22-16" data-line-number="16"><span class="co"># evaluate 2015 biomass map with IFN strata ------------------</span></a>
+<a class="sourceLine" id="cb22-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb22-18" data-line-number="18">agb<span class="fl">.2015</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/TGO_2015_AGB_R.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb22-19" data-line-number="19">strata  &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/RapidEye/TGO_30m.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb22-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb22-21" data-line-number="21"><span class="kw">zonal</span>(agb<span class="fl">.2015</span>, strata, <span class="dt">fun=</span><span class="st">&quot;mean&quot;</span>)</a>
+<a class="sourceLine" id="cb22-22" data-line-number="22"><span class="kw">zonal</span>(agb<span class="fl">.2015</span>, strata, <span class="dt">fun=</span><span class="st">&quot;sd&quot;</span>)</a>
+<a class="sourceLine" id="cb22-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb22-24" data-line-number="24"><span class="co"># AGB density plots ---------</span></a>
+<a class="sourceLine" id="cb22-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb22-26" data-line-number="26">files &lt;-<span class="st"> </span><span class="kw">dir</span>(AGB.REF.DIR, <span class="dt">pattern=</span><span class="st">&quot;^TGO.*</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-27" data-line-number="27">maps &lt;-<span class="st"> </span><span class="kw">stack</span>(files)</a>
+<a class="sourceLine" id="cb22-28" data-line-number="28"><span class="kw">names</span>(maps) &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="kw">names</span>(maps), <span class="dv">5</span>, <span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb22-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb22-30" data-line-number="30">maps.dat &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">na.omit</span>(maps[[<span class="kw">c</span>(<span class="st">&quot;X2003&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]][]))</a>
+<a class="sourceLine" id="cb22-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb22-32" data-line-number="32">dens.plot &lt;-<span class="st"> </span>maps.dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X2003, X2018) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-33" data-line-number="33"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>value, <span class="dt">color=</span>variable, <span class="dt">linetype=</span>variable)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-34" data-line-number="34"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-35" data-line-number="35"><span class="st">  </span><span class="kw">theme_light</span>() </a>
+<a class="sourceLine" id="cb22-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb22-37" data-line-number="37"><span class="co"># print(dens.plot)</span></a>
+<a class="sourceLine" id="cb22-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb22-39" data-line-number="39"><span class="kw">pdf</span>(<span class="kw">paste0</span>(AGB.RES.DIR, <span class="st">&quot;/AGB-densities_03-18.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb22-40" data-line-number="40"><span class="kw">print</span>(dens.plot)</a>
+<a class="sourceLine" id="cb22-41" data-line-number="41"><span class="kw">dev.off</span>() </a>
+<a class="sourceLine" id="cb22-42" data-line-number="42"></a>
+<a class="sourceLine" id="cb22-43" data-line-number="43"></a>
+<a class="sourceLine" id="cb22-44" data-line-number="44"><span class="co"># Analyze emissions and enhancements 2003/2018 ----------------</span></a>
+<a class="sourceLine" id="cb22-45" data-line-number="45"></a>
+<a class="sourceLine" id="cb22-46" data-line-number="46">agb<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/TGO_2003_AGB_R.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb22-47" data-line-number="47">bgb<span class="fl">.2003</span> &lt;-<span class="st"> </span>agb<span class="fl">.2003</span> <span class="op">*</span><span class="st"> </span>RSR.O</a>
+<a class="sourceLine" id="cb22-48" data-line-number="48">bgb<span class="fl">.2003</span>[agb<span class="fl">.2003</span> <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>agb<span class="fl">.2003</span>[agb<span class="fl">.2003</span> <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.Y</a>
+<a class="sourceLine" id="cb22-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb22-50" data-line-number="50">agb<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/TGO_2018_AGB_R.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb22-51" data-line-number="51">bgb<span class="fl">.2018</span> &lt;-<span class="st"> </span>agb<span class="fl">.2018</span> <span class="op">*</span><span class="st"> </span>RSR.O</a>
+<a class="sourceLine" id="cb22-52" data-line-number="52">bgb<span class="fl">.2018</span>[agb<span class="fl">.2018</span> <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>agb<span class="fl">.2018</span>[agb<span class="fl">.2018</span> <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.Y</a>
+<a class="sourceLine" id="cb22-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb22-54" data-line-number="54">fc<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC30/TGO/TGO_2003_F30cf.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb22-55" data-line-number="55">fc<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC30/TGO/TGO_2018_F30cf.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb22-56" data-line-number="56"></a>
+<a class="sourceLine" id="cb22-57" data-line-number="57"></a>
+<a class="sourceLine" id="cb22-58" data-line-number="58"></a>
+<a class="sourceLine" id="cb22-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb22-60" data-line-number="60"></a>
+<a class="sourceLine" id="cb22-61" data-line-number="61"><span class="co"># emissions from deforestation</span></a>
+<a class="sourceLine" id="cb22-62" data-line-number="62"></a>
+<a class="sourceLine" id="cb22-63" data-line-number="63">defor &lt;-<span class="st"> </span>fc<span class="fl">.2003</span> <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>fc<span class="fl">.2018</span> <span class="op">!=</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb22-64" data-line-number="64"></a>
+<a class="sourceLine" id="cb22-65" data-line-number="65">nf.agb &lt;-<span class="st"> </span><span class="kw">mean</span>(agb<span class="fl">.2018</span>[fc<span class="fl">.2018</span> <span class="op">==</span><span class="st"> </span><span class="dv">3</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)   <span class="co"># average non-forest AGB</span></a>
+<a class="sourceLine" id="cb22-66" data-line-number="66">pd.agb &lt;-<span class="st"> </span><span class="kw">mean</span>(agb<span class="fl">.2018</span>[defor], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)        <span class="co"># average post-defor AGB</span></a>
+<a class="sourceLine" id="cb22-67" data-line-number="67">defor.agb &lt;-<span class="st"> </span><span class="kw">mask</span>(agb<span class="fl">.2003</span>, defor, <span class="dt">maskvalue=</span><span class="dv">0</span>) <span class="op">-</span><span class="st"> </span>nf.agb</a>
+<a class="sourceLine" id="cb22-68" data-line-number="68">defor.agb[defor.agb <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb22-69" data-line-number="69"></a>
+<a class="sourceLine" id="cb22-70" data-line-number="70">nf.bgb &lt;-<span class="st"> </span><span class="kw">mean</span>(bgb<span class="fl">.2018</span>[fc<span class="fl">.2018</span> <span class="op">==</span><span class="st"> </span><span class="dv">3</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)   <span class="co"># average non-forest BGB</span></a>
+<a class="sourceLine" id="cb22-71" data-line-number="71">pd.bgb &lt;-<span class="st"> </span><span class="kw">mean</span>(bgb<span class="fl">.2018</span>[defor], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)        <span class="co"># average post-defor BGB</span></a>
+<a class="sourceLine" id="cb22-72" data-line-number="72">defor.bgb &lt;-<span class="st"> </span><span class="kw">mask</span>(bgb<span class="fl">.2003</span>, defor, <span class="dt">maskvalue=</span><span class="dv">0</span>) <span class="op">-</span><span class="st"> </span>nf.bgb</a>
+<a class="sourceLine" id="cb22-73" data-line-number="73">defor.bgb[defor.bgb <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span> </a>
+<a class="sourceLine" id="cb22-74" data-line-number="74"></a>
+<a class="sourceLine" id="cb22-75" data-line-number="75"><span class="co"># enhancements from reforestation</span></a>
+<a class="sourceLine" id="cb22-76" data-line-number="76"></a>
+<a class="sourceLine" id="cb22-77" data-line-number="77">regen &lt;-<span class="st"> </span>fc<span class="fl">.2003</span> <span class="op">!=</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>fc<span class="fl">.2018</span> <span class="op">==</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb22-78" data-line-number="78"></a>
+<a class="sourceLine" id="cb22-79" data-line-number="79">regen.agb<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(agb<span class="fl">.2003</span>, regen, <span class="dt">maskvalue=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb22-80" data-line-number="80">regen.agb<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(agb<span class="fl">.2018</span>, regen, <span class="dt">maskvalue=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb22-81" data-line-number="81">regen.agb &lt;-<span class="st"> </span>regen.agb<span class="fl">.2018</span> <span class="op">-</span><span class="st"> </span>regen.agb<span class="fl">.2003</span></a>
+<a class="sourceLine" id="cb22-82" data-line-number="82">regen.agb[regen.agb <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb22-83" data-line-number="83"></a>
+<a class="sourceLine" id="cb22-84" data-line-number="84">regen.agb<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(bgb<span class="fl">.2003</span>, regen, <span class="dt">maskvalue=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb22-85" data-line-number="85">regen.agb<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(bgb<span class="fl">.2018</span>, regen, <span class="dt">maskvalue=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb22-86" data-line-number="86">regen.bgb &lt;-<span class="st"> </span>regen.bgb<span class="fl">.2018</span> <span class="op">-</span><span class="st"> </span>regen.bgb<span class="fl">.2003</span></a>
+<a class="sourceLine" id="cb22-87" data-line-number="87">regen.bgb[regen.bgb <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb22-88" data-line-number="88"></a>
+<a class="sourceLine" id="cb22-89" data-line-number="89"></a>
+<a class="sourceLine" id="cb22-90" data-line-number="90"></a>
+<a class="sourceLine" id="cb22-91" data-line-number="91"><span class="co"># statistics for TGO and regions</span></a>
+<a class="sourceLine" id="cb22-92" data-line-number="92"></a>
+<a class="sourceLine" id="cb22-93" data-line-number="93">emissions &lt;-<span class="st"> </span><span class="cf">function</span>(defor, defor.agb, defor.bgb, </a>
+<a class="sourceLine" id="cb22-94" data-line-number="94">                      regen, regen.agb, regen.bgb, <span class="dt">aoi=</span><span class="ot">NULL</span>, <span class="dt">years=</span><span class="dv">15</span>) {</a>
+<a class="sourceLine" id="cb22-95" data-line-number="95">  </a>
+<a class="sourceLine" id="cb22-96" data-line-number="96">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(aoi)) {</a>
+<a class="sourceLine" id="cb22-97" data-line-number="97">    defor     &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(defor, aoi), aoi)</a>
+<a class="sourceLine" id="cb22-98" data-line-number="98">    defor.agb &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(defor.agb, aoi), aoi)</a>
+<a class="sourceLine" id="cb22-99" data-line-number="99">    defor.bgb &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(defor.agb, aoi), aoi)</a>
+<a class="sourceLine" id="cb22-100" data-line-number="100">    regen     &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(regen, aoi), aoi)</a>
+<a class="sourceLine" id="cb22-101" data-line-number="101">    regen.agb &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(regen.agb, aoi), aoi)</a>
+<a class="sourceLine" id="cb22-102" data-line-number="102">    regen.bgb &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(regen.bgb, aoi), aoi)</a>
+<a class="sourceLine" id="cb22-103" data-line-number="103">  }</a>
+<a class="sourceLine" id="cb22-104" data-line-number="104">  </a>
+<a class="sourceLine" id="cb22-105" data-line-number="105">  defor.co2    &lt;-<span class="st"> </span>(defor.agb <span class="op">+</span><span class="st"> </span>defor.bgb) <span class="op">*</span><span class="st"> </span>C.RATIO <span class="op">*</span><span class="st"> </span><span class="dv">44</span><span class="op">/</span><span class="dv">12</span></a>
+<a class="sourceLine" id="cb22-106" data-line-number="106">  defor.area   &lt;-<span class="st"> </span><span class="kw">sum</span>(defor[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb22-107" data-line-number="107">  defor.area.a &lt;-<span class="st"> </span>defor.area <span class="op">/</span><span class="st"> </span>years</a>
+<a class="sourceLine" id="cb22-108" data-line-number="108">  defor.agb.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(defor.agb[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-109" data-line-number="109">  defor.bgb.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(defor.bgb[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-110" data-line-number="110">  defor.co2.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(defor.co2[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-111" data-line-number="111">  </a>
+<a class="sourceLine" id="cb22-112" data-line-number="112">  regen.co2    &lt;-<span class="st"> </span>(regen.agb <span class="op">+</span><span class="st"> </span>regen.bgb) <span class="op">*</span><span class="st"> </span>C.RATIO <span class="op">*</span><span class="st"> </span><span class="dv">44</span><span class="op">/</span><span class="dv">12</span></a>
+<a class="sourceLine" id="cb22-113" data-line-number="113">  regen.area   &lt;-<span class="st"> </span><span class="kw">sum</span>(regen[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb22-114" data-line-number="114">  regen.area.a &lt;-<span class="st"> </span>regen.area <span class="op">/</span><span class="st"> </span>years</a>
+<a class="sourceLine" id="cb22-115" data-line-number="115">  regen.agb.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(regen.agb[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-116" data-line-number="116">  regen.bgb.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(regen.bgb[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-117" data-line-number="117">  regen.co2.ha &lt;-<span class="st"> </span><span class="kw">mean</span>(regen.co2[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-118" data-line-number="118">  </a>
+<a class="sourceLine" id="cb22-119" data-line-number="119">  <span class="kw">return</span>(<span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb22-120" data-line-number="120">    <span class="dt">defor.area   =</span> defor.area, </a>
+<a class="sourceLine" id="cb22-121" data-line-number="121">    <span class="dt">defor.area.a =</span> defor.area.a,</a>
+<a class="sourceLine" id="cb22-122" data-line-number="122">    </a>
+<a class="sourceLine" id="cb22-123" data-line-number="123">    <span class="dt">defor.agb.ha =</span> defor.agb.ha,</a>
+<a class="sourceLine" id="cb22-124" data-line-number="124">    <span class="dt">defor.agb.a  =</span> defor.agb.ha <span class="op">*</span><span class="st"> </span>defor.area.a,</a>
+<a class="sourceLine" id="cb22-125" data-line-number="125">    </a>
+<a class="sourceLine" id="cb22-126" data-line-number="126">    <span class="dt">defor.bgb.ha =</span> defor.bgb.ha,</a>
+<a class="sourceLine" id="cb22-127" data-line-number="127">    <span class="dt">defor.bgb.a  =</span> defor.bgb.ha <span class="op">*</span><span class="st"> </span>defor.area.a,</a>
+<a class="sourceLine" id="cb22-128" data-line-number="128">    </a>
+<a class="sourceLine" id="cb22-129" data-line-number="129">    <span class="dt">defor.co2.ha =</span> defor.co2.ha,</a>
+<a class="sourceLine" id="cb22-130" data-line-number="130">    <span class="dt">defor.co2.a  =</span> defor.co2.ha <span class="op">*</span><span class="st"> </span>defor.area.a,</a>
+<a class="sourceLine" id="cb22-131" data-line-number="131">    </a>
+<a class="sourceLine" id="cb22-132" data-line-number="132">    <span class="dt">regen.area   =</span> regen.area, </a>
+<a class="sourceLine" id="cb22-133" data-line-number="133">    <span class="dt">regen.area.a =</span> regen.area.a,</a>
+<a class="sourceLine" id="cb22-134" data-line-number="134">    </a>
+<a class="sourceLine" id="cb22-135" data-line-number="135">    <span class="dt">regen.agb.ha =</span> regen.agb.ha,</a>
+<a class="sourceLine" id="cb22-136" data-line-number="136">    <span class="dt">regen.agb.a  =</span> regen.agb.ha <span class="op">*</span><span class="st"> </span>regen.area.a,</a>
+<a class="sourceLine" id="cb22-137" data-line-number="137">    </a>
+<a class="sourceLine" id="cb22-138" data-line-number="138">    <span class="dt">regen.bgb.ha =</span> regen.bgb.ha,</a>
+<a class="sourceLine" id="cb22-139" data-line-number="139">    <span class="dt">regen.bgb.a  =</span> regen.bgb.ha <span class="op">*</span><span class="st"> </span>regen.area.a,</a>
+<a class="sourceLine" id="cb22-140" data-line-number="140">    </a>
+<a class="sourceLine" id="cb22-141" data-line-number="141">    <span class="dt">regen.co2.ha =</span> regen.co2.ha,</a>
+<a class="sourceLine" id="cb22-142" data-line-number="142">    <span class="dt">regen.co2.a  =</span> regen.co2.ha <span class="op">*</span><span class="st"> </span>regen.area.a</a>
+<a class="sourceLine" id="cb22-143" data-line-number="143">  ))</a>
+<a class="sourceLine" id="cb22-144" data-line-number="144">  </a>
+<a class="sourceLine" id="cb22-145" data-line-number="145">}</a>
+<a class="sourceLine" id="cb22-146" data-line-number="146"></a>
+<a class="sourceLine" id="cb22-147" data-line-number="147"></a>
+<a class="sourceLine" id="cb22-148" data-line-number="148"></a>
+<a class="sourceLine" id="cb22-149" data-line-number="149"><span class="co"># DO THE WORK</span></a>
+<a class="sourceLine" id="cb22-150" data-line-number="150"></a>
+<a class="sourceLine" id="cb22-151" data-line-number="151"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb22-152" data-line-number="152">res &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">0</span><span class="op">:</span><span class="kw">length</span>(TGO.reg), <span class="dt">.combine=</span>rbind) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb22-153" data-line-number="153">  </a>
+<a class="sourceLine" id="cb22-154" data-line-number="154">  <span class="cf">if</span>(i<span class="op">==</span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb22-155" data-line-number="155">    <span class="kw">data.frame</span>(<span class="dt">reg =</span> <span class="st">&quot;TGO&quot;</span>, <span class="kw">emissions</span>(defor, defor.agb, defor.bgb, regen, regen.agb, regen.bgb))</a>
+<a class="sourceLine" id="cb22-156" data-line-number="156">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb22-157" data-line-number="157">    region &lt;-<span class="st"> </span>TGO.reg[i,]</a>
+<a class="sourceLine" id="cb22-158" data-line-number="158">    <span class="kw">data.frame</span>(<span class="dt">reg =</span> region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="kw">emissions</span>(defor, defor.agb, defor.bgb, regen, regen.agb, regen.bgb, <span class="dt">aoi=</span>region))</a>
+<a class="sourceLine" id="cb22-159" data-line-number="159">  }</a>
+<a class="sourceLine" id="cb22-160" data-line-number="160">}</a>
+<a class="sourceLine" id="cb22-161" data-line-number="161"></a>
+<a class="sourceLine" id="cb22-162" data-line-number="162"><span class="kw">write.csv</span>(res, <span class="kw">paste0</span>(AGB.RES.DIR, <span class="st">&quot;/NERF-Results.csv&quot;</span>), <span class="dt">row.names=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb22-163" data-line-number="163"></a>
+<a class="sourceLine" id="cb22-164" data-line-number="164"></a>
+<a class="sourceLine" id="cb22-165" data-line-number="165"></a>
+<a class="sourceLine" id="cb22-166" data-line-number="166"></a>
+<a class="sourceLine" id="cb22-167" data-line-number="167"></a>
+<a class="sourceLine" id="cb22-168" data-line-number="168"></a>
+<a class="sourceLine" id="cb22-169" data-line-number="169"></a>
+<a class="sourceLine" id="cb22-170" data-line-number="170"></a>
+<a class="sourceLine" id="cb22-171" data-line-number="171"><span class="co"># Aggregated uncertainty (Monte Carlo Simulation)</span></a>
+<a class="sourceLine" id="cb22-172" data-line-number="172"></a>
+<a class="sourceLine" id="cb22-173" data-line-number="173"><span class="co"># activity data (uncertainty)</span></a>
+<a class="sourceLine" id="cb22-174" data-line-number="174"></a>
+<a class="sourceLine" id="cb22-175" data-line-number="175">mc.defor  &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, mean.defor, sd)</a>
+<a class="sourceLine" id="cb22-176" data-line-number="176">mc.regen  &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, mean.regen, sd)</a>
+<a class="sourceLine" id="cb22-177" data-line-number="177"></a>
+<a class="sourceLine" id="cb22-178" data-line-number="178"></a>
+<a class="sourceLine" id="cb22-179" data-line-number="179"><span class="co"># emission factor</span></a>
+<a class="sourceLine" id="cb22-180" data-line-number="180">mean.agb<span class="fl">.2003</span> &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb22-181" data-line-number="181">mean.agb<span class="fl">.2018</span> &lt;-<span class="st"> </span><span class="kw">mean</span>(agb<span class="fl">.2018</span>[defor])</a>
+<a class="sourceLine" id="cb22-182" data-line-number="182"></a>
+<a class="sourceLine" id="cb22-183" data-line-number="183">mc.agb<span class="fl">.2003</span>   &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="kw">mean</span>(agb<span class="fl">.2003</span>[defor]), <span class="kw">sqrt</span>((RMSE<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>n) ) </a>
+<a class="sourceLine" id="cb22-184" data-line-number="184">mc.bgb<span class="fl">.2003</span>   &lt;-<span class="st"> </span>mc.agb<span class="fl">.2003</span> <span class="op">*</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="kw">mean</span>(bgb<span class="fl">.2003</span>), RSR.O.SE)</a>
+<a class="sourceLine" id="cb22-185" data-line-number="185"></a>
+<a class="sourceLine" id="cb22-186" data-line-number="186">mc.agb<span class="fl">.2018</span>   &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="kw">mean</span>(agb<span class="fl">.2018</span>[defor]), <span class="kw">sqrt</span>((RMSE<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>n) ) </a>
+<a class="sourceLine" id="cb22-187" data-line-number="187">mc.bgb<span class="fl">.2018</span>   &lt;-<span class="st"> </span>mc.agb<span class="fl">.2003</span> <span class="op">*</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="kw">mean</span>(bgb<span class="fl">.2003</span>), RSR.O.SE)</a></code></pre></div>
 
 </div>
 </div>

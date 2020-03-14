@@ -1,0 +1,22 @@
+
+## Autres données
+
+### SRTM
+
+#### *prep-SRTM.R* {-}
+```{r, code=readLines("../01_SSTS/01_data/_src/prep-SRTM.R"), eval=FALSE}
+```
+
+### WorldClim
+
+#### Example {-}
+
+```{r, echo=FALSE, out.width="25%", fig.show='hold', fig.align='default'}
+knitr::include_graphics(c("images/wc2.0_30s_bio_Togo-01.jpeg","images/wc2.0_30s_bio_Togo-04.jpeg", "images/wc2.0_30s_bio_Togo-12.jpeg", "images/wc2.0_30s_bio_Togo-15.jpeg"))
+``` 
+**Données bioclimatiques Worldclim v2:** température annuelle  moyenne (BIO1) / saisonalité de la température (BIO4) / précipitation annuelle (BIO12) / saisonalité de la précipitation (BIO15)
+
+#### *prep-Worldclim.R* {-}
+```{r, code=readLines("../01_SSTS/01_data/_src/prep-Worldclim.R"), eval=FALSE}
+```
+

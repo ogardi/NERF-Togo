@@ -14,18 +14,48 @@ Les outils R dépendent d'une certaine structure des fichiers. Le répértoire d
 ```
 SNSF_Togo
 =========
-├── data                                # Données de base #############################
+├── data                                # Données de base externes ####################
     ├── GADM                              # <- frontières administratives
     ├── Landsat                           # <- images satellitaires
     ├── SRTM                              # <- données topographiques
     └── Worldclim                         # <- données climatiques
     
 └── SNSF_v1.0_20200106                  # Répértoire SNSF v1.0 ########################
-    ├── _set-up.R                         # [R] initialisation
+    ├── .Rprofile                         # [R] initialisation
     
     ├── 01_SSTS                           # SYSTÈME DE SURVEILLANCE TERRESTRE =========
         ├── 01_data                         #:: images et autres données pré-traités --
-            ├── _prep-data.R                  # [R] prétraitement
+        └── 02_BdD                          #:: base de données SSTS ------------------
+        
+    ├── 02_IFN                            # INVENTAIRE FORESTIER NATIONAL =============
+        └── 01_IFN-1                        #:: données d'inventaire IFN-1 ------------
+    
+    ├── 03_NRF-MRV                        # NIVEAU DE REFERENCE / MRV  ================
+        ├── 01_MCF                          #:: Modification Couvert Forestier --------
+        ├── 02_AGB                          #:: cartographie biomasse -----------------
+        └── 03_report                       #:: rapport NRF/MRV -----------------------
+        
+    ├── 04_SNSF-manual                    #:: cette documentation du SNSF =============
+    └── docs                              #:: cette documentation en HTML
+    
+    
+└── SNSF_v1.x                           # Répértoire SNSF version actualisé ###########
+```
+<!-- old structure
+```
+SNSF_Togo
+=========
+├── data                                # Données de base externes ####################
+    ├── GADM                              # <- frontières administratives
+    ├── Landsat                           # <- images satellitaires
+    ├── SRTM                              # <- données topographiques
+    └── Worldclim                         # <- données climatiques
+    
+└── SNSF_v1.0_20200106                  # Répértoire SNSF v1.0 ########################
+    ├── .Rprofile                         # [R] initialisation
+    
+    ├── 01_SSTS                           # SYSTÈME DE SURVEILLANCE TERRESTRE =========
+        ├── 01_data                         #:: images et autres données pré-traités --
             └── ...
             
         ├── 02_BdD                          #:: base de données SSTS ------------------
@@ -76,75 +106,44 @@ SNSF_Togo
     
 └── SNSF_v1.x                           # Répértoire SNSF version actualisé ###########
 ```
-
-<!-- old structure
-```
-NRF_Togo
-
-├── data                                    # Données de base ########################
-    ├── GADM                                  # frontières administratives
-    ├── IFN                                   # inventaire forestier national
-    ├── Landsat                               # images satellitaires
-    ├── SRTM                                  # données topographiques
-    └── Worldclim                             # données climatiques
-    
-└── NRF_v1.0                                # Répétoire projet NRF v1.0 #############
-    ├── input                                 # données spécifiques du projet
-        ├── 1_images                            # images pre-traités                              
-        ├── 2_train-plots                       # données d'entraînement                       
-        └── 3_val-plots                         # données de validation
-    ├── src                                   # scripts R ----------------------------
-        ├── 0_set-up.R                          # initialisation
-        ├── 1_prepare-images.R                  # préparation des images  
-        ├── AGB                                 # cartographie biomasse
-            ├── 2_compile-IFN.R                   # évaluer inventaire
-            ├── 3_create-AGB-maps.R               # calibration des cartes
-            ├── 4_clean-AGB-maps.R                # nettoyage des cartes
-            └── 5_analyze-AGB.R                   # analyse des cartes
-        └── FCC                                 # cartographie surfaces forestiers
-            ├── 2_create-train-points.R           # création des point d'entraînement
-            ├── 3_create-fc-maps.R                # calibration des cartes
-            ├── 4_clean-fc-maps.R                 # nettoyage des cartes
-            ├── 5_create-val-points.R             # création des points de validation
-            ├── 6_validate-fc-maps.R              # validation des cartes
-            ├── 7_fc-maps-accuracy.R              # analyse de la précision des cartes
-            └── 8_analyse-fc-maps.R               # analyse des cartes  
-    ├── output                                # résultats / cartes -------------------
-        ├── 1_forest-cover                      # cartes surfaces forestiers
-            ├── 1_ref-maps                        # cartes référence
-            ├── 2_raw-maps                        # cartes brutes
-            ├── 3_clean-maps                      # cartes nettoyées
-            ├── 4_validation                      # résultats validation
-            └── 5_results                         # résultats surfaces
-        └── 2_biomass                           # cartes biomasse
-            ├── 1_ref-maps                        # cartes de référence
-            └── 5_results                         # résultats biomasse
-    ├── report                                # rapport des résultats ----------------
-    └── manuel                                # cette documentation ------------------
-    
-└── NRF_v1.x                                # Un autre répétoire projet #########
-```
 -->
 
-La structure du répertoire est définit dans le script [0_set-up.R](#NRF-set-up.R) et peut être ajousté.
+La structure du répertoire est définit dans le script R [.Rprofile](#NRF-set-up.R) et peut être ajousté.
 
 C'est seulement les répétoires `src` et `manual` qui sont mis à diposition dans le dépôt [GitHub](https://github.com/ogardi/NERF-Togo). Les autres répétoires et données doivent être installés manuellement.
 
 ### Création d'un nouveau projet
 
-Pour la création d'un nouveau projet, le plus simple est de copier un projet existant, normalement le projet sur lequel on aimeriait continuer le travail. On peut faire ça à travers RStudio, SFTP ou directement sur le server par exemple `cp -r 2019_NERF_v1 2020_MNV_v0`. Après on efface les résultat de l'ancien projet `rm -r 2020_MNV_v0/output/*`. Les rapports on peut laisser, mais il faut les rédiger à la fin.
+Pour la création d'un nouveau projet avec le code le plus actuel, on clone le dépôt du projet sur GitHub par la commande `git clone --single-branch https://github.com/ogardi/NERF-Togo.git NOM-REPERTOIRE`. L'installation d'une version spécifique peut être fait avec `git clone -b VERSION --single-branch https://github.com/ogardi/NERF-Togo.git NOM-REPERTOIRE`. 
+
+En travaillant avec RStudio, le plus facile est de créer directement un projet RStudio au départ due dépôt GitHub (`File > New Project ... > Version Control > Git`) avec les mêmes paramètre que l'installtion directe en haut.
+
+Dans une prochaine étape, les données doivent être rendues disponibles, soit par une nouvelle acquisition, soit par une copie des répertoires existants.
+
+* S'il n'est pas encore disponible, le répertoire `../data/` doit être créé et les données de base correspondantes doivent être fournies. 
+* Dans le répertoire `./01_SSTS/02_BdD/`, le réseau d'échantillonnage ainsi que les données d'entraînement et de validation doivent être stockées.
+* En outre, les données d'inventaire doivent être stockées dans le répertoire `./03_IFN/`.
+
 
 ### Définition des variables {#NRF-set-up.R}
 
-#### Description {-}
+Le traitement des images ainsi que les différentes analyses se font via des R-Scripts. Les variables et les fonctions utilisées dans les différents scripts sont définit dans le fichier `.Rprofile`, qui est automatiquement chargé au démarrage de R. Si le processus de chargement a réussi, vous pouvez voir le message suivant sur la console R :
 
-Le traitement des images ce fait par executer les scripts R, un après l'autre. Tout d'abord on ouvre et execute le script `0_set-up.R` pour charger les librairies et définir des variables qu'on utilise également dans les autres scripts. On peut également éxécuter l'ensemble du script par la commande R `source(0_set-up.R)`.
+```
+=> chargé librairies et variables définit en .Rprofile
+  
+###############################
+# BIENVENUE DANS LE SNSF TOGO #
+###############################
 
-Les noms des variables définies dans le script `0_set-up.R` sont écrits en majuscules. Ils sont stockés dans l'environnement R et sont disponibles pour tous les autres scripts après l'exécution du script.
+Sun Mar 15 00:07:55 2020
+```
 
-Avant l'exécution du script, les variables sont ajustées si nécessaire, notamment les informations sur la période analysée `PERIOD` et les années à prendre en compte pour les différentes évaluations `JNT.YEARS`, `VAL.YEARS` et `REF.YEARS`.
+Si aucun message n'apparaît, assurez-vous que a) R est lancé dans le répertoire et b) qu'aucun message d'erreur ne se produit. Les messages d'erreur possibles sont des paquets manquants (les paquets correspondants doivent être installés en premier) ou le fait de ne pas trouver les limites administratives de GADM dans `../data/GADM` (doivent également être installés en premier).
 
-#### *0_set-up.R* {-}
+Si nécessaire les variables sont ajustées et R est redémarré. Notamment les informations sur la période analysée `YEARS.ALL` et les années à prendre en compte pour les différentes évaluations `YEARS.JNT`, `YEARS.VAL` et `YEARS.REF`.
+
+#### *.Rprofile* {-}
 
 ```{r, code=readLines("../.Rprofile"), eval=FALSE}
 ```

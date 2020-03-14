@@ -5,3 +5,22 @@ Le Système de Surveillance Terrestre par Satellite (SSTS) consiste d'un réseau
 
 * [Couverture des houppiers](#SSTS-couverture-houppiers)
 * [Occupation des terres](#SSTS-occupation-terres)
+
+Les répertoires et les fichiers sont structurés comme suit:
+
+```
+01_SSTS                           # SYSTÈME DE SURVEILLANCE TERRESTRE =========
+├── 01_data                         #:: images et autres données pré-traités --
+    └── ...
+            
+├── 02_BdD                          #:: base de données SSTS ------------------
+    ├── 01_reseau-SSTS               #:: réseau de parcelles SSTS
+        ├── _create-grid.R             # [R] création réseau SSTS    
+        └── ...
+    ├── 02_train-plots               #:: parcelles d'entraînement 
+        ├── _create-train-plots.R      # [R] création parcelles d'entraînement                                
+        └── ...             
+    └── 03_val-plots                 #:: parcelles de validation
+        ├── _create-val-plots.R        # [R] création parcelles de validation
+        └── ... 
+```

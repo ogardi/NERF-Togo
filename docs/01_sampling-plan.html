@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Système de Surveillance Terrestre | _main.utf8</title>
+  <title>2.2 Observations | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 Système de Surveillance Terrestre | _main.utf8" />
+  <meta property="og:title" content="2.2 Observations | _main.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -17,7 +17,7 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Système de Surveillance Terrestre | _main.utf8" />
+  <meta name="twitter:title" content="2.2 Observations | _main.utf8" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -32,8 +32,8 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="02_organisation.html"/>
-<link rel="next" href="01_Landsat.html"/>
+<link rel="prev" href="02_Worldclim.html"/>
+<link rel="next" href="00_IFN.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -197,41 +197,76 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="SSTS" class="section level1">
-<h1><span class="header-section-number">2</span> Système de Surveillance Terrestre</h1>
-<p>Le Système de Surveillance Terrestre par Satellite (SSTS) consiste d’une base de données spatiales (images satellitaires, modèle numérique du terrain, données climatiques) d’un réseau de parcelles d’échantillonnage, dont la <strong>couverture des houppiers et l’utilisation des terres</strong> sont régulièrement enregistrées par photo-interprètes sur base des images satellitaires. Pour le moment, les attributs enregistrés dans le SSTS sont :</p>
-<ul>
-<li><a href="01_sampling-plan.html#SSTS-couverture-houppiers">Couverture des houppiers</a></li>
-<li><a href="01_sampling-plan.html#SSTS-occupation-terres">Occupation des terres</a></li>
-</ul>
-<p>Les répertoires et les fichiers sont structurés comme suit:</p>
-<pre><code>01_SSTS                           # SYSTÈME DE SURVEILLANCE TERRESTRE =========
-├── 01_data                         #:: images et autres données pré-traités --
-    └── ...
-            
-├── 02_BdD                          #:: base de données SSTS ------------------
-    ├── 01_reseau-SSTS               #:: réseau de parcelles SSTS
-        ├── _create-grid.R             # [R] création réseau SSTS
-        └── ...
-    ├── 02_train-plots               #:: parcelles d&#39;entraînement
-        ├── _create-train-plots.R      # [R] création parcelles d&#39;entraînement
-        └── ...             
-    └── 03_val-plots                 #:: parcelles de validation
-        ├── _create-val-plots.R        # [R] création parcelles de validation
-        └── ... </code></pre>
-<div class="rmdtodo">
-<p>
-Actuellement, les données de base ainsi que les données générées par les photo-interprètes sont stockées dans des fichiers (tif pour les rasters et shp pour les données vecteurs). Il est prévu de gérer ces données SSTS dans une base de données géographiques (PostGIS) à l’avenir. Cette base de données est actuellement installé sur un serveur central au ministère de l’Environnement et des Forêts (MERF).
-</p>
+<div id="observations" class="section level2">
+<h2><span class="header-section-number">2.2</span> Observations</h2>
+<div id="reseau-dechantillonnage" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Réseau d’échantillonnage</h3>
+<p>Les parcelles d’échantillonages couvrent une surface de 30 x 30 mètres et <strong>correspondent en taille, forme et position aux pixels des images Landsat</strong>. Les parcelles d’échantillonnage ont été régulièrement réparties sur le territoire du Togo, sur une grille d’une taille de maille de 480 mètres (tous les 16 pixels Landsat) ou 4,3 parcelles d’échantillonnage par km<sup>2</sup>. Sur l’ensemble du territoire togolais, cela donne un réseau de 250 000 parcelles.</p>
+<p>Si nécessaire pour autres utilisation, la taille de maille de 480 mètres permet d’enlargir la maille à 679 ou 960 mètres. D’autre part, il est également possible de comprimer la maille à 340, 240, 170, 120, 85, … mètres.</p>
+<p><img src="images/SSTS-sampling-grid.png" /></p>
+<p>La réseau d’échantillonage avec une taille de maille de 480 mètres est crée avec le code R suivant:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="dv">480</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">x.min &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>xmin <span class="op">%/%</span><span class="st"> </span>res</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">x.max &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>xmax <span class="op">%/%</span><span class="st"> </span>res</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">y.min &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>ymin <span class="op">%/%</span><span class="st"> </span>res</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">y.max &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>ymax <span class="op">%/%</span><span class="st"> </span>res</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9">frame.points &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>(<span class="kw">expand.grid</span>(<span class="kw">seq</span>(x.min, x.max, <span class="dt">by=</span>res), <span class="kw">seq</span>(y.min, y.max, <span class="dt">by=</span>res)), <span class="dt">proj4string=</span>utm<span class="fl">.31</span>)[TGO]</a></code></pre></div>
 </div>
+<div id="attributs-enregistres" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Attributs enregistrés</h3>
+<div id="SSTS-couverture-houppiers" class="section level4">
+<h4><span class="header-section-number">2.2.2.1</span> Couverture des houppiers</h4>
+<p>Pour détérminer la couverture des houppiers une <strong>grille de 7 x 7 points</strong> est définit à l’intérieur de chaque parcelles d’échantillonage. Pour chaque point de ce grille, les photo-interprètes détérminent sur base des images de très haute résolution disponible en GoogleEarth, si <strong>le point touche l’houppier d’un arbre ou non</strong>. La couverture des houppiers est en suite détérminé par le nombre des points qui tombent sur un arbre par rapport au ombre total des points (n = 49).</p>
+<p><img src="images/SSTS-tree-cover.png" /></p>
+<p>La grille de 7 x 7 points est crée avec le code suivant. L’attribution est fait par les photo-interprètes en QGIS, avec l’image GoogleEarth comme carte de base. La date d’acquistion de l’image GoogleEarth utilisé est également enregistré. Elle est obtenu par GoogleEarth Pro (plugin QGIS <code>send2google_earth</code>).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">grid.size &lt;-<span class="st"> </span><span class="dv">7</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">res &lt;-<span class="st"> </span><span class="kw">res</span>(landsat.grid)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">offset &lt;-<span class="st"> </span><span class="kw">c</span>(res<span class="op">/</span>grid.size<span class="op">/</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">0</span><span class="op">:</span>(grid.size<span class="dv">-1</span>))<span class="op">*</span>res<span class="op">/</span>grid.size)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co"># split the plots for parallel processing</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">subsets &lt;-<span class="st"> </span><span class="kw">split</span>(train.plots, <span class="dt">f=</span><span class="dv">1</span><span class="op">:</span><span class="dv">86</span>)</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">train.grids &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">subset=</span>subsets, <span class="dt">.combine=</span>rbind, <span class="dt">.multicombine=</span><span class="ot">TRUE</span>) <span class="op">%dopar%</span><span class="st"> </span>{ </a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">  grids &lt;-<span class="st"> </span><span class="kw">SpatialPointsDataFrame</span>(<span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">y =</span> <span class="dv">0</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">PLOTID =</span> <span class="dv">0</span>, <span class="dt">SAMPLEID =</span> <span class="dv">0</span>, <span class="dt">GRIDPOINT =</span> <span class="dv">0</span>))[<span class="op">-</span><span class="dv">1</span>,]</a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">  <span class="cf">for</span>(p <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(subset)) {</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">    plot &lt;-<span class="st"> </span>subset[p,]</a>
+<a class="sourceLine" id="cb11-12" data-line-number="12">    ext &lt;-<span class="st"> </span><span class="kw">extent</span>(plot)</a>
+<a class="sourceLine" id="cb11-13" data-line-number="13">    grids &lt;-<span class="st"> </span><span class="kw">bind</span>(grids, <span class="kw">SpatialPointsDataFrame</span>(<span class="kw">expand.grid</span>(ext<span class="op">@</span>xmin<span class="op">+</span>offset, ext<span class="op">@</span>ymin<span class="op">+</span>offset), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">PLOTID =</span> plot<span class="op">$</span>PLOTID, <span class="dt">SAMPLEID =</span> plot<span class="op">$</span>SAMPLEID, <span class="dt">GRIDPOINT =</span> <span class="dv">1</span><span class="op">:</span>grid.size<span class="op">^</span><span class="dv">2</span>)))</a>
+<a class="sourceLine" id="cb11-14" data-line-number="14">  }</a>
+<a class="sourceLine" id="cb11-15" data-line-number="15">  grids</a>
+<a class="sourceLine" id="cb11-16" data-line-number="16">}</a></code></pre></div>
+</div>
+<div id="SSTS-occupation-terres" class="section level4">
+<h4><span class="header-section-number">2.2.2.2</span> Occupation des terres</h4>
+<p>L’occupation des terres et le changement de l’occupation des terres est <strong>déterminé sur base des images Landsat</strong>. Trois différentes catégories sont distingués:</p>
+<ul>
+<li>forêt (couverture houppier ≥ 30%)</li>
+<li>terre boisée (couverture houppier entre 10% et 30%)</li>
+<li>non-forêt (couverture houppier &lt; 10%)</li>
+</ul>
+<p><strong>La couverture des houppiers est utilisé pour détérminer l’occupation des terres sur l’image Landsat de la date correspondate.</strong> À partir de cette référence, l’occupation des terres est détérminé pour les autres dates de référence 1987 – 2003 – 2015 – 2018. La figure suivante illustre la procédure:</p>
+<p><img src="images/SSTS-land-cover.png" /></p>
+</div>
+</div>
+<div id="mise-en-oeuvre-du-ssts" class="section level3">
+<h3><span class="header-section-number">2.2.3</span> Mise en oeuvre du SSTS</h3>
+<p>Actuellement, les parcelles d’échantillonnage du SSTS ainsi que la grille de points pour déterminer la couverture des houppiers sont stockées sous forme des fichiers Shapefile. L’acquisition des attributs est effectuée par les photo-interprètes à l’aide d’un formulaire défini dans un projet QGIS.</p>
+<p><img src="images/SSTS-qgis-form.png" /></p>
+<p>Un SSTS basé sur des fichiers limite la complexité de la structure des données (par exemple, l’enregistrement récurrent des mêmes parcelles sur des images de différentes années) ainsi que le travail parallèle de différents photo-interprètes sur les mêmes données. Actuellement, des travaux sont en cours pour transférer le SSTS vers une base de données géographiques (PostGIS) sur un serveur central au Ministère de l’Environnement et des Ressources Forestières (MERF) et pour définir un formulaire QGIS qui permet à plusieurs personnes de travailler simultanément sur les données.</p>
 
+</div>
+</div>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="02_organisation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="01_Landsat.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="02_Worldclim.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="00_IFN.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -1,5 +1,7 @@
 
-## Images Landsat
+## Données de base
+
+### Images Landsat
 
 Actuellement, l'analyse de l'évolution du couvert forestier est principalement basée sur les **images satellitaires Landsat**, qui sont disponibles gratuitement dans les archives de l'USGS. Les missions Landsat-4 à Landsat-8 produisent des images de résolution spatiale et radiométrique comparable depuis les années 1980.  Les images brutes sont corrigées géométriquement et radiométriquement par l'USGS ([USGS Collection 1 Level-2 Surface Reflection Product](https://www.usgs.gov/land-resources/nli/landsat/landsat-surface-reflectance)).
 
@@ -48,7 +50,7 @@ Le tableau ci-dessous présente les images satellites utilisées pour l'analyse 
 
 	 	 	 
 	 	 	 
-### Acquisition des images
+#### Acquisition des images
 
 Ouvrir le site [USGS Earthexplorer](https://earthexplorer.usgs.gov). Dans la fenêtre `Search Criteria` il faut selectionner la période pour laquelle on cherche des images (Nov - Jan). Dans la fenêtre `Data Sets`, les produits Landsat Level-2 (Surface Reflectance) sont séléctionnés. Dans la fenêtre `Additional Criteria` il faut choisir les scènes (chemin 192: 054-056 /  chemin 193: 052-055 / chemin 194: 052-053).
 
@@ -64,7 +66,7 @@ Ensuite on ouvre le site [USGS ESPA](https://espa.cr.usgs.gov/ordering/new/) pou
 Une fois on est notifié par eMail que les images sont prêts, on les téléchargent manuellement ou tous ensemble avec le [USGS bulkdownloader](https://github.com/USGS-EROS/espa-bulk-downloader) et la commande `download_espa_order.py -u [nom d'utilisateur] -o ALL -d [répértoire]`. On dézip les images et les rangent dans le répétoire `data/Landsat` sous la scène et l'année correspondante. Pour des images de l'hiver 2019/20, l'année correspondante est 2020.	
 
 
-### Prétraitement des images
+#### Prétraitement des images
 
 Le premier traitement est la préparation des images Landsat et autres variables utilisés pour modéliser la surface forestier ou la biomasse aérienne comme les données topographique et climatiques. L'objectif est qu'on prépare avec les données brutes un jeu de données raster complet sur le même extent (territoir du Togo) et avec la même résolution spatiale de 30 mètres (résolution de base des images Landsat).
 
@@ -101,7 +103,7 @@ Dans la deuxième partie du script, là où c'est noté `# DO THE WORK ---------
 
 Les images prétraités sont sauveguarder dans le répétoire `input/1_images` du projet, ensemble avec des Thumbnails des chemins. Dans une prochaîne étape, les images sont néttoyées de l'eau, nuages et ombres en utilisant les bandes Landsat de qualité des pixels.
 
-#### Example {-}
+##### Example {-}
 
 ```{r, echo=FALSE, out.width="33%"}
 knitr::include_graphics(c("images/p194_2019.jpeg","images/p193_2019.jpeg", "images/p192_2019.jpeg"))
@@ -109,7 +111,7 @@ knitr::include_graphics(c("images/p194_2019.jpeg","images/p193_2019.jpeg", "imag
 **Images Landsat de l'année 2019:** chemin p194 composé de 2 scénes du 22.01.2019 / p193 avec 4 scènes du 16.02.2019 / p192 avec 3 scènes du 23.12.2018
 
 
-#### *prep-Landsat.R* {-}
+##### R-Script: *prep-Landsat.R* {-}
 ```{r, code=readLines("../01_SSTS/01_data/_src/prep-Landsat.R"), eval=FALSE}
 ```
 

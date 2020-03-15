@@ -1,6 +1,7 @@
 
+## Observations
 
-## Réseau d'échantillonnage
+### Réseau d'échantillonnage
 
 Les parcelles d'échantillonages couvrent une surface de 30 x 30 mètres et **correspondent en taille, forme et position aux pixels des images Landsat**. Les parcelles d'échantillonnage ont été régulièrement réparties sur le territoire du Togo, sur une grille d'une taille de maille de 480 mètres (tous les 16 pixels Landsat) ou 4,3 parcelles d'échantillonnage par km^2^. Sur l'ensemble du territoire togolais, cela donne un réseau de 250 000 parcelles. 
 
@@ -23,10 +24,10 @@ frame.points <- SpatialPoints(expand.grid(seq(x.min, x.max, by=res), seq(y.min, 
 ```
 
 
-## Attributs enregistrés
+### Attributs enregistrés
 
 
-### Couverture des houppiers {#SSTS-couverture-houppiers}
+#### Couverture des houppiers {#SSTS-couverture-houppiers}
 
 Pour détérminer la couverture des houppiers une **grille de 7 x 7 points** est définit à l'intérieur de chaque parcelles d'échantillonage. Pour chaque point de ce grille, les photo-interprètes détérminent sur base des images de très haute résolution disponible en GoogleEarth, si **le point touche l'houppier d'un arbre ou non**. La couverture des houppiers est en suite détérminé par le nombre des points qui tombent sur un arbre par rapport au ombre total des points (n = 49).
 
@@ -53,7 +54,7 @@ train.grids <- foreach(subset=subsets, .combine=rbind, .multicombine=TRUE) %dopa
 }
 ```
 
-### Occupation des terres {#SSTS-occupation-terres}
+#### Occupation des terres {#SSTS-occupation-terres}
 
 L'occupation des terres et le changement de l'occupation des terres est **déterminé sur base des images Landsat**. Trois différentes catégories sont distingués:
 
@@ -65,7 +66,7 @@ L'occupation des terres et le changement de l'occupation des terres est **déter
 
 ![](images/SSTS-land-cover.png)
 
-## Mise en oeuvre du SSTS
+### Mise en oeuvre du SSTS
 
 Actuellement, les parcelles d'échantillonnage du SSTS ainsi que la grille de points pour déterminer la couverture des houppiers sont stockées sous forme des fichiers Shapefile. L'acquisition des attributs est effectuée par les photo-interprètes à l'aide d'un formulaire défini dans un projet QGIS.
 

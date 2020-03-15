@@ -1,4 +1,29 @@
 
 # Inventaire Forestier National {#IFN}
 
-Le premier inventaire forestier national a ete realise la GIZ. Le deuxième inventaire sera realise par la direction de l'environnment du Mininstère de l'environnment, du developpement durable et de la protection de la nature.
+L'inventaire forestier national, vereinigt direkt im Feld erhobene Daten mit Waldbezug von verschiedenen Quellen. Der einzige erfasste Datensatz ist momentant das erste inverntaire forestier national IFN-1 welches 2015/16 von der GIZ realisiert wurde. Er wird im Rahmen des NRF-MRV zur Ermittlung der Emissionsfaktoren von Baumbiomasse.
+
+```{block, type='rmdtodo'}
+Un deuxième inverntaire forestier national (IFN-2) sur base des parcelles permanentes installées par IFN-1 est en cours de planification. Ce deuxième inventaire sera realise par la direction de l'environnment du Mininstère de l'environnment, du developpement durable et de la protection de la nature.
+
+En outre, d'autres ensembles de données seront intégrés dans la base de données au cours des prochaines années:
+
+* inventaires réalisés par les universités du Togo et autres acteurs
+* inventaire des plantations de l'ODEF
+* données sur les feux de végétation de l'ANGE
+* données sur l'agriculture (superficie emblavées et le cheptel) de DCID et ITRA
+* données démographiques de INSEED
+* ...
+
+```
+
+Les données et les documents des enquêtes respectives sont structurés comme suit:
+
+```
+02_IFN                            # INVENTAIRE FORESTIER NATIONAL =============
+├── 01_IFN-1                        # Premier IFN 2015/16 ---------------------
+    ├── 01_data                       # données brutes      
+    ├── 02_aux                        # données auxiliaires, scripts, analyses
+    └── 03_reports                    # rapports (méthode, résultats, ...)
+└── ...                             # Autres données (IFN-2, Plantations, Feu)
+```

@@ -1,7 +1,7 @@
 
 # Système de Surveillance Terrestre {#SSTS}
 
-Le Système de Surveillance Terrestre par Satellite (SSTS) consiste d'un réseau de parcelles d'échantillonnage, dont la **couverture et l'utilisation des terres** sont régulièrement enregistrées par photo-interprètes sur base des images satellitaires. Pour le moment, les attributs enregistrés dans le SSTS sont :
+Le Système de Surveillance Terrestre par Satellite (SSTS) consiste d'une base de données spatiales (images satellitaires, modèle numérique du terrain, données climatiques) d'un réseau de parcelles d'échantillonnage, dont la **couverture des houppiers et l'utilisation des terres** sont régulièrement enregistrées par photo-interprètes sur base des images satellitaires. Pour le moment, les attributs enregistrés dans le SSTS sont :
 
 * [Couverture des houppiers](#SSTS-couverture-houppiers)
 * [Occupation des terres](#SSTS-occupation-terres)
@@ -15,12 +15,16 @@ Les répertoires et les fichiers sont structurés comme suit:
             
 ├── 02_BdD                          #:: base de données SSTS ------------------
     ├── 01_reseau-SSTS               #:: réseau de parcelles SSTS
-        ├── _create-grid.R             # [R] création réseau SSTS    
+        ├── _create-grid.R             # [R] création réseau SSTS
         └── ...
-    ├── 02_train-plots               #:: parcelles d'entraînement 
-        ├── _create-train-plots.R      # [R] création parcelles d'entraînement                                
+    ├── 02_train-plots               #:: parcelles d'entraînement
+        ├── _create-train-plots.R      # [R] création parcelles d'entraînement
         └── ...             
     └── 03_val-plots                 #:: parcelles de validation
         ├── _create-val-plots.R        # [R] création parcelles de validation
         └── ... 
+```
+
+```{block, type='rmdtodo'}
+Actuellement, les données de base ainsi que les données générées par les photo-interprètes sont stockées dans des fichiers (tif pour les rasters et shp pour les données vecteurs). Il est prévu de gérer ces données SSTS dans une base de données géographiques (PostGIS) à l'avenir. Cette base de données est actuellement installé sur un serveur central au ministère de l'Environnement et des Forêts (MERF). 
 ```

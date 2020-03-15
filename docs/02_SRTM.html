@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Système de Surveillance Terrestre | _main.utf8</title>
+  <title>2.1.2 SRTM | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 Système de Surveillance Terrestre | _main.utf8" />
+  <meta property="og:title" content="2.1.2 SRTM | _main.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -17,7 +17,7 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Système de Surveillance Terrestre | _main.utf8" />
+  <meta name="twitter:title" content="2.1.2 SRTM | _main.utf8" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -32,8 +32,8 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="02_organisation.html"/>
-<link rel="next" href="01_Landsat.html"/>
+<link rel="prev" href="01_Landsat.html"/>
+<link rel="next" href="02_Worldclim.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -197,41 +197,78 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="SSTS" class="section level1">
-<h1><span class="header-section-number">2</span> Système de Surveillance Terrestre</h1>
-<p>Le Système de Surveillance Terrestre par Satellite (SSTS) consiste d’une base de données spatiales (images satellitaires, modèle numérique du terrain, données climatiques) d’un réseau de parcelles d’échantillonnage, dont la <strong>couverture des houppiers et l’utilisation des terres</strong> sont régulièrement enregistrées par photo-interprètes sur base des images satellitaires. Pour le moment, les attributs enregistrés dans le SSTS sont :</p>
-<ul>
-<li><a href="01_sampling-plan.html#SSTS-couverture-houppiers">Couverture des houppiers</a></li>
-<li><a href="01_sampling-plan.html#SSTS-occupation-terres">Occupation des terres</a></li>
-</ul>
-<p>Les répertoires et les fichiers sont structurés comme suit:</p>
-<pre><code>01_SSTS                           # SYSTÈME DE SURVEILLANCE TERRESTRE =========
-├── 01_data                         #:: images et autres données pré-traités --
-    └── ...
-            
-├── 02_BdD                          #:: base de données SSTS ------------------
-    ├── 01_reseau-SSTS               #:: réseau de parcelles SSTS
-        ├── _create-grid.R             # [R] création réseau SSTS
-        └── ...
-    ├── 02_train-plots               #:: parcelles d&#39;entraînement
-        ├── _create-train-plots.R      # [R] création parcelles d&#39;entraînement
-        └── ...             
-    └── 03_val-plots                 #:: parcelles de validation
-        ├── _create-val-plots.R        # [R] création parcelles de validation
-        └── ... </code></pre>
-<div class="rmdtodo">
-<p>
-Actuellement, les données de base ainsi que les données générées par les photo-interprètes sont stockées dans des fichiers (tif pour les rasters et shp pour les données vecteurs). Il est prévu de gérer ces données SSTS dans une base de données géographiques (PostGIS) à l’avenir. Cette base de données est actuellement installé sur un serveur central au ministère de l’Environnement et des Forêts (MERF).
-</p>
+<div id="srtm" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> SRTM</h3>
+<div id="acquisition-des-donnees" class="section level4">
+<h4><span class="header-section-number">2.1.2.1</span> Acquisition des données</h4>
 </div>
+<div id="pretraitement-des-donnees" class="section level4">
+<h4><span class="header-section-number">2.1.2.2</span> Prétraitement des données</h4>
+<div id="r-script-prep-srtm.r" class="section level5 unnumbered">
+<h5>R-Script: <em>prep-SRTM.R</em></h5>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">####################################################################</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co"># SSTS/data/prep-SRTM.R: cleaning and merging SRTM data</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># 11 March 2020</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">IN.DIR  &lt;-<span class="st"> </span><span class="kw">paste0</span>(DIR.RAW.DAT, <span class="st">&quot;/SRTM&quot;</span>)</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">OUT.DIR &lt;-<span class="st"> </span><span class="kw">paste0</span>(DIR.SST.DAT, <span class="st">&quot;/SRTM&quot;</span>)</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="cf">if</span>(<span class="op">!</span><span class="kw">dir.exists</span>(OUT.DIR)) <span class="kw">dir.create</span>(OUT.DIR)</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co"># Prepare SRTM DEM ----------------------------</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co"># Load 90m SRTM DEM (source: CGIAR),</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17">dem<span class="fl">.90</span> &lt;-<span class="st"> </span><span class="kw">do.call</span>(merge, <span class="kw">lapply</span>(<span class="kw">as.list</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(IN.DIR, <span class="st">&quot;/3arcsecond&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)), raster))</a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co"># Merge 30m SRTM DEM and fill voids with 90m SRTM (source: USGS)</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21">dem<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">tile=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(IN.DIR, <span class="st">&quot;/1arcsecond&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb8-22" data-line-number="22">                  <span class="dt">.combine=</span>merge, <span class="dt">.multicombine=</span><span class="ot">TRUE</span>) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb8-23" data-line-number="23">                    dem.<span class="fl">30.</span>t &lt;-<span class="st"> </span><span class="kw">raster</span>(tile)</a>
+<a class="sourceLine" id="cb8-24" data-line-number="24">                    dem.<span class="fl">90.</span>t &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">projectRaster</span>(dem<span class="fl">.90</span>, dem.<span class="fl">30.</span>t))</a>
+<a class="sourceLine" id="cb8-25" data-line-number="25">                    <span class="kw">merge</span>(dem.<span class="fl">30.</span>t, dem.<span class="fl">90.</span>t)</a>
+<a class="sourceLine" id="cb8-26" data-line-number="26">                  }</a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co"># write it to the disk and reproject to reference Landsat image</span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="kw">writeRaster</span>(dem<span class="fl">.30</span>, <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec_raw.tif&quot;</span>), <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
+<a class="sourceLine" id="cb8-31" data-line-number="31">             <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec_raw.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb8-32" data-line-number="32">             <span class="st">&quot;-t_srs &#39;+proj=utm +zone=31 +datum=WGS84&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb8-33" data-line-number="33">             <span class="st">&quot;-tr 30 30&quot;</span>,</a>
+<a class="sourceLine" id="cb8-34" data-line-number="34">             <span class="kw">paste</span>(<span class="st">&quot;-te&quot;</span>, TGO.EXT<span class="op">@</span>xmin, TGO.EXT<span class="op">@</span>ymin, TGO.EXT<span class="op">@</span>xmax, TGO.EXT<span class="op">@</span>ymax),</a>
+<a class="sourceLine" id="cb8-35" data-line-number="35">             <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb8-36" data-line-number="36">             <span class="st">&quot;-ot &#39;Int16&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb8-37" data-line-number="37">             <span class="st">&quot;-co COMPRESS=&#39;LZW&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb8-38" data-line-number="38">             <span class="st">&quot;-co INTERLEAVE=&#39;BAND&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb8-39" data-line-number="39">             <span class="st">&quot;-overwrite&quot;</span>))</a>
+<a class="sourceLine" id="cb8-40" data-line-number="40"></a>
+<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="kw">file.remove</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec_raw.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb8-42" data-line-number="42"></a>
+<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalinfo -stats&quot;</span>, <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.tif&quot;</span>)))</a>
+<a class="sourceLine" id="cb8-44" data-line-number="44"></a>
+<a class="sourceLine" id="cb8-45" data-line-number="45">dem &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb8-46" data-line-number="46"></a>
+<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">1350</span>, <span class="dt">height=</span><span class="dv">3000</span>)</a>
+<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="kw">par</span>(<span class="dt">plt=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="kw">plot</span>(dem)</a>
+<a class="sourceLine" id="cb8-50" data-line-number="50"><span class="kw">plot</span>(<span class="kw">mask</span>(dem, TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="kw">plot</span>(TGO, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb8-52" data-line-number="52"><span class="kw">dev.off</span>()</a></code></pre></div>
 
+</div>
+</div>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="02_organisation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="01_Landsat.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="01_Landsat.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="02_Worldclim.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

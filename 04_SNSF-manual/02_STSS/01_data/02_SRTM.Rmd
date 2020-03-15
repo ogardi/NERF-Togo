@@ -1,0 +1,10 @@
+
+### SRTM
+
+#### Acquisition des données
+
+#### Prétraitement des données
+
+##### R-Script: *prep-SRTM.R* {-}
+```{r, code=readLines("../01_SSTS/01_data/_src/prep-SRTM.R"), eval=FALSE}
+```

@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Système de Surveillance Terrestre | _main.utf8</title>
+  <title>3.1 IFN-1 (2015/16) | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 Système de Surveillance Terrestre | _main.utf8" />
+  <meta property="og:title" content="3.1 IFN-1 (2015/16) | _main.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -17,7 +17,7 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Système de Surveillance Terrestre | _main.utf8" />
+  <meta name="twitter:title" content="3.1 IFN-1 (2015/16) | _main.utf8" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -32,8 +32,8 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="02_organisation.html"/>
-<link rel="next" href="01_Landsat.html"/>
+<link rel="prev" href="00_IFN.html"/>
+<link rel="next" href="00_NERF-MRV.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -197,41 +197,30 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="SSTS" class="section level1">
-<h1><span class="header-section-number">2</span> Système de Surveillance Terrestre</h1>
-<p>Le Système de Surveillance Terrestre par Satellite (SSTS) consiste d’une base de données spatiales (images satellitaires, modèle numérique du terrain, données climatiques) d’un réseau de parcelles d’échantillonnage, dont la <strong>couverture des houppiers et l’utilisation des terres</strong> sont régulièrement enregistrées par photo-interprètes sur base des images satellitaires. Pour le moment, les attributs enregistrés dans le SSTS sont :</p>
-<ul>
-<li><a href="01_sampling-plan.html#SSTS-couverture-houppiers">Couverture des houppiers</a></li>
-<li><a href="01_sampling-plan.html#SSTS-occupation-terres">Occupation des terres</a></li>
-</ul>
-<p>Les répertoires et les fichiers sont structurés comme suit:</p>
-<pre><code>01_SSTS                           # SYSTÈME DE SURVEILLANCE TERRESTRE =========
-├── 01_data                         #:: images et autres données pré-traités --
-    └── ...
-            
-├── 02_BdD                          #:: base de données SSTS ------------------
-    ├── 01_reseau-SSTS               #:: réseau de parcelles SSTS
-        ├── _create-grid.R             # [R] création réseau SSTS
-        └── ...
-    ├── 02_train-plots               #:: parcelles d&#39;entraînement
-        ├── _create-train-plots.R      # [R] création parcelles d&#39;entraînement
-        └── ...             
-    └── 03_val-plots                 #:: parcelles de validation
-        ├── _create-val-plots.R        # [R] création parcelles de validation
-        └── ... </code></pre>
-<div class="rmdtodo">
-<p>
-Actuellement, les données de base ainsi que les données générées par les photo-interprètes sont stockées dans des fichiers (tif pour les rasters et shp pour les données vecteurs). Il est prévu de gérer ces données SSTS dans une base de données géographiques (PostGIS) à l’avenir. Cette base de données est actuellement installé sur un serveur central au ministère de l’Environnement et des Forêts (MERF).
-</p>
+<div id="IFN-1" class="section level2">
+<h2><span class="header-section-number">3.1</span> IFN-1 (2015/16)</h2>
+<p>Le premier inventaire forestier national a ete realisé par la GIZ et le MERF en 2015/16.</p>
+<div id="methode" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> <a href="../02_IFN/01_IFN-1/03_docs/IFN-1_Togo_MERF_Methode_Draft.pdf">Méthode</a></h3>
+<p>L’inventaire IFN-1 a installé xx parcelles permanentes au Togo. Les parcelles ont été installée …</p>
 </div>
+<div id="donnees" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Données</h3>
+</div>
+<div id="resultats" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> <a href="../02_IFN/01_IFN-1/03_docs/IFN-1_Togo_MERF_Rapport_Finale.pdf">Résultats</a></h3>
+<p>Les résultats …</p>
 
+</div>
+</div>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="02_organisation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="01_Landsat.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="00_IFN.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="00_NERF-MRV.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

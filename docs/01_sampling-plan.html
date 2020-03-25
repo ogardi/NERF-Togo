@@ -25,14 +25,14 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-03-16" />
+<meta name="date" content="2020-03-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="02_Worldclim.html"/>
+<link rel="prev" href="04_SoilGrids.html"/>
 <link rel="next" href="00_IFN.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -145,7 +145,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1" data-path="01_Landsat.html"><a href="01_Landsat.html"><i class="fa fa-check"></i><b>2.1</b> Données de base</a><ul>
 <li class="chapter" data-level="2.1.1" data-path="01_Landsat.html"><a href="01_Landsat.html#images-landsat"><i class="fa fa-check"></i><b>2.1.1</b> Images Landsat</a></li>
 <li class="chapter" data-level="2.1.2" data-path="02_SRTM.html"><a href="02_SRTM.html"><i class="fa fa-check"></i><b>2.1.2</b> SRTM</a></li>
-<li class="chapter" data-level="2.1.3" data-path="02_Worldclim.html"><a href="02_Worldclim.html"><i class="fa fa-check"></i><b>2.1.3</b> WorldClim</a></li>
+<li class="chapter" data-level="2.1.3" data-path="03_Worldclim.html"><a href="03_Worldclim.html"><i class="fa fa-check"></i><b>2.1.3</b> WorldClim</a></li>
+<li class="chapter" data-level="2.1.4" data-path="04_SoilGrids.html"><a href="04_SoilGrids.html"><i class="fa fa-check"></i><b>2.1.4</b> SoilGrids</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="01_sampling-plan.html"><a href="01_sampling-plan.html"><i class="fa fa-check"></i><b>2.2</b> Observations</a><ul>
 <li class="chapter" data-level="2.2.1" data-path="01_sampling-plan.html"><a href="01_sampling-plan.html#reseau-dechantillonnage"><i class="fa fa-check"></i><b>2.2.1</b> Réseau d’échantillonnage</a></li>
@@ -205,15 +206,15 @@ Système Nationale de Surveillance des Forêts</div></a>
 <p>Si nécessaire pour autres utilisation, la taille de maille de 480 mètres permet d’enlargir la maille à 679 ou 960 mètres. D’autre part, il est également possible de comprimer la maille à 340, 240, 170, 120, 85, … mètres.</p>
 <p><img src="images/SSTS-sampling-grid.png" /></p>
 <p>La réseau d’échantillonage avec une taille de maille de 480 mètres est crée avec le code R suivant:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="dv">480</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">x.min &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>xmin <span class="op">%/%</span><span class="st"> </span>res</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">x.max &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>xmax <span class="op">%/%</span><span class="st"> </span>res</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">y.min &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>ymin <span class="op">%/%</span><span class="st"> </span>res</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">y.max &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>ymax <span class="op">%/%</span><span class="st"> </span>res</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9">frame.points &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>(<span class="kw">expand.grid</span>(<span class="kw">seq</span>(x.min, x.max, <span class="dt">by=</span>res), <span class="kw">seq</span>(y.min, y.max, <span class="dt">by=</span>res)), <span class="dt">proj4string=</span>utm<span class="fl">.31</span>)[TGO]</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="dv">480</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">x.min &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>xmin <span class="op">%/%</span><span class="st"> </span>res</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">x.max &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>xmax <span class="op">%/%</span><span class="st"> </span>res</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">y.min &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>ymin <span class="op">%/%</span><span class="st"> </span>res</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">y.max &lt;-<span class="st"> </span>res <span class="op">*</span><span class="st"> </span><span class="kw">extent</span>(TGO)<span class="op">@</span>ymax <span class="op">%/%</span><span class="st"> </span>res</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">frame.points &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>(<span class="kw">expand.grid</span>(<span class="kw">seq</span>(x.min, x.max, <span class="dt">by=</span>res), <span class="kw">seq</span>(y.min, y.max, <span class="dt">by=</span>res)), <span class="dt">proj4string=</span>utm<span class="fl">.31</span>)[TGO]</a></code></pre></div>
 </div>
 <div id="attributs-enregistres" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> Attributs enregistrés</h3>
@@ -222,22 +223,22 @@ Système Nationale de Surveillance des Forêts</div></a>
 <p>Pour détérminer la couverture des houppiers une <strong>grille de 7 x 7 points</strong> est définit à l’intérieur de chaque parcelles d’échantillonage. Pour chaque point de ce grille, les photo-interprètes détérminent sur base des images de très haute résolution disponible en GoogleEarth, si <strong>le point touche l’houppier d’un arbre ou non</strong>. La couverture des houppiers est en suite détérminé par le nombre des points qui tombent sur un arbre par rapport au ombre total des points (n = 49).</p>
 <p><img src="images/SSTS-tree-cover.png" /></p>
 <p>La grille de 7 x 7 points est crée avec le code suivant. L’attribution est fait par les photo-interprètes en QGIS, avec l’image GoogleEarth comme carte de base. La date d’acquistion de l’image GoogleEarth utilisé est également enregistré. Elle est obtenu par GoogleEarth Pro (plugin QGIS <code>send2google_earth</code>).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">grid.size &lt;-<span class="st"> </span><span class="dv">7</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">res &lt;-<span class="st"> </span><span class="kw">res</span>(landsat.grid)[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">offset &lt;-<span class="st"> </span><span class="kw">c</span>(res<span class="op">/</span>grid.size<span class="op">/</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">0</span><span class="op">:</span>(grid.size<span class="dv">-1</span>))<span class="op">*</span>res<span class="op">/</span>grid.size)</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co"># split the plots for parallel processing</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">subsets &lt;-<span class="st"> </span><span class="kw">split</span>(train.plots, <span class="dt">f=</span><span class="dv">1</span><span class="op">:</span><span class="dv">86</span>)</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8">train.grids &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">subset=</span>subsets, <span class="dt">.combine=</span>rbind, <span class="dt">.multicombine=</span><span class="ot">TRUE</span>) <span class="op">%dopar%</span><span class="st"> </span>{ </a>
-<a class="sourceLine" id="cb11-9" data-line-number="9">  grids &lt;-<span class="st"> </span><span class="kw">SpatialPointsDataFrame</span>(<span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">y =</span> <span class="dv">0</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">PLOTID =</span> <span class="dv">0</span>, <span class="dt">SAMPLEID =</span> <span class="dv">0</span>, <span class="dt">GRIDPOINT =</span> <span class="dv">0</span>))[<span class="op">-</span><span class="dv">1</span>,]</a>
-<a class="sourceLine" id="cb11-10" data-line-number="10">  <span class="cf">for</span>(p <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(subset)) {</a>
-<a class="sourceLine" id="cb11-11" data-line-number="11">    plot &lt;-<span class="st"> </span>subset[p,]</a>
-<a class="sourceLine" id="cb11-12" data-line-number="12">    ext &lt;-<span class="st"> </span><span class="kw">extent</span>(plot)</a>
-<a class="sourceLine" id="cb11-13" data-line-number="13">    grids &lt;-<span class="st"> </span><span class="kw">bind</span>(grids, <span class="kw">SpatialPointsDataFrame</span>(<span class="kw">expand.grid</span>(ext<span class="op">@</span>xmin<span class="op">+</span>offset, ext<span class="op">@</span>ymin<span class="op">+</span>offset), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">PLOTID =</span> plot<span class="op">$</span>PLOTID, <span class="dt">SAMPLEID =</span> plot<span class="op">$</span>SAMPLEID, <span class="dt">GRIDPOINT =</span> <span class="dv">1</span><span class="op">:</span>grid.size<span class="op">^</span><span class="dv">2</span>)))</a>
-<a class="sourceLine" id="cb11-14" data-line-number="14">  }</a>
-<a class="sourceLine" id="cb11-15" data-line-number="15">  grids</a>
-<a class="sourceLine" id="cb11-16" data-line-number="16">}</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">grid.size &lt;-<span class="st"> </span><span class="dv">7</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">res &lt;-<span class="st"> </span><span class="kw">res</span>(landsat.grid)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">offset &lt;-<span class="st"> </span><span class="kw">c</span>(res<span class="op">/</span>grid.size<span class="op">/</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">0</span><span class="op">:</span>(grid.size<span class="dv">-1</span>))<span class="op">*</span>res<span class="op">/</span>grid.size)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co"># split the plots for parallel processing</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">subsets &lt;-<span class="st"> </span><span class="kw">split</span>(train.plots, <span class="dt">f=</span><span class="dv">1</span><span class="op">:</span><span class="dv">86</span>)</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">train.grids &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">subset=</span>subsets, <span class="dt">.combine=</span>rbind, <span class="dt">.multicombine=</span><span class="ot">TRUE</span>) <span class="op">%dopar%</span><span class="st"> </span>{ </a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">  grids &lt;-<span class="st"> </span><span class="kw">SpatialPointsDataFrame</span>(<span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="dv">0</span>, <span class="dt">y =</span> <span class="dv">0</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">PLOTID =</span> <span class="dv">0</span>, <span class="dt">SAMPLEID =</span> <span class="dv">0</span>, <span class="dt">GRIDPOINT =</span> <span class="dv">0</span>))[<span class="op">-</span><span class="dv">1</span>,]</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">  <span class="cf">for</span>(p <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(subset)) {</a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">    plot &lt;-<span class="st"> </span>subset[p,]</a>
+<a class="sourceLine" id="cb12-12" data-line-number="12">    ext &lt;-<span class="st"> </span><span class="kw">extent</span>(plot)</a>
+<a class="sourceLine" id="cb12-13" data-line-number="13">    grids &lt;-<span class="st"> </span><span class="kw">bind</span>(grids, <span class="kw">SpatialPointsDataFrame</span>(<span class="kw">expand.grid</span>(ext<span class="op">@</span>xmin<span class="op">+</span>offset, ext<span class="op">@</span>ymin<span class="op">+</span>offset), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">PLOTID =</span> plot<span class="op">$</span>PLOTID, <span class="dt">SAMPLEID =</span> plot<span class="op">$</span>SAMPLEID, <span class="dt">GRIDPOINT =</span> <span class="dv">1</span><span class="op">:</span>grid.size<span class="op">^</span><span class="dv">2</span>)))</a>
+<a class="sourceLine" id="cb12-14" data-line-number="14">  }</a>
+<a class="sourceLine" id="cb12-15" data-line-number="15">  grids</a>
+<a class="sourceLine" id="cb12-16" data-line-number="16">}</a></code></pre></div>
 </div>
 <div id="SSTS-occupation-terres" class="section level4">
 <h4><span class="header-section-number">2.2.2.2</span> Occupation des terres</h4>
@@ -265,7 +266,7 @@ Système Nationale de Surveillance des Forêts</div></a>
           </div>
         </div>
       </div>
-<a href="02_Worldclim.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="04_SoilGrids.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="00_IFN.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

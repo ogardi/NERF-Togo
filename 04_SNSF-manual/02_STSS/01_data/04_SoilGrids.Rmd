@@ -1,0 +1,19 @@
+
+
+### SoilGrids
+
+#### Acquisition des données
+
+#### Prétraitement des données
+
+##### Example {-}
+
+```{r, echo=FALSE, out.width="50%", fig.show='hold', fig.align='default'}
+knitr::include_graphics(c("images/TAXNWRB_250m_ll.jpeg","images/OCSTHA_M_30cm_250m_ll.jpeg"))
+``` 
+**Données pédologiques SoilGrids:** Typologie des sols, Carbone du sol à 30 cm de profondeur (tC/ha)
+
+##### R-Script: *prep-SoilGrids.R* {-}
+```{r, code=readLines("../01_SSTS/01_data/_src/prep-SoilGrids.R"), eval=FALSE}
+```
+

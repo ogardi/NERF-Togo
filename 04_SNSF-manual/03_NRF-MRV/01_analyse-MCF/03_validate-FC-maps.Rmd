@@ -1,9 +1,20 @@
 
 ### Validation des cartes
 
-#### Description {-}
+La validation des cartes forêt/non-forêt se fait à l'aide de [parcelles de validation](#SSTS-validation-plots) sur lesquelles **l'occupation du sol (forêt/terre boisée/non-forêt) a été déterminée par des photo-interprètes sur la base d'images Landsat pour les années 1987, 2003, 2015 et 2018.** Pour ces parcelles, dans un premier temps, les classes correspondantes sont lues à partir des cartes. Ensuite, des matrices d'erreur sont générées, celles de la classification forêt/non-forestière pour les différentes années, ainsi que celles de l'évolution de la couverture terrestre sur différentes périodes. Ces matrices d'erreurs constituent la base de [l'analyse de la précision des cartes](#FCC-map-precision).
 
-Description de la méthodologie / script
+
+
+#### Example {-}
+
+Le tableau suivant montre la **matrice d'erreur des transitions de l'occupation du sol 2003 -- 2018**. Dans les colonnes sont les classes attribuées par les photo-interprètes, dans les lignes les classes selon les cartes forêt/non-forêt nettoyées.
+
+|          |     xFxF |     xFxN |     xNxF |     xNxN |
+|:-------- | --------:| --------:| --------:| --------:|
+| **xFxF** |  **536** |     52   |     80   |    105   | 
+| **xFxN** |     36   |   **80** |      3   |     52   | 
+| **xNxF** |     23   |      0   |   **73** |     29   | 
+| **xNxN** |     35   |     84   |     50   | **1175** | 
 
 #### _MCF/03_validate-fc-maps.R_ {-}
 

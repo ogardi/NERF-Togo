@@ -1,7 +1,7 @@
 
 ### Production des cartes Forêt/Non-Forêt
 
-La **production de la carte forêt/non-forêt 2018** est basée sur la couverture des houppiers déterminée dans les parcelles d'entraînement, les images satellitaires Landsat (bandes et indices `B, G, R, NIR, SWIR1, SWIR2, nbr, ndmi, ndvi, evi`) et les données climatiques Worldclim (`BIO1, BIO4, BIO12, BIO15`). 
+La **production de la carte forêt/non-forêt 2018** est basée sur la couverture des houppiers déterminée dans les [parcelles d'entraînement](#SSTS-training-plots), les [images satellitaires Landsat](#SSTS-Landsat) (bandes et indices `B, G, R, NIR, SWIR1, SWIR2, nbr, ndmi, ndvi, evi`) et les [données climatiques Worldclim](#SSTS-Worldclim) (`BIO1, BIO4, BIO12, BIO15`). 
 
 Dans une première étape, les variables Landsat et Worldclim sont extraites pour toutes les **parcelles d'entraînement de la période de référence 1.1.2017 - 31.12.2018** et les parcelles d'entraînement sont classées comme "forestières" ou "non forestières" en fonction de leur couverture des houppiers (forêt ≥ 30% de couverture des houppiers). Par la suite, des cartes forêt/non-forêt 2018 sont produites pour chaque chemin WRS. Pour cela, la fonction `classify.image()` est utilisée, qui crée un modèle de classification en **utilisant l'algorithme RandomForest** et une carte correspondante. Pour le chemin WRS central p193, l'algorithme de classification est calibré uniquement sur la base des parcelles d'entraînement. Pour les chemins p192 et p194, des données d'entraînement supplémentaires basées sur la carte p193 sont utilisées pour assurer la calibration entre les chemins.
 

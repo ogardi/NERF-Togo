@@ -1,7 +1,7 @@
 
 ## Données de base
 
-### Images Landsat
+### Images Landsat {#SSTS-Landsat}
 
 Actuellement, l'analyse de l'évolution du couvert forestier est principalement basée sur les **images satellitaires Landsat**, qui sont disponibles gratuitement dans les archives de l'USGS. Les missions Landsat-4 à Landsat-8 produisent des images de résolution spatiale et radiométrique comparable depuis les années 1980.  Les images brutes sont corrigées géométriquement et radiométriquement par l'USGS ([USGS Collection 1 Level-2 Surface Reflection Product](https://www.usgs.gov/land-resources/nli/landsat/landsat-surface-reflectance)).
 

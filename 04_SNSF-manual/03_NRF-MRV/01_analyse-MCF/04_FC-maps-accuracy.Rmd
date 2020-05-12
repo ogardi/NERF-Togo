@@ -1,9 +1,48 @@
 
-### Analyse de la précision
+### Analyse de la précision {#FCC-map-precision}
 
-#### Description {-}
+La précision des cartes est déterminée selon la procédure de [Olofsson et al. (2014)](https://www.sciencedirect.com/science/article/abs/pii/S0034425714000704). Le script utilisé est basé sur une [implémentation des méthodes dans OpenForis](https://github.com/openforis/accuracy-assessment/blob/master/Rscripts/error_matrix_analysis.R).
 
-Description de la méthodologie / script
+Le calcul de la précision se fait sur la matrice d'erreur d'une part et les surfaces couvertes par les catégories correspondantes d'autre part. Avec les informations sur les surfaces, la matrice d'erreur est extrapolée en une **matrice d'erreur proportionnelle**, qui indique dans les cellules les proportions de la surface totale. Sur cette base les indices de précision sont calculés: concrètement la précision globale, le Kappa de Cohen, la précision du producteur et la précision de l'utilisateur, y compris la variance et l'intervalle de confiance à 95 %. D'autre part, la matrice d'erreur proportionnelle est extrapolée à la superficie totale pour obtenir des estimations de superficie des différentes catégories, y compris les erreurs types et les intervalles de confiance.
+
+
+#### Example {-}
+
+**Le nombre de pixels cartographiés et matrice d'erreur des transitions de l'occupation du sol 2003 -- 2018**. Dans les colonnes sont les classes attribuées par les photo-interprètes, dans les lignes les classes selon les cartes forêt/non-forêt nettoyées.
+
+|          |    Pixels  |     xFxF |     xFxN |     xNxF |     xNxN |
+|:-------- | ----------:| --------:| --------:| --------:| --------:|
+| **xFxF** | 12 590 594 |  **536** |     52   |     80   |    105   | 
+| **xFxN** |  2 509 971 |     36   |   **80** |      3   |     52   | 
+| **xNxF** |  1 637 331 |     23   |      0   |   **73** |     29   | 
+| **xNxN** | 46 599 650 |     35   |     84   |     50   | **1175** |
+
+
+**La matrice d'erreur proportionelle aux surfaces cartographiées**. La somme de tous les cellules est 1 (100%).
+
+|          |                                                                        |      xFxF |      xFxN |      xNxF |      xNxN |
+|:-------- | ---------------------------------------------------------------------- | ---------:| ---------:| ---------:| ---------:|
+| **xFxF** |  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | **0.138** |   0.013   |   0.021   |   0.027   | 
+| **xFxN** |                                                                        |   0.008   | **0.019** |   0.001   |   0.012   | 
+| **xNxF** |                                                                        |   0.005   |       0   | **0.015** |   0.006   | 
+| **xNxN** |                                                                        |   0.019   |   0.046   |   0.027   | **0.643** |
+
+Les **indices de précision globales** sont:
+
+* Précision globale: 81.5% (± 1.5% intervalle de confiance)
+
+* Cohen's Kappa: 59.3%
+
+**Indices de précision et le surfaces estimées par catégories** (± intervalle de confiance à 95%)
+
+|          |  Surface cartes   | Prop. cartes | Proportion ajustée | Surface ajustée | Précision utilisateur | Précision producteur |
+|:-------- | ---------------:| ------------:| ------------:| ---------------:| --------------:| -----------------:| 
+| **xFxF** |       1'133'153 |         0.20 |         0.17&nbsp;±&nbsp;0.01 |        969'621&nbsp;±&nbsp;54'104 |        0.69&nbsp;±&nbsp;0.03 |        0.81&nbsp;±&nbsp;0.03 |
+| **xFxN** |         225'897 |         0.04 |         0.08&nbsp;±&nbsp;0.01 |        444'034&nbsp;±&nbsp;60'300 |        0.47&nbsp;±&nbsp;0.08 |        0.24&nbsp;±&nbsp;0.04 | 
+| **xNxF** |         147'360 |         0.03 |         0.06&nbsp;±&nbsp;0.01 |        363'320&nbsp;±&nbsp;50'777 |        0.58&nbsp;±&nbsp;0.09 |        0.24&nbsp;±&nbsp;0.04 | 
+| **xNxN** |       4'193'969 |         0.74 |         0.69&nbsp;±&nbsp;0.01 |      3'923'405&nbsp;±&nbsp;81'517 |        0.87&nbsp;±&nbsp;0.02 |        0.94&nbsp;±&nbsp;0.01 |
+
+
 
 #### _MCF/04_fc-maps-accuracy.R_ {-}
 

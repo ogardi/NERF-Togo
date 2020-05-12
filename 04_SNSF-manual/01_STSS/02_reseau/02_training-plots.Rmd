@@ -1,5 +1,5 @@
 
-## Parcelles d'entraînement
+## Parcelles d'entraînement {#SSTS-training-plots}
 
 ### Échantillonnage
 

@@ -142,7 +142,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a><ul>
 <li class="chapter" data-level="2.1" data-path="01_Landsat.html"><a href="01_Landsat.html"><i class="fa fa-check"></i><b>2.1</b> Données de base</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="01_Landsat.html"><a href="01_Landsat.html#images-landsat"><i class="fa fa-check"></i><b>2.1.1</b> Images Landsat</a></li>
+<li class="chapter" data-level="2.1.1" data-path="01_Landsat.html"><a href="01_Landsat.html#SSTS-Landsat"><i class="fa fa-check"></i><b>2.1.1</b> Images Landsat</a></li>
 <li class="chapter" data-level="2.1.2" data-path="02_SRTM.html"><a href="02_SRTM.html"><i class="fa fa-check"></i><b>2.1.2</b> SRTM</a></li>
 <li class="chapter" data-level="2.1.3" data-path="03_Worldclim.html"><a href="03_Worldclim.html"><i class="fa fa-check"></i><b>2.1.3</b> WorldClim</a></li>
 <li class="chapter" data-level="2.1.4" data-path="04_SoilGrids.html"><a href="04_SoilGrids.html"><i class="fa fa-check"></i><b>2.1.4</b> SoilGrids</a></li>
@@ -200,11 +200,172 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="analyse-de-la-precision" class="section level3">
+<div id="FCC-map-precision" class="section level3">
 <h3><span class="header-section-number">4.1.4</span> Analyse de la précision</h3>
-<div id="description-1" class="section level4 unnumbered">
-<h4>Description</h4>
-<p>Description de la méthodologie / script</p>
+<p>La précision des cartes est déterminée selon la procédure de <a href="https://www.sciencedirect.com/science/article/abs/pii/S0034425714000704">Olofsson et al. (2014)</a>. Le script utilisé est basé sur une <a href="https://github.com/openforis/accuracy-assessment/blob/master/Rscripts/error_matrix_analysis.R">implémentation des méthodes dans OpenForis</a>.</p>
+<p>Le calcul de la précision se fait sur la matrice d’erreur d’une part et les surfaces couvertes par les catégories correspondantes d’autre part. Avec les informations sur les surfaces, la matrice d’erreur est extrapolée en une <strong>matrice d’erreur proportionnelle</strong>, qui indique dans les cellules les proportions de la surface totale. Sur cette base les indices de précision sont calculés: concrètement la précision globale, le Kappa de Cohen, la précision du producteur et la précision de l’utilisateur, y compris la variance et l’intervalle de confiance à 95 %. D’autre part, la matrice d’erreur proportionnelle est extrapolée à la superficie totale pour obtenir des estimations de superficie des différentes catégories, y compris les erreurs types et les intervalles de confiance.</p>
+<div id="example-4" class="section level4 unnumbered">
+<h4>Example</h4>
+<p><strong>Le nombre de pixels cartographiés et matrice d’erreur des transitions de l’occupation du sol 2003 – 2018</strong>. Dans les colonnes sont les classes attribuées par les photo-interprètes, dans les lignes les classes selon les cartes forêt/non-forêt nettoyées.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Pixels</th>
+<th align="right">xFxF</th>
+<th align="right">xFxN</th>
+<th align="right">xNxF</th>
+<th align="right">xNxN</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>xFxF</strong></td>
+<td align="right">12 590 594</td>
+<td align="right"><strong>536</strong></td>
+<td align="right">52</td>
+<td align="right">80</td>
+<td align="right">105</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>xFxN</strong></td>
+<td align="right">2 509 971</td>
+<td align="right">36</td>
+<td align="right"><strong>80</strong></td>
+<td align="right">3</td>
+<td align="right">52</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>xNxF</strong></td>
+<td align="right">1 637 331</td>
+<td align="right">23</td>
+<td align="right">0</td>
+<td align="right"><strong>73</strong></td>
+<td align="right">29</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>xNxN</strong></td>
+<td align="right">46 599 650</td>
+<td align="right">35</td>
+<td align="right">84</td>
+<td align="right">50</td>
+<td align="right"><strong>1175</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>La matrice d’erreur proportionelle aux surfaces cartographiées</strong>. La somme de tous les cellules est 1 (100%).</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th></th>
+<th align="right">xFxF</th>
+<th align="right">xFxN</th>
+<th align="right">xNxF</th>
+<th align="right">xNxN</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>xFxF</strong></td>
+<td>                   </td>
+<td align="right"><strong>0.138</strong></td>
+<td align="right">0.013</td>
+<td align="right">0.021</td>
+<td align="right">0.027</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>xFxN</strong></td>
+<td></td>
+<td align="right">0.008</td>
+<td align="right"><strong>0.019</strong></td>
+<td align="right">0.001</td>
+<td align="right">0.012</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>xNxF</strong></td>
+<td></td>
+<td align="right">0.005</td>
+<td align="right">0</td>
+<td align="right"><strong>0.015</strong></td>
+<td align="right">0.006</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>xNxN</strong></td>
+<td></td>
+<td align="right">0.019</td>
+<td align="right">0.046</td>
+<td align="right">0.027</td>
+<td align="right"><strong>0.643</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Les <strong>indices de précision globales</strong> sont:</p>
+<ul>
+<li><p>Précision globale: 81.5% (± 1.5% intervalle de confiance)</p></li>
+<li><p>Cohen’s Kappa: 59.3%</p></li>
+</ul>
+<p><strong>Indices de précision et le surfaces estimées par catégories</strong> (± intervalle de confiance à 95%)</p>
+<table>
+<colgroup>
+<col width="9%" />
+<col width="16%" />
+<col width="13%" />
+<col width="13%" />
+<col width="16%" />
+<col width="15%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Surface cartes</th>
+<th align="right">Prop. cartes</th>
+<th align="right">Proportion ajustée</th>
+<th align="right">Surface ajustée</th>
+<th align="right">Précision utilisateur</th>
+<th align="right">Précision producteur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>xFxF</strong></td>
+<td align="right">1’133’153</td>
+<td align="right">0.20</td>
+<td align="right">0.17 ± 0.01</td>
+<td align="right">969’621 ± 54’104</td>
+<td align="right">0.69 ± 0.03</td>
+<td align="right">0.81 ± 0.03</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>xFxN</strong></td>
+<td align="right">225’897</td>
+<td align="right">0.04</td>
+<td align="right">0.08 ± 0.01</td>
+<td align="right">444’034 ± 60’300</td>
+<td align="right">0.47 ± 0.08</td>
+<td align="right">0.24 ± 0.04</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>xNxF</strong></td>
+<td align="right">147’360</td>
+<td align="right">0.03</td>
+<td align="right">0.06 ± 0.01</td>
+<td align="right">363’320 ± 50’777</td>
+<td align="right">0.58 ± 0.09</td>
+<td align="right">0.24 ± 0.04</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>xNxN</strong></td>
+<td align="right">4’193’969</td>
+<td align="right">0.74</td>
+<td align="right">0.69 ± 0.01</td>
+<td align="right">3’923’405 ± 81’517</td>
+<td align="right">0.87 ± 0.02</td>
+<td align="right">0.94 ± 0.01</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="mcf04_fc-maps-accuracy.r" class="section level4 unnumbered">
 <h4><em>MCF/04_fc-maps-accuracy.R</em></h4>

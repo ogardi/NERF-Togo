@@ -142,7 +142,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a><ul>
 <li class="chapter" data-level="2.1" data-path="01_Landsat.html"><a href="01_Landsat.html"><i class="fa fa-check"></i><b>2.1</b> Données de base</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="01_Landsat.html"><a href="01_Landsat.html#images-landsat"><i class="fa fa-check"></i><b>2.1.1</b> Images Landsat</a></li>
+<li class="chapter" data-level="2.1.1" data-path="01_Landsat.html"><a href="01_Landsat.html#SSTS-Landsat"><i class="fa fa-check"></i><b>2.1.1</b> Images Landsat</a></li>
 <li class="chapter" data-level="2.1.2" data-path="02_SRTM.html"><a href="02_SRTM.html"><i class="fa fa-check"></i><b>2.1.2</b> SRTM</a></li>
 <li class="chapter" data-level="2.1.3" data-path="03_Worldclim.html"><a href="03_Worldclim.html"><i class="fa fa-check"></i><b>2.1.3</b> WorldClim</a></li>
 <li class="chapter" data-level="2.1.4" data-path="04_SoilGrids.html"><a href="04_SoilGrids.html"><i class="fa fa-check"></i><b>2.1.4</b> SoilGrids</a></li>
@@ -229,8 +229,8 @@ Système Nationale de Surveillance des Forêts</div></a>
 <p>Après la nettoyage des séries temporelles pixel par pixel, <strong>une nettoyage spatiale</strong> est réalisé pour éliminer les surfaces forestières &lt; 0,5 hectares. Pour cela, une carte est créée de tous les pixels qui étaient une fois observées comme forêt sur toute la série des cartes. Sur cette carte, toutes les surfaces forestières ayant moins de 6 pixels liés (soit moins de 0,54 hectares) sont éliminées. Ce masque forestier est ensuite appliqué à toutes les cartes forêt/non-forêt de la série. Cela signifie que <strong>seuls les pixels forestier qui ont fait partie d’une surface forestière ≥ 0,54 hectares dans la série des cartes sont retenus comme forêt.</strong></p>
 <div id="NRF-clean-fc-maps-figure" class="section level4 unnumbered">
 <h4>Example</h4>
-<p>La figure suivante montre les <strong>cartes forêt/non-forêt après la nettoyage temporelle et spatiale</strong> pour une région au sud de Kpalimé (voir <a href="01_create-FC-maps.html#NRF-create-fc-maps-figure">série des cartes brutes</a> pour comparaison).
-<img src="images/FCC-clnmaps.png" /></p>
+<p>La figure suivante montre les <strong>cartes forêt/non-forêt après la nettoyage temporelle et spatiale</strong> pour une région au sud de Kpalimé (voir <a href="01_create-FC-maps.html#NRF-create-fc-maps-figure">série des cartes brutes</a> pour comparaison).</p>
+<p><img src="images/FCC-clnmaps.png" /></p>
 </div>
 <div id="mcf02_clean-fc-maps.r" class="section level4 unnumbered">
 <h4><em>MCF/02_clean-fc-maps.R</em></h4>

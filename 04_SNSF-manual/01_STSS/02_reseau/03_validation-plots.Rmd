@@ -1,5 +1,5 @@
 
-## Parcelles de validation
+## Parcelles de validation {#SSTS-validation-plots}
 
 ### Échantillonnage
 

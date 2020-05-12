@@ -1,0 +1,20 @@
+
+## Parcelles d'entraînement
+
+### Échantillonnage
+
+Les parcelles d'entraînement sont sélectionnées de manière à couvrir la plus large gamme possible de couverture végétale sur l'ensemble du territoire du Togo. À cette fin, le **NDVI comme indicateur du couvert végétal** est attribué à tout les points du réseau d'échantillonnage et stratifiées en 10 classes NDVI. Un échantillon aléatoire spatialement équilibré de 1 500 échantillons est ensuite tiré de chaque strate NDVI (generalized random tesselation).
+
+### Couverture des houppiers {#SSTS-couverture-houppiers}
+
+Pour détérminer la couverture des houppiers une **grille de 7 x 7 points** est définit à l'intérieur de chaque parcelles d'échantillonage. Pour chaque point de ce grille, les photo-interprètes détérminent sur base des images de très haute résolution disponible en GoogleEarth, si **le point touche l'houppier d'un arbre ou non**. La couverture des houppiers est en suite détérminé par le nombre des points qui tombent sur un arbre par rapport au ombre total des points (n = 49).
+
+![](images/SSTS-tree-cover.png)
+
+La grille de 7 x 7 points est crée avec le code suivant. L'attribution est fait par les photo-interprètes en QGIS, avec l'image GoogleEarth comme carte de base. La date d'acquistion de l'image GoogleEarth utilisé est également enregistré. Elle est obtenu par GoogleEarth Pro (plugin QGIS `send2google_earth`).
+
+
+#### _SSTS/create-train-plots.R_ {-}
+
+```{r, code=readLines("../01_SSTS/02_BdD/_src/create-train-plots.R"), eval=FALSE}
+```

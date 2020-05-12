@@ -1,0 +1,13 @@
+
+### Validation des cartes
+
+#### Description {-}
+
+Description de la méthodologie / script
+
+#### _MCF/03_validate-fc-maps.R_ {-}
+
+```{r, code=readLines("../03_NRF-MRV/01_MCF/_src/03_validate-FC-maps.R"), eval=FALSE}
+```
+
+

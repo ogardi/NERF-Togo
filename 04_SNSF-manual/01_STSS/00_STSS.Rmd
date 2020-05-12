@@ -14,15 +14,13 @@ Les répertoires et les fichiers sont structurés comme suit:
     └── ...
             
 ├── 02_BdD                          #:: base de données SSTS ------------------
-    ├── 01_reseau-SSTS               #:: réseau de parcelles SSTS
+    ├── _src                         #:: scripts R
         ├── _create-grid.R             # [R] création réseau SSTS
-        └── ...
-    ├── 02_train-plots               #:: parcelles d'entraînement
         ├── _create-train-plots.R      # [R] création parcelles d'entraînement
-        └── ...             
+        └── _create-val-plots.R        # [R] création parcelles de validation
+    ├── 01_reseau-SSTS               #:: réseau de parcelles SSTS
+    ├── 02_train-plots               #:: parcelles d'entraînement
     └── 03_val-plots                 #:: parcelles de validation
-        ├── _create-val-plots.R        # [R] création parcelles de validation
-        └── ... 
 ```
 
 ```{block, type='rmdtodo'}

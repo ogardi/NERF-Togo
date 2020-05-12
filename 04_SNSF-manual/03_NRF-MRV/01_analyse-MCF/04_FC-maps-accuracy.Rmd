@@ -1,0 +1,13 @@
+
+### Analyse de la précision
+
+#### Description {-}
+
+Description de la méthodologie / script
+
+#### _MCF/04_fc-maps-accuracy.R_ {-}
+
+```{r, code=readLines("../03_NRF-MRV/01_MCF/_src/04_FC-maps-accuracy.R"), eval=FALSE}
+```
+
+

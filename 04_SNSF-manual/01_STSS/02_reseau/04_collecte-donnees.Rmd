@@ -1,0 +1,10 @@
+
+## Collecte des données QGIS
+
+Actuellement, les parcelles d'échantillonnage du SSTS ainsi que la grille de points pour déterminer la couverture des houppiers sont stockées sous forme des fichiers Shapefile. L'acquisition des attributs est effectuée par les photo-interprètes à l'aide d'un formulaire défini dans un projet QGIS.
+
+![](images/SSTS-qgis-form.png)
+
+Un SSTS basé sur des fichiers limite la complexité de la structure des données (par exemple, l'enregistrement récurrent des mêmes parcelles sur des images de différentes années) ainsi que le travail parallèle de différents photo-interprètes sur les mêmes données. Actuellement, des travaux sont en cours pour transférer le SSTS vers une base de données géographiques (PostGIS) sur un serveur central au Ministère de l'Environnement et des Ressources Forestières (MERF) et pour définir un formulaire QGIS qui permet à plusieurs personnes de travailler simultanément sur les données.
+
+

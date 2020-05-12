@@ -1,0 +1,43 @@
+
+### Nettoyage des cartes brutes {#NRF-clean-fc-maps}
+
+Les series temporelles des cartes forêt/non-forêt brutes sont **lissées et filtrées pixel par pixel** pour les raisons suivantes:
+
+* Remplissage des **données manquantes** (nuages, ombres, L7 SLC-off), 
+* Lissage des **bruits** (pixels qui changent entre forêt et non-forêt plusieurs fois) 
+* Filtrer la **régénération temporaire par les fourrés**, observée sur les jachères.
+
+1. La première étappe, est la **remplissage des données manquantes**: les données manquantes entre deux observations de forêt deviennent forêt, celles entre deux observations de non-forêt deviennent non-forêt.
+
+<center>
+![](images/FCC-clean-1.png)
+</center>
+
+2. Ensuite, une **fenêtre coulissante de taille 5** est appliquée, c'est-à-dire qu'une observation est attribuée à la classe qui est observé le plus fréquemment dans la fenêtre qui inclu les deux observations précédentes et les deux suivantes. Pour l'évaluation de la deuxième et de l'avant-dernière observation, une fenêtre coulissante de taille 3 est appliquée. **La première et la dernière observation ne sont pas ajustées, il faut les ignorer dans la suite.** Les observations manquantes sont remplis dans la mesure possible. Toute la procédure est répétée jusqu'à ce qu'il n'y a plus de changements.
+
+<center>
+![](images/FCC-clean-2.png)
+</center>
+
+3. Les années manquantes sont ajoutées pour créer une série annuelle. Les observations manquantes sont remplacées par la classe de l'observation précédente. Lorsque les observations initiales sont manquantes, elles sont remplacées par la classe de l'observation suivante. **Dans les situations de régénération (forêt suit non-forêt), les 9 premières années sont marquées comme "reboisement potentiel". Si la forêt disparaît à nouveau après moins de 10 ans, les observations sont remplacées par la classe non-forêt. Si la régénération reste, elle est considérée comme un reboisement après 10 ans.**
+
+<center>
+![](images/FCC-clean-3.png)
+</center>
+
+
+Après la nettoyage des séries temporelles pixel par pixel, **une nettoyage spatiale** est réalisé pour éliminer les surfaces forestières < 0,5 hectares. Pour cela, une carte est créée de tous les pixels qui étaient une fois observées comme forêt sur toute la série des cartes. Sur cette carte, toutes les surfaces forestières ayant moins de 6 pixels liés (soit moins de 0,54 hectares) sont éliminées. Ce masque forestier est ensuite appliqué à toutes les cartes forêt/non-forêt de la série. Cela signifie que **seuls les pixels forestier qui ont fait partie d'une surface forestière ≥ 0,54 hectares dans la série des cartes sont retenus comme forêt.** 
+
+
+#### Example {#NRF-clean-fc-maps-figure -}
+
+La figure suivante montre les **cartes forêt/non-forêt après la nettoyage temporelle et spatiale** pour une région au sud de Kpalimé (voir [série des cartes brutes](#NRF-create-fc-maps-figure) pour comparaison).
+
+![](images/FCC-clnmaps.png)
+
+#### _MCF/02_clean-fc-maps.R_ {-}
+
+```{r, code=readLines("../03_NRF-MRV/01_MCF/_src/02_clean-fc-maps.R"), eval=FALSE}
+```
+
+

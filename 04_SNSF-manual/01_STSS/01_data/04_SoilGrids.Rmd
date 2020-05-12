@@ -4,6 +4,9 @@
 
 #### Acquisition des données
 
+Les données sur les sols proviennent des [archives SoilGrids](https://files.isric.org/soilgrids/data/recent/) (documentation [SoilGrids 2017](https://www.isric.org/explore/soilgrids/faq-soilgrids-2017))
+
+
 #### Prétraitement des données
 
 ##### Example {-}

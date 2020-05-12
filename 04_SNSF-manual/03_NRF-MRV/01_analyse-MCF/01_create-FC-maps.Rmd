@@ -1,0 +1,24 @@
+
+### Production des cartes Forêt/Non-Forêt
+
+La **production de la carte forêt/non-forêt 2018** est basée sur la couverture des houppiers déterminée dans les parcelles d'entraînement, les images satellitaires Landsat (bandes et indices `B, G, R, NIR, SWIR1, SWIR2, nbr, ndmi, ndvi, evi`) et les données climatiques Worldclim (`BIO1, BIO4, BIO12, BIO15`). 
+
+Dans une première étape, les variables Landsat et Worldclim sont extraites pour toutes les **parcelles d'entraînement de la période de référence 1.1.2017 - 31.12.2018** et les parcelles d'entraînement sont classées comme "forestières" ou "non forestières" en fonction de leur couverture des houppiers (forêt ≥ 30% de couverture des houppiers). Par la suite, des cartes forêt/non-forêt 2018 sont produites pour chaque chemin WRS. Pour cela, la fonction `classify.image()` est utilisée, qui crée un modèle de classification en **utilisant l'algorithme RandomForest** et une carte correspondante. Pour le chemin WRS central p193, l'algorithme de classification est calibré uniquement sur la base des parcelles d'entraînement. Pour les chemins p192 et p194, des données d'entraînement supplémentaires basées sur la carte p193 sont utilisées pour assurer la calibration entre les chemins.
+
+Les cartes de référence générées pour 2018 sont maintenant utilisées pour **générer les cartes correspondantes pour l'année 2003. Les données d'entraînement sont tirées de la carte de référence 2018, autour de la lisière des forêts.** Pour les chemins p192 et p194, de nouves des données d'entraînement supplémentaires du chemin p193 sont utilisées.
+
+**Sur la base des cartes forêt/non-forêt de 2003, les cartes de toutes les années avec des images Landsat disponibles sont produites selon la même procédure.** Le calibrage de toute la série sur la base d'une année de référence garantit une différenciation consistante entre les classes forêt et non-forêt. Enfin, les chemins p192, p193 et p194 sont fusionnés pour les années clés 1987, 2003, 2015 et 2018.
+
+#### Example {#NRF-create-fc-maps-figure -}
+
+La figure suivante illustre la **série des 13 cartes forêt/non-forêt brutes** dans une région au sud de Kpalimé. Les pixels en rose vif sont des pixels dont les données sont manquantes (nuages, ombres, L7 SLC-off). Voir [série des cartes nettoyées](#NRF-clean-fc-maps-figure) pour comparaison.
+
+![](images/FCC-rawmaps.png)
+
+
+#### _MCF/01_create-fc-maps.R_ {-}
+
+```{r, code=readLines("../03_NRF-MRV/01_MCF/_src/01_create-FC-maps.R"), eval=FALSE}
+```
+
+

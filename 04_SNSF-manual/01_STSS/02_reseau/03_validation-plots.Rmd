@@ -1,0 +1,24 @@
+
+## Parcelles de validation
+
+### Échantillonnage
+
+La sélection des parcelles de validation est basée sur les cartes forêt/non-forêt, notamment leurs transitions entre les années 1987 -- 2003 -- 2015 -- 2018. Tout d'abord les transitions sont déterminées pour chaque point du réseau d'échantillonnage. Ensuite un échantillon aléatoire stratifié est tirré avec une répartition de l'échantillon aux strates (transitions) qui est la valeur moyenne  d'une répartition proportionnelle à la taille des strates et d'une répartion égale. 
+
+
+### Occupation des terres {#SSTS-occupation-terres}
+
+L'occupation des terres et le changement de l'occupation des terres est **déterminé sur base des images Landsat**. Trois différentes catégories sont distingués:
+
+- forêt (couverture houppier ≥ 30%)
+- terre boisée (couverture houppier entre 10% et 30%)
+- non-forêt (couverture houppier < 10%)
+
+**La couverture des houppiers est utilisé pour détérminer l'occupation des terres sur l'image Landsat de la date correspondate.** À partir de cette référence, l'occupation des terres est détérminé pour les autres dates de référence 1987 -- 2003 -- 2015 -- 2018. La figure suivante illustre la procédure:
+
+![](images/SSTS-land-cover.png)
+
+#### _SSTS/create-val-plots.R_ {-}
+
+```{r, code=readLines("../01_SSTS/02_BdD/_src/create-val-plots.R"), eval=FALSE}
+```

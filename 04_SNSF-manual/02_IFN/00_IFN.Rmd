@@ -1,7 +1,7 @@
 
 # Inventaire Forestier National {#IFN}
 
-L'inventaire forestier national, vereinigt direkt im Feld erhobene Daten mit Waldbezug von verschiedenen Quellen. Der einzige erfasste Datensatz ist momentant das erste inverntaire forestier national IFN-1 welches 2015/16 von der GIZ realisiert wurde. Er wird im Rahmen des NRF-MRV zur Ermittlung der Emissionsfaktoren von Baumbiomasse.
+L'inventaire forestier national, combine les données collectées directement sur le terrain avec des références forestières provenant de différentes sources. Le seul ensemble de données collectées est actuellement le premier IFN-1 national inverntaire forestier qui a été réalisé par le GIZ en 2015/16. Il est utilisé dans le cadre du NRF-MRV pour déterminer les facteurs d'émission de la biomasse des arbres.
 
 ```{block, type='rmdtodo'}
 Un deuxième inverntaire forestier national (IFN-2) sur base des parcelles permanentes installées par IFN-1 est en cours de planification. Ce deuxième inventaire sera realise par la direction de l'environnment du Mininstère de l'environnment, du developpement durable et de la protection de la nature.

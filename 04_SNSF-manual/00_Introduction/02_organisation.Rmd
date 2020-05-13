@@ -127,23 +127,13 @@ Dans une prochaine étape, les données doivent être rendues disponibles, soit 
 
 ### Définition des variables {#NRF-set-up.R}
 
-Le traitement des images ainsi que les différentes analyses se font via des R-Scripts. Les variables et les fonctions utilisées dans les différents scripts sont définit dans le fichier `.Rprofile`, qui est automatiquement chargé au démarrage de R. Si le processus de chargement a réussi, vous pouvez voir le message suivant sur la console R :
-
-```
-=> chargé librairies et variables définit en .Rprofile
-  
-###############################
-# BIENVENUE DANS LE SNSF TOGO #
-###############################
-
-Sun Mar 15 00:07:55 2020
-```
+Le traitement des images ainsi que les différentes analyses se font via des R-Scripts. Les variables et les fonctions utilisées dans les différents scripts sont définit dans le fichier `.Rprofile`, qui est automatiquement chargé au démarrage de R. Si le processus de chargement a réussi, vous pouvez voir un message de bienvenue suivant sur la console R.
 
 Si aucun message n'apparaît, assurez-vous que a) R est lancé dans le répertoire et b) qu'aucun message d'erreur ne se produit. Les messages d'erreur possibles sont des paquets manquants (les paquets correspondants doivent être installés en premier) ou le fait de ne pas trouver les limites administratives de GADM dans `../data/GADM` (doivent également être installés en premier).
 
 Si nécessaire les variables sont ajustées et R est redémarré. Notamment les informations sur la période analysée `YEARS.ALL` et les années à prendre en compte pour les différentes évaluations `YEARS.JNT`, `YEARS.VAL` et `YEARS.REF`.
 
-#### *.Rprofile* {-}
+#### Script R: `.Rprofile` {-}
 
 ```{r, code=readLines("../.Rprofile"), eval=FALSE}
 ```

@@ -1,9 +1,48 @@
 
-### Production des résultats
+### Analyse des cartes
 
-#### Description {-}
+Les cartes forêt/non-forêt nettoyées de 1987 à 2018 sont utilisées pour créer des cartes des changements forestiers. En utilisant la fonction `fc()` les pixels qui passent d'une situation "non-forêt" ou "régénération potentielle" à "régénération" sont enregistrés comme gains de surface forestière dans l'année correspondante, les pixels qui passent d'une situation "forêt" ou "régénération" à "non-forêt" sont enregistrés comme perte de surface forestière. Sur cette base, pour chaque année disponible dans la série, une **compilation des surfaces forestières, de la surface régénérée et de la régénération potentielle, ainsi que des gains et pertes de forêts dans la période précédente** est effectuée. 
 
-Description de la méthodologie / script
+Le tableau de la superficie forestière sert à son tour de base pour déterminer les **changements annuelles de la surface forestière sur différentes périodes de temps** à l'aide de la fonction `fcc()`. En plus des changements annuelles absolues, les taux de changement correspondants sont calculés selon la formule suivante : $r = (1/(t2 - t1)) \times ln(A2/A1)$ ([Puyravaud, 2003](https://www.sciencedirect.com/science/article/abs/pii/S0378112702003353)).
+
+La fonction `plot.fc()` affiche graphiquement le tableau des surfaces forestières et montre comment la surface forestière et la régénération se développent. La fonction `plot.fcc()` crée un diagramme en barres des gains et des pertes annuelles de la surface forestières sur certaines périodes de temps.
+
+Enfin, des **cartes de la perte de forêts, de la régénération potentielle et de la régénération** sont créées, avec les années de changement observées comme valeurs de pixel.
+
+
+#### Example {-}
+
+**Tableau des superfaces forestières pour le Togo ** La surface forestière initiale (existant depuis 1987), la superficie forestière secondaire (régénérée depuis 1987), la surface de la régénération potentielle (< 10 ans) et la déforestation et l'accroissement enregistrés dans la période précédente. Tous les chiffres sont exprimés en hectares.
+
+| Année | Surface f. totale | Surface f. initiale | Surface f. secondaire | Régén. potentielle | Pertes surface f. | Gains surface f. |
+|------:|------------------:|--------------------:|----------------------:|-------------------:|------------------:|-----------------:|
+|  1987 |         1'265'377 |           1'265'377 |                     0 |            133'038 |               --- |              --- |
+|  2003 |         1'359'051 |           1'193'731 |               165'320 |             90'972 |           -71'646 |          165'320 |
+|  2005 |         1'321'963 |           1'166'156 |               155'807 |            122'718 |           -37'088 |                0 |
+|  2007 |         1'281'909 |           1'136'373 |               145'536 |            161'787 |           -40'154 |              101 |
+|  2015 |         1'290'948 |           1'059'301 |               231'647 |            156'237 |           -99'560 |          108'600 |
+|  2017 |         1'290'615 |           1'035'724 |               254'891 |            169'171 |           -39'503 |           39'170 |
+|  2018 |         1'280'513 |           1'019'489 |               261'024 |            188'715 |           -27'027 |           16'925 |
+
+**Changement annuelle de la superficie forestière au Togo**, pour 2003 -- 2015, 2015 -- 2018 et toute la période 2003 -- 2018, montrant les pertes et les gains brutes des forêts, et le changement net de la surface forestière en hectares par an et les taux correspondants en %/an.
+
+|     Période | Pertes (ha/an) | Gains (ha/an) | Ch. net (ha/an) | Pertes (%/an) | Gains (%/an) | Ch. net (%/an) |
+|------------:|---------------:|--------------:|----------------:|--------------:|-------------:|---------------:|
+| 2003 – 2015 |        -14'734 |         9'058 |          -5'675 |          -1.2 |          0.6 |           -0.4 |
+| 2015 – 2018 |        -22'177 |        18'699 |          -3'478 |          -1.8 |          1.4 |           -0.3 |
+| 2003 – 2018 |        -16'222 |        10'986 |          -5'236 |          -1.3 |          0.8 |           -0.4 |
+
+**Changement de la surface forestière du Togo 2003 -- 2018** Changement de la superficie forestière (à gauche) ansi que les gains et les pertes annuelles pour les périodes 2003 -- 2015 et 2015 -- 2018 (à droite).
+
+```{r, echo=FALSE, out.width="50%", fig.show='hold', fig.align='default'}
+knitr::include_graphics(c("images/TGO_fc.png","images/TGO_fcc.png"))
+``` 
+
+**Complexité de l'évolution de la superficie forestière** en prenant l'exemple d'une petite partie de la région des Plateaux. Pertes de forêts 2003 -- 2018 (jaune à orange) et croissance des forêts au cours de la même période (bleu à blanc). Le fond noir est non-forêt sur toute la période. 
+
+![](images/FCC-changemap.png)
+
+
 
 #### _MCF/05_analyse-fc-maps.R_ {-}
 

@@ -1,78 +1,105 @@
-################################################################
-# .Rprofile: oading libraries and defining functions
-# --------------------------------------------------------------
+###############################################################################
+# .Rprofile: Préparer l'environnement (libraries, variables)
+# -----------------------------------------------------------------------------
 # Bern University of Applied Sciences
 # Oliver Gardi, <oliver.gardi@bfh.ch>
-# 11 March 2019
+# 13 Mai 2020
 
-# Libraries  -----------------
-library("sp")           # Classes and methods for spatial data
-library("rgdal")        # Bindings for the Geospatial Data Abstraction Library
-library("rgeos")        # Interface to Geometry Engine - Open Source
-library("raster")       # Geographic Data Analysis and Modeling
-library("randomForest") # Breiman and Cutler's random forests for classification and regression
-library("RStoolbox")    # for terrain correction (topCor)
-library("caret")        # for confusion matrix
-library("openxlsx")     # pour directement lire des fichiers excel (xlsx)
-library("dplyr")        # pour cr??er des tableaux crois??s
-library("tidyr")
-library("ggplot2")
-library("foreach")
-library("doParallel")
-library("gdalUtils")
-library("stringr")
-library("maptools")     # kmlPolygon
-library("spsurvey")
 
+# Charger libraries  ==========================================================
+library("sp")           # Classes et méthodes pour les données spatiales
+library("rgdal")        # Geospatial Data Abstraction Library
+library("raster")       # Analyse et modélisation des données géographiques
+library("randomForest") # Algorithme de classification et régression
+library("caret")        # Outils pour classification et régression
+library("openxlsx")     # Lire et écrire des fichiers Excel (xlsx)
+library("dplyr")        # Fonctions pour manipuler des données
+library("tidyr")        # Fonctions pour reorganiser des données
+library("ggplot2")      # Production des figures
+library("foreach")      # Faire des calcules en parallèle ...
+library("doParallel")   # ... sur plusieurs processeurs
+
+
+# Créer un environnement caché  ===============================================
 .snsf = new.env()
 
-# Years ----------------------------------
+# Années / Périodes -----------------------------
 
-.snsf$YEARS.ALL   <-   1985:2019
-.snsf$YEARS.JNT   <- c(1987,             2003, 2005, 2007,             2015, 2017, 2018)
-.snsf$YEARS.REF   <- c(1987,             2003,                         2015,       2018)
-.snsf$YEARS.NRF   <- c(                  2003,                         2015,       2018)
+.snsf$YEARS.ALL <-   1985:2019                                  # - tous
+.snsf$YEARS.JNT <- c(1987, 2003, 2005, 2007, 2015, 2017, 2018)  # - conjointes
+.snsf$YEARS.REF <- c(1987, 2003,             2015,       2018)  # - référence
+.snsf$YEARS.NRF <- c(      2003,             2015,       2018)  # - NRF
 
-# Directories ----------------------------------
+# Répertoires -----------------------------------
 
 .snsf$DIR.RAW.DAT   <- "../data"
-.snsf$DIR.SST       <- "./01_SSTS"
-.snsf$DIR.IFN       <- "./02_IFN"
-.snsf$DIR.MRV       <- "./03_NRF-MRV"
 
+.snsf$DIR.SST       <- "./01_SSTS"
 .snsf$DIR.SST.DAT   <- paste0(.snsf$DIR.SST, "/01_data")
 .snsf$DIR.SST.BDD   <- paste0(.snsf$DIR.SST, "/02_BdD")
+
+.snsf$DIR.IFN       <- "./02_IFN"
 .snsf$DIR.IFN.DAT   <- paste0(.snsf$DIR.IFN, "/01_field-data")
 
-# CRS, AOI, Extents -------------------
-.snsf$UTM.30 <- crs("+proj=utm +zone=30 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")
-.snsf$UTM.31 <- crs("+proj=utm +zone=31 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")
+.snsf$DIR.MRV       <- "./03_NRF-MRV"
 
-# Layers of SSTS images
-.snsf$SST.LSBANDS     <- c("B", "G", "R", "NIR", "SWIR1", "SWIR2", "evi", "msavi", "nbr", "nbr2", "ndmi", "ndvi", "savi")
+# Système de référence des coordonnées ----------
+
+.snsf$UTM.30 <- crs("+proj=utm +zone=30 +datum=WGS84
+                     +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+.snsf$UTM.31 <- crs("+proj=utm +zone=31 +datum=WGS84 
+                     +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+# Domaine d'intérêt  ----------------------------
+
+.snsf$TGO     <- spTransform(
+                   readOGR(paste0(.snsf$DIR.RAW.DAT, "/GADM/gadm36_TGO_0.shp")),
+                     .snsf$UTM.31
+                 )
+
+.snsf$TGO.EXT <- extent(151155, 373005, 670665, 1238175)  # xmin, xmax, ymin, ymax
+
+# Noms des couches de données -------------------
+
+.snsf$SST.LSBANDS     <- c("B", "G", "R", "NIR", "SWIR1", "SWIR2", 
+                           "evi", "msavi", "nbr", "nbr2", "ndmi", "ndvi", "savi")
+
 .snsf$SST.BIOCLIM     <- paste0("BIO", 1:19)
 
-# Boundary of Togo
-.snsf$TGO     <- spTransform(readOGR(paste0(.snsf$DIR.RAW.DAT, "/GADM/gadm36_TGO_0.shp")), .snsf$UTM.31)
-.snsf$TGO.REG <- spTransform(readOGR(paste0(.snsf$DIR.RAW.DAT, "/GADM/gadm36_TGO_1.shp")), .snsf$UTM.31)
-.snsf$TGO.EXT <- extent(151155, 373005, 670665, 1238175)  # define extent by xmin, xmax, ymin and ymax
+# Codes pour les classes ------------------------
 
+.snsf$NONFOR <- 0   # non-forêt
+.snsf$PREGEN <- 1   # régénération potentielle
+.snsf$REGEN  <- 2   # régénération
+.snsf$FOREST <- 3   # forêt / forêt initiale
 
-# Misc -------------------
-# prepare for parallel computing
+# Divers ----------------------------------------
+
+# Processeurs disponibles pour le calcul parallèle
 .snsf$CORES <- detectCores()
 
-# Seed for random number generator
+# Semence pour le générateur de nombres aléatoires
 .snsf$RSEED <- 20191114
 
+# Attacher l'environnement
 attach(.snsf)
+
+
+# Message de bienvenue  =======================================================
 
 message("
 => chargé librairies et variables définit en .Rprofile
-  
-###############################
-# BIENVENUE DANS LE SNSF TOGO #
-###############################
+
+.oPYo. o    o .oPYo.  ooooo   ooooo                      
+8      8b   8 8       8         8                        
+`Yooo. 8`b  8 `Yooo. o8oo       8   .oPYo. .oPYo. .oPYo. 
+    `8 8 `b 8     `8  8         8   8    8 8    8 8    8 
+     8 8  `b8      8  8         8   8    8 8    8 8    8 
+`YooP' 8   `8 `YooP'  8         8   `YooP' `YooP8 `YooP' 
+:.....:..:::..:.....::..::::::::..:::.....::....8 :.....:
+:::::::::::::::::::::::::::::::::::::::::::::ooP'.:::::::
+:::::::::::::::::::::::::::::::::::::::::::::...:::::::::
 \n",
 date(),
 "\n"

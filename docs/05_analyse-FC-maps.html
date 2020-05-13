@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4.1.5 Production des résultats | _main.utf8</title>
+  <title>4.1.5 Analyse des cartes | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4.1.5 Production des résultats | _main.utf8" />
+  <meta property="og:title" content="4.1.5 Analyse des cartes | _main.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -17,7 +17,7 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4.1.5 Production des résultats | _main.utf8" />
+  <meta name="twitter:title" content="4.1.5 Analyse des cartes | _main.utf8" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-05-12" />
+<meta name="date" content="2020-05-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -171,7 +171,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1.2" data-path="02_clean-FC-maps.html"><a href="02_clean-FC-maps.html"><i class="fa fa-check"></i><b>4.1.2</b> Nettoyage des cartes brutes</a></li>
 <li class="chapter" data-level="4.1.3" data-path="03_validate-FC-maps.html"><a href="03_validate-FC-maps.html"><i class="fa fa-check"></i><b>4.1.3</b> Validation des cartes</a></li>
 <li class="chapter" data-level="4.1.4" data-path="04_FC-maps-accuracy.html"><a href="04_FC-maps-accuracy.html"><i class="fa fa-check"></i><b>4.1.4</b> Analyse de la précision</a></li>
-<li class="chapter" data-level="4.1.5" data-path="05_analyse-FC-maps.html"><a href="05_analyse-FC-maps.html"><i class="fa fa-check"></i><b>4.1.5</b> Production des résultats</a></li>
+<li class="chapter" data-level="4.1.5" data-path="05_analyse-FC-maps.html"><a href="05_analyse-FC-maps.html"><i class="fa fa-check"></i><b>4.1.5</b> Analyse des cartes</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="00_analyse-AGB.html"><a href="00_analyse-AGB.html"><i class="fa fa-check"></i><b>4.2</b> Analyse biomasse aérienne</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="01_compile-IFN.html"><a href="01_compile-IFN.html"><i class="fa fa-check"></i><b>4.2.1</b> Analyse des données IFN</a></li>
@@ -200,245 +200,392 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="production-des-resultats" class="section level3">
-<h3><span class="header-section-number">4.1.5</span> Production des résultats</h3>
-<div id="description" class="section level4 unnumbered">
-<h4>Description</h4>
-<p>Description de la méthodologie / script</p>
+<div id="analyse-des-cartes" class="section level3">
+<h3><span class="header-section-number">4.1.5</span> Analyse des cartes</h3>
+<p>Les cartes forêt/non-forêt nettoyées de 1987 à 2018 sont utilisées pour créer des cartes des changements forestiers. En utilisant la fonction <code>fc()</code> les pixels qui passent d’une situation “non-forêt” ou “régénération potentielle” à “régénération” sont enregistrés comme gains de surface forestière dans l’année correspondante, les pixels qui passent d’une situation “forêt” ou “régénération” à “non-forêt” sont enregistrés comme perte de surface forestière. Sur cette base, pour chaque année disponible dans la série, une <strong>compilation des surfaces forestières, de la surface régénérée et de la régénération potentielle, ainsi que des gains et pertes de forêts dans la période précédente</strong> est effectuée.</p>
+<p>Le tableau de la superficie forestière sert à son tour de base pour déterminer les <strong>changements annuelles de la surface forestière sur différentes périodes de temps</strong> à l’aide de la fonction <code>fcc()</code>. En plus des changements annuelles absolues, les taux de changement correspondants sont calculés selon la formule suivante : <span class="math inline">\(r = (1/(t2 - t1)) \times ln(A2/A1)\)</span> (<a href="https://www.sciencedirect.com/science/article/abs/pii/S0378112702003353">Puyravaud, 2003</a>).</p>
+<p>La fonction <code>plot.fc()</code> affiche graphiquement le tableau des surfaces forestières et montre comment la surface forestière et la régénération se développent. La fonction <code>plot.fcc()</code> crée un diagramme en barres des gains et des pertes annuelles de la surface forestières sur certaines périodes de temps.</p>
+<p>Enfin, des <strong>cartes de la perte de forêts, de la régénération potentielle et de la régénération</strong> sont créées, avec les années de changement observées comme valeurs de pixel.</p>
+<div id="example-5" class="section level4 unnumbered">
+<h4>Example</h4>
+<p><strong>Tableau des superfaces forestières pour le Togo </strong> La surface forestière initiale (existant depuis 1987), la superficie forestière secondaire (régénérée depuis 1987), la surface de la régénération potentielle (&lt; 10 ans) et la déforestation et l’accroissement enregistrés dans la période précédente. Tous les chiffres sont exprimés en hectares.</p>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="14%" />
+<col width="16%" />
+<col width="18%" />
+<col width="15%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Année</th>
+<th align="right">Surface f. totale</th>
+<th align="right">Surface f. initiale</th>
+<th align="right">Surface f. secondaire</th>
+<th align="right">Régén. potentielle</th>
+<th align="right">Pertes surface f.</th>
+<th align="right">Gains surface f.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1987</td>
+<td align="right">1’265’377</td>
+<td align="right">1’265’377</td>
+<td align="right">0</td>
+<td align="right">133’038</td>
+<td align="right">—</td>
+<td align="right">—</td>
+</tr>
+<tr class="even">
+<td align="right">2003</td>
+<td align="right">1’359’051</td>
+<td align="right">1’193’731</td>
+<td align="right">165’320</td>
+<td align="right">90’972</td>
+<td align="right">-71’646</td>
+<td align="right">165’320</td>
+</tr>
+<tr class="odd">
+<td align="right">2005</td>
+<td align="right">1’321’963</td>
+<td align="right">1’166’156</td>
+<td align="right">155’807</td>
+<td align="right">122’718</td>
+<td align="right">-37’088</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2007</td>
+<td align="right">1’281’909</td>
+<td align="right">1’136’373</td>
+<td align="right">145’536</td>
+<td align="right">161’787</td>
+<td align="right">-40’154</td>
+<td align="right">101</td>
+</tr>
+<tr class="odd">
+<td align="right">2015</td>
+<td align="right">1’290’948</td>
+<td align="right">1’059’301</td>
+<td align="right">231’647</td>
+<td align="right">156’237</td>
+<td align="right">-99’560</td>
+<td align="right">108’600</td>
+</tr>
+<tr class="even">
+<td align="right">2017</td>
+<td align="right">1’290’615</td>
+<td align="right">1’035’724</td>
+<td align="right">254’891</td>
+<td align="right">169’171</td>
+<td align="right">-39’503</td>
+<td align="right">39’170</td>
+</tr>
+<tr class="odd">
+<td align="right">2018</td>
+<td align="right">1’280’513</td>
+<td align="right">1’019’489</td>
+<td align="right">261’024</td>
+<td align="right">188’715</td>
+<td align="right">-27’027</td>
+<td align="right">16’925</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Changement annuelle de la superficie forestière au Togo</strong>, pour 2003 – 2015, 2015 – 2018 et toute la période 2003 – 2018, montrant les pertes et les gains brutes des forêts, et le changement net de la surface forestière en hectares par an et les taux correspondants en %/an.</p>
+<table style="width:100%;">
+<colgroup>
+<col width="12%" />
+<col width="15%" />
+<col width="14%" />
+<col width="16%" />
+<col width="14%" />
+<col width="13%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Période</th>
+<th align="right">Pertes (ha/an)</th>
+<th align="right">Gains (ha/an)</th>
+<th align="right">Ch. net (ha/an)</th>
+<th align="right">Pertes (%/an)</th>
+<th align="right">Gains (%/an)</th>
+<th align="right">Ch. net (%/an)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2003 – 2015</td>
+<td align="right">-14’734</td>
+<td align="right">9’058</td>
+<td align="right">-5’675</td>
+<td align="right">-1.2</td>
+<td align="right">0.6</td>
+<td align="right">-0.4</td>
+</tr>
+<tr class="even">
+<td align="right">2015 – 2018</td>
+<td align="right">-22’177</td>
+<td align="right">18’699</td>
+<td align="right">-3’478</td>
+<td align="right">-1.8</td>
+<td align="right">1.4</td>
+<td align="right">-0.3</td>
+</tr>
+<tr class="odd">
+<td align="right">2003 – 2018</td>
+<td align="right">-16’222</td>
+<td align="right">10’986</td>
+<td align="right">-5’236</td>
+<td align="right">-1.3</td>
+<td align="right">0.8</td>
+<td align="right">-0.4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Changement de la surface forestière du Togo 2003 – 2018</strong> Changement de la superficie forestière (à gauche) ansi que les gains et les pertes annuelles pour les périodes 2003 – 2015 et 2015 – 2018 (à droite).</p>
+<p><img src="images/TGO_fc.png" width="50%" /><img src="images/TGO_fcc.png" width="50%" /></p>
+<p><strong>Complexité de l’évolution de la superficie forestière</strong> en prenant l’exemple d’une petite partie de la région des Plateaux. Pertes de forêts 2003 – 2018 (jaune à orange) et croissance des forêts au cours de la même période (bleu à blanc). Le fond noir est non-forêt sur toute la période.</p>
+<p><img src="images/FCC-changemap.png" /></p>
 </div>
 <div id="mcf05_analyse-fc-maps.r" class="section level4 unnumbered">
 <h4><em>MCF/05_analyse-fc-maps.R</em></h4>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co">##########################################################################</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co"># NERF_Togo/FCC/8_analyse-fc-maps.R: analyze clean forest cover maps</span></a>
-<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
-<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
-<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co"># 20 May 2019</span></a>
-<a class="sourceLine" id="cb19-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb19-8" data-line-number="8">COV.FC         &lt;-<span class="st"> </span><span class="dv">30</span></a>
-<a class="sourceLine" id="cb19-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="co"># Function for building forest cover table ---------------------------------</span></a>
-<a class="sourceLine" id="cb19-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb19-12" data-line-number="12">fc &lt;-<span class="st"> </span><span class="cf">function</span>(map, <span class="dt">aoi=</span><span class="ot">NULL</span>) {</a>
-<a class="sourceLine" id="cb19-13" data-line-number="13">  </a>
-<a class="sourceLine" id="cb19-14" data-line-number="14">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(aoi)) map &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(map, aoi), aoi)</a>
-<a class="sourceLine" id="cb19-15" data-line-number="15">  </a>
-<a class="sourceLine" id="cb19-16" data-line-number="16">  <span class="co"># convert non-forest to 0</span></a>
-<a class="sourceLine" id="cb19-17" data-line-number="17">  <span class="co"># potential regeneration to 1</span></a>
-<a class="sourceLine" id="cb19-18" data-line-number="18">  <span class="co"># regeneration to 2</span></a>
-<a class="sourceLine" id="cb19-19" data-line-number="19">  <span class="co"># forest to 3</span></a>
-<a class="sourceLine" id="cb19-20" data-line-number="20">  </a>
-<a class="sourceLine" id="cb19-21" data-line-number="21">  tab.fc &lt;-<span class="st"> </span>map[]</a>
-<a class="sourceLine" id="cb19-22" data-line-number="22">  tab.fc[tab.fc <span class="op">==</span><span class="st"> </span><span class="dv">3</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb19-23" data-line-number="23">  tab.fc[tab.fc <span class="op">==</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb19-24" data-line-number="24">  tab.fc[tab.fc <span class="op">==</span><span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb19-25" data-line-number="25">  </a>
-<a class="sourceLine" id="cb19-26" data-line-number="26">  </a>
-<a class="sourceLine" id="cb19-27" data-line-number="27">  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(tab.fc)) {</a>
-<a class="sourceLine" id="cb19-28" data-line-number="28">    tab.fc[<span class="op">!</span><span class="kw">is.na</span>(tab.fc[,i]) <span class="op">&amp;</span><span class="st"> </span>tab.fc[,i] <span class="op">==</span><span class="st"> </span><span class="dv">3</span> <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(tab.fc[,i<span class="dv">-1</span>]) <span class="op">&amp;</span><span class="st"> </span>tab.fc[,i<span class="dv">-1</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span>, i] &lt;-<span class="st"> </span><span class="dv">2</span>  <span class="co"># mark as regeneration when it was non-forest or regeneration before</span></a>
-<a class="sourceLine" id="cb19-29" data-line-number="29">  }</a>
-<a class="sourceLine" id="cb19-30" data-line-number="30">  </a>
-<a class="sourceLine" id="cb19-31" data-line-number="31">  tab.fcc &lt;-<span class="st"> </span>tab.fc[,<span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(tab.fc)<span class="op">-</span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb19-32" data-line-number="32">  tab.fcc[] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb19-33" data-line-number="33">  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(tab.fcc)) {</a>
-<a class="sourceLine" id="cb19-34" data-line-number="34">    tab.fcc[tab.fc[,i] <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>tab.fc[,i<span class="op">+</span><span class="dv">1</span>] <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>, i]   &lt;-<span class="st"> </span><span class="dv">1</span>           <span class="co"># mark forest gain</span></a>
-<a class="sourceLine" id="cb19-35" data-line-number="35">    tab.fcc[tab.fc[,i] <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>tab.fc[,i<span class="op">+</span><span class="dv">1</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>, i]   &lt;-<span class="st"> </span><span class="dv">2</span>           <span class="co"># mark forest loss</span></a>
-<a class="sourceLine" id="cb19-36" data-line-number="36">  }</a>
-<a class="sourceLine" id="cb19-37" data-line-number="37">  </a>
-<a class="sourceLine" id="cb19-38" data-line-number="38">  dates &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(<span class="kw">names</span>(map), <span class="dv">2</span>, <span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb19-39" data-line-number="39">  </a>
-<a class="sourceLine" id="cb19-40" data-line-number="40">  fc &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">year     =</span> dates, </a>
-<a class="sourceLine" id="cb19-41" data-line-number="41">                   <span class="dt">initi.ha =</span> <span class="kw">colSums</span>(tab.fc<span class="op">==</span><span class="dv">3</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>, </a>
-<a class="sourceLine" id="cb19-42" data-line-number="42">                   <span class="dt">secon.ha =</span> <span class="kw">colSums</span>(tab.fc<span class="op">==</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>,</a>
-<a class="sourceLine" id="cb19-43" data-line-number="43">                   <span class="dt">poten.ha =</span> <span class="kw">colSums</span>(tab.fc<span class="op">==</span><span class="dv">1</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb19-44" data-line-number="44">  </a>
-<a class="sourceLine" id="cb19-45" data-line-number="45">  fc<span class="op">$</span>total.ha &lt;-<span class="st">   </span>fc<span class="op">$</span>initi.ha <span class="op">+</span><span class="st"> </span>fc<span class="op">$</span>secon.ha</a>
-<a class="sourceLine" id="cb19-46" data-line-number="46">  fc<span class="op">$</span>defor.ha &lt;-<span class="st">   </span><span class="op">-</span><span class="kw">c</span>(<span class="kw">colSums</span>(tab.fcc<span class="op">==</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>, <span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb19-47" data-line-number="47">  fc<span class="op">$</span>regen.ha &lt;-<span class="st">    </span><span class="kw">c</span>(<span class="kw">colSums</span>(tab.fcc<span class="op">==</span><span class="dv">1</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>, <span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb19-48" data-line-number="48">    </a>
-<a class="sourceLine" id="cb19-49" data-line-number="49">  <span class="kw">return</span>(fc)</a>
-<a class="sourceLine" id="cb19-50" data-line-number="50">}</a>
-<a class="sourceLine" id="cb19-51" data-line-number="51">     </a>
-<a class="sourceLine" id="cb19-52" data-line-number="52">fcc &lt;-<span class="st"> </span><span class="cf">function</span>(fc.tab, <span class="dt">years=</span>fc.tab<span class="op">$</span>year) {</a>
-<a class="sourceLine" id="cb19-53" data-line-number="53">  </a>
-<a class="sourceLine" id="cb19-54" data-line-number="54">  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">length</span>(years)<span class="op">-</span><span class="dv">1</span>)) {</a>
-<a class="sourceLine" id="cb19-55" data-line-number="55">    fc.tab<span class="op">$</span>defor.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">sum</span>(fc.tab<span class="op">$</span>defor.ha[fc.tab<span class="op">$</span>year <span class="op">&gt;=</span><span class="st"> </span>years[i] <span class="op">&amp;</span><span class="st"> </span>fc.tab<span class="op">$</span>year <span class="op">&lt;</span><span class="st"> </span>years[i<span class="op">+</span><span class="dv">1</span>]])<span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i])</a>
-<a class="sourceLine" id="cb19-56" data-line-number="56">    fc.tab<span class="op">$</span>regen.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">sum</span>(fc.tab<span class="op">$</span>regen.ha[fc.tab<span class="op">$</span>year <span class="op">&gt;=</span><span class="st"> </span>years[i] <span class="op">&amp;</span><span class="st"> </span>fc.tab<span class="op">$</span>year <span class="op">&lt;</span><span class="st"> </span>years[i<span class="op">+</span><span class="dv">1</span>]])<span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i])</a>
-<a class="sourceLine" id="cb19-57" data-line-number="57">    fc.tab<span class="op">$</span>netch.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span>fc.tab<span class="op">$</span>defor.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] <span class="op">+</span><span class="st"> </span>fc.tab<span class="op">$</span>regen.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]]</a>
-<a class="sourceLine" id="cb19-58" data-line-number="58">    </a>
-<a class="sourceLine" id="cb19-59" data-line-number="59">    fc.tab<span class="op">$</span>defor.pc.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i]) <span class="op">*</span><span class="st"> </span><span class="kw">log</span>((fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span><span class="kw">sum</span>(fc.tab<span class="op">$</span>regen.ha[fc.tab<span class="op">$</span>year <span class="op">&gt;=</span><span class="st"> </span>years[i] <span class="op">&amp;</span><span class="st"> </span>fc.tab<span class="op">$</span>year <span class="op">&lt;</span><span class="st"> </span>years[i<span class="op">+</span><span class="dv">1</span>]]))<span class="op">/</span>fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]]), <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb19-60" data-line-number="60">    fc.tab<span class="op">$</span>regen.pc.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i]) <span class="op">*</span><span class="st"> </span><span class="kw">log</span>((fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span><span class="kw">sum</span>(fc.tab<span class="op">$</span>defor.ha[fc.tab<span class="op">$</span>year <span class="op">&gt;=</span><span class="st"> </span>years[i] <span class="op">&amp;</span><span class="st"> </span>fc.tab<span class="op">$</span>year <span class="op">&lt;</span><span class="st"> </span>years[i<span class="op">+</span><span class="dv">1</span>]]))<span class="op">/</span>fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]]), <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb19-61" data-line-number="61">    fc.tab<span class="op">$</span>netch.pc.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i]) <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i<span class="op">+</span><span class="dv">1</span>]]<span class="op">/</span>fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]]), <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb19-62" data-line-number="62">  }</a>
-<a class="sourceLine" id="cb19-63" data-line-number="63">  </a>
-<a class="sourceLine" id="cb19-64" data-line-number="64">  <span class="kw">return</span>(fc.tab)</a>
-<a class="sourceLine" id="cb19-65" data-line-number="65">}</a>
-<a class="sourceLine" id="cb19-66" data-line-number="66">  </a>
-<a class="sourceLine" id="cb19-67" data-line-number="67"><span class="co"># Function for plotting evolution of forest cover -----------------------------------------</span></a>
-<a class="sourceLine" id="cb19-68" data-line-number="68"></a>
-<a class="sourceLine" id="cb19-69" data-line-number="69">plot.fc &lt;-<span class="st"> </span><span class="cf">function</span>(fc, zone, <span class="dt">filename=</span><span class="ot">NULL</span>) {</a>
-<a class="sourceLine" id="cb19-70" data-line-number="70">  </a>
-<a class="sourceLine" id="cb19-71" data-line-number="71">  <span class="cf">if</span>(zone<span class="op">==</span><span class="st">&quot;TGO&quot;</span>) {</a>
-<a class="sourceLine" id="cb19-72" data-line-number="72">    title    &lt;-<span class="st"> &quot;Togo: Évolution de la couverure forestière 2003 - 2018&quot;</span></a>
-<a class="sourceLine" id="cb19-73" data-line-number="73">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1400000</span>)</a>
-<a class="sourceLine" id="cb19-74" data-line-number="74">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1400000</span>, <span class="dv">200000</span>)</a>
-<a class="sourceLine" id="cb19-75" data-line-number="75">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1400000</span>, <span class="dv">100000</span>)</a>
-<a class="sourceLine" id="cb19-76" data-line-number="76">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb19-77" data-line-number="77">    title    &lt;-<span class="st"> </span><span class="kw">paste0</span>(zone, <span class="st">&quot;: Évolution de la couverure forestière 2003 - 2018&quot;</span>)</a>
-<a class="sourceLine" id="cb19-78" data-line-number="78">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">500000</span>)</a>
-<a class="sourceLine" id="cb19-79" data-line-number="79">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">500000</span>, <span class="dv">100000</span>)</a>
-<a class="sourceLine" id="cb19-80" data-line-number="80">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">500000</span>, <span class="dv">50000</span>)</a>
-<a class="sourceLine" id="cb19-81" data-line-number="81">  } </a>
-<a class="sourceLine" id="cb19-82" data-line-number="82">  </a>
-<a class="sourceLine" id="cb19-83" data-line-number="83">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">pdf</span>(filename)</a>
-<a class="sourceLine" id="cb19-84" data-line-number="84">  </a>
-<a class="sourceLine" id="cb19-85" data-line-number="85">  <span class="kw">print</span>(</a>
-<a class="sourceLine" id="cb19-86" data-line-number="86">    fc <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">gather</span>(variable, value, secon.ha, initi.ha) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-87" data-line-number="87"><span class="st">      </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y=</span>value, <span class="dt">fill=</span>variable)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-88" data-line-number="88"><span class="st">      </span><span class="kw">geom_area</span>(<span class="dt">position=</span><span class="kw">position_stack</span>(<span class="dt">reverse=</span><span class="ot">TRUE</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-89" data-line-number="89"><span class="st">      </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="st">&quot;secon.ha&quot;</span>, <span class="st">&quot;initi.ha&quot;</span>), <span class="dt">values=</span><span class="kw">c</span>(<span class="kw">alpha</span>(<span class="st">&quot;#009E73&quot;</span>, <span class="fl">0.8</span>), <span class="kw">alpha</span>(<span class="st">&quot;#00BFC4&quot;</span>, <span class="fl">0.5</span>)), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Régéneration&quot;</span>, <span class="st">&quot;Forêt depuis 1987&quot;</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-90" data-line-number="90"><span class="st">      </span><span class="kw">xlab</span>(<span class="st">&quot;Année&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Hectares&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(title) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-91" data-line-number="91"><span class="st">      </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks =</span> <span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1991</span>, <span class="dv">2000</span>, <span class="dv">2005</span>, <span class="dv">2010</span>, <span class="dv">2015</span>, <span class="dv">2018</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-92" data-line-number="92"><span class="st">      </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks=</span>ybreaks, <span class="dt">minor_breaks =</span> ymbreaks) <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim=</span>ylim) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-93" data-line-number="93"><span class="st">      </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.6</span>,<span class="fl">0.2</span>), <span class="dt">legend.box =</span> <span class="st">&quot;horizontal&quot;</span>, <span class="dt">legend.justification=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.2</span>,<span class="fl">1.2</span>))</a>
-<a class="sourceLine" id="cb19-94" data-line-number="94">  )</a>
-<a class="sourceLine" id="cb19-95" data-line-number="95">  </a>
-<a class="sourceLine" id="cb19-96" data-line-number="96">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb19-97" data-line-number="97">}</a>
-<a class="sourceLine" id="cb19-98" data-line-number="98"></a>
-<a class="sourceLine" id="cb19-99" data-line-number="99"><span class="co"># Function for plotting forest cover change -----------------------------------</span></a>
-<a class="sourceLine" id="cb19-100" data-line-number="100"></a>
-<a class="sourceLine" id="cb19-101" data-line-number="101">plot.fcc &lt;-<span class="st"> </span><span class="cf">function</span>(fc, <span class="dt">zone=</span><span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="ot">NULL</span>, <span class="dt">filename=</span><span class="ot">NULL</span>) {</a>
-<a class="sourceLine" id="cb19-102" data-line-number="102">  </a>
-<a class="sourceLine" id="cb19-103" data-line-number="103">  my.fcc &lt;-<span class="st"> </span><span class="kw">fcc</span>(fc)</a>
-<a class="sourceLine" id="cb19-104" data-line-number="104">  fcc.breaks &lt;-<span class="st"> </span>my.fcc</a>
-<a class="sourceLine" id="cb19-105" data-line-number="105"> </a>
-<a class="sourceLine" id="cb19-106" data-line-number="106">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(breaks)) fcc.breaks &lt;-<span class="st"> </span><span class="kw">fcc</span>(fc, breaks)[fc<span class="op">$</span>year <span class="op">%in%</span><span class="st"> </span>breaks,]</a>
-<a class="sourceLine" id="cb19-107" data-line-number="107">  </a>
-<a class="sourceLine" id="cb19-108" data-line-number="108">  my.fcc<span class="op">$</span>period &lt;-<span class="st"> </span><span class="kw">c</span>(my.fcc<span class="op">$</span>year[<span class="dv">2</span><span class="op">:</span><span class="kw">nrow</span>(my.fcc)] <span class="op">-</span><span class="st"> </span>my.fcc<span class="op">$</span>year[<span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(my.fcc)<span class="op">-</span><span class="dv">1</span>)], <span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb19-109" data-line-number="109">  my.fcc<span class="op">$</span>center &lt;-<span class="st"> </span>my.fcc<span class="op">$</span>year <span class="op">+</span><span class="st"> </span>my.fcc<span class="op">$</span>period<span class="op">/</span><span class="dv">2</span> </a>
-<a class="sourceLine" id="cb19-110" data-line-number="110"></a>
-<a class="sourceLine" id="cb19-111" data-line-number="111">  fcc.breaks<span class="op">$</span>period &lt;-<span class="st"> </span><span class="kw">c</span>(fcc.breaks<span class="op">$</span>year[<span class="dv">2</span><span class="op">:</span><span class="kw">nrow</span>(fcc.breaks)] <span class="op">-</span><span class="st"> </span>fcc.breaks<span class="op">$</span>year[<span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(fcc.breaks)<span class="op">-</span><span class="dv">1</span>)], <span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb19-112" data-line-number="112">  fcc.breaks<span class="op">$</span>center &lt;-<span class="st"> </span>fcc.breaks<span class="op">$</span>year <span class="op">+</span><span class="st"> </span>fcc.breaks<span class="op">$</span>period<span class="op">/</span><span class="dv">2</span> </a>
-<a class="sourceLine" id="cb19-113" data-line-number="113">  </a>
-<a class="sourceLine" id="cb19-114" data-line-number="114">  </a>
-<a class="sourceLine" id="cb19-115" data-line-number="115">  <span class="cf">if</span>(zone<span class="op">==</span><span class="st">&quot;TGO&quot;</span>) {</a>
-<a class="sourceLine" id="cb19-116" data-line-number="116">    title    &lt;-<span class="st"> &quot;Togo: Changements bruts et nets des surfaces forestières 2003 - 2018&quot;</span></a>
-<a class="sourceLine" id="cb19-117" data-line-number="117">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">35000</span>, <span class="dv">20000</span>)</a>
-<a class="sourceLine" id="cb19-118" data-line-number="118">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">35000</span>, <span class="dv">20000</span>, <span class="dv">5000</span>)</a>
-<a class="sourceLine" id="cb19-119" data-line-number="119">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">35000</span>, <span class="dv">20000</span>, <span class="dv">2500</span>)</a>
-<a class="sourceLine" id="cb19-120" data-line-number="120">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb19-121" data-line-number="121">    title    &lt;-<span class="st"> </span><span class="kw">paste0</span>(zone, <span class="st">&quot;: Changements bruts et nets des surfaces forestières 2003 - 2018&quot;</span>)</a>
-<a class="sourceLine" id="cb19-122" data-line-number="122">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">15000</span>, <span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb19-123" data-line-number="123">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">15000</span>, <span class="dv">10000</span>, <span class="dv">5000</span>)</a>
-<a class="sourceLine" id="cb19-124" data-line-number="124">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">15000</span>, <span class="dv">10000</span>, <span class="dv">2500</span>)</a>
-<a class="sourceLine" id="cb19-125" data-line-number="125">  } </a>
-<a class="sourceLine" id="cb19-126" data-line-number="126"></a>
-<a class="sourceLine" id="cb19-127" data-line-number="127">  </a>
-<a class="sourceLine" id="cb19-128" data-line-number="128">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">pdf</span>(filename)</a>
-<a class="sourceLine" id="cb19-129" data-line-number="129">  </a>
-<a class="sourceLine" id="cb19-130" data-line-number="130">  fcc.breaks<span class="op">$</span>netdefor.ha.yr &lt;-<span class="st"> </span>fcc.breaks<span class="op">$</span>netch.ha.yr </a>
-<a class="sourceLine" id="cb19-131" data-line-number="131">  fcc.breaks<span class="op">$</span>netdefor.ha.yr[fcc.breaks<span class="op">$</span>netdefor.ha.yr <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb19-132" data-line-number="132">  fcc.breaks<span class="op">$</span>netregen.ha.yr &lt;-<span class="st"> </span>fcc.breaks<span class="op">$</span>netch.ha.yr </a>
-<a class="sourceLine" id="cb19-133" data-line-number="133">  fcc.breaks<span class="op">$</span>netregen.ha.yr[fcc.breaks<span class="op">$</span>netregen.ha.yr <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb19-134" data-line-number="134">  </a>
-<a class="sourceLine" id="cb19-135" data-line-number="135">  <span class="kw">print</span>(</a>
-<a class="sourceLine" id="cb19-136" data-line-number="136">    fcc.breaks[<span class="op">-</span><span class="kw">nrow</span>(fcc.breaks),] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, defor.ha.yr, regen.ha.yr, netdefor.ha.yr, netregen.ha.yr) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-137" data-line-number="137"><span class="st">      </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>value, <span class="dt">x =</span> center, <span class="dt">width=</span>period<span class="fl">-0.7</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-138" data-line-number="138"><span class="st">      </span><span class="kw">geom_bar</span>(<span class="dt">data=</span>. <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(variable <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;defor.ha.yr&quot;</span>, <span class="st">&quot;regen.ha.yr&quot;</span>)), <span class="kw">aes</span>(<span class="dt">fill=</span>variable), <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-139" data-line-number="139"><span class="st">      </span><span class="kw">geom_bar</span>(<span class="dt">data=</span>. <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(variable <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;netdefor.ha.yr&quot;</span>, <span class="st">&quot;netregen.ha.yr&quot;</span>)), <span class="kw">aes</span>(<span class="dt">fill=</span>variable), <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-140" data-line-number="140"><span class="st">      </span><span class="kw">geom_errorbar</span>(<span class="dt">data=</span>my.fcc[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,], <span class="kw">aes</span>(<span class="dt">x=</span>center, <span class="dt">y=</span><span class="ot">NULL</span>, <span class="dt">ymax=</span>defor.ha.yr, <span class="dt">ymin=</span>defor.ha.yr, <span class="dt">width=</span>period<span class="fl">-0.7</span>), <span class="dt">colour=</span><span class="kw">alpha</span>(<span class="st">&quot;#F8766D&quot;</span>, <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-141" data-line-number="141"><span class="st">      </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept=</span><span class="dv">0</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-142" data-line-number="142"><span class="st">      </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="st">&quot;defor.ha.yr&quot;</span>, <span class="st">&quot;netdefor.ha.yr&quot;</span>, <span class="st">&quot;netregen.ha.yr&quot;</span>, <span class="st">&quot;regen.ha.yr&quot;</span>), <span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;regen.ha.yr&quot;</span> =<span class="st"> </span><span class="kw">alpha</span>(<span class="st">&quot;#00BFC4&quot;</span>, <span class="fl">0.4</span>), <span class="st">&quot;netregen.ha.yr&quot;</span> =<span class="st"> &quot;#00BFC4&quot;</span>, <span class="st">&quot;netdefor.ha.yr&quot;</span> =<span class="st"> &quot;#F8766D&quot;</span>, <span class="st">&quot;defor.ha.yr&quot;</span> =<span class="st"> </span><span class="kw">alpha</span>(<span class="st">&quot;#F8766D&quot;</span>, <span class="fl">0.4</span>)), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Perte brutte&quot;</span>, <span class="st">&quot;Perte nette&quot;</span>, <span class="st">&quot;Gain net&quot;</span>, <span class="st">&quot;Gain brut&quot;</span>)) <span class="op">+</span><span class="st">  </span></a>
-<a class="sourceLine" id="cb19-143" data-line-number="143"><span class="st">      </span><span class="kw">xlab</span>(<span class="st">&quot;Année&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Hectares par année&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(title) <span class="op">+</span></a>
-<a class="sourceLine" id="cb19-144" data-line-number="144"><span class="st">      </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks =</span> <span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1991</span>, <span class="dv">2000</span>, <span class="dv">2005</span>, <span class="dv">2010</span>, <span class="dv">2015</span>, <span class="dv">2018</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-145" data-line-number="145"><span class="st">      </span><span class="kw">scale_y_reverse</span>(<span class="dt">breaks=</span>ybreaks, <span class="dt">minor_breaks =</span> ymbreaks) <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim=</span>ylim) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-146" data-line-number="146"><span class="st">      </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">legend.box =</span> <span class="st">&quot;horizontal&quot;</span>, <span class="dt">legend.justification=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.2</span>,<span class="fl">1.2</span>))  </a>
-<a class="sourceLine" id="cb19-147" data-line-number="147">  )</a>
-<a class="sourceLine" id="cb19-148" data-line-number="148">  </a>
-<a class="sourceLine" id="cb19-149" data-line-number="149">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb19-150" data-line-number="150">}</a>
-<a class="sourceLine" id="cb19-151" data-line-number="151"></a>
-<a class="sourceLine" id="cb19-152" data-line-number="152"></a>
-<a class="sourceLine" id="cb19-153" data-line-number="153"></a>
-<a class="sourceLine" id="cb19-154" data-line-number="154"><span class="co"># DO THE WORK ##############################</span></a>
-<a class="sourceLine" id="cb19-155" data-line-number="155"></a>
-<a class="sourceLine" id="cb19-156" data-line-number="156"><span class="co"># Load and rename forest-cover maps ----------------------------</span></a>
-<a class="sourceLine" id="cb19-157" data-line-number="157"></a>
-<a class="sourceLine" id="cb19-158" data-line-number="158">maps &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO&quot;</span>), <span class="dt">pattern =</span> <span class="st">&quot;cf.tif&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb19-159" data-line-number="159"><span class="kw">names</span>(maps) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;X&quot;</span>, <span class="kw">substr</span>(<span class="kw">names</span>(maps), <span class="dv">5</span>, <span class="dv">8</span>))</a>
-<a class="sourceLine" id="cb19-160" data-line-number="160"></a>
-<a class="sourceLine" id="cb19-161" data-line-number="161"><span class="co"># Create forest cover tables for different periods ------------------------------------</span></a>
-<a class="sourceLine" id="cb19-162" data-line-number="162"></a>
-<a class="sourceLine" id="cb19-163" data-line-number="163">fc.all      &lt;-<span class="st"> </span><span class="kw">fc</span>(maps)</a>
-<a class="sourceLine" id="cb19-164" data-line-number="164"><span class="kw">write.csv</span>(fc.all, <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fc.csv&quot;</span>), <span class="dt">row.names=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb19-165" data-line-number="165"></a>
-<a class="sourceLine" id="cb19-166" data-line-number="166">fc.all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fc.csv&quot;</span>))</a>
-<a class="sourceLine" id="cb19-167" data-line-number="167"></a>
-<a class="sourceLine" id="cb19-168" data-line-number="168">fc.cln &lt;-<span class="st"> </span>fc.all</a>
-<a class="sourceLine" id="cb19-169" data-line-number="169">fc.cln &lt;-<span class="st"> </span>fc.cln[<span class="op">!</span>fc.cln<span class="op">$</span>year <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>, <span class="dv">1991</span>, <span class="dv">2000</span>), ]</a>
-<a class="sourceLine" id="cb19-170" data-line-number="170"></a>
-<a class="sourceLine" id="cb19-171" data-line-number="171"><span class="kw">fcc</span>(fc.cln)</a>
-<a class="sourceLine" id="cb19-172" data-line-number="172"><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2018</span>))</a>
-<a class="sourceLine" id="cb19-173" data-line-number="173"><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2017</span>, <span class="dv">2018</span>))</a>
-<a class="sourceLine" id="cb19-174" data-line-number="174"></a>
-<a class="sourceLine" id="cb19-175" data-line-number="175"><span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln)), <span class="dt">file =</span> <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fcc-all-dates.xlsx&quot;</span>))</a>
-<a class="sourceLine" id="cb19-176" data-line-number="176"><span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2018</span>))), <span class="dt">file =</span> <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fcc-03-18.xlsx&quot;</span>))</a>
-<a class="sourceLine" id="cb19-177" data-line-number="177"><span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2018</span>))), <span class="dt">file =</span> <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fcc-03-15-18.xlsx&quot;</span>))</a>
-<a class="sourceLine" id="cb19-178" data-line-number="178"></a>
-<a class="sourceLine" id="cb19-179" data-line-number="179"><span class="kw">plot.fc</span>(fc.cln,  <span class="st">&quot;TGO&quot;</span>, <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fc.pdf&quot;</span>))</a>
-<a class="sourceLine" id="cb19-180" data-line-number="180"><span class="kw">plot.fcc</span>(<span class="dt">fc =</span> fc.cln, <span class="dt">zone =</span> <span class="st">&quot;TGO&quot;</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2018</span>), <span class="dt">filename=</span><span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fcc.pdf&quot;</span>))</a>
-<a class="sourceLine" id="cb19-181" data-line-number="181"></a>
-<a class="sourceLine" id="cb19-182" data-line-number="182"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb19-183" data-line-number="183"><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(TGO.reg)) <span class="op">%do%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb19-184" data-line-number="184">  </a>
-<a class="sourceLine" id="cb19-185" data-line-number="185">  region &lt;-<span class="st"> </span>TGO.reg[i,]</a>
-<a class="sourceLine" id="cb19-186" data-line-number="186">  <span class="co"># fc.all &lt;- fc(maps, aoi=region)</span></a>
-<a class="sourceLine" id="cb19-187" data-line-number="187">  <span class="co"># write.csv(fc.all, paste0(RESULTS.DIR, &quot;/tables/&quot;, region$NAME_1, &quot;_fc.csv&quot;), row.names=FALSE)</span></a>
-<a class="sourceLine" id="cb19-188" data-line-number="188">  </a>
-<a class="sourceLine" id="cb19-189" data-line-number="189">  fc.all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/tables/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fc.csv&quot;</span>))</a>
-<a class="sourceLine" id="cb19-190" data-line-number="190">  </a>
-<a class="sourceLine" id="cb19-191" data-line-number="191">  fc.cln &lt;-<span class="st"> </span>fc.all[<span class="op">!</span>fc.all<span class="op">$</span>year <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>, <span class="dv">1991</span>, <span class="dv">2000</span>), ]</a>
-<a class="sourceLine" id="cb19-192" data-line-number="192">  </a>
-<a class="sourceLine" id="cb19-193" data-line-number="193">  <span class="kw">plot.fc</span>(fc.cln,  region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/figures/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fc.pdf&quot;</span>))</a>
-<a class="sourceLine" id="cb19-194" data-line-number="194">  <span class="kw">plot.fcc</span>(fc.cln, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2018</span>), <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/figures/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fcc.pdf&quot;</span>))</a>
-<a class="sourceLine" id="cb19-195" data-line-number="195">  </a>
-<a class="sourceLine" id="cb19-196" data-line-number="196">  <span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln)), <span class="dt">file =</span> <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/tables/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fcc-all-dates.xlsx&quot;</span>))</a>
-<a class="sourceLine" id="cb19-197" data-line-number="197">  <span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2018</span>))), <span class="dt">file =</span> <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/tables/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fcc-03-18.xlsx&quot;</span>))</a>
-<a class="sourceLine" id="cb19-198" data-line-number="198">  <span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2018</span>))), <span class="dt">file =</span> <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/tables/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fcc-03-15-18.xlsx&quot;</span>))</a>
-<a class="sourceLine" id="cb19-199" data-line-number="199">  </a>
-<a class="sourceLine" id="cb19-200" data-line-number="200">}</a>
-<a class="sourceLine" id="cb19-201" data-line-number="201"></a>
-<a class="sourceLine" id="cb19-202" data-line-number="202"></a>
-<a class="sourceLine" id="cb19-203" data-line-number="203"></a>
-<a class="sourceLine" id="cb19-204" data-line-number="204"></a>
-<a class="sourceLine" id="cb19-205" data-line-number="205"></a>
-<a class="sourceLine" id="cb19-206" data-line-number="206"></a>
-<a class="sourceLine" id="cb19-207" data-line-number="207"><span class="co"># creating GIS layers for forest loss and forest gain per date ---------------------------------------------</span></a>
-<a class="sourceLine" id="cb19-208" data-line-number="208"></a>
-<a class="sourceLine" id="cb19-209" data-line-number="209">forest.loss &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)</a>
-<a class="sourceLine" id="cb19-210" data-line-number="210">forest.gain &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)      <span class="co"># create empty rasters from stack</span></a>
-<a class="sourceLine" id="cb19-211" data-line-number="211">forest.pote &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)</a>
-<a class="sourceLine" id="cb19-212" data-line-number="212"></a>
-<a class="sourceLine" id="cb19-213" data-line-number="213"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nlayers</span>(maps)<span class="op">-</span><span class="dv">1</span>)) {</a>
-<a class="sourceLine" id="cb19-214" data-line-number="214">  <span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;Checking deforestation / reforestation in year &quot;</span>, maps.dates[i]))</a>
-<a class="sourceLine" id="cb19-215" data-line-number="215">  forest.loss[<span class="kw">is.na</span>(forest.loss) <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(forest.gain) <span class="op">&amp;</span><span class="st"> </span>maps[[i]] <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>maps[[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span><span class="dv">3</span>] &lt;-<span class="st"> </span>maps.dates[i] <span class="co"># take the first date of forest loss observed and only if no regeneration before that </span></a>
-<a class="sourceLine" id="cb19-216" data-line-number="216">  forest.gain[maps[[i]] <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>) <span class="op">&amp;</span><span class="st"> </span>maps[[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span>maps.dates[i]</a>
-<a class="sourceLine" id="cb19-217" data-line-number="217">  forest.pote[maps[[i]] <span class="op">==</span><span class="dv">3</span> <span class="op">&amp;</span><span class="st"> </span>maps[[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> </span>maps.dates[i]</a>
-<a class="sourceLine" id="cb19-218" data-line-number="218">}</a>
-<a class="sourceLine" id="cb19-219" data-line-number="219"></a>
-<a class="sourceLine" id="cb19-220" data-line-number="220"><span class="co"># special layer for forest gain in areas where loss has been observed before</span></a>
-<a class="sourceLine" id="cb19-221" data-line-number="221">loss.gain &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)</a>
-<a class="sourceLine" id="cb19-222" data-line-number="222">loss.gain[<span class="op">!</span><span class="kw">is.na</span>(forest.loss) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(forest.gain) <span class="op">&amp;</span><span class="st"> </span>forest.gain <span class="op">&gt;</span><span class="st"> </span>forest.loss] &lt;-<span class="st"> </span>forest.gain[<span class="op">!</span><span class="kw">is.na</span>(forest.loss) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(forest.gain) <span class="op">&amp;</span><span class="st"> </span>forest.gain <span class="op">&gt;</span><span class="st"> </span>forest.loss]</a>
-<a class="sourceLine" id="cb19-223" data-line-number="223"></a>
-<a class="sourceLine" id="cb19-224" data-line-number="224">forest<span class="fl">.2018</span> &lt;-<span class="st"> </span>maps<span class="op">$</span>X2018</a>
-<a class="sourceLine" id="cb19-225" data-line-number="225">forest<span class="fl">.2018</span>[forest<span class="fl">.2018</span><span class="op">==</span><span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb19-226" data-line-number="226"></a>
-<a class="sourceLine" id="cb19-227" data-line-number="227"><span class="kw">writeRaster</span>(forest<span class="fl">.2018</span>, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/forest-2018.tif&quot;</span>),      <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb19-228" data-line-number="228"><span class="kw">writeRaster</span>(forest.loss, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/forest-loss.tif&quot;</span>),      <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb19-229" data-line-number="229"><span class="kw">writeRaster</span>(forest.gain, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/forest-gain.tif&quot;</span>),      <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb19-230" data-line-number="230"><span class="kw">writeRaster</span>(forest.pote, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/forest-potential.tif&quot;</span>), <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb19-231" data-line-number="231"><span class="kw">writeRaster</span>(loss.gain,   <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/loss-gain.tif&quot;</span>),        <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co">##########################################################################</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co"># NERF_Togo/FCC/8_analyse-fc-maps.R: analyze clean forest cover maps</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="co"># 20 May 2019</span></a>
+<a class="sourceLine" id="cb18-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb18-8" data-line-number="8">COV.FC         &lt;-<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb18-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb18-10" data-line-number="10"><span class="co"># Function for building forest cover table ---------------------------------</span></a>
+<a class="sourceLine" id="cb18-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb18-12" data-line-number="12">fc &lt;-<span class="st"> </span><span class="cf">function</span>(map, <span class="dt">aoi=</span><span class="ot">NULL</span>) {</a>
+<a class="sourceLine" id="cb18-13" data-line-number="13">  </a>
+<a class="sourceLine" id="cb18-14" data-line-number="14">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(aoi)) map &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(map, aoi), aoi)</a>
+<a class="sourceLine" id="cb18-15" data-line-number="15">  </a>
+<a class="sourceLine" id="cb18-16" data-line-number="16">  <span class="co"># convert non-forest to 0</span></a>
+<a class="sourceLine" id="cb18-17" data-line-number="17">  <span class="co"># potential regeneration to 1</span></a>
+<a class="sourceLine" id="cb18-18" data-line-number="18">  <span class="co"># regeneration to 2</span></a>
+<a class="sourceLine" id="cb18-19" data-line-number="19">  <span class="co"># forest to 3</span></a>
+<a class="sourceLine" id="cb18-20" data-line-number="20">  </a>
+<a class="sourceLine" id="cb18-21" data-line-number="21">  tab.fc &lt;-<span class="st"> </span>map[]</a>
+<a class="sourceLine" id="cb18-22" data-line-number="22">  tab.fc[tab.fc <span class="op">==</span><span class="st"> </span><span class="dv">3</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb18-23" data-line-number="23">  tab.fc[tab.fc <span class="op">==</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb18-24" data-line-number="24">  tab.fc[tab.fc <span class="op">==</span><span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb18-25" data-line-number="25">  </a>
+<a class="sourceLine" id="cb18-26" data-line-number="26">  </a>
+<a class="sourceLine" id="cb18-27" data-line-number="27">  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(tab.fc)) {</a>
+<a class="sourceLine" id="cb18-28" data-line-number="28">    tab.fc[<span class="op">!</span><span class="kw">is.na</span>(tab.fc[,i]) <span class="op">&amp;</span><span class="st"> </span>tab.fc[,i] <span class="op">==</span><span class="st"> </span><span class="dv">3</span> <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(tab.fc[,i<span class="dv">-1</span>]) <span class="op">&amp;</span><span class="st"> </span>tab.fc[,i<span class="dv">-1</span>] <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span>, i] &lt;-<span class="st"> </span><span class="dv">2</span>  <span class="co"># mark as regeneration when it was non-forest or regeneration before</span></a>
+<a class="sourceLine" id="cb18-29" data-line-number="29">  }</a>
+<a class="sourceLine" id="cb18-30" data-line-number="30">  </a>
+<a class="sourceLine" id="cb18-31" data-line-number="31">  tab.fcc &lt;-<span class="st"> </span>tab.fc[,<span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(tab.fc)<span class="op">-</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb18-32" data-line-number="32">  tab.fcc[] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb18-33" data-line-number="33">  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(tab.fcc)) {</a>
+<a class="sourceLine" id="cb18-34" data-line-number="34">    tab.fcc[tab.fc[,i] <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>tab.fc[,i<span class="op">+</span><span class="dv">1</span>] <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>, i]   &lt;-<span class="st"> </span><span class="dv">1</span>           <span class="co"># mark forest gain</span></a>
+<a class="sourceLine" id="cb18-35" data-line-number="35">    tab.fcc[tab.fc[,i] <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>tab.fc[,i<span class="op">+</span><span class="dv">1</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>, i]   &lt;-<span class="st"> </span><span class="dv">2</span>           <span class="co"># mark forest loss</span></a>
+<a class="sourceLine" id="cb18-36" data-line-number="36">  }</a>
+<a class="sourceLine" id="cb18-37" data-line-number="37">  </a>
+<a class="sourceLine" id="cb18-38" data-line-number="38">  dates &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(<span class="kw">names</span>(map), <span class="dv">2</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb18-39" data-line-number="39">  </a>
+<a class="sourceLine" id="cb18-40" data-line-number="40">  fc &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">year     =</span> dates, </a>
+<a class="sourceLine" id="cb18-41" data-line-number="41">                   <span class="dt">initi.ha =</span> <span class="kw">colSums</span>(tab.fc<span class="op">==</span><span class="dv">3</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>, </a>
+<a class="sourceLine" id="cb18-42" data-line-number="42">                   <span class="dt">secon.ha =</span> <span class="kw">colSums</span>(tab.fc<span class="op">==</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>,</a>
+<a class="sourceLine" id="cb18-43" data-line-number="43">                   <span class="dt">poten.ha =</span> <span class="kw">colSums</span>(tab.fc<span class="op">==</span><span class="dv">1</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>)</a>
+<a class="sourceLine" id="cb18-44" data-line-number="44">  </a>
+<a class="sourceLine" id="cb18-45" data-line-number="45">  fc<span class="op">$</span>total.ha &lt;-<span class="st">   </span>fc<span class="op">$</span>initi.ha <span class="op">+</span><span class="st"> </span>fc<span class="op">$</span>secon.ha</a>
+<a class="sourceLine" id="cb18-46" data-line-number="46">  fc<span class="op">$</span>defor.ha &lt;-<span class="st">   </span><span class="op">-</span><span class="kw">c</span>(<span class="kw">colSums</span>(tab.fcc<span class="op">==</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>, <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb18-47" data-line-number="47">  fc<span class="op">$</span>regen.ha &lt;-<span class="st">    </span><span class="kw">c</span>(<span class="kw">colSums</span>(tab.fcc<span class="op">==</span><span class="dv">1</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>, <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb18-48" data-line-number="48">    </a>
+<a class="sourceLine" id="cb18-49" data-line-number="49">  <span class="kw">return</span>(fc)</a>
+<a class="sourceLine" id="cb18-50" data-line-number="50">}</a>
+<a class="sourceLine" id="cb18-51" data-line-number="51">     </a>
+<a class="sourceLine" id="cb18-52" data-line-number="52">fcc &lt;-<span class="st"> </span><span class="cf">function</span>(fc.tab, <span class="dt">years=</span>fc.tab<span class="op">$</span>year) {</a>
+<a class="sourceLine" id="cb18-53" data-line-number="53">  </a>
+<a class="sourceLine" id="cb18-54" data-line-number="54">  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">length</span>(years)<span class="op">-</span><span class="dv">1</span>)) {</a>
+<a class="sourceLine" id="cb18-55" data-line-number="55">    fc.tab<span class="op">$</span>defor.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">sum</span>(fc.tab<span class="op">$</span>defor.ha[fc.tab<span class="op">$</span>year <span class="op">&gt;=</span><span class="st"> </span>years[i] <span class="op">&amp;</span><span class="st"> </span>fc.tab<span class="op">$</span>year <span class="op">&lt;</span><span class="st"> </span>years[i<span class="op">+</span><span class="dv">1</span>]])<span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i])</a>
+<a class="sourceLine" id="cb18-56" data-line-number="56">    fc.tab<span class="op">$</span>regen.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">sum</span>(fc.tab<span class="op">$</span>regen.ha[fc.tab<span class="op">$</span>year <span class="op">&gt;=</span><span class="st"> </span>years[i] <span class="op">&amp;</span><span class="st"> </span>fc.tab<span class="op">$</span>year <span class="op">&lt;</span><span class="st"> </span>years[i<span class="op">+</span><span class="dv">1</span>]])<span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i])</a>
+<a class="sourceLine" id="cb18-57" data-line-number="57">    fc.tab<span class="op">$</span>netch.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span>fc.tab<span class="op">$</span>defor.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] <span class="op">+</span><span class="st"> </span>fc.tab<span class="op">$</span>regen.ha.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]]</a>
+<a class="sourceLine" id="cb18-58" data-line-number="58">    </a>
+<a class="sourceLine" id="cb18-59" data-line-number="59">    fc.tab<span class="op">$</span>defor.pc.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i]) <span class="op">*</span><span class="st"> </span><span class="kw">log</span>((fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span><span class="kw">sum</span>(fc.tab<span class="op">$</span>regen.ha[fc.tab<span class="op">$</span>year <span class="op">&gt;=</span><span class="st"> </span>years[i] <span class="op">&amp;</span><span class="st"> </span>fc.tab<span class="op">$</span>year <span class="op">&lt;</span><span class="st"> </span>years[i<span class="op">+</span><span class="dv">1</span>]]))<span class="op">/</span>fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]]), <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb18-60" data-line-number="60">    fc.tab<span class="op">$</span>regen.pc.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i]) <span class="op">*</span><span class="st"> </span><span class="kw">log</span>((fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">-</span><span class="st"> </span><span class="kw">sum</span>(fc.tab<span class="op">$</span>defor.ha[fc.tab<span class="op">$</span>year <span class="op">&gt;=</span><span class="st"> </span>years[i] <span class="op">&amp;</span><span class="st"> </span>fc.tab<span class="op">$</span>year <span class="op">&lt;</span><span class="st"> </span>years[i<span class="op">+</span><span class="dv">1</span>]]))<span class="op">/</span>fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]]), <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb18-61" data-line-number="61">    fc.tab<span class="op">$</span>netch.pc.yr[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]] &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(years[i<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>years[i]) <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i<span class="op">+</span><span class="dv">1</span>]]<span class="op">/</span>fc.tab<span class="op">$</span>total.ha[fc.tab<span class="op">$</span>year<span class="op">==</span>years[i]]), <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb18-62" data-line-number="62">  }</a>
+<a class="sourceLine" id="cb18-63" data-line-number="63">  </a>
+<a class="sourceLine" id="cb18-64" data-line-number="64">  <span class="kw">return</span>(fc.tab)</a>
+<a class="sourceLine" id="cb18-65" data-line-number="65">}</a>
+<a class="sourceLine" id="cb18-66" data-line-number="66">  </a>
+<a class="sourceLine" id="cb18-67" data-line-number="67"><span class="co"># Function for plotting evolution of forest cover -----------------------------------------</span></a>
+<a class="sourceLine" id="cb18-68" data-line-number="68"></a>
+<a class="sourceLine" id="cb18-69" data-line-number="69">plot.fc &lt;-<span class="st"> </span><span class="cf">function</span>(fc, zone, <span class="dt">filename=</span><span class="ot">NULL</span>) {</a>
+<a class="sourceLine" id="cb18-70" data-line-number="70">  </a>
+<a class="sourceLine" id="cb18-71" data-line-number="71">  <span class="cf">if</span>(zone<span class="op">==</span><span class="st">&quot;TGO&quot;</span>) {</a>
+<a class="sourceLine" id="cb18-72" data-line-number="72">    title    &lt;-<span class="st"> &quot;Togo: Évolution de la couverure forestière 2003 - 2018&quot;</span></a>
+<a class="sourceLine" id="cb18-73" data-line-number="73">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1400000</span>)</a>
+<a class="sourceLine" id="cb18-74" data-line-number="74">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1400000</span>, <span class="dv">200000</span>)</a>
+<a class="sourceLine" id="cb18-75" data-line-number="75">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1400000</span>, <span class="dv">100000</span>)</a>
+<a class="sourceLine" id="cb18-76" data-line-number="76">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb18-77" data-line-number="77">    title    &lt;-<span class="st"> </span><span class="kw">paste0</span>(zone, <span class="st">&quot;: Évolution de la couverure forestière 2003 - 2018&quot;</span>)</a>
+<a class="sourceLine" id="cb18-78" data-line-number="78">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">500000</span>)</a>
+<a class="sourceLine" id="cb18-79" data-line-number="79">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">500000</span>, <span class="dv">100000</span>)</a>
+<a class="sourceLine" id="cb18-80" data-line-number="80">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">500000</span>, <span class="dv">50000</span>)</a>
+<a class="sourceLine" id="cb18-81" data-line-number="81">  } </a>
+<a class="sourceLine" id="cb18-82" data-line-number="82">  </a>
+<a class="sourceLine" id="cb18-83" data-line-number="83">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">pdf</span>(filename)</a>
+<a class="sourceLine" id="cb18-84" data-line-number="84">  </a>
+<a class="sourceLine" id="cb18-85" data-line-number="85">  <span class="kw">print</span>(</a>
+<a class="sourceLine" id="cb18-86" data-line-number="86">    fc <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">gather</span>(variable, value, secon.ha, initi.ha) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-87" data-line-number="87"><span class="st">      </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> year, <span class="dt">y=</span>value, <span class="dt">fill=</span>variable)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-88" data-line-number="88"><span class="st">      </span><span class="kw">geom_area</span>(<span class="dt">position=</span><span class="kw">position_stack</span>(<span class="dt">reverse=</span><span class="ot">TRUE</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-89" data-line-number="89"><span class="st">      </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="st">&quot;secon.ha&quot;</span>, <span class="st">&quot;initi.ha&quot;</span>), <span class="dt">values=</span><span class="kw">c</span>(<span class="kw">alpha</span>(<span class="st">&quot;#009E73&quot;</span>, <span class="fl">0.8</span>), <span class="kw">alpha</span>(<span class="st">&quot;#00BFC4&quot;</span>, <span class="fl">0.5</span>)), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Régéneration&quot;</span>, <span class="st">&quot;Forêt depuis 1987&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-90" data-line-number="90"><span class="st">      </span><span class="kw">xlab</span>(<span class="st">&quot;Année&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Hectares&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(title) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-91" data-line-number="91"><span class="st">      </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks =</span> <span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1991</span>, <span class="dv">2000</span>, <span class="dv">2005</span>, <span class="dv">2010</span>, <span class="dv">2015</span>, <span class="dv">2018</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-92" data-line-number="92"><span class="st">      </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks=</span>ybreaks, <span class="dt">minor_breaks =</span> ymbreaks) <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim=</span>ylim) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-93" data-line-number="93"><span class="st">      </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.6</span>,<span class="fl">0.2</span>), <span class="dt">legend.box =</span> <span class="st">&quot;horizontal&quot;</span>, <span class="dt">legend.justification=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.2</span>,<span class="fl">1.2</span>))</a>
+<a class="sourceLine" id="cb18-94" data-line-number="94">  )</a>
+<a class="sourceLine" id="cb18-95" data-line-number="95">  </a>
+<a class="sourceLine" id="cb18-96" data-line-number="96">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb18-97" data-line-number="97">}</a>
+<a class="sourceLine" id="cb18-98" data-line-number="98"></a>
+<a class="sourceLine" id="cb18-99" data-line-number="99"><span class="co"># Function for plotting forest cover change -----------------------------------</span></a>
+<a class="sourceLine" id="cb18-100" data-line-number="100"></a>
+<a class="sourceLine" id="cb18-101" data-line-number="101">plot.fcc &lt;-<span class="st"> </span><span class="cf">function</span>(fc, <span class="dt">zone=</span><span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="ot">NULL</span>, <span class="dt">filename=</span><span class="ot">NULL</span>) {</a>
+<a class="sourceLine" id="cb18-102" data-line-number="102">  </a>
+<a class="sourceLine" id="cb18-103" data-line-number="103">  my.fcc &lt;-<span class="st"> </span><span class="kw">fcc</span>(fc)</a>
+<a class="sourceLine" id="cb18-104" data-line-number="104">  fcc.breaks &lt;-<span class="st"> </span>my.fcc</a>
+<a class="sourceLine" id="cb18-105" data-line-number="105"> </a>
+<a class="sourceLine" id="cb18-106" data-line-number="106">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(breaks)) fcc.breaks &lt;-<span class="st"> </span><span class="kw">fcc</span>(fc, breaks)[fc<span class="op">$</span>year <span class="op">%in%</span><span class="st"> </span>breaks,]</a>
+<a class="sourceLine" id="cb18-107" data-line-number="107">  </a>
+<a class="sourceLine" id="cb18-108" data-line-number="108">  my.fcc<span class="op">$</span>period &lt;-<span class="st"> </span><span class="kw">c</span>(my.fcc<span class="op">$</span>year[<span class="dv">2</span><span class="op">:</span><span class="kw">nrow</span>(my.fcc)] <span class="op">-</span><span class="st"> </span>my.fcc<span class="op">$</span>year[<span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(my.fcc)<span class="op">-</span><span class="dv">1</span>)], <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb18-109" data-line-number="109">  my.fcc<span class="op">$</span>center &lt;-<span class="st"> </span>my.fcc<span class="op">$</span>year <span class="op">+</span><span class="st"> </span>my.fcc<span class="op">$</span>period<span class="op">/</span><span class="dv">2</span> </a>
+<a class="sourceLine" id="cb18-110" data-line-number="110"></a>
+<a class="sourceLine" id="cb18-111" data-line-number="111">  fcc.breaks<span class="op">$</span>period &lt;-<span class="st"> </span><span class="kw">c</span>(fcc.breaks<span class="op">$</span>year[<span class="dv">2</span><span class="op">:</span><span class="kw">nrow</span>(fcc.breaks)] <span class="op">-</span><span class="st"> </span>fcc.breaks<span class="op">$</span>year[<span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(fcc.breaks)<span class="op">-</span><span class="dv">1</span>)], <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb18-112" data-line-number="112">  fcc.breaks<span class="op">$</span>center &lt;-<span class="st"> </span>fcc.breaks<span class="op">$</span>year <span class="op">+</span><span class="st"> </span>fcc.breaks<span class="op">$</span>period<span class="op">/</span><span class="dv">2</span> </a>
+<a class="sourceLine" id="cb18-113" data-line-number="113">  </a>
+<a class="sourceLine" id="cb18-114" data-line-number="114">  </a>
+<a class="sourceLine" id="cb18-115" data-line-number="115">  <span class="cf">if</span>(zone<span class="op">==</span><span class="st">&quot;TGO&quot;</span>) {</a>
+<a class="sourceLine" id="cb18-116" data-line-number="116">    title    &lt;-<span class="st"> &quot;Togo: Changements bruts et nets des surfaces forestières 2003 - 2018&quot;</span></a>
+<a class="sourceLine" id="cb18-117" data-line-number="117">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">35000</span>, <span class="dv">20000</span>)</a>
+<a class="sourceLine" id="cb18-118" data-line-number="118">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">35000</span>, <span class="dv">20000</span>, <span class="dv">5000</span>)</a>
+<a class="sourceLine" id="cb18-119" data-line-number="119">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">35000</span>, <span class="dv">20000</span>, <span class="dv">2500</span>)</a>
+<a class="sourceLine" id="cb18-120" data-line-number="120">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb18-121" data-line-number="121">    title    &lt;-<span class="st"> </span><span class="kw">paste0</span>(zone, <span class="st">&quot;: Changements bruts et nets des surfaces forestières 2003 - 2018&quot;</span>)</a>
+<a class="sourceLine" id="cb18-122" data-line-number="122">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">15000</span>, <span class="dv">10000</span>)</a>
+<a class="sourceLine" id="cb18-123" data-line-number="123">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">15000</span>, <span class="dv">10000</span>, <span class="dv">5000</span>)</a>
+<a class="sourceLine" id="cb18-124" data-line-number="124">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">15000</span>, <span class="dv">10000</span>, <span class="dv">2500</span>)</a>
+<a class="sourceLine" id="cb18-125" data-line-number="125">  } </a>
+<a class="sourceLine" id="cb18-126" data-line-number="126"></a>
+<a class="sourceLine" id="cb18-127" data-line-number="127">  </a>
+<a class="sourceLine" id="cb18-128" data-line-number="128">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">pdf</span>(filename)</a>
+<a class="sourceLine" id="cb18-129" data-line-number="129">  </a>
+<a class="sourceLine" id="cb18-130" data-line-number="130">  fcc.breaks<span class="op">$</span>netdefor.ha.yr &lt;-<span class="st"> </span>fcc.breaks<span class="op">$</span>netch.ha.yr </a>
+<a class="sourceLine" id="cb18-131" data-line-number="131">  fcc.breaks<span class="op">$</span>netdefor.ha.yr[fcc.breaks<span class="op">$</span>netdefor.ha.yr <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb18-132" data-line-number="132">  fcc.breaks<span class="op">$</span>netregen.ha.yr &lt;-<span class="st"> </span>fcc.breaks<span class="op">$</span>netch.ha.yr </a>
+<a class="sourceLine" id="cb18-133" data-line-number="133">  fcc.breaks<span class="op">$</span>netregen.ha.yr[fcc.breaks<span class="op">$</span>netregen.ha.yr <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb18-134" data-line-number="134">  </a>
+<a class="sourceLine" id="cb18-135" data-line-number="135">  <span class="kw">print</span>(</a>
+<a class="sourceLine" id="cb18-136" data-line-number="136">    fcc.breaks[<span class="op">-</span><span class="kw">nrow</span>(fcc.breaks),] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, defor.ha.yr, regen.ha.yr, netdefor.ha.yr, netregen.ha.yr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-137" data-line-number="137"><span class="st">      </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>value, <span class="dt">x =</span> center, <span class="dt">width=</span>period<span class="fl">-0.7</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-138" data-line-number="138"><span class="st">      </span><span class="kw">geom_bar</span>(<span class="dt">data=</span>. <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(variable <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;defor.ha.yr&quot;</span>, <span class="st">&quot;regen.ha.yr&quot;</span>)), <span class="kw">aes</span>(<span class="dt">fill=</span>variable), <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-139" data-line-number="139"><span class="st">      </span><span class="kw">geom_bar</span>(<span class="dt">data=</span>. <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(variable <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;netdefor.ha.yr&quot;</span>, <span class="st">&quot;netregen.ha.yr&quot;</span>)), <span class="kw">aes</span>(<span class="dt">fill=</span>variable), <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-140" data-line-number="140"><span class="st">      </span><span class="kw">geom_errorbar</span>(<span class="dt">data=</span>my.fcc[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,], <span class="kw">aes</span>(<span class="dt">x=</span>center, <span class="dt">y=</span><span class="ot">NULL</span>, <span class="dt">ymax=</span>defor.ha.yr, <span class="dt">ymin=</span>defor.ha.yr, <span class="dt">width=</span>period<span class="fl">-0.7</span>), <span class="dt">colour=</span><span class="kw">alpha</span>(<span class="st">&quot;#F8766D&quot;</span>, <span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-141" data-line-number="141"><span class="st">      </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept=</span><span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-142" data-line-number="142"><span class="st">      </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="st">&quot;defor.ha.yr&quot;</span>, <span class="st">&quot;netdefor.ha.yr&quot;</span>, <span class="st">&quot;netregen.ha.yr&quot;</span>, <span class="st">&quot;regen.ha.yr&quot;</span>), <span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;regen.ha.yr&quot;</span> =<span class="st"> </span><span class="kw">alpha</span>(<span class="st">&quot;#00BFC4&quot;</span>, <span class="fl">0.4</span>), <span class="st">&quot;netregen.ha.yr&quot;</span> =<span class="st"> &quot;#00BFC4&quot;</span>, <span class="st">&quot;netdefor.ha.yr&quot;</span> =<span class="st"> &quot;#F8766D&quot;</span>, <span class="st">&quot;defor.ha.yr&quot;</span> =<span class="st"> </span><span class="kw">alpha</span>(<span class="st">&quot;#F8766D&quot;</span>, <span class="fl">0.4</span>)), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Perte brutte&quot;</span>, <span class="st">&quot;Perte nette&quot;</span>, <span class="st">&quot;Gain net&quot;</span>, <span class="st">&quot;Gain brut&quot;</span>)) <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb18-143" data-line-number="143"><span class="st">      </span><span class="kw">xlab</span>(<span class="st">&quot;Année&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Hectares par année&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(title) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-144" data-line-number="144"><span class="st">      </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks =</span> <span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1991</span>, <span class="dv">2000</span>, <span class="dv">2005</span>, <span class="dv">2010</span>, <span class="dv">2015</span>, <span class="dv">2018</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-145" data-line-number="145"><span class="st">      </span><span class="kw">scale_y_reverse</span>(<span class="dt">breaks=</span>ybreaks, <span class="dt">minor_breaks =</span> ymbreaks) <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim=</span>ylim) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-146" data-line-number="146"><span class="st">      </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">legend.box =</span> <span class="st">&quot;horizontal&quot;</span>, <span class="dt">legend.justification=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.2</span>,<span class="fl">1.2</span>))  </a>
+<a class="sourceLine" id="cb18-147" data-line-number="147">  )</a>
+<a class="sourceLine" id="cb18-148" data-line-number="148">  </a>
+<a class="sourceLine" id="cb18-149" data-line-number="149">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb18-150" data-line-number="150">}</a>
+<a class="sourceLine" id="cb18-151" data-line-number="151"></a>
+<a class="sourceLine" id="cb18-152" data-line-number="152"></a>
+<a class="sourceLine" id="cb18-153" data-line-number="153"></a>
+<a class="sourceLine" id="cb18-154" data-line-number="154"><span class="co"># DO THE WORK ##############################</span></a>
+<a class="sourceLine" id="cb18-155" data-line-number="155"></a>
+<a class="sourceLine" id="cb18-156" data-line-number="156"><span class="co"># Load and rename forest-cover maps ----------------------------</span></a>
+<a class="sourceLine" id="cb18-157" data-line-number="157"></a>
+<a class="sourceLine" id="cb18-158" data-line-number="158">maps &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO&quot;</span>), <span class="dt">pattern =</span> <span class="st">&quot;cf.tif&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb18-159" data-line-number="159"><span class="kw">names</span>(maps) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;X&quot;</span>, <span class="kw">substr</span>(<span class="kw">names</span>(maps), <span class="dv">5</span>, <span class="dv">8</span>))</a>
+<a class="sourceLine" id="cb18-160" data-line-number="160"></a>
+<a class="sourceLine" id="cb18-161" data-line-number="161"><span class="co"># Create forest cover tables for different periods ------------------------------------</span></a>
+<a class="sourceLine" id="cb18-162" data-line-number="162"></a>
+<a class="sourceLine" id="cb18-163" data-line-number="163">fc.all      &lt;-<span class="st"> </span><span class="kw">fc</span>(maps)</a>
+<a class="sourceLine" id="cb18-164" data-line-number="164"><span class="kw">write.csv</span>(fc.all, <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fc.csv&quot;</span>), <span class="dt">row.names=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb18-165" data-line-number="165"></a>
+<a class="sourceLine" id="cb18-166" data-line-number="166">fc.all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fc.csv&quot;</span>))</a>
+<a class="sourceLine" id="cb18-167" data-line-number="167"></a>
+<a class="sourceLine" id="cb18-168" data-line-number="168">fc.cln &lt;-<span class="st"> </span>fc.all</a>
+<a class="sourceLine" id="cb18-169" data-line-number="169">fc.cln &lt;-<span class="st"> </span>fc.cln[<span class="op">!</span>fc.cln<span class="op">$</span>year <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>, <span class="dv">1991</span>, <span class="dv">2000</span>), ]</a>
+<a class="sourceLine" id="cb18-170" data-line-number="170"></a>
+<a class="sourceLine" id="cb18-171" data-line-number="171"><span class="kw">fcc</span>(fc.cln)</a>
+<a class="sourceLine" id="cb18-172" data-line-number="172"><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2018</span>))</a>
+<a class="sourceLine" id="cb18-173" data-line-number="173"><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2017</span>, <span class="dv">2018</span>))</a>
+<a class="sourceLine" id="cb18-174" data-line-number="174"></a>
+<a class="sourceLine" id="cb18-175" data-line-number="175"><span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln)), <span class="dt">file =</span> <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fcc-all-dates.xlsx&quot;</span>))</a>
+<a class="sourceLine" id="cb18-176" data-line-number="176"><span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2018</span>))), <span class="dt">file =</span> <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fcc-03-18.xlsx&quot;</span>))</a>
+<a class="sourceLine" id="cb18-177" data-line-number="177"><span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2018</span>))), <span class="dt">file =</span> <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fcc-03-15-18.xlsx&quot;</span>))</a>
+<a class="sourceLine" id="cb18-178" data-line-number="178"></a>
+<a class="sourceLine" id="cb18-179" data-line-number="179"><span class="kw">plot.fc</span>(fc.cln,  <span class="st">&quot;TGO&quot;</span>, <span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fc.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb18-180" data-line-number="180"><span class="kw">plot.fcc</span>(<span class="dt">fc =</span> fc.cln, <span class="dt">zone =</span> <span class="st">&quot;TGO&quot;</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2018</span>), <span class="dt">filename=</span><span class="kw">paste0</span>(FCC.RES.DIR, <span class="st">&quot;/TGO/TGO_fcc.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb18-181" data-line-number="181"></a>
+<a class="sourceLine" id="cb18-182" data-line-number="182"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb18-183" data-line-number="183"><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(TGO.reg)) <span class="op">%do%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb18-184" data-line-number="184">  </a>
+<a class="sourceLine" id="cb18-185" data-line-number="185">  region &lt;-<span class="st"> </span>TGO.reg[i,]</a>
+<a class="sourceLine" id="cb18-186" data-line-number="186">  <span class="co"># fc.all &lt;- fc(maps, aoi=region)</span></a>
+<a class="sourceLine" id="cb18-187" data-line-number="187">  <span class="co"># write.csv(fc.all, paste0(RESULTS.DIR, &quot;/tables/&quot;, region$NAME_1, &quot;_fc.csv&quot;), row.names=FALSE)</span></a>
+<a class="sourceLine" id="cb18-188" data-line-number="188">  </a>
+<a class="sourceLine" id="cb18-189" data-line-number="189">  fc.all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/tables/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fc.csv&quot;</span>))</a>
+<a class="sourceLine" id="cb18-190" data-line-number="190">  </a>
+<a class="sourceLine" id="cb18-191" data-line-number="191">  fc.cln &lt;-<span class="st"> </span>fc.all[<span class="op">!</span>fc.all<span class="op">$</span>year <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>, <span class="dv">1991</span>, <span class="dv">2000</span>), ]</a>
+<a class="sourceLine" id="cb18-192" data-line-number="192">  </a>
+<a class="sourceLine" id="cb18-193" data-line-number="193">  <span class="kw">plot.fc</span>(fc.cln,  region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/figures/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fc.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb18-194" data-line-number="194">  <span class="kw">plot.fcc</span>(fc.cln, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2018</span>), <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/figures/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fcc.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb18-195" data-line-number="195">  </a>
+<a class="sourceLine" id="cb18-196" data-line-number="196">  <span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln)), <span class="dt">file =</span> <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/tables/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fcc-all-dates.xlsx&quot;</span>))</a>
+<a class="sourceLine" id="cb18-197" data-line-number="197">  <span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2018</span>))), <span class="dt">file =</span> <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/tables/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fcc-03-18.xlsx&quot;</span>))</a>
+<a class="sourceLine" id="cb18-198" data-line-number="198">  <span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span><span class="kw">fcc</span>(fc.cln, <span class="kw">c</span>(<span class="dv">2003</span>, <span class="dv">2015</span>, <span class="dv">2018</span>))), <span class="dt">file =</span> <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/tables/&quot;</span>, region<span class="op">$</span>NAME_<span class="dv">1</span>, <span class="st">&quot;_fcc-03-15-18.xlsx&quot;</span>))</a>
+<a class="sourceLine" id="cb18-199" data-line-number="199">  </a>
+<a class="sourceLine" id="cb18-200" data-line-number="200">}</a>
+<a class="sourceLine" id="cb18-201" data-line-number="201"></a>
+<a class="sourceLine" id="cb18-202" data-line-number="202"></a>
+<a class="sourceLine" id="cb18-203" data-line-number="203"></a>
+<a class="sourceLine" id="cb18-204" data-line-number="204"></a>
+<a class="sourceLine" id="cb18-205" data-line-number="205"></a>
+<a class="sourceLine" id="cb18-206" data-line-number="206"></a>
+<a class="sourceLine" id="cb18-207" data-line-number="207"><span class="co"># creating GIS layers for forest loss and forest gain per date ---------------------------------------------</span></a>
+<a class="sourceLine" id="cb18-208" data-line-number="208"></a>
+<a class="sourceLine" id="cb18-209" data-line-number="209">forest.loss &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)</a>
+<a class="sourceLine" id="cb18-210" data-line-number="210">forest.gain &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)      <span class="co"># create empty rasters from stack</span></a>
+<a class="sourceLine" id="cb18-211" data-line-number="211">forest.pote &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)</a>
+<a class="sourceLine" id="cb18-212" data-line-number="212"></a>
+<a class="sourceLine" id="cb18-213" data-line-number="213"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nlayers</span>(maps)<span class="op">-</span><span class="dv">1</span>)) {</a>
+<a class="sourceLine" id="cb18-214" data-line-number="214">  <span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;Checking deforestation / reforestation in year &quot;</span>, maps.dates[i]))</a>
+<a class="sourceLine" id="cb18-215" data-line-number="215">  forest.loss[<span class="kw">is.na</span>(forest.loss) <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(forest.gain) <span class="op">&amp;</span><span class="st"> </span>maps[[i]] <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>maps[[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span><span class="dv">3</span>] &lt;-<span class="st"> </span>maps.dates[i] <span class="co"># take the first date of forest loss observed and only if no regeneration before that </span></a>
+<a class="sourceLine" id="cb18-216" data-line-number="216">  forest.gain[maps[[i]] <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>) <span class="op">&amp;</span><span class="st"> </span>maps[[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span>maps.dates[i]</a>
+<a class="sourceLine" id="cb18-217" data-line-number="217">  forest.pote[maps[[i]] <span class="op">==</span><span class="dv">3</span> <span class="op">&amp;</span><span class="st"> </span>maps[[i<span class="op">+</span><span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> </span>maps.dates[i]</a>
+<a class="sourceLine" id="cb18-218" data-line-number="218">}</a>
+<a class="sourceLine" id="cb18-219" data-line-number="219"></a>
+<a class="sourceLine" id="cb18-220" data-line-number="220"><span class="co"># special layer for forest gain in areas where loss has been observed before</span></a>
+<a class="sourceLine" id="cb18-221" data-line-number="221">loss.gain &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)</a>
+<a class="sourceLine" id="cb18-222" data-line-number="222">loss.gain[<span class="op">!</span><span class="kw">is.na</span>(forest.loss) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(forest.gain) <span class="op">&amp;</span><span class="st"> </span>forest.gain <span class="op">&gt;</span><span class="st"> </span>forest.loss] &lt;-<span class="st"> </span>forest.gain[<span class="op">!</span><span class="kw">is.na</span>(forest.loss) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(forest.gain) <span class="op">&amp;</span><span class="st"> </span>forest.gain <span class="op">&gt;</span><span class="st"> </span>forest.loss]</a>
+<a class="sourceLine" id="cb18-223" data-line-number="223"></a>
+<a class="sourceLine" id="cb18-224" data-line-number="224">forest<span class="fl">.2018</span> &lt;-<span class="st"> </span>maps<span class="op">$</span>X2018</a>
+<a class="sourceLine" id="cb18-225" data-line-number="225">forest<span class="fl">.2018</span>[forest<span class="fl">.2018</span><span class="op">==</span><span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb18-226" data-line-number="226"></a>
+<a class="sourceLine" id="cb18-227" data-line-number="227"><span class="kw">writeRaster</span>(forest<span class="fl">.2018</span>, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/forest-2018.tif&quot;</span>),      <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb18-228" data-line-number="228"><span class="kw">writeRaster</span>(forest.loss, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/forest-loss.tif&quot;</span>),      <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb18-229" data-line-number="229"><span class="kw">writeRaster</span>(forest.gain, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/forest-gain.tif&quot;</span>),      <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb18-230" data-line-number="230"><span class="kw">writeRaster</span>(forest.pote, <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/forest-potential.tif&quot;</span>), <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb18-231" data-line-number="231"><span class="kw">writeRaster</span>(loss.gain,   <span class="kw">paste0</span>(RESULTS.DIR, <span class="st">&quot;/maps/loss-gain.tif&quot;</span>),        <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 
 </div>
 </div>
@@ -502,6 +649,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

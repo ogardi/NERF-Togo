@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-05-12" />
+<meta name="date" content="2020-05-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -171,7 +171,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1.2" data-path="02_clean-FC-maps.html"><a href="02_clean-FC-maps.html"><i class="fa fa-check"></i><b>4.1.2</b> Nettoyage des cartes brutes</a></li>
 <li class="chapter" data-level="4.1.3" data-path="03_validate-FC-maps.html"><a href="03_validate-FC-maps.html"><i class="fa fa-check"></i><b>4.1.3</b> Validation des cartes</a></li>
 <li class="chapter" data-level="4.1.4" data-path="04_FC-maps-accuracy.html"><a href="04_FC-maps-accuracy.html"><i class="fa fa-check"></i><b>4.1.4</b> Analyse de la précision</a></li>
-<li class="chapter" data-level="4.1.5" data-path="05_analyse-FC-maps.html"><a href="05_analyse-FC-maps.html"><i class="fa fa-check"></i><b>4.1.5</b> Production des résultats</a></li>
+<li class="chapter" data-level="4.1.5" data-path="05_analyse-FC-maps.html"><a href="05_analyse-FC-maps.html"><i class="fa fa-check"></i><b>4.1.5</b> Analyse des cartes</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="00_analyse-AGB.html"><a href="00_analyse-AGB.html"><i class="fa fa-check"></i><b>4.2</b> Analyse biomasse aérienne</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="01_compile-IFN.html"><a href="01_compile-IFN.html"><i class="fa fa-check"></i><b>4.2.1</b> Analyse des données IFN</a></li>
@@ -263,6 +263,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

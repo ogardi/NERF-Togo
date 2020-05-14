@@ -1,0 +1,24 @@
+
+
+### ProREDD
+
+Dans le cadre du premier inventaire forestier national de 2015/16, le projet GIZ "ProREDD" a réalisé une **carte d'occupation des sols à partir d'images RapidEye des années 2013/14** ([Rapport méthodes et résultats](../01_SSTS/01_data/ProREDD/docs/Carte-RapidEye_final-report_2016.pdf)). 
+
+La carte n'est pas utilisée pour l'analyse de l'évolution des surfaces forestières dans le cadre du NRF-MRV REDD+, mais elle est disponible comme carte comparative et pour d'autres analyses. 
+
+#### Acquisition des données
+
+Les cartes pour les différentes régions ont été fournies par L’Unité de gestion de bases de données cartographiques (UGBDC) de la Direction des études et de la planification (DEP) le ministère sous forme de Shapefiles.
+
+#### Prétraitement des données
+
+Les shapefiles sont lus et convertis avec l'outil "grid_gridding" de [SAGA GIS](http://www.saga-gis.org/en/index.html) en données raster avec résolution originale des images RapidEye de 5 mètres, puis reprojetés sur le raster Landsat de 30 mètres.
+
+##### Example {-}
+
+![](images/SSTS-ProREDD.png)
+
+##### Script R: `01_SSTS/01_data/_src/prep-ProREDD.R` {-}
+```{r, code=readLines("../01_SSTS/01_data/_src/prep-ProREDD.R"), eval=FALSE}
+```
+

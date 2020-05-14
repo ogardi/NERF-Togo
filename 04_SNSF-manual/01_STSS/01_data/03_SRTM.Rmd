@@ -1,0 +1,22 @@
+
+### SRTM
+
+Les variables topographiques telles que **l'élévation, la pente et l'aspect ne sont actuellement utilisées ni pour l'évaluation des forestières ni pour l'évaluation de la biomasse**, car il a été constaté que ces variables ont peu d'influence sur le pouvoir explicatif des modèles de classification ou de régression. Néanmoins, les données sont conservées et disponibles pour autres analyses.
+
+#### Acquisition des données
+
+Les données topographiques du SRTM ont été obtenues à partir de deux sources:
+
+* **Les données originales avec une résolution spatiale de 1 seconde d'arc** (environ 30 mètres sur l'équateur) ont été obtenues du jeu de données `SRTM 1 Arc-Second Global` disponible sur [USGS Earthexplorer](https://earthexplorer.usgs.gov/). Ces données à haute résolution ont des fois des lacunes (manque des données).
+
+* **Les données SRTM ajustées avec une résolution de 3 secondes d'arc** ont été obtenues à partir de [CGIAR SRTM 90m Digital Elevation Database v4.1](http://srtm.csi.cgiar.org/srtmdata/) pour combler les lacunes des données à haute résolution.
+
+#### Prétraitement des données
+
+Les données de 1 seconde d'arc sont lues et les lacunes éventuelles sont comblées avec les données ajustées de 3 secondes d'arc. Enfin, les données sont reprojetées sur le raster des images Landsat (UTM 31, résolution de 30 mètres) et coupées à la taille.
+
+![](images/SRTM-1arcsec.jpeg)
+
+##### Script R: `01_SSTS/01_data/_src/prep-SRTM.R` {-}
+```{r, code=readLines("../01_SSTS/01_data/_src/prep-SRTM.R"), eval=FALSE}
+```

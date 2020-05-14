@@ -143,9 +143,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a><ul>
 <li class="chapter" data-level="2.1" data-path="01_Landsat.html"><a href="01_Landsat.html"><i class="fa fa-check"></i><b>2.1</b> Données de base</a><ul>
 <li class="chapter" data-level="2.1.1" data-path="01_Landsat.html"><a href="01_Landsat.html#SSTS-Landsat"><i class="fa fa-check"></i><b>2.1.1</b> Images Landsat</a></li>
-<li class="chapter" data-level="2.1.2" data-path="02_SRTM.html"><a href="02_SRTM.html"><i class="fa fa-check"></i><b>2.1.2</b> SRTM</a></li>
-<li class="chapter" data-level="2.1.3" data-path="03_Worldclim.html"><a href="03_Worldclim.html"><i class="fa fa-check"></i><b>2.1.3</b> WorldClim</a></li>
+<li class="chapter" data-level="2.1.2" data-path="02_Worldclim.html"><a href="02_Worldclim.html"><i class="fa fa-check"></i><b>2.1.2</b> WorldClim</a></li>
+<li class="chapter" data-level="2.1.3" data-path="03_SRTM.html"><a href="03_SRTM.html"><i class="fa fa-check"></i><b>2.1.3</b> SRTM</a></li>
 <li class="chapter" data-level="2.1.4" data-path="04_SoilGrids.html"><a href="04_SoilGrids.html"><i class="fa fa-check"></i><b>2.1.4</b> SoilGrids</a></li>
+<li class="chapter" data-level="2.1.5" data-path="05_ProREDD.html"><a href="05_ProREDD.html"><i class="fa fa-check"></i><b>2.1.5</b> ProREDD</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="01_sampling-grid.html"><a href="01_sampling-grid.html"><i class="fa fa-check"></i><b>2.2</b> Réseau d’échantillonnage</a></li>
 <li class="chapter" data-level="2.3" data-path="02_training-plots.html"><a href="02_training-plots.html"><i class="fa fa-check"></i><b>2.3</b> Parcelles d’entraînement</a><ul>
@@ -208,418 +209,418 @@ Système Nationale de Surveillance des Forêts</div></a>
 </div>
 <div id="agb4_clean-agb-maps.r" class="section level4 unnumbered">
 <h4><em>AGB/4_clean-AGB-maps.R</em></h4>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co">####################################################################</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co"># NERF_Togo/AGB/4_clean-agb-maps.R: clean AGB raw maps</span></a>
-<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
-<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
-<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co"># 10 October 2019</span></a>
-<a class="sourceLine" id="cb21-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">### DEFINITIONS ############################################################</span></a>
-<a class="sourceLine" id="cb21-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb21-10" data-line-number="10">PERIOD    &lt;-<span class="st"> </span><span class="dv">1985</span><span class="op">:</span><span class="dv">2019</span></a>
-<a class="sourceLine" id="cb21-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb21-12" data-line-number="12">path &lt;-<span class="st"> &quot;p193&quot;</span></a>
-<a class="sourceLine" id="cb21-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb21-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb21-15" data-line-number="15"><span class="co"># LOESS smoothing of time series</span></a>
-<a class="sourceLine" id="cb21-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb21-17" data-line-number="17">loess.filter &lt;-<span class="st"> </span><span class="cf">function</span> (agb, years, pred, span) {</a>
-<a class="sourceLine" id="cb21-18" data-line-number="18">  <span class="kw">ifelse</span>( <span class="kw">all</span>(<span class="kw">is.na</span>(agb)), </a>
-<a class="sourceLine" id="cb21-19" data-line-number="19">          <span class="kw">return</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(pred))), </a>
-<a class="sourceLine" id="cb21-20" data-line-number="20">          <span class="kw">return</span>(<span class="kw">predict</span>(<span class="kw">loess</span>(agb <span class="op">~</span><span class="st"> </span>years,</a>
-<a class="sourceLine" id="cb21-21" data-line-number="21">                               <span class="dt">degree =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb21-22" data-line-number="22">                               <span class="dt">span =</span> span), </a>
-<a class="sourceLine" id="cb21-23" data-line-number="23">                         pred)</a>
-<a class="sourceLine" id="cb21-24" data-line-number="24">          ))</a>
-<a class="sourceLine" id="cb21-25" data-line-number="25">}</a>
-<a class="sourceLine" id="cb21-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb21-27" data-line-number="27">clean.agb &lt;-<span class="st"> </span><span class="cf">function</span>(path) {</a>
-<a class="sourceLine" id="cb21-28" data-line-number="28">  </a>
-<a class="sourceLine" id="cb21-29" data-line-number="29">  <span class="co"># Preparation -------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb21-30" data-line-number="30">  </a>
-<a class="sourceLine" id="cb21-31" data-line-number="31">  maps &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(BIOMASS.DIR, <span class="st">&quot;/3_raw-maps/&quot;</span>, path), <span class="dt">pattern=</span><span class="st">&quot;.*[[:digit:]]{4}</span><span class="ch">\\</span><span class="st">_mr</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb21-32" data-line-number="32">  map.names &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;r$&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(maps))</a>
-<a class="sourceLine" id="cb21-33" data-line-number="33">  map.cols  &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="kw">paste0</span>(path, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">_&quot;</span>), <span class="st">&quot;X&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_[[:alnum:]]+$&quot;</span>, <span class="st">&quot;M&quot;</span>, map.names))</a>
-<a class="sourceLine" id="cb21-34" data-line-number="34">  map.years &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(map.cols, <span class="dv">2</span>, <span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb21-35" data-line-number="35">  </a>
-<a class="sourceLine" id="cb21-36" data-line-number="36">  maps.values &lt;-<span class="st"> </span><span class="kw">values</span>(maps)                              <span class="co"># extract vector with cell values (huge matrix, takes some time)</span></a>
-<a class="sourceLine" id="cb21-37" data-line-number="37">  <span class="kw">colnames</span>(maps.values) &lt;-<span class="st"> </span>map.cols</a>
-<a class="sourceLine" id="cb21-38" data-line-number="38">  </a>
-<a class="sourceLine" id="cb21-39" data-line-number="39">  nsubsets &lt;-<span class="st"> </span>numCores <span class="op">-</span><span class="st"> </span><span class="dv">1</span>                                 <span class="co"># define subsets for parallel processing</span></a>
-<a class="sourceLine" id="cb21-40" data-line-number="40">  subsets  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">floor</span>((<span class="dv">1</span><span class="op">:</span>nsubsets)<span class="op">*</span>(<span class="kw">nrow</span>(maps.values)<span class="op">/</span>nsubsets)))    </a>
-<a class="sourceLine" id="cb21-41" data-line-number="41">  </a>
-<a class="sourceLine" id="cb21-42" data-line-number="42">  </a>
-<a class="sourceLine" id="cb21-43" data-line-number="43">  </a>
-<a class="sourceLine" id="cb21-44" data-line-number="44">  <span class="co"># Parallel cleaning of pixel trajectories ###############################</span></a>
-<a class="sourceLine" id="cb21-45" data-line-number="45">  </a>
-<a class="sourceLine" id="cb21-46" data-line-number="46">  <span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb21-47" data-line-number="47">  loess.dat &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>nsubsets, <span class="dt">.combine=</span>rbind) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb21-48" data-line-number="48">    </a>
-<a class="sourceLine" id="cb21-49" data-line-number="49">    val &lt;-<span class="st"> </span>maps.values[(subsets[i]<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>subsets[i<span class="op">+</span><span class="dv">1</span>], ]       <span class="co"># get one tile of the matrix</span></a>
-<a class="sourceLine" id="cb21-50" data-line-number="50">    </a>
-<a class="sourceLine" id="cb21-51" data-line-number="51">    <span class="kw">t</span>(<span class="kw">apply</span>(val, <span class="dv">1</span>, loess.filter, <span class="dt">years=</span>map.years, <span class="dt">pred=</span>map.years, <span class="dt">span=</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb21-52" data-line-number="52">  }</a>
-<a class="sourceLine" id="cb21-53" data-line-number="53">  </a>
-<a class="sourceLine" id="cb21-54" data-line-number="54">  </a>
-<a class="sourceLine" id="cb21-55" data-line-number="55">  maps.loess &lt;-<span class="st"> </span>maps</a>
-<a class="sourceLine" id="cb21-56" data-line-number="56">  maps.loess[] &lt;-<span class="st"> </span>loess.dat</a>
-<a class="sourceLine" id="cb21-57" data-line-number="57">  <span class="kw">writeRaster</span>(maps.loess, <span class="kw">paste0</span>(BIOMASS.DIR, <span class="st">&quot;/4_clean-maps/&quot;</span>, path, <span class="st">&quot;_loess.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-58" data-line-number="58">  </a>
-<a class="sourceLine" id="cb21-59" data-line-number="59">}</a>
-<a class="sourceLine" id="cb21-60" data-line-number="60">    </a>
-<a class="sourceLine" id="cb21-61" data-line-number="61">    </a>
-<a class="sourceLine" id="cb21-62" data-line-number="62">    </a>
-<a class="sourceLine" id="cb21-63" data-line-number="63"></a>
-<a class="sourceLine" id="cb21-64" data-line-number="64"></a>
-<a class="sourceLine" id="cb21-65" data-line-number="65"></a>
-<a class="sourceLine" id="cb21-66" data-line-number="66"></a>
-<a class="sourceLine" id="cb21-67" data-line-number="67"></a>
-<a class="sourceLine" id="cb21-68" data-line-number="68"><span class="co">################################</span></a>
-<a class="sourceLine" id="cb21-69" data-line-number="69"></a>
-<a class="sourceLine" id="cb21-70" data-line-number="70">dates &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>, <span class="dv">1991</span>, <span class="dv">2000</span>, <span class="dv">2003</span>, <span class="dv">2005</span>, <span class="dv">2007</span>, <span class="dv">2008</span>, <span class="dv">2009</span>, <span class="dv">2010</span>, <span class="dv">2012</span>, <span class="dv">2013</span>, <span class="dv">2015</span>, <span class="dv">2017</span>, <span class="dv">2018</span>, <span class="dv">2019</span>)</a>
-<a class="sourceLine" id="cb21-71" data-line-number="71"></a>
-<a class="sourceLine" id="cb21-72" data-line-number="72"></a>
-<a class="sourceLine" id="cb21-73" data-line-number="73"><span class="cf">for</span>(year <span class="cf">in</span> dates) {</a>
-<a class="sourceLine" id="cb21-74" data-line-number="74">  <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Creating AGB map&quot;</span>, year, <span class="st">&quot;...&quot;</span>))</a>
-<a class="sourceLine" id="cb21-75" data-line-number="75">  image &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="dt">path=</span><span class="st">&quot;../results/images/&quot;</span>, <span class="dt">pattern=</span><span class="kw">paste0</span>(<span class="st">&quot;^&quot;</span>, year, <span class="st">&quot;.*_L2.tif$&quot;</span>), <span class="dt">full.names=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-76" data-line-number="76">  base  &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;../results/carbone/AGB_&quot;</span>, year, <span class="st">&quot;_2015&quot;</span>)</a>
-<a class="sourceLine" id="cb21-77" data-line-number="77">  biomass.map       &lt;-<span class="st"> </span><span class="kw">create.biomass.map</span>(<span class="dt">ref =</span>      <span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2015_REF_corr.tif&quot;</span>), </a>
-<a class="sourceLine" id="cb21-78" data-line-number="78">                                          <span class="dt">x =</span>        <span class="kw">brick</span>(image))</a>
-<a class="sourceLine" id="cb21-79" data-line-number="79">  <span class="kw">writeRaster</span>(biomass.map<span class="op">$</span>map,            <span class="dt">filename =</span> <span class="kw">paste0</span>(base, <span class="st">&quot;.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-80" data-line-number="80">  <span class="kw">writeRaster</span>(biomass.map<span class="op">$</span>map.bias.corr,  <span class="dt">filename =</span> <span class="kw">paste0</span>(base, <span class="st">&quot;_corr.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-81" data-line-number="81">  <span class="kw">sink</span>(                                       <span class="dt">file =</span> <span class="kw">paste0</span>(base, <span class="st">&quot;_models.txt&quot;</span>))</a>
-<a class="sourceLine" id="cb21-82" data-line-number="82">  <span class="kw">print</span>(biomass.map<span class="op">$</span>rf); <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb21-83" data-line-number="83">  <span class="kw">print</span>(<span class="kw">importance</span>(biomass.map<span class="op">$</span>rf)); <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb21-84" data-line-number="84">  <span class="kw">print</span>(<span class="kw">summary</span>(biomass.map<span class="op">$</span>lm.bias.corr))</a>
-<a class="sourceLine" id="cb21-85" data-line-number="85">  <span class="kw">sink</span>()</a>
-<a class="sourceLine" id="cb21-86" data-line-number="86">}</a>
-<a class="sourceLine" id="cb21-87" data-line-number="87"></a>
-<a class="sourceLine" id="cb21-88" data-line-number="88"></a>
-<a class="sourceLine" id="cb21-89" data-line-number="89"></a>
-<a class="sourceLine" id="cb21-90" data-line-number="90"><span class="co"># Show the effect of bias correction</span></a>
-<a class="sourceLine" id="cb21-91" data-line-number="91"></a>
-<a class="sourceLine" id="cb21-92" data-line-number="92"><span class="kw">ggplot</span>(biomass.map<span class="op">$</span>sample.pts<span class="op">@</span>data, <span class="kw">aes</span>(<span class="dt">y=</span>ref.agb, <span class="dt">x=</span>agb)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-93" data-line-number="93"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.01</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-94" data-line-number="94"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">slope=</span><span class="dv">1</span>, <span class="dt">linetype=</span><span class="dv">3</span>, <span class="dt">alpha=</span><span class="fl">0.9</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-95" data-line-number="95"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> biomass.map<span class="op">$</span>lm.bias.corr<span class="op">$</span>coefficients[<span class="dv">1</span>], <span class="dt">slope =</span> biomass.map<span class="op">$</span>lm.bias.corr<span class="op">$</span>coefficients[<span class="dv">2</span>], <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.9</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-96" data-line-number="96"><span class="st">  </span><span class="kw">theme_light</span>()</a>
-<a class="sourceLine" id="cb21-97" data-line-number="97"></a>
-<a class="sourceLine" id="cb21-98" data-line-number="98"></a>
-<a class="sourceLine" id="cb21-99" data-line-number="99"></a>
-<a class="sourceLine" id="cb21-100" data-line-number="100"><span class="co"># load the raw carbon maps and do some analysis</span></a>
-<a class="sourceLine" id="cb21-101" data-line-number="101"><span class="co"># ≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠</span></a>
-<a class="sourceLine" id="cb21-102" data-line-number="102"></a>
-<a class="sourceLine" id="cb21-103" data-line-number="103">files &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="dt">path=</span><span class="st">&quot;../results/carbone&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;^.*2015.tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-104" data-line-number="104">maps &lt;-<span class="st"> </span><span class="kw">stack</span>(files)</a>
-<a class="sourceLine" id="cb21-105" data-line-number="105"><span class="kw">names</span>(maps) &lt;-<span class="st"> </span>dates</a>
-<a class="sourceLine" id="cb21-106" data-line-number="106"></a>
-<a class="sourceLine" id="cb21-107" data-line-number="107">maps.dat &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">na.omit</span>(maps[]))</a>
-<a class="sourceLine" id="cb21-108" data-line-number="108"></a>
-<a class="sourceLine" id="cb21-109" data-line-number="109">dens.plot &lt;-<span class="st"> </span>maps.dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X1987, X1991, X2000, X2003, X2008, X2013, X2015, X2018) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-110" data-line-number="110"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>value, <span class="dt">color=</span>variable, <span class="dt">linetype=</span>variable)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-111" data-line-number="111"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-112" data-line-number="112"><span class="st">  </span><span class="kw">theme_light</span>() </a>
-<a class="sourceLine" id="cb21-113" data-line-number="113"></a>
-<a class="sourceLine" id="cb21-114" data-line-number="114"><span class="kw">print</span>(dens.plot)</a>
-<a class="sourceLine" id="cb21-115" data-line-number="115"></a>
-<a class="sourceLine" id="cb21-116" data-line-number="116"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/densities_all.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb21-117" data-line-number="117"><span class="kw">print</span>(dens.plot)</a>
-<a class="sourceLine" id="cb21-118" data-line-number="118"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb21-119" data-line-number="119"></a>
-<a class="sourceLine" id="cb21-120" data-line-number="120"></a>
-<a class="sourceLine" id="cb21-121" data-line-number="121"></a>
-<a class="sourceLine" id="cb21-122" data-line-number="122"></a>
-<a class="sourceLine" id="cb21-123" data-line-number="123"></a>
-<a class="sourceLine" id="cb21-124" data-line-number="124"></a>
-<a class="sourceLine" id="cb21-125" data-line-number="125"><span class="co"># Validation of loess-smoothed 2015</span></a>
-<a class="sourceLine" id="cb21-126" data-line-number="126">map<span class="fl">.2015</span> &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="st">&quot;../results/carbone/level2/AGBmaps_loess.tif&quot;</span>)[[<span class="dv">12</span>]]</a>
-<a class="sourceLine" id="cb21-127" data-line-number="127">map<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="st">&quot;../results/carbone/level2/AGBmaps_loess.tif&quot;</span>)[[<span class="dv">4</span>]]</a>
-<a class="sourceLine" id="cb21-128" data-line-number="128">plots &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(map<span class="fl">.2015</span>, plots, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-129" data-line-number="129">plots &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(map<span class="fl">.2003</span>, plots, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-130" data-line-number="130"><span class="kw">names</span>(plots)</a>
-<a class="sourceLine" id="cb21-131" data-line-number="131"></a>
-<a class="sourceLine" id="cb21-132" data-line-number="132">tmp &lt;-<span class="st"> </span>plots<span class="op">@</span>data[,<span class="kw">c</span>(<span class="st">&quot;BaHa&quot;</span>, <span class="st">&quot;AGBmaps_loess.12&quot;</span>, <span class="st">&quot;AGBmaps_loess.4&quot;</span>)]</a>
-<a class="sourceLine" id="cb21-133" data-line-number="133">tmp<span class="op">$</span>cex &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">+</span><span class="kw">abs</span>(tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.4</span>)<span class="op">/</span><span class="dv">30</span></a>
-<a class="sourceLine" id="cb21-134" data-line-number="134">tmp<span class="op">$</span>col[tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.4</span> <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> &quot;red&quot;</span></a>
-<a class="sourceLine" id="cb21-135" data-line-number="135">tmp<span class="op">$</span>col[tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.4</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> &quot;blue&quot;</span></a>
-<a class="sourceLine" id="cb21-136" data-line-number="136"></a>
-<a class="sourceLine" id="cb21-137" data-line-number="137"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/figures/Validation_LoessMap2015.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb21-138" data-line-number="138"><span class="kw">plot</span>(tmp<span class="op">$</span>BaHa, tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span>, <span class="dt">main=</span><span class="st">&quot;AGB Carbon Stocks on Permanent Inventory Plots&quot;</span>,</a>
-<a class="sourceLine" id="cb21-139" data-line-number="139">     <span class="dt">xlab=</span><span class="st">&quot;National Forest Inventory 2015 (tC/ha)&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;LOESS-smoothed Carbon Map 2015&quot;</span>)</a>
-<a class="sourceLine" id="cb21-140" data-line-number="140"><span class="kw">points</span>(tmp<span class="op">$</span>BaHa[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span>[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], <span class="dt">cex=</span>tmp<span class="op">$</span>cex[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], <span class="dt">col=</span>tmp<span class="op">$</span>col[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>])</a>
-<a class="sourceLine" id="cb21-141" data-line-number="141"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb21-142" data-line-number="142"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="fl">0.5</span>, <span class="dt">lty=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb21-143" data-line-number="143"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span><span class="op">/</span><span class="fl">0.5</span>, <span class="dt">lty=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb21-144" data-line-number="144"><span class="kw">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>), <span class="dt">pch=</span><span class="dv">1</span>, <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">&quot;Loss of &gt;= 20 tC since 2003&quot;</span>, <span class="st">&quot;Gain of &gt;= 20 tC since 2003&quot;</span>))</a>
-<a class="sourceLine" id="cb21-145" data-line-number="145"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb21-146" data-line-number="146"></a>
-<a class="sourceLine" id="cb21-147" data-line-number="147"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/figures/Validation_LoessMap2015_Residuals.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb21-148" data-line-number="148"><span class="kw">plot</span>(tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>BaHa<span class="op">~</span>tmp<span class="op">$</span>BaHa, <span class="dt">main=</span><span class="st">&quot;AGB Carbon Stocks on Permanent Inventory Plots&quot;</span>,</a>
-<a class="sourceLine" id="cb21-149" data-line-number="149">     <span class="dt">xlab=</span><span class="st">&quot;National Forest Inventory 2015 (tC/ha)&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Residuals of LOESS-smoothed Carbon Map 2015&quot;</span>)</a>
-<a class="sourceLine" id="cb21-150" data-line-number="150"><span class="kw">points</span>(tmp<span class="op">$</span>BaHa[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span>[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>]<span class="op">-</span>tmp<span class="op">$</span>BaHa[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], <span class="dt">cex=</span>tmp<span class="op">$</span>cex[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], <span class="dt">col=</span>tmp<span class="op">$</span>col[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>])</a>
-<a class="sourceLine" id="cb21-151" data-line-number="151">bias.corr &lt;-<span class="st"> </span><span class="kw">lm</span>(tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>BaHa<span class="op">~</span>tmp<span class="op">$</span>BaHa)</a>
-<a class="sourceLine" id="cb21-152" data-line-number="152"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb21-153" data-line-number="153"><span class="kw">abline</span>(bias.corr, <span class="dt">lty=</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb21-154" data-line-number="154"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>), <span class="dt">pch=</span><span class="dv">1</span>, <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">&quot;Loss of &gt;= 20 tC since 2003&quot;</span>, <span class="st">&quot;Gain of &gt;= 20 tC since 2003&quot;</span>))</a>
-<a class="sourceLine" id="cb21-155" data-line-number="155"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb21-156" data-line-number="156"></a>
-<a class="sourceLine" id="cb21-157" data-line-number="157"></a>
-<a class="sourceLine" id="cb21-158" data-line-number="158"></a>
-<a class="sourceLine" id="cb21-159" data-line-number="159"></a>
-<a class="sourceLine" id="cb21-160" data-line-number="160"><span class="co"># Load the cleaned maps and create tables</span></a>
-<a class="sourceLine" id="cb21-161" data-line-number="161"><span class="co"># =======================================</span></a>
-<a class="sourceLine" id="cb21-162" data-line-number="162"></a>
-<a class="sourceLine" id="cb21-163" data-line-number="163">biomass.tabs &lt;-<span class="st"> </span><span class="cf">function</span>(map, <span class="dt">aoi=</span><span class="ot">NULL</span>) {</a>
-<a class="sourceLine" id="cb21-164" data-line-number="164">  </a>
-<a class="sourceLine" id="cb21-165" data-line-number="165">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(aoi)) map &lt;-<span class="st"> </span><span class="kw">crop</span>(map, aoi)</a>
-<a class="sourceLine" id="cb21-166" data-line-number="166">  </a>
-<a class="sourceLine" id="cb21-167" data-line-number="167">  agb.dat        &lt;-<span class="st"> </span>map[]</a>
-<a class="sourceLine" id="cb21-168" data-line-number="168">  agb.change.dat &lt;-<span class="st"> </span>agb.dat[,<span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(agb.dat)] <span class="op">-</span><span class="st"> </span>agb.dat[,<span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(agb.dat)<span class="op">-</span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb21-169" data-line-number="169">  agb.loss.dat   &lt;-<span class="st"> </span>agb.change.dat; agb.loss.dat[agb.loss.dat <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb21-170" data-line-number="170">  agb.gain.dat   &lt;-<span class="st"> </span>agb.change.dat; agb.gain.dat[agb.gain.dat <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb21-171" data-line-number="171">  </a>
-<a class="sourceLine" id="cb21-172" data-line-number="172">  dates &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(<span class="kw">names</span>(map), <span class="dv">2</span>, <span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb21-173" data-line-number="173">  </a>
-<a class="sourceLine" id="cb21-174" data-line-number="174">  agb.tab &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">year      =</span> dates, </a>
-<a class="sourceLine" id="cb21-175" data-line-number="175">                        <span class="dt">total.agb =</span> <span class="kw">colSums</span>(agb.dat, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>, </a>
-<a class="sourceLine" id="cb21-176" data-line-number="176">                        <span class="dt">period    =</span> <span class="kw">c</span>(<span class="ot">NA</span>, dates[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>dates[<span class="op">-</span><span class="kw">length</span>(dates)]), </a>
-<a class="sourceLine" id="cb21-177" data-line-number="177">                        <span class="dt">center    =</span> <span class="kw">c</span>(<span class="ot">NA</span>, (dates[<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>dates[<span class="op">-</span><span class="kw">length</span>(dates)])<span class="op">/</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb21-178" data-line-number="178">  </a>
-<a class="sourceLine" id="cb21-179" data-line-number="179">  agb.tab<span class="op">$</span>loss.t.yr              &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">colSums</span>(agb.loss.dat, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>)<span class="op">/</span>agb.tab<span class="op">$</span>period</a>
-<a class="sourceLine" id="cb21-180" data-line-number="180">  agb.tab<span class="op">$</span>gain.t.yr              &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">colSums</span>(agb.gain.dat, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>)<span class="op">/</span>agb.tab<span class="op">$</span>period</a>
-<a class="sourceLine" id="cb21-181" data-line-number="181">  agb.tab<span class="op">$</span>netchange.t.yr         &lt;-<span class="st"> </span>agb.tab<span class="op">$</span>loss.t.yr <span class="op">+</span><span class="st"> </span>agb.tab<span class="op">$</span>gain.t.yr </a>
-<a class="sourceLine" id="cb21-182" data-line-number="182">  </a>
-<a class="sourceLine" id="cb21-183" data-line-number="183">  agb.tab<span class="op">$</span>loss.pc.yr             &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="dv">1</span><span class="op">/</span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span><span class="kw">log</span>((agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span>agb.tab<span class="op">$</span>loss.t.yr[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))]) <span class="op">/</span><span class="st"> </span>agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>])), <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb21-184" data-line-number="184">  agb.tab<span class="op">$</span>gain.pc.yr             &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="dv">1</span><span class="op">/</span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span><span class="kw">log</span>((agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span>agb.tab<span class="op">$</span>gain.t.yr[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))]) <span class="op">/</span><span class="st"> </span>agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>])), <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb21-185" data-line-number="185">  agb.tab<span class="op">$</span>netchange.pc.yr        &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="dv">1</span><span class="op">/</span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span><span class="kw">log</span>( agb.tab<span class="op">$</span>total.agb[<span class="dv">2</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)]                                                                               <span class="op">/</span><span class="st"> </span>agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>])), <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb21-186" data-line-number="186">  </a>
-<a class="sourceLine" id="cb21-187" data-line-number="187">  <span class="kw">return</span>(agb.tab)</a>
-<a class="sourceLine" id="cb21-188" data-line-number="188">}</a>
-<a class="sourceLine" id="cb21-189" data-line-number="189"></a>
-<a class="sourceLine" id="cb21-190" data-line-number="190"></a>
-<a class="sourceLine" id="cb21-191" data-line-number="191"></a>
-<a class="sourceLine" id="cb21-192" data-line-number="192">plot.biomass &lt;-<span class="st"> </span><span class="cf">function</span>(fc, zone, <span class="dt">filename=</span><span class="ot">NULL</span>) {</a>
-<a class="sourceLine" id="cb21-193" data-line-number="193">  </a>
-<a class="sourceLine" id="cb21-194" data-line-number="194">  <span class="cf">if</span>(zone<span class="op">==</span><span class="st">&quot;Zone IV&quot;</span>) {</a>
-<a class="sourceLine" id="cb21-195" data-line-number="195">    title    &lt;-<span class="st"> &quot;Net and Gross Changes in Forest Biomass 1987 - 2019 in Ecological Zone IV&quot;</span></a>
-<a class="sourceLine" id="cb21-196" data-line-number="196">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">750000</span>, <span class="dv">750000</span>)</a>
-<a class="sourceLine" id="cb21-197" data-line-number="197">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">750000</span>, <span class="dv">750000</span>, <span class="dv">100000</span>)</a>
-<a class="sourceLine" id="cb21-198" data-line-number="198">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">750000</span>, <span class="dv">750000</span>, <span class="dv">50000</span>)</a>
-<a class="sourceLine" id="cb21-199" data-line-number="199">  } </a>
-<a class="sourceLine" id="cb21-200" data-line-number="200">  </a>
-<a class="sourceLine" id="cb21-201" data-line-number="201">  <span class="cf">if</span> (zone<span class="op">==</span><span class="st">&quot;AOI.1&quot;</span>) {</a>
-<a class="sourceLine" id="cb21-202" data-line-number="202">    title    &lt;-<span class="st"> &quot;Net and Gross Changes in Forest Biomass 1987 - 2019 in Plaine de Litimé (AOI.1)&quot;</span></a>
-<a class="sourceLine" id="cb21-203" data-line-number="203">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>)</a>
-<a class="sourceLine" id="cb21-204" data-line-number="204">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>, <span class="dv">2000</span>)</a>
-<a class="sourceLine" id="cb21-205" data-line-number="205">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>, <span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb21-206" data-line-number="206">  } </a>
-<a class="sourceLine" id="cb21-207" data-line-number="207">  </a>
-<a class="sourceLine" id="cb21-208" data-line-number="208">  <span class="cf">if</span> (zone<span class="op">==</span><span class="st">&quot;AOI.2&quot;</span>) {</a>
-<a class="sourceLine" id="cb21-209" data-line-number="209">    title    &lt;-<span class="st"> &quot;Net and Gross Changes in Forest Biomass 1987 - 2019 in Kpélé (AOI.2)&quot;</span></a>
-<a class="sourceLine" id="cb21-210" data-line-number="210">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>)</a>
-<a class="sourceLine" id="cb21-211" data-line-number="211">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>, <span class="dv">2000</span>)</a>
-<a class="sourceLine" id="cb21-212" data-line-number="212">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>, <span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb21-213" data-line-number="213">  } </a>
-<a class="sourceLine" id="cb21-214" data-line-number="214">  </a>
-<a class="sourceLine" id="cb21-215" data-line-number="215">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">pdf</span>(filename)</a>
-<a class="sourceLine" id="cb21-216" data-line-number="216">  </a>
-<a class="sourceLine" id="cb21-217" data-line-number="217">  fc<span class="op">$</span>netloss.t.yr &lt;-<span class="st"> </span>fc<span class="op">$</span>netchange.t.yr </a>
-<a class="sourceLine" id="cb21-218" data-line-number="218">  fc<span class="op">$</span>netloss.t.yr[fc<span class="op">$</span>netloss.t.yr <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb21-219" data-line-number="219">  fc<span class="op">$</span>netgain.t.yr &lt;-<span class="st"> </span>fc<span class="op">$</span>netchange.t.yr </a>
-<a class="sourceLine" id="cb21-220" data-line-number="220">  fc<span class="op">$</span>netgain.t.yr[fc<span class="op">$</span>netgain.t.yr <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb21-221" data-line-number="221">  </a>
-<a class="sourceLine" id="cb21-222" data-line-number="222">  <span class="kw">print</span>(</a>
-<a class="sourceLine" id="cb21-223" data-line-number="223">    fc[<span class="op">-</span><span class="dv">1</span>,] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, loss.t.yr, gain.t.yr, netloss.t.yr, netgain.t.yr) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-224" data-line-number="224"><span class="st">      </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>value, <span class="dt">x =</span> center, <span class="dt">width=</span>period<span class="fl">-0.7</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-225" data-line-number="225"><span class="st">      </span><span class="kw">geom_bar</span>(<span class="dt">data=</span>. <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(variable <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;loss.t.yr&quot;</span>, <span class="st">&quot;gain.t.yr&quot;</span>)), <span class="kw">aes</span>(<span class="dt">fill=</span>variable, <span class="dt">alpha=</span><span class="fl">0.9</span>), <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="dt">show.legend=</span><span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-226" data-line-number="226"><span class="st">      </span><span class="kw">guides</span>(<span class="dt">alpha =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-227" data-line-number="227"><span class="st">      </span><span class="kw">geom_bar</span>(<span class="dt">data=</span>. <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(variable <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;netloss.t.yr&quot;</span>, <span class="st">&quot;netgain.t.yr&quot;</span>)), <span class="kw">aes</span>(<span class="dt">fill=</span>variable), <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-228" data-line-number="228"><span class="st">      </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="st">&quot;gain.t.yr&quot;</span>, <span class="st">&quot;loss.t.yr&quot;</span>), <span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;#00BFC4&quot;</span>, <span class="st">&quot;#F8766D&quot;</span>, <span class="st">&quot;#00BFC4&quot;</span>, <span class="st">&quot;#F8766D&quot;</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Biomass gain    &quot;</span>, <span class="st">&quot;Biomass loss    &quot;</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-229" data-line-number="229"><span class="st">      </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Tonnes AGB per Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(title) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-230" data-line-number="230"><span class="st">      </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks =</span> <span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1987</span>, <span class="dv">2000</span>, <span class="dv">2005</span>, <span class="dv">2010</span>, <span class="dv">2015</span>, <span class="dv">2019</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-231" data-line-number="231"><span class="st">      </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks=</span>ybreaks, <span class="dt">minor_breaks =</span> ymbreaks) <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim=</span>ylim) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-232" data-line-number="232"><span class="st">      </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">legend.box =</span> <span class="st">&quot;horizontal&quot;</span>, <span class="dt">legend.justification=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.2</span>,<span class="fl">1.2</span>))</a>
-<a class="sourceLine" id="cb21-233" data-line-number="233">  )</a>
-<a class="sourceLine" id="cb21-234" data-line-number="234">  </a>
-<a class="sourceLine" id="cb21-235" data-line-number="235">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb21-236" data-line-number="236">}</a>
-<a class="sourceLine" id="cb21-237" data-line-number="237"></a>
-<a class="sourceLine" id="cb21-238" data-line-number="238"></a>
-<a class="sourceLine" id="cb21-239" data-line-number="239">maps &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="st">&quot;../results/carbone/level2/AGBmaps_loess.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb21-240" data-line-number="240"><span class="kw">names</span>(maps) &lt;-<span class="st"> </span>dates</a>
-<a class="sourceLine" id="cb21-241" data-line-number="241"></a>
-<a class="sourceLine" id="cb21-242" data-line-number="242">maps.dat &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">na.omit</span>(maps[]))</a>
-<a class="sourceLine" id="cb21-243" data-line-number="243"></a>
-<a class="sourceLine" id="cb21-244" data-line-number="244">dens.plot &lt;-<span class="st"> </span>maps.dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X1991, X2000, X2005, X2010, X2015, X2018) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-245" data-line-number="245"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>value, <span class="dt">color=</span>variable, <span class="dt">linetype=</span>variable)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-246" data-line-number="246"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-247" data-line-number="247"><span class="st">  </span><span class="kw">theme_light</span>() </a>
-<a class="sourceLine" id="cb21-248" data-line-number="248"></a>
-<a class="sourceLine" id="cb21-249" data-line-number="249"><span class="kw">print</span>(dens.plot)</a>
-<a class="sourceLine" id="cb21-250" data-line-number="250"></a>
-<a class="sourceLine" id="cb21-251" data-line-number="251"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/figures/densities.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb21-252" data-line-number="252"><span class="kw">print</span>(dens.plot)</a>
-<a class="sourceLine" id="cb21-253" data-line-number="253"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb21-254" data-line-number="254"></a>
-<a class="sourceLine" id="cb21-255" data-line-number="255">res.all      &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps)</a>
-<a class="sourceLine" id="cb21-256" data-line-number="256">res          &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps[[<span class="kw">c</span>(<span class="st">&quot;X1991&quot;</span>, <span class="st">&quot;X2000&quot;</span>, <span class="st">&quot;X2005&quot;</span>, <span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;X2015&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]])</a>
-<a class="sourceLine" id="cb21-257" data-line-number="257">res.aoi1.all &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps, AOI<span class="fl">.1</span>)</a>
-<a class="sourceLine" id="cb21-258" data-line-number="258">res.aoi1     &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps[[<span class="kw">c</span>(<span class="st">&quot;X1991&quot;</span>, <span class="st">&quot;X2000&quot;</span>, <span class="st">&quot;X2005&quot;</span>, <span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;X2015&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]], AOI<span class="fl">.1</span>)</a>
-<a class="sourceLine" id="cb21-259" data-line-number="259">res.aoi2.all &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps, AOI<span class="fl">.2</span>)</a>
-<a class="sourceLine" id="cb21-260" data-line-number="260">res.aoi2     &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps[[<span class="kw">c</span>(<span class="st">&quot;X1991&quot;</span>, <span class="st">&quot;X2000&quot;</span>, <span class="st">&quot;X2005&quot;</span>, <span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;X2015&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]], AOI<span class="fl">.2</span>)</a>
-<a class="sourceLine" id="cb21-261" data-line-number="261"></a>
-<a class="sourceLine" id="cb21-262" data-line-number="262">res.tmp          &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps[[<span class="kw">c</span>(<span class="st">&quot;X1991&quot;</span>, <span class="st">&quot;X2003&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]])</a>
-<a class="sourceLine" id="cb21-263" data-line-number="263"></a>
-<a class="sourceLine" id="cb21-264" data-line-number="264"><span class="kw">plot.biomass</span>(res,      <span class="st">&quot;Zone IV&quot;</span>, <span class="st">&quot;../results/carbone/figures/biomass.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb21-265" data-line-number="265"><span class="kw">plot.biomass</span>(res.aoi1, <span class="st">&quot;AOI.1&quot;</span>,    <span class="st">&quot;../results/carbone/figures/biomass_aoi1.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb21-266" data-line-number="266"><span class="kw">plot.biomass</span>(res.aoi2, <span class="st">&quot;AOI.2&quot;</span>,    <span class="st">&quot;../results/carbone/figures/biomass_aoi2.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb21-267" data-line-number="267"></a>
-<a class="sourceLine" id="cb21-268" data-line-number="268"></a>
-<a class="sourceLine" id="cb21-269" data-line-number="269"><span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span>res,</a>
-<a class="sourceLine" id="cb21-270" data-line-number="270">                <span class="st">&quot;AOI.1&quot;</span> =<span class="st"> </span>res.aoi1,</a>
-<a class="sourceLine" id="cb21-271" data-line-number="271">                <span class="st">&quot;AOI.2&quot;</span> =<span class="st"> </span>res.aoi2),</a>
-<a class="sourceLine" id="cb21-272" data-line-number="272">           <span class="dt">file =</span> <span class="st">&quot;../results/carbone/figures/biomass-change.xlsx&quot;</span>)</a>
-<a class="sourceLine" id="cb21-273" data-line-number="273"></a>
-<a class="sourceLine" id="cb21-274" data-line-number="274"></a>
-<a class="sourceLine" id="cb21-275" data-line-number="275"></a>
-<a class="sourceLine" id="cb21-276" data-line-number="276"></a>
-<a class="sourceLine" id="cb21-277" data-line-number="277">Y.diff &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2018_2015_corr.tif&quot;</span>) <span class="op">-</span><span class="st"> </span>Y.corr</a>
-<a class="sourceLine" id="cb21-278" data-line-number="278">Y.gain &lt;-<span class="st"> </span>Y.diff; Y.gain[Y.gain<span class="op">&lt;=</span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb21-279" data-line-number="279">Y.loss &lt;-<span class="st"> </span>Y.diff; Y.loss[Y.loss<span class="op">&gt;=</span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb21-280" data-line-number="280">Y.diff &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(<span class="kw">round</span>(Y.diff), <span class="st">&quot;../results/carbone/AGB_2018_1991_diff.tif&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-281" data-line-number="281"></a>
-<a class="sourceLine" id="cb21-282" data-line-number="282"><span class="op">-</span><span class="kw">sum</span>(Y.loss[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="kw">sum</span>(<span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2003_2015_corr.tif&quot;</span>)[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="dv">15</span></a>
-<a class="sourceLine" id="cb21-283" data-line-number="283"><span class="kw">sum</span>(Y.gain[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="kw">sum</span>(<span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2003_2015_corr.tif&quot;</span>)[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="dv">15</span></a>
-<a class="sourceLine" id="cb21-284" data-line-number="284"></a>
-<a class="sourceLine" id="cb21-285" data-line-number="285"></a>
-<a class="sourceLine" id="cb21-286" data-line-number="286">dat.c &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">X1991=</span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_1991_2015_corr.tif&quot;</span>)[],</a>
-<a class="sourceLine" id="cb21-287" data-line-number="287">                    <span class="dt">X2003=</span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2003_2015_corr.tif&quot;</span>)[],</a>
-<a class="sourceLine" id="cb21-288" data-line-number="288">                    <span class="dt">X2018=</span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2018_2015_corr.tif&quot;</span>)[])</a>
-<a class="sourceLine" id="cb21-289" data-line-number="289"></a>
-<a class="sourceLine" id="cb21-290" data-line-number="290">dat.c &lt;-<span class="st"> </span><span class="kw">na.omit</span>(dat.c)</a>
-<a class="sourceLine" id="cb21-291" data-line-number="291"></a>
-<a class="sourceLine" id="cb21-292" data-line-number="292">dat.c <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X1991<span class="op">:</span>X2018) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-293" data-line-number="293"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>value, <span class="dt">x=</span>variable, <span class="dt">color=</span>variable)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-294" data-line-number="294"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-295" data-line-number="295"><span class="st">  </span><span class="kw">coord_flip</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-296" data-line-number="296"><span class="st">  </span><span class="kw">theme_light</span>() </a>
-<a class="sourceLine" id="cb21-297" data-line-number="297"></a>
-<a class="sourceLine" id="cb21-298" data-line-number="298"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/densities_91-03-18.pdf&quot;</span>)</a>
-<a class="sourceLine" id="cb21-299" data-line-number="299"></a>
-<a class="sourceLine" id="cb21-300" data-line-number="300">dat.c <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X1991<span class="op">:</span>X2018) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-301" data-line-number="301"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>value, <span class="dt">color=</span>variable)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-302" data-line-number="302"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-303" data-line-number="303"><span class="st">  </span><span class="kw">theme_light</span>() </a>
-<a class="sourceLine" id="cb21-304" data-line-number="304"></a>
-<a class="sourceLine" id="cb21-305" data-line-number="305"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb21-306" data-line-number="306"></a>
-<a class="sourceLine" id="cb21-307" data-line-number="307"></a>
-<a class="sourceLine" id="cb21-308" data-line-number="308"></a>
-<a class="sourceLine" id="cb21-309" data-line-number="309"></a>
-<a class="sourceLine" id="cb21-310" data-line-number="310"></a>
-<a class="sourceLine" id="cb21-311" data-line-number="311"><span class="co"># verify the map</span></a>
-<a class="sourceLine" id="cb21-312" data-line-number="312"></a>
-<a class="sourceLine" id="cb21-313" data-line-number="313">val.points &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(Y.corr, dat.placette, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-314" data-line-number="314">val.points &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(Y.<span class="fl">2003.</span>corr, val.points, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-315" data-line-number="315">val.points &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(Y<span class="fl">.2015</span>, val.points, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-316" data-line-number="316"><span class="kw">plot</span>(val.points<span class="op">$</span>BaHa, val.points<span class="op">$</span>AGB_<span class="dv">2015</span>_<span class="dv">2003</span>_corr)</a>
-<a class="sourceLine" id="cb21-317" data-line-number="317"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb21-318" data-line-number="318">mod &lt;-<span class="st"> </span><span class="kw">lm</span>(AGB_<span class="dv">2015</span>_<span class="dv">2003</span>_corr <span class="op">~</span><span class="st"> </span>BaHa, <span class="dt">data=</span>val.points)</a>
-<a class="sourceLine" id="cb21-319" data-line-number="319"><span class="kw">abline</span>(mod, <span class="dt">lty=</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb21-320" data-line-number="320"></a>
-<a class="sourceLine" id="cb21-321" data-line-number="321"></a>
-<a class="sourceLine" id="cb21-322" data-line-number="322"></a>
-<a class="sourceLine" id="cb21-323" data-line-number="323"></a>
-<a class="sourceLine" id="cb21-324" data-line-number="324"><span class="co">############ compare 2015 carbon map with the forest change map #######################</span></a>
-<a class="sourceLine" id="cb21-325" data-line-number="325"></a>
-<a class="sourceLine" id="cb21-326" data-line-number="326">map.carb &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2015_REF.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb21-327" data-line-number="327">map.gain &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;../results/fcc/3_alldates-direct2003/level3/forest-gain.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb21-328" data-line-number="328">map.loss &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;../results/fcc/3_alldates-direct2003/level3/forest-loss.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb21-329" data-line-number="329"></a>
-<a class="sourceLine" id="cb21-330" data-line-number="330">map.loss.a2015 &lt;-<span class="st"> </span>map.loss; map.loss.a2015[map.loss.a2015<span class="op">&lt;</span><span class="dv">2015</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
-<a class="sourceLine" id="cb21-331" data-line-number="331">map.carb.loss.a2015 &lt;-<span class="st"> </span><span class="kw">mask</span>(map.carb, map.loss.a2015)</a>
-<a class="sourceLine" id="cb21-332" data-line-number="332"><span class="kw">hist</span>(map.carb.loss.a2015[]); <span class="kw">summary</span>(map.carb.loss.a2015[]); <span class="kw">sum</span>(map.carb.loss.a2015[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">*</span>(<span class="dv">30</span><span class="op">*</span><span class="dv">30</span><span class="op">/</span><span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb21-333" data-line-number="333"></a>
-<a class="sourceLine" id="cb21-334" data-line-number="334">map.gain.b2015 &lt;-<span class="st"> </span>map.gain; map.gain.b2015[map.gain.b2015<span class="op">&gt;=</span><span class="dv">2015</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
-<a class="sourceLine" id="cb21-335" data-line-number="335">map.gain.b2015[] &lt;-<span class="st"> </span><span class="dv">2015</span> <span class="op">-</span><span class="st"> </span>map.gain.b2015[]</a>
-<a class="sourceLine" id="cb21-336" data-line-number="336">map.carb.gain.b2015 &lt;-<span class="st"> </span><span class="kw">mask</span>(map.carb, map.gain.b2015)</a>
-<a class="sourceLine" id="cb21-337" data-line-number="337"><span class="kw">hist</span>(map.carb.gain.b2015[]); <span class="kw">summary</span>(map.carb.gain.b2015[]); <span class="kw">sum</span>(map.carb.gain.b2015[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">*</span>(<span class="dv">30</span><span class="op">*</span><span class="dv">30</span><span class="op">/</span><span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb21-338" data-line-number="338"></a>
-<a class="sourceLine" id="cb21-339" data-line-number="339"><span class="kw">boxplot</span>(map.carb.gain.b2015[] <span class="op">~</span><span class="st"> </span>map.gain.b2015[])</a>
-<a class="sourceLine" id="cb21-340" data-line-number="340"></a>
-<a class="sourceLine" id="cb21-341" data-line-number="341">map.carb.loss.a2015<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(Y.loss, map.loss.a2015)</a>
-<a class="sourceLine" id="cb21-342" data-line-number="342"></a>
-<a class="sourceLine" id="cb21-343" data-line-number="343"></a>
-<a class="sourceLine" id="cb21-344" data-line-number="344"></a>
-<a class="sourceLine" id="cb21-345" data-line-number="345"></a>
-<a class="sourceLine" id="cb21-346" data-line-number="346"></a>
-<a class="sourceLine" id="cb21-347" data-line-number="347"></a>
-<a class="sourceLine" id="cb21-348" data-line-number="348"><span class="co"># ######### Try with linear regression ############</span></a>
-<a class="sourceLine" id="cb21-349" data-line-number="349"><span class="co"># X$evi &lt;- evi(nir=X$NIR, r=X$R, b=X$B)</span></a>
-<a class="sourceLine" id="cb21-350" data-line-number="350"><span class="co"># X$ndvi &lt;- nd(X$NIR, X$R)</span></a>
-<a class="sourceLine" id="cb21-351" data-line-number="351"><span class="co"># X$ndmi &lt;- nd(X$NIR, X$SWIR1)</span></a>
-<a class="sourceLine" id="cb21-352" data-line-number="352"><span class="co"># X$nbr &lt;- nd(X$NIR, X$SWIR2)</span></a>
-<a class="sourceLine" id="cb21-353" data-line-number="353"><span class="co"># cor(-X$SWIR1[], Y.2015[], use=&quot;pairwise.complete.obs&quot;)</span></a>
-<a class="sourceLine" id="cb21-354" data-line-number="354"><span class="co"># s &lt;- sample(1:ncell(Y.2015), 10000)</span></a>
-<a class="sourceLine" id="cb21-355" data-line-number="355"><span class="co"># plot(log(Y.2015[s]) ~ log(X$SWIR1[s]))</span></a>
-<a class="sourceLine" id="cb21-356" data-line-number="356"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-357" data-line-number="357"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-358" data-line-number="358"><span class="co"># val.points &lt;- raster::extract(X, val.points, sp=TRUE, fun=mean, buffer=20, normalizeWeights=TRUE)</span></a>
-<a class="sourceLine" id="cb21-359" data-line-number="359"><span class="co"># plot(log(val.points$BaHa) ~ log(val.points$SWIR1))</span></a>
-<a class="sourceLine" id="cb21-360" data-line-number="360"><span class="co"># val.points$BaHa.log &lt;- log(val.points$BaHa)</span></a>
-<a class="sourceLine" id="cb21-361" data-line-number="361"><span class="co"># val.points$SWIR1.log &lt;- log(val.points$SWIR1)</span></a>
-<a class="sourceLine" id="cb21-362" data-line-number="362"><span class="co"># lm.swir &lt;- lm(BaHa.log ~ SWIR1.log, data=val.points@data)</span></a>
-<a class="sourceLine" id="cb21-363" data-line-number="363"><span class="co"># abline(lm.swir)</span></a>
-<a class="sourceLine" id="cb21-364" data-line-number="364"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-365" data-line-number="365"><span class="co"># plot(val.points$BaHa ~ val.points$SWIR1)</span></a>
-<a class="sourceLine" id="cb21-366" data-line-number="366"><span class="co"># lines(seq(1000, 2500, 50), exp(lm.swir$coeff[1] + lm.swir$coeff[2]*log(seq(1000, 2500, 50))), lty=4)</span></a>
-<a class="sourceLine" id="cb21-367" data-line-number="367"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-368" data-line-number="368"><span class="co"># Y.2015.swir &lt;- exp(lm.swir$coeff[1] + lm.swir$coeff[2]*log(X$SWIR1))</span></a>
-<a class="sourceLine" id="cb21-369" data-line-number="369"><span class="co"># val.points &lt;- raster::extract(Y.2015.swir, val.points, sp=TRUE, fun=mean, buffer=20, normalizeWeights=TRUE)</span></a>
-<a class="sourceLine" id="cb21-370" data-line-number="370"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-371" data-line-number="371"><span class="co"># plot(val.points$BaHa, val.points@data[,25])</span></a>
-<a class="sourceLine" id="cb21-372" data-line-number="372"><span class="co"># abline(0,1)</span></a>
-<a class="sourceLine" id="cb21-373" data-line-number="373"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-374" data-line-number="374"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-375" data-line-number="375"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-376" data-line-number="376"><span class="co"># Y.2015.log &lt;- log(Y.2015)</span></a>
-<a class="sourceLine" id="cb21-377" data-line-number="377"><span class="co"># SWIR1.log &lt;- log(X$SWIR1)</span></a>
-<a class="sourceLine" id="cb21-378" data-line-number="378"><span class="co"># lm.swir.map &lt;- lm(Y.2015.log[] ~ SWIR1.log[])</span></a>
-<a class="sourceLine" id="cb21-379" data-line-number="379"><span class="co"># abline(lm.swir.map, lty=2)</span></a>
-<a class="sourceLine" id="cb21-380" data-line-number="380"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-381" data-line-number="381"><span class="co"># plot(Y.2015[s] ~ X$SWIR1[s])</span></a>
-<a class="sourceLine" id="cb21-382" data-line-number="382"><span class="co"># lines(seq(1000, 4000, 50), exp(lm.swir.map$coeff[1] + lm.swir.map$coeff[2]*log(seq(1000, 4000, 50))), lty=4, col=&quot;red&quot;)</span></a>
-<a class="sourceLine" id="cb21-383" data-line-number="383"><span class="co"># Y.2015.swir &lt;- exp(lm.swir.map$coeff[1] + lm.swir.map$coeff[2]*log(X$SWIR1))</span></a>
-<a class="sourceLine" id="cb21-384" data-line-number="384"><span class="co"># Y.2015.swir &lt;- writeRaster(Y.2015.swir, &quot;../results/carbone/AGB_2015_SWIR1.tif&quot;)</span></a>
-<a class="sourceLine" id="cb21-385" data-line-number="385"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-386" data-line-number="386"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-387" data-line-number="387"><span class="co"># Y &lt;- Y.2015.swir</span></a>
-<a class="sourceLine" id="cb21-388" data-line-number="388"><span class="co"># X &lt;- stack(&quot;../results/images/20030127_L7_B123457_L2.tif&quot;)</span></a>
-<a class="sourceLine" id="cb21-389" data-line-number="389"><span class="co"># names(X) &lt;- c(&quot;B&quot;, &quot;G&quot;, &quot;R&quot;, &quot;NIR&quot;, &quot;SWIR1&quot;, &quot;SWIR2&quot;)</span></a>
-<a class="sourceLine" id="cb21-390" data-line-number="390"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-391" data-line-number="391"><span class="co"># Y.log &lt;- log(Y)</span></a>
-<a class="sourceLine" id="cb21-392" data-line-number="392"><span class="co"># SWIR.log &lt;- log(X$SWIR1)</span></a>
-<a class="sourceLine" id="cb21-393" data-line-number="393"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-394" data-line-number="394"><span class="co"># lm.swir &lt;- lm(Y.log[] ~ SWIR.log[])</span></a>
-<a class="sourceLine" id="cb21-395" data-line-number="395"><span class="co"># Y.swir &lt;- exp(lm.swir$coeff[1] + lm.swir$coeff[2]*SWIR.log)</span></a>
-<a class="sourceLine" id="cb21-396" data-line-number="396"><span class="co"># Y.swir &lt;- writeRaster(Y.swir, &quot;../results/carbone/AGB_2003_SWIR1.tif&quot;)</span></a>
-<a class="sourceLine" id="cb21-397" data-line-number="397"><span class="co"># </span></a>
-<a class="sourceLine" id="cb21-398" data-line-number="398"><span class="co"># Y.diff &lt;- Y.2015.swir - Y.swir</span></a>
-<a class="sourceLine" id="cb21-399" data-line-number="399"><span class="co"># Y.diff &lt;- writeRaster(Y.diff, &quot;../results/carbone/AGB_diff_SWIR1.tif&quot;)</span></a>
-<a class="sourceLine" id="cb21-400" data-line-number="400"></a>
-<a class="sourceLine" id="cb21-401" data-line-number="401"></a>
-<a class="sourceLine" id="cb21-402" data-line-number="402"></a>
-<a class="sourceLine" id="cb21-403" data-line-number="403"></a>
-<a class="sourceLine" id="cb21-404" data-line-number="404"></a>
-<a class="sourceLine" id="cb21-405" data-line-number="405"></a>
-<a class="sourceLine" id="cb21-406" data-line-number="406"></a>
-<a class="sourceLine" id="cb21-407" data-line-number="407"></a>
-<a class="sourceLine" id="cb21-408" data-line-number="408"></a>
-<a class="sourceLine" id="cb21-409" data-line-number="409"><span class="kw">ggplot</span>(plots<span class="op">@</span>data[], <span class="kw">aes</span>(<span class="dt">x=</span>cov18, <span class="dt">y=</span>BaHa)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-410" data-line-number="410"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">colour=</span>OccSol),               <span class="co"># colour depends on cond2</span></a>
-<a class="sourceLine" id="cb21-411" data-line-number="411">             <span class="dt">size=</span><span class="dv">3</span>)    <span class="op">+</span></a>
-<a class="sourceLine" id="cb21-412" data-line-number="412"><span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>OccSol)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co">####################################################################</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="co"># NERF_Togo/AGB/4_clean-agb-maps.R: clean AGB raw maps</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="co"># 10 October 2019</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="co">### DEFINITIONS ############################################################</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb22-10" data-line-number="10">PERIOD    &lt;-<span class="st"> </span><span class="dv">1985</span><span class="op">:</span><span class="dv">2019</span></a>
+<a class="sourceLine" id="cb22-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb22-12" data-line-number="12">path &lt;-<span class="st"> &quot;p193&quot;</span></a>
+<a class="sourceLine" id="cb22-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb22-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb22-15" data-line-number="15"><span class="co"># LOESS smoothing of time series</span></a>
+<a class="sourceLine" id="cb22-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb22-17" data-line-number="17">loess.filter &lt;-<span class="st"> </span><span class="cf">function</span> (agb, years, pred, span) {</a>
+<a class="sourceLine" id="cb22-18" data-line-number="18">  <span class="kw">ifelse</span>( <span class="kw">all</span>(<span class="kw">is.na</span>(agb)), </a>
+<a class="sourceLine" id="cb22-19" data-line-number="19">          <span class="kw">return</span>(<span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(pred))), </a>
+<a class="sourceLine" id="cb22-20" data-line-number="20">          <span class="kw">return</span>(<span class="kw">predict</span>(<span class="kw">loess</span>(agb <span class="op">~</span><span class="st"> </span>years,</a>
+<a class="sourceLine" id="cb22-21" data-line-number="21">                               <span class="dt">degree =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb22-22" data-line-number="22">                               <span class="dt">span =</span> span), </a>
+<a class="sourceLine" id="cb22-23" data-line-number="23">                         pred)</a>
+<a class="sourceLine" id="cb22-24" data-line-number="24">          ))</a>
+<a class="sourceLine" id="cb22-25" data-line-number="25">}</a>
+<a class="sourceLine" id="cb22-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb22-27" data-line-number="27">clean.agb &lt;-<span class="st"> </span><span class="cf">function</span>(path) {</a>
+<a class="sourceLine" id="cb22-28" data-line-number="28">  </a>
+<a class="sourceLine" id="cb22-29" data-line-number="29">  <span class="co"># Preparation -------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb22-30" data-line-number="30">  </a>
+<a class="sourceLine" id="cb22-31" data-line-number="31">  maps &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(BIOMASS.DIR, <span class="st">&quot;/3_raw-maps/&quot;</span>, path), <span class="dt">pattern=</span><span class="st">&quot;.*[[:digit:]]{4}</span><span class="ch">\\</span><span class="st">_mr</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb22-32" data-line-number="32">  map.names &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;r$&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(maps))</a>
+<a class="sourceLine" id="cb22-33" data-line-number="33">  map.cols  &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="kw">paste0</span>(path, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">_&quot;</span>), <span class="st">&quot;X&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_[[:alnum:]]+$&quot;</span>, <span class="st">&quot;M&quot;</span>, map.names))</a>
+<a class="sourceLine" id="cb22-34" data-line-number="34">  map.years &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(map.cols, <span class="dv">2</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb22-35" data-line-number="35">  </a>
+<a class="sourceLine" id="cb22-36" data-line-number="36">  maps.values &lt;-<span class="st"> </span><span class="kw">values</span>(maps)                              <span class="co"># extract vector with cell values (huge matrix, takes some time)</span></a>
+<a class="sourceLine" id="cb22-37" data-line-number="37">  <span class="kw">colnames</span>(maps.values) &lt;-<span class="st"> </span>map.cols</a>
+<a class="sourceLine" id="cb22-38" data-line-number="38">  </a>
+<a class="sourceLine" id="cb22-39" data-line-number="39">  nsubsets &lt;-<span class="st"> </span>numCores <span class="op">-</span><span class="st"> </span><span class="dv">1</span>                                 <span class="co"># define subsets for parallel processing</span></a>
+<a class="sourceLine" id="cb22-40" data-line-number="40">  subsets  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">floor</span>((<span class="dv">1</span><span class="op">:</span>nsubsets)<span class="op">*</span>(<span class="kw">nrow</span>(maps.values)<span class="op">/</span>nsubsets)))    </a>
+<a class="sourceLine" id="cb22-41" data-line-number="41">  </a>
+<a class="sourceLine" id="cb22-42" data-line-number="42">  </a>
+<a class="sourceLine" id="cb22-43" data-line-number="43">  </a>
+<a class="sourceLine" id="cb22-44" data-line-number="44">  <span class="co"># Parallel cleaning of pixel trajectories ###############################</span></a>
+<a class="sourceLine" id="cb22-45" data-line-number="45">  </a>
+<a class="sourceLine" id="cb22-46" data-line-number="46">  <span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb22-47" data-line-number="47">  loess.dat &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>nsubsets, <span class="dt">.combine=</span>rbind) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb22-48" data-line-number="48">    </a>
+<a class="sourceLine" id="cb22-49" data-line-number="49">    val &lt;-<span class="st"> </span>maps.values[(subsets[i]<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>subsets[i<span class="op">+</span><span class="dv">1</span>], ]       <span class="co"># get one tile of the matrix</span></a>
+<a class="sourceLine" id="cb22-50" data-line-number="50">    </a>
+<a class="sourceLine" id="cb22-51" data-line-number="51">    <span class="kw">t</span>(<span class="kw">apply</span>(val, <span class="dv">1</span>, loess.filter, <span class="dt">years=</span>map.years, <span class="dt">pred=</span>map.years, <span class="dt">span=</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb22-52" data-line-number="52">  }</a>
+<a class="sourceLine" id="cb22-53" data-line-number="53">  </a>
+<a class="sourceLine" id="cb22-54" data-line-number="54">  </a>
+<a class="sourceLine" id="cb22-55" data-line-number="55">  maps.loess &lt;-<span class="st"> </span>maps</a>
+<a class="sourceLine" id="cb22-56" data-line-number="56">  maps.loess[] &lt;-<span class="st"> </span>loess.dat</a>
+<a class="sourceLine" id="cb22-57" data-line-number="57">  <span class="kw">writeRaster</span>(maps.loess, <span class="kw">paste0</span>(BIOMASS.DIR, <span class="st">&quot;/4_clean-maps/&quot;</span>, path, <span class="st">&quot;_loess.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-58" data-line-number="58">  </a>
+<a class="sourceLine" id="cb22-59" data-line-number="59">}</a>
+<a class="sourceLine" id="cb22-60" data-line-number="60">    </a>
+<a class="sourceLine" id="cb22-61" data-line-number="61">    </a>
+<a class="sourceLine" id="cb22-62" data-line-number="62">    </a>
+<a class="sourceLine" id="cb22-63" data-line-number="63"></a>
+<a class="sourceLine" id="cb22-64" data-line-number="64"></a>
+<a class="sourceLine" id="cb22-65" data-line-number="65"></a>
+<a class="sourceLine" id="cb22-66" data-line-number="66"></a>
+<a class="sourceLine" id="cb22-67" data-line-number="67"></a>
+<a class="sourceLine" id="cb22-68" data-line-number="68"><span class="co">################################</span></a>
+<a class="sourceLine" id="cb22-69" data-line-number="69"></a>
+<a class="sourceLine" id="cb22-70" data-line-number="70">dates &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1987</span>, <span class="dv">1991</span>, <span class="dv">2000</span>, <span class="dv">2003</span>, <span class="dv">2005</span>, <span class="dv">2007</span>, <span class="dv">2008</span>, <span class="dv">2009</span>, <span class="dv">2010</span>, <span class="dv">2012</span>, <span class="dv">2013</span>, <span class="dv">2015</span>, <span class="dv">2017</span>, <span class="dv">2018</span>, <span class="dv">2019</span>)</a>
+<a class="sourceLine" id="cb22-71" data-line-number="71"></a>
+<a class="sourceLine" id="cb22-72" data-line-number="72"></a>
+<a class="sourceLine" id="cb22-73" data-line-number="73"><span class="cf">for</span>(year <span class="cf">in</span> dates) {</a>
+<a class="sourceLine" id="cb22-74" data-line-number="74">  <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Creating AGB map&quot;</span>, year, <span class="st">&quot;...&quot;</span>))</a>
+<a class="sourceLine" id="cb22-75" data-line-number="75">  image &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="dt">path=</span><span class="st">&quot;../results/images/&quot;</span>, <span class="dt">pattern=</span><span class="kw">paste0</span>(<span class="st">&quot;^&quot;</span>, year, <span class="st">&quot;.*_L2.tif$&quot;</span>), <span class="dt">full.names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-76" data-line-number="76">  base  &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;../results/carbone/AGB_&quot;</span>, year, <span class="st">&quot;_2015&quot;</span>)</a>
+<a class="sourceLine" id="cb22-77" data-line-number="77">  biomass.map       &lt;-<span class="st"> </span><span class="kw">create.biomass.map</span>(<span class="dt">ref =</span>      <span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2015_REF_corr.tif&quot;</span>), </a>
+<a class="sourceLine" id="cb22-78" data-line-number="78">                                          <span class="dt">x =</span>        <span class="kw">brick</span>(image))</a>
+<a class="sourceLine" id="cb22-79" data-line-number="79">  <span class="kw">writeRaster</span>(biomass.map<span class="op">$</span>map,            <span class="dt">filename =</span> <span class="kw">paste0</span>(base, <span class="st">&quot;.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-80" data-line-number="80">  <span class="kw">writeRaster</span>(biomass.map<span class="op">$</span>map.bias.corr,  <span class="dt">filename =</span> <span class="kw">paste0</span>(base, <span class="st">&quot;_corr.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-81" data-line-number="81">  <span class="kw">sink</span>(                                       <span class="dt">file =</span> <span class="kw">paste0</span>(base, <span class="st">&quot;_models.txt&quot;</span>))</a>
+<a class="sourceLine" id="cb22-82" data-line-number="82">  <span class="kw">print</span>(biomass.map<span class="op">$</span>rf); <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-83" data-line-number="83">  <span class="kw">print</span>(<span class="kw">importance</span>(biomass.map<span class="op">$</span>rf)); <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb22-84" data-line-number="84">  <span class="kw">print</span>(<span class="kw">summary</span>(biomass.map<span class="op">$</span>lm.bias.corr))</a>
+<a class="sourceLine" id="cb22-85" data-line-number="85">  <span class="kw">sink</span>()</a>
+<a class="sourceLine" id="cb22-86" data-line-number="86">}</a>
+<a class="sourceLine" id="cb22-87" data-line-number="87"></a>
+<a class="sourceLine" id="cb22-88" data-line-number="88"></a>
+<a class="sourceLine" id="cb22-89" data-line-number="89"></a>
+<a class="sourceLine" id="cb22-90" data-line-number="90"><span class="co"># Show the effect of bias correction</span></a>
+<a class="sourceLine" id="cb22-91" data-line-number="91"></a>
+<a class="sourceLine" id="cb22-92" data-line-number="92"><span class="kw">ggplot</span>(biomass.map<span class="op">$</span>sample.pts<span class="op">@</span>data, <span class="kw">aes</span>(<span class="dt">y=</span>ref.agb, <span class="dt">x=</span>agb)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-93" data-line-number="93"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.01</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-94" data-line-number="94"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">slope=</span><span class="dv">1</span>, <span class="dt">linetype=</span><span class="dv">3</span>, <span class="dt">alpha=</span><span class="fl">0.9</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-95" data-line-number="95"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> biomass.map<span class="op">$</span>lm.bias.corr<span class="op">$</span>coefficients[<span class="dv">1</span>], <span class="dt">slope =</span> biomass.map<span class="op">$</span>lm.bias.corr<span class="op">$</span>coefficients[<span class="dv">2</span>], <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.9</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-96" data-line-number="96"><span class="st">  </span><span class="kw">theme_light</span>()</a>
+<a class="sourceLine" id="cb22-97" data-line-number="97"></a>
+<a class="sourceLine" id="cb22-98" data-line-number="98"></a>
+<a class="sourceLine" id="cb22-99" data-line-number="99"></a>
+<a class="sourceLine" id="cb22-100" data-line-number="100"><span class="co"># load the raw carbon maps and do some analysis</span></a>
+<a class="sourceLine" id="cb22-101" data-line-number="101"><span class="co"># ≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠</span></a>
+<a class="sourceLine" id="cb22-102" data-line-number="102"></a>
+<a class="sourceLine" id="cb22-103" data-line-number="103">files &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="dt">path=</span><span class="st">&quot;../results/carbone&quot;</span>, <span class="dt">pattern=</span><span class="st">&quot;^.*2015.tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-104" data-line-number="104">maps &lt;-<span class="st"> </span><span class="kw">stack</span>(files)</a>
+<a class="sourceLine" id="cb22-105" data-line-number="105"><span class="kw">names</span>(maps) &lt;-<span class="st"> </span>dates</a>
+<a class="sourceLine" id="cb22-106" data-line-number="106"></a>
+<a class="sourceLine" id="cb22-107" data-line-number="107">maps.dat &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">na.omit</span>(maps[]))</a>
+<a class="sourceLine" id="cb22-108" data-line-number="108"></a>
+<a class="sourceLine" id="cb22-109" data-line-number="109">dens.plot &lt;-<span class="st"> </span>maps.dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X1987, X1991, X2000, X2003, X2008, X2013, X2015, X2018) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-110" data-line-number="110"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>value, <span class="dt">color=</span>variable, <span class="dt">linetype=</span>variable)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-111" data-line-number="111"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-112" data-line-number="112"><span class="st">  </span><span class="kw">theme_light</span>() </a>
+<a class="sourceLine" id="cb22-113" data-line-number="113"></a>
+<a class="sourceLine" id="cb22-114" data-line-number="114"><span class="kw">print</span>(dens.plot)</a>
+<a class="sourceLine" id="cb22-115" data-line-number="115"></a>
+<a class="sourceLine" id="cb22-116" data-line-number="116"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/densities_all.pdf&quot;</span>)</a>
+<a class="sourceLine" id="cb22-117" data-line-number="117"><span class="kw">print</span>(dens.plot)</a>
+<a class="sourceLine" id="cb22-118" data-line-number="118"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb22-119" data-line-number="119"></a>
+<a class="sourceLine" id="cb22-120" data-line-number="120"></a>
+<a class="sourceLine" id="cb22-121" data-line-number="121"></a>
+<a class="sourceLine" id="cb22-122" data-line-number="122"></a>
+<a class="sourceLine" id="cb22-123" data-line-number="123"></a>
+<a class="sourceLine" id="cb22-124" data-line-number="124"></a>
+<a class="sourceLine" id="cb22-125" data-line-number="125"><span class="co"># Validation of loess-smoothed 2015</span></a>
+<a class="sourceLine" id="cb22-126" data-line-number="126">map<span class="fl">.2015</span> &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="st">&quot;../results/carbone/level2/AGBmaps_loess.tif&quot;</span>)[[<span class="dv">12</span>]]</a>
+<a class="sourceLine" id="cb22-127" data-line-number="127">map<span class="fl">.2003</span> &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="st">&quot;../results/carbone/level2/AGBmaps_loess.tif&quot;</span>)[[<span class="dv">4</span>]]</a>
+<a class="sourceLine" id="cb22-128" data-line-number="128">plots &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(map<span class="fl">.2015</span>, plots, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-129" data-line-number="129">plots &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(map<span class="fl">.2003</span>, plots, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-130" data-line-number="130"><span class="kw">names</span>(plots)</a>
+<a class="sourceLine" id="cb22-131" data-line-number="131"></a>
+<a class="sourceLine" id="cb22-132" data-line-number="132">tmp &lt;-<span class="st"> </span>plots<span class="op">@</span>data[,<span class="kw">c</span>(<span class="st">&quot;BaHa&quot;</span>, <span class="st">&quot;AGBmaps_loess.12&quot;</span>, <span class="st">&quot;AGBmaps_loess.4&quot;</span>)]</a>
+<a class="sourceLine" id="cb22-133" data-line-number="133">tmp<span class="op">$</span>cex &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">+</span><span class="kw">abs</span>(tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.4</span>)<span class="op">/</span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb22-134" data-line-number="134">tmp<span class="op">$</span>col[tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.4</span> <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> &quot;red&quot;</span></a>
+<a class="sourceLine" id="cb22-135" data-line-number="135">tmp<span class="op">$</span>col[tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.4</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> &quot;blue&quot;</span></a>
+<a class="sourceLine" id="cb22-136" data-line-number="136"></a>
+<a class="sourceLine" id="cb22-137" data-line-number="137"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/figures/Validation_LoessMap2015.pdf&quot;</span>)</a>
+<a class="sourceLine" id="cb22-138" data-line-number="138"><span class="kw">plot</span>(tmp<span class="op">$</span>BaHa, tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span>, <span class="dt">main=</span><span class="st">&quot;AGB Carbon Stocks on Permanent Inventory Plots&quot;</span>,</a>
+<a class="sourceLine" id="cb22-139" data-line-number="139">     <span class="dt">xlab=</span><span class="st">&quot;National Forest Inventory 2015 (tC/ha)&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;LOESS-smoothed Carbon Map 2015&quot;</span>)</a>
+<a class="sourceLine" id="cb22-140" data-line-number="140"><span class="kw">points</span>(tmp<span class="op">$</span>BaHa[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span>[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], <span class="dt">cex=</span>tmp<span class="op">$</span>cex[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], <span class="dt">col=</span>tmp<span class="op">$</span>col[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>])</a>
+<a class="sourceLine" id="cb22-141" data-line-number="141"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>, <span class="dt">lty=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb22-142" data-line-number="142"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="fl">0.5</span>, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb22-143" data-line-number="143"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span><span class="op">/</span><span class="fl">0.5</span>, <span class="dt">lty=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb22-144" data-line-number="144"><span class="kw">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>), <span class="dt">pch=</span><span class="dv">1</span>, <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">&quot;Loss of &gt;= 20 tC since 2003&quot;</span>, <span class="st">&quot;Gain of &gt;= 20 tC since 2003&quot;</span>))</a>
+<a class="sourceLine" id="cb22-145" data-line-number="145"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb22-146" data-line-number="146"></a>
+<a class="sourceLine" id="cb22-147" data-line-number="147"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/figures/Validation_LoessMap2015_Residuals.pdf&quot;</span>)</a>
+<a class="sourceLine" id="cb22-148" data-line-number="148"><span class="kw">plot</span>(tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>BaHa<span class="op">~</span>tmp<span class="op">$</span>BaHa, <span class="dt">main=</span><span class="st">&quot;AGB Carbon Stocks on Permanent Inventory Plots&quot;</span>,</a>
+<a class="sourceLine" id="cb22-149" data-line-number="149">     <span class="dt">xlab=</span><span class="st">&quot;National Forest Inventory 2015 (tC/ha)&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Residuals of LOESS-smoothed Carbon Map 2015&quot;</span>)</a>
+<a class="sourceLine" id="cb22-150" data-line-number="150"><span class="kw">points</span>(tmp<span class="op">$</span>BaHa[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span>[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>]<span class="op">-</span>tmp<span class="op">$</span>BaHa[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], <span class="dt">cex=</span>tmp<span class="op">$</span>cex[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>], <span class="dt">col=</span>tmp<span class="op">$</span>col[tmp<span class="op">$</span>cex <span class="op">&gt;</span><span class="st"> </span><span class="fl">1.7</span>])</a>
+<a class="sourceLine" id="cb22-151" data-line-number="151">bias.corr &lt;-<span class="st"> </span><span class="kw">lm</span>(tmp<span class="op">$</span>AGBmaps_loess<span class="fl">.12</span><span class="op">-</span>tmp<span class="op">$</span>BaHa<span class="op">~</span>tmp<span class="op">$</span>BaHa)</a>
+<a class="sourceLine" id="cb22-152" data-line-number="152"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb22-153" data-line-number="153"><span class="kw">abline</span>(bias.corr, <span class="dt">lty=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb22-154" data-line-number="154"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>), <span class="dt">pch=</span><span class="dv">1</span>, <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">&quot;Loss of &gt;= 20 tC since 2003&quot;</span>, <span class="st">&quot;Gain of &gt;= 20 tC since 2003&quot;</span>))</a>
+<a class="sourceLine" id="cb22-155" data-line-number="155"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb22-156" data-line-number="156"></a>
+<a class="sourceLine" id="cb22-157" data-line-number="157"></a>
+<a class="sourceLine" id="cb22-158" data-line-number="158"></a>
+<a class="sourceLine" id="cb22-159" data-line-number="159"></a>
+<a class="sourceLine" id="cb22-160" data-line-number="160"><span class="co"># Load the cleaned maps and create tables</span></a>
+<a class="sourceLine" id="cb22-161" data-line-number="161"><span class="co"># =======================================</span></a>
+<a class="sourceLine" id="cb22-162" data-line-number="162"></a>
+<a class="sourceLine" id="cb22-163" data-line-number="163">biomass.tabs &lt;-<span class="st"> </span><span class="cf">function</span>(map, <span class="dt">aoi=</span><span class="ot">NULL</span>) {</a>
+<a class="sourceLine" id="cb22-164" data-line-number="164">  </a>
+<a class="sourceLine" id="cb22-165" data-line-number="165">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(aoi)) map &lt;-<span class="st"> </span><span class="kw">crop</span>(map, aoi)</a>
+<a class="sourceLine" id="cb22-166" data-line-number="166">  </a>
+<a class="sourceLine" id="cb22-167" data-line-number="167">  agb.dat        &lt;-<span class="st"> </span>map[]</a>
+<a class="sourceLine" id="cb22-168" data-line-number="168">  agb.change.dat &lt;-<span class="st"> </span>agb.dat[,<span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(agb.dat)] <span class="op">-</span><span class="st"> </span>agb.dat[,<span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(agb.dat)<span class="op">-</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb22-169" data-line-number="169">  agb.loss.dat   &lt;-<span class="st"> </span>agb.change.dat; agb.loss.dat[agb.loss.dat <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb22-170" data-line-number="170">  agb.gain.dat   &lt;-<span class="st"> </span>agb.change.dat; agb.gain.dat[agb.gain.dat <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb22-171" data-line-number="171">  </a>
+<a class="sourceLine" id="cb22-172" data-line-number="172">  dates &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">substr</span>(<span class="kw">names</span>(map), <span class="dv">2</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb22-173" data-line-number="173">  </a>
+<a class="sourceLine" id="cb22-174" data-line-number="174">  agb.tab &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">year      =</span> dates, </a>
+<a class="sourceLine" id="cb22-175" data-line-number="175">                        <span class="dt">total.agb =</span> <span class="kw">colSums</span>(agb.dat, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>, </a>
+<a class="sourceLine" id="cb22-176" data-line-number="176">                        <span class="dt">period    =</span> <span class="kw">c</span>(<span class="ot">NA</span>, dates[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>dates[<span class="op">-</span><span class="kw">length</span>(dates)]), </a>
+<a class="sourceLine" id="cb22-177" data-line-number="177">                        <span class="dt">center    =</span> <span class="kw">c</span>(<span class="ot">NA</span>, (dates[<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>dates[<span class="op">-</span><span class="kw">length</span>(dates)])<span class="op">/</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb22-178" data-line-number="178">  </a>
+<a class="sourceLine" id="cb22-179" data-line-number="179">  agb.tab<span class="op">$</span>loss.t.yr              &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">colSums</span>(agb.loss.dat, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>)<span class="op">/</span>agb.tab<span class="op">$</span>period</a>
+<a class="sourceLine" id="cb22-180" data-line-number="180">  agb.tab<span class="op">$</span>gain.t.yr              &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">colSums</span>(agb.gain.dat, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>)<span class="op">/</span>agb.tab<span class="op">$</span>period</a>
+<a class="sourceLine" id="cb22-181" data-line-number="181">  agb.tab<span class="op">$</span>netchange.t.yr         &lt;-<span class="st"> </span>agb.tab<span class="op">$</span>loss.t.yr <span class="op">+</span><span class="st"> </span>agb.tab<span class="op">$</span>gain.t.yr </a>
+<a class="sourceLine" id="cb22-182" data-line-number="182">  </a>
+<a class="sourceLine" id="cb22-183" data-line-number="183">  agb.tab<span class="op">$</span>loss.pc.yr             &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="dv">1</span><span class="op">/</span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span><span class="kw">log</span>((agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span>agb.tab<span class="op">$</span>loss.t.yr[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))]) <span class="op">/</span><span class="st"> </span>agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>])), <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb22-184" data-line-number="184">  agb.tab<span class="op">$</span>gain.pc.yr             &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="dv">1</span><span class="op">/</span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span><span class="kw">log</span>((agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span>agb.tab<span class="op">$</span>gain.t.yr[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))]) <span class="op">/</span><span class="st"> </span>agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>])), <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb22-185" data-line-number="185">  agb.tab<span class="op">$</span>netchange.pc.yr        &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="ot">NA</span>, <span class="dv">1</span><span class="op">/</span>agb.tab<span class="op">$</span>period[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(agb.tab))] <span class="op">*</span><span class="st"> </span><span class="kw">log</span>( agb.tab<span class="op">$</span>total.agb[<span class="dv">2</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)]                                                                               <span class="op">/</span><span class="st"> </span>agb.tab<span class="op">$</span>total.agb[<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(agb.tab)<span class="op">-</span><span class="dv">1</span>])), <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb22-186" data-line-number="186">  </a>
+<a class="sourceLine" id="cb22-187" data-line-number="187">  <span class="kw">return</span>(agb.tab)</a>
+<a class="sourceLine" id="cb22-188" data-line-number="188">}</a>
+<a class="sourceLine" id="cb22-189" data-line-number="189"></a>
+<a class="sourceLine" id="cb22-190" data-line-number="190"></a>
+<a class="sourceLine" id="cb22-191" data-line-number="191"></a>
+<a class="sourceLine" id="cb22-192" data-line-number="192">plot.biomass &lt;-<span class="st"> </span><span class="cf">function</span>(fc, zone, <span class="dt">filename=</span><span class="ot">NULL</span>) {</a>
+<a class="sourceLine" id="cb22-193" data-line-number="193">  </a>
+<a class="sourceLine" id="cb22-194" data-line-number="194">  <span class="cf">if</span>(zone<span class="op">==</span><span class="st">&quot;Zone IV&quot;</span>) {</a>
+<a class="sourceLine" id="cb22-195" data-line-number="195">    title    &lt;-<span class="st"> &quot;Net and Gross Changes in Forest Biomass 1987 - 2019 in Ecological Zone IV&quot;</span></a>
+<a class="sourceLine" id="cb22-196" data-line-number="196">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">750000</span>, <span class="dv">750000</span>)</a>
+<a class="sourceLine" id="cb22-197" data-line-number="197">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">750000</span>, <span class="dv">750000</span>, <span class="dv">100000</span>)</a>
+<a class="sourceLine" id="cb22-198" data-line-number="198">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">750000</span>, <span class="dv">750000</span>, <span class="dv">50000</span>)</a>
+<a class="sourceLine" id="cb22-199" data-line-number="199">  } </a>
+<a class="sourceLine" id="cb22-200" data-line-number="200">  </a>
+<a class="sourceLine" id="cb22-201" data-line-number="201">  <span class="cf">if</span> (zone<span class="op">==</span><span class="st">&quot;AOI.1&quot;</span>) {</a>
+<a class="sourceLine" id="cb22-202" data-line-number="202">    title    &lt;-<span class="st"> &quot;Net and Gross Changes in Forest Biomass 1987 - 2019 in Plaine de Litimé (AOI.1)&quot;</span></a>
+<a class="sourceLine" id="cb22-203" data-line-number="203">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>)</a>
+<a class="sourceLine" id="cb22-204" data-line-number="204">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>, <span class="dv">2000</span>)</a>
+<a class="sourceLine" id="cb22-205" data-line-number="205">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>, <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb22-206" data-line-number="206">  } </a>
+<a class="sourceLine" id="cb22-207" data-line-number="207">  </a>
+<a class="sourceLine" id="cb22-208" data-line-number="208">  <span class="cf">if</span> (zone<span class="op">==</span><span class="st">&quot;AOI.2&quot;</span>) {</a>
+<a class="sourceLine" id="cb22-209" data-line-number="209">    title    &lt;-<span class="st"> &quot;Net and Gross Changes in Forest Biomass 1987 - 2019 in Kpélé (AOI.2)&quot;</span></a>
+<a class="sourceLine" id="cb22-210" data-line-number="210">    ylim     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>)</a>
+<a class="sourceLine" id="cb22-211" data-line-number="211">    ybreaks  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>, <span class="dv">2000</span>)</a>
+<a class="sourceLine" id="cb22-212" data-line-number="212">    ymbreaks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">18000</span>, <span class="dv">15000</span>, <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb22-213" data-line-number="213">  } </a>
+<a class="sourceLine" id="cb22-214" data-line-number="214">  </a>
+<a class="sourceLine" id="cb22-215" data-line-number="215">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">pdf</span>(filename)</a>
+<a class="sourceLine" id="cb22-216" data-line-number="216">  </a>
+<a class="sourceLine" id="cb22-217" data-line-number="217">  fc<span class="op">$</span>netloss.t.yr &lt;-<span class="st"> </span>fc<span class="op">$</span>netchange.t.yr </a>
+<a class="sourceLine" id="cb22-218" data-line-number="218">  fc<span class="op">$</span>netloss.t.yr[fc<span class="op">$</span>netloss.t.yr <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb22-219" data-line-number="219">  fc<span class="op">$</span>netgain.t.yr &lt;-<span class="st"> </span>fc<span class="op">$</span>netchange.t.yr </a>
+<a class="sourceLine" id="cb22-220" data-line-number="220">  fc<span class="op">$</span>netgain.t.yr[fc<span class="op">$</span>netgain.t.yr <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb22-221" data-line-number="221">  </a>
+<a class="sourceLine" id="cb22-222" data-line-number="222">  <span class="kw">print</span>(</a>
+<a class="sourceLine" id="cb22-223" data-line-number="223">    fc[<span class="op">-</span><span class="dv">1</span>,] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, loss.t.yr, gain.t.yr, netloss.t.yr, netgain.t.yr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-224" data-line-number="224"><span class="st">      </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>value, <span class="dt">x =</span> center, <span class="dt">width=</span>period<span class="fl">-0.7</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-225" data-line-number="225"><span class="st">      </span><span class="kw">geom_bar</span>(<span class="dt">data=</span>. <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(variable <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;loss.t.yr&quot;</span>, <span class="st">&quot;gain.t.yr&quot;</span>)), <span class="kw">aes</span>(<span class="dt">fill=</span>variable, <span class="dt">alpha=</span><span class="fl">0.9</span>), <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="dt">show.legend=</span><span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-226" data-line-number="226"><span class="st">      </span><span class="kw">guides</span>(<span class="dt">alpha =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-227" data-line-number="227"><span class="st">      </span><span class="kw">geom_bar</span>(<span class="dt">data=</span>. <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(variable <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;netloss.t.yr&quot;</span>, <span class="st">&quot;netgain.t.yr&quot;</span>)), <span class="kw">aes</span>(<span class="dt">fill=</span>variable), <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-228" data-line-number="228"><span class="st">      </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="st">&quot;gain.t.yr&quot;</span>, <span class="st">&quot;loss.t.yr&quot;</span>), <span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;#00BFC4&quot;</span>, <span class="st">&quot;#F8766D&quot;</span>, <span class="st">&quot;#00BFC4&quot;</span>, <span class="st">&quot;#F8766D&quot;</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Biomass gain    &quot;</span>, <span class="st">&quot;Biomass loss    &quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-229" data-line-number="229"><span class="st">      </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Tonnes AGB per Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(title) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-230" data-line-number="230"><span class="st">      </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks =</span> <span class="ot">NULL</span>, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1987</span>, <span class="dv">2000</span>, <span class="dv">2005</span>, <span class="dv">2010</span>, <span class="dv">2015</span>, <span class="dv">2019</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-231" data-line-number="231"><span class="st">      </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks=</span>ybreaks, <span class="dt">minor_breaks =</span> ymbreaks) <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim=</span>ylim) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-232" data-line-number="232"><span class="st">      </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">legend.box =</span> <span class="st">&quot;horizontal&quot;</span>, <span class="dt">legend.justification=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.2</span>,<span class="fl">1.2</span>))</a>
+<a class="sourceLine" id="cb22-233" data-line-number="233">  )</a>
+<a class="sourceLine" id="cb22-234" data-line-number="234">  </a>
+<a class="sourceLine" id="cb22-235" data-line-number="235">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(filename)) <span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb22-236" data-line-number="236">}</a>
+<a class="sourceLine" id="cb22-237" data-line-number="237"></a>
+<a class="sourceLine" id="cb22-238" data-line-number="238"></a>
+<a class="sourceLine" id="cb22-239" data-line-number="239">maps &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="st">&quot;../results/carbone/level2/AGBmaps_loess.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb22-240" data-line-number="240"><span class="kw">names</span>(maps) &lt;-<span class="st"> </span>dates</a>
+<a class="sourceLine" id="cb22-241" data-line-number="241"></a>
+<a class="sourceLine" id="cb22-242" data-line-number="242">maps.dat &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">na.omit</span>(maps[]))</a>
+<a class="sourceLine" id="cb22-243" data-line-number="243"></a>
+<a class="sourceLine" id="cb22-244" data-line-number="244">dens.plot &lt;-<span class="st"> </span>maps.dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X1991, X2000, X2005, X2010, X2015, X2018) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-245" data-line-number="245"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>value, <span class="dt">color=</span>variable, <span class="dt">linetype=</span>variable)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-246" data-line-number="246"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-247" data-line-number="247"><span class="st">  </span><span class="kw">theme_light</span>() </a>
+<a class="sourceLine" id="cb22-248" data-line-number="248"></a>
+<a class="sourceLine" id="cb22-249" data-line-number="249"><span class="kw">print</span>(dens.plot)</a>
+<a class="sourceLine" id="cb22-250" data-line-number="250"></a>
+<a class="sourceLine" id="cb22-251" data-line-number="251"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/figures/densities.pdf&quot;</span>)</a>
+<a class="sourceLine" id="cb22-252" data-line-number="252"><span class="kw">print</span>(dens.plot)</a>
+<a class="sourceLine" id="cb22-253" data-line-number="253"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb22-254" data-line-number="254"></a>
+<a class="sourceLine" id="cb22-255" data-line-number="255">res.all      &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps)</a>
+<a class="sourceLine" id="cb22-256" data-line-number="256">res          &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps[[<span class="kw">c</span>(<span class="st">&quot;X1991&quot;</span>, <span class="st">&quot;X2000&quot;</span>, <span class="st">&quot;X2005&quot;</span>, <span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;X2015&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]])</a>
+<a class="sourceLine" id="cb22-257" data-line-number="257">res.aoi1.all &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps, AOI<span class="fl">.1</span>)</a>
+<a class="sourceLine" id="cb22-258" data-line-number="258">res.aoi1     &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps[[<span class="kw">c</span>(<span class="st">&quot;X1991&quot;</span>, <span class="st">&quot;X2000&quot;</span>, <span class="st">&quot;X2005&quot;</span>, <span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;X2015&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]], AOI<span class="fl">.1</span>)</a>
+<a class="sourceLine" id="cb22-259" data-line-number="259">res.aoi2.all &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps, AOI<span class="fl">.2</span>)</a>
+<a class="sourceLine" id="cb22-260" data-line-number="260">res.aoi2     &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps[[<span class="kw">c</span>(<span class="st">&quot;X1991&quot;</span>, <span class="st">&quot;X2000&quot;</span>, <span class="st">&quot;X2005&quot;</span>, <span class="st">&quot;X2010&quot;</span>, <span class="st">&quot;X2015&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]], AOI<span class="fl">.2</span>)</a>
+<a class="sourceLine" id="cb22-261" data-line-number="261"></a>
+<a class="sourceLine" id="cb22-262" data-line-number="262">res.tmp          &lt;-<span class="st"> </span><span class="kw">biomass.tabs</span>(<span class="dt">map=</span>maps[[<span class="kw">c</span>(<span class="st">&quot;X1991&quot;</span>, <span class="st">&quot;X2003&quot;</span>, <span class="st">&quot;X2018&quot;</span>)]])</a>
+<a class="sourceLine" id="cb22-263" data-line-number="263"></a>
+<a class="sourceLine" id="cb22-264" data-line-number="264"><span class="kw">plot.biomass</span>(res,      <span class="st">&quot;Zone IV&quot;</span>, <span class="st">&quot;../results/carbone/figures/biomass.pdf&quot;</span>)</a>
+<a class="sourceLine" id="cb22-265" data-line-number="265"><span class="kw">plot.biomass</span>(res.aoi1, <span class="st">&quot;AOI.1&quot;</span>,    <span class="st">&quot;../results/carbone/figures/biomass_aoi1.pdf&quot;</span>)</a>
+<a class="sourceLine" id="cb22-266" data-line-number="266"><span class="kw">plot.biomass</span>(res.aoi2, <span class="st">&quot;AOI.2&quot;</span>,    <span class="st">&quot;../results/carbone/figures/biomass_aoi2.pdf&quot;</span>)</a>
+<a class="sourceLine" id="cb22-267" data-line-number="267"></a>
+<a class="sourceLine" id="cb22-268" data-line-number="268"></a>
+<a class="sourceLine" id="cb22-269" data-line-number="269"><span class="kw">write.xlsx</span>(<span class="kw">list</span>(<span class="st">&quot;Total&quot;</span> =<span class="st"> </span>res,</a>
+<a class="sourceLine" id="cb22-270" data-line-number="270">                <span class="st">&quot;AOI.1&quot;</span> =<span class="st"> </span>res.aoi1,</a>
+<a class="sourceLine" id="cb22-271" data-line-number="271">                <span class="st">&quot;AOI.2&quot;</span> =<span class="st"> </span>res.aoi2),</a>
+<a class="sourceLine" id="cb22-272" data-line-number="272">           <span class="dt">file =</span> <span class="st">&quot;../results/carbone/figures/biomass-change.xlsx&quot;</span>)</a>
+<a class="sourceLine" id="cb22-273" data-line-number="273"></a>
+<a class="sourceLine" id="cb22-274" data-line-number="274"></a>
+<a class="sourceLine" id="cb22-275" data-line-number="275"></a>
+<a class="sourceLine" id="cb22-276" data-line-number="276"></a>
+<a class="sourceLine" id="cb22-277" data-line-number="277">Y.diff &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2018_2015_corr.tif&quot;</span>) <span class="op">-</span><span class="st"> </span>Y.corr</a>
+<a class="sourceLine" id="cb22-278" data-line-number="278">Y.gain &lt;-<span class="st"> </span>Y.diff; Y.gain[Y.gain<span class="op">&lt;=</span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb22-279" data-line-number="279">Y.loss &lt;-<span class="st"> </span>Y.diff; Y.loss[Y.loss<span class="op">&gt;=</span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb22-280" data-line-number="280">Y.diff &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(<span class="kw">round</span>(Y.diff), <span class="st">&quot;../results/carbone/AGB_2018_1991_diff.tif&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-281" data-line-number="281"></a>
+<a class="sourceLine" id="cb22-282" data-line-number="282"><span class="op">-</span><span class="kw">sum</span>(Y.loss[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="kw">sum</span>(<span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2003_2015_corr.tif&quot;</span>)[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="dv">15</span></a>
+<a class="sourceLine" id="cb22-283" data-line-number="283"><span class="kw">sum</span>(Y.gain[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="kw">sum</span>(<span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2003_2015_corr.tif&quot;</span>)[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">/</span><span class="dv">15</span></a>
+<a class="sourceLine" id="cb22-284" data-line-number="284"></a>
+<a class="sourceLine" id="cb22-285" data-line-number="285"></a>
+<a class="sourceLine" id="cb22-286" data-line-number="286">dat.c &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">X1991=</span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_1991_2015_corr.tif&quot;</span>)[],</a>
+<a class="sourceLine" id="cb22-287" data-line-number="287">                    <span class="dt">X2003=</span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2003_2015_corr.tif&quot;</span>)[],</a>
+<a class="sourceLine" id="cb22-288" data-line-number="288">                    <span class="dt">X2018=</span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2018_2015_corr.tif&quot;</span>)[])</a>
+<a class="sourceLine" id="cb22-289" data-line-number="289"></a>
+<a class="sourceLine" id="cb22-290" data-line-number="290">dat.c &lt;-<span class="st"> </span><span class="kw">na.omit</span>(dat.c)</a>
+<a class="sourceLine" id="cb22-291" data-line-number="291"></a>
+<a class="sourceLine" id="cb22-292" data-line-number="292">dat.c <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X1991<span class="op">:</span>X2018) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-293" data-line-number="293"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>value, <span class="dt">x=</span>variable, <span class="dt">color=</span>variable)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-294" data-line-number="294"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-295" data-line-number="295"><span class="st">  </span><span class="kw">coord_flip</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-296" data-line-number="296"><span class="st">  </span><span class="kw">theme_light</span>() </a>
+<a class="sourceLine" id="cb22-297" data-line-number="297"></a>
+<a class="sourceLine" id="cb22-298" data-line-number="298"><span class="kw">pdf</span>(<span class="st">&quot;../results/carbone/densities_91-03-18.pdf&quot;</span>)</a>
+<a class="sourceLine" id="cb22-299" data-line-number="299"></a>
+<a class="sourceLine" id="cb22-300" data-line-number="300">dat.c <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(variable, value, X1991<span class="op">:</span>X2018) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-301" data-line-number="301"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>value, <span class="dt">color=</span>variable)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-302" data-line-number="302"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-303" data-line-number="303"><span class="st">  </span><span class="kw">theme_light</span>() </a>
+<a class="sourceLine" id="cb22-304" data-line-number="304"></a>
+<a class="sourceLine" id="cb22-305" data-line-number="305"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb22-306" data-line-number="306"></a>
+<a class="sourceLine" id="cb22-307" data-line-number="307"></a>
+<a class="sourceLine" id="cb22-308" data-line-number="308"></a>
+<a class="sourceLine" id="cb22-309" data-line-number="309"></a>
+<a class="sourceLine" id="cb22-310" data-line-number="310"></a>
+<a class="sourceLine" id="cb22-311" data-line-number="311"><span class="co"># verify the map</span></a>
+<a class="sourceLine" id="cb22-312" data-line-number="312"></a>
+<a class="sourceLine" id="cb22-313" data-line-number="313">val.points &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(Y.corr, dat.placette, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-314" data-line-number="314">val.points &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(Y.<span class="fl">2003.</span>corr, val.points, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-315" data-line-number="315">val.points &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(Y<span class="fl">.2015</span>, val.points, <span class="dt">sp=</span><span class="ot">TRUE</span>, <span class="dt">fun=</span>mean, <span class="dt">buffer=</span><span class="dv">20</span>, <span class="dt">normalizeWeights=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-316" data-line-number="316"><span class="kw">plot</span>(val.points<span class="op">$</span>BaHa, val.points<span class="op">$</span>AGB_<span class="dv">2015</span>_<span class="dv">2003</span>_corr)</a>
+<a class="sourceLine" id="cb22-317" data-line-number="317"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb22-318" data-line-number="318">mod &lt;-<span class="st"> </span><span class="kw">lm</span>(AGB_<span class="dv">2015</span>_<span class="dv">2003</span>_corr <span class="op">~</span><span class="st"> </span>BaHa, <span class="dt">data=</span>val.points)</a>
+<a class="sourceLine" id="cb22-319" data-line-number="319"><span class="kw">abline</span>(mod, <span class="dt">lty=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb22-320" data-line-number="320"></a>
+<a class="sourceLine" id="cb22-321" data-line-number="321"></a>
+<a class="sourceLine" id="cb22-322" data-line-number="322"></a>
+<a class="sourceLine" id="cb22-323" data-line-number="323"></a>
+<a class="sourceLine" id="cb22-324" data-line-number="324"><span class="co">############ compare 2015 carbon map with the forest change map #######################</span></a>
+<a class="sourceLine" id="cb22-325" data-line-number="325"></a>
+<a class="sourceLine" id="cb22-326" data-line-number="326">map.carb &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;../results/carbone/AGB_2015_REF.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb22-327" data-line-number="327">map.gain &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;../results/fcc/3_alldates-direct2003/level3/forest-gain.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb22-328" data-line-number="328">map.loss &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;../results/fcc/3_alldates-direct2003/level3/forest-loss.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb22-329" data-line-number="329"></a>
+<a class="sourceLine" id="cb22-330" data-line-number="330">map.loss.a2015 &lt;-<span class="st"> </span>map.loss; map.loss.a2015[map.loss.a2015<span class="op">&lt;</span><span class="dv">2015</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb22-331" data-line-number="331">map.carb.loss.a2015 &lt;-<span class="st"> </span><span class="kw">mask</span>(map.carb, map.loss.a2015)</a>
+<a class="sourceLine" id="cb22-332" data-line-number="332"><span class="kw">hist</span>(map.carb.loss.a2015[]); <span class="kw">summary</span>(map.carb.loss.a2015[]); <span class="kw">sum</span>(map.carb.loss.a2015[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">*</span>(<span class="dv">30</span><span class="op">*</span><span class="dv">30</span><span class="op">/</span><span class="dv">10000</span>)</a>
+<a class="sourceLine" id="cb22-333" data-line-number="333"></a>
+<a class="sourceLine" id="cb22-334" data-line-number="334">map.gain.b2015 &lt;-<span class="st"> </span>map.gain; map.gain.b2015[map.gain.b2015<span class="op">&gt;=</span><span class="dv">2015</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb22-335" data-line-number="335">map.gain.b2015[] &lt;-<span class="st"> </span><span class="dv">2015</span> <span class="op">-</span><span class="st"> </span>map.gain.b2015[]</a>
+<a class="sourceLine" id="cb22-336" data-line-number="336">map.carb.gain.b2015 &lt;-<span class="st"> </span><span class="kw">mask</span>(map.carb, map.gain.b2015)</a>
+<a class="sourceLine" id="cb22-337" data-line-number="337"><span class="kw">hist</span>(map.carb.gain.b2015[]); <span class="kw">summary</span>(map.carb.gain.b2015[]); <span class="kw">sum</span>(map.carb.gain.b2015[], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)<span class="op">*</span>(<span class="dv">30</span><span class="op">*</span><span class="dv">30</span><span class="op">/</span><span class="dv">10000</span>)</a>
+<a class="sourceLine" id="cb22-338" data-line-number="338"></a>
+<a class="sourceLine" id="cb22-339" data-line-number="339"><span class="kw">boxplot</span>(map.carb.gain.b2015[] <span class="op">~</span><span class="st"> </span>map.gain.b2015[])</a>
+<a class="sourceLine" id="cb22-340" data-line-number="340"></a>
+<a class="sourceLine" id="cb22-341" data-line-number="341">map.carb.loss.a2015<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">mask</span>(Y.loss, map.loss.a2015)</a>
+<a class="sourceLine" id="cb22-342" data-line-number="342"></a>
+<a class="sourceLine" id="cb22-343" data-line-number="343"></a>
+<a class="sourceLine" id="cb22-344" data-line-number="344"></a>
+<a class="sourceLine" id="cb22-345" data-line-number="345"></a>
+<a class="sourceLine" id="cb22-346" data-line-number="346"></a>
+<a class="sourceLine" id="cb22-347" data-line-number="347"></a>
+<a class="sourceLine" id="cb22-348" data-line-number="348"><span class="co"># ######### Try with linear regression ############</span></a>
+<a class="sourceLine" id="cb22-349" data-line-number="349"><span class="co"># X$evi &lt;- evi(nir=X$NIR, r=X$R, b=X$B)</span></a>
+<a class="sourceLine" id="cb22-350" data-line-number="350"><span class="co"># X$ndvi &lt;- nd(X$NIR, X$R)</span></a>
+<a class="sourceLine" id="cb22-351" data-line-number="351"><span class="co"># X$ndmi &lt;- nd(X$NIR, X$SWIR1)</span></a>
+<a class="sourceLine" id="cb22-352" data-line-number="352"><span class="co"># X$nbr &lt;- nd(X$NIR, X$SWIR2)</span></a>
+<a class="sourceLine" id="cb22-353" data-line-number="353"><span class="co"># cor(-X$SWIR1[], Y.2015[], use=&quot;pairwise.complete.obs&quot;)</span></a>
+<a class="sourceLine" id="cb22-354" data-line-number="354"><span class="co"># s &lt;- sample(1:ncell(Y.2015), 10000)</span></a>
+<a class="sourceLine" id="cb22-355" data-line-number="355"><span class="co"># plot(log(Y.2015[s]) ~ log(X$SWIR1[s]))</span></a>
+<a class="sourceLine" id="cb22-356" data-line-number="356"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-357" data-line-number="357"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-358" data-line-number="358"><span class="co"># val.points &lt;- raster::extract(X, val.points, sp=TRUE, fun=mean, buffer=20, normalizeWeights=TRUE)</span></a>
+<a class="sourceLine" id="cb22-359" data-line-number="359"><span class="co"># plot(log(val.points$BaHa) ~ log(val.points$SWIR1))</span></a>
+<a class="sourceLine" id="cb22-360" data-line-number="360"><span class="co"># val.points$BaHa.log &lt;- log(val.points$BaHa)</span></a>
+<a class="sourceLine" id="cb22-361" data-line-number="361"><span class="co"># val.points$SWIR1.log &lt;- log(val.points$SWIR1)</span></a>
+<a class="sourceLine" id="cb22-362" data-line-number="362"><span class="co"># lm.swir &lt;- lm(BaHa.log ~ SWIR1.log, data=val.points@data)</span></a>
+<a class="sourceLine" id="cb22-363" data-line-number="363"><span class="co"># abline(lm.swir)</span></a>
+<a class="sourceLine" id="cb22-364" data-line-number="364"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-365" data-line-number="365"><span class="co"># plot(val.points$BaHa ~ val.points$SWIR1)</span></a>
+<a class="sourceLine" id="cb22-366" data-line-number="366"><span class="co"># lines(seq(1000, 2500, 50), exp(lm.swir$coeff[1] + lm.swir$coeff[2]*log(seq(1000, 2500, 50))), lty=4)</span></a>
+<a class="sourceLine" id="cb22-367" data-line-number="367"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-368" data-line-number="368"><span class="co"># Y.2015.swir &lt;- exp(lm.swir$coeff[1] + lm.swir$coeff[2]*log(X$SWIR1))</span></a>
+<a class="sourceLine" id="cb22-369" data-line-number="369"><span class="co"># val.points &lt;- raster::extract(Y.2015.swir, val.points, sp=TRUE, fun=mean, buffer=20, normalizeWeights=TRUE)</span></a>
+<a class="sourceLine" id="cb22-370" data-line-number="370"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-371" data-line-number="371"><span class="co"># plot(val.points$BaHa, val.points@data[,25])</span></a>
+<a class="sourceLine" id="cb22-372" data-line-number="372"><span class="co"># abline(0,1)</span></a>
+<a class="sourceLine" id="cb22-373" data-line-number="373"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-374" data-line-number="374"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-375" data-line-number="375"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-376" data-line-number="376"><span class="co"># Y.2015.log &lt;- log(Y.2015)</span></a>
+<a class="sourceLine" id="cb22-377" data-line-number="377"><span class="co"># SWIR1.log &lt;- log(X$SWIR1)</span></a>
+<a class="sourceLine" id="cb22-378" data-line-number="378"><span class="co"># lm.swir.map &lt;- lm(Y.2015.log[] ~ SWIR1.log[])</span></a>
+<a class="sourceLine" id="cb22-379" data-line-number="379"><span class="co"># abline(lm.swir.map, lty=2)</span></a>
+<a class="sourceLine" id="cb22-380" data-line-number="380"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-381" data-line-number="381"><span class="co"># plot(Y.2015[s] ~ X$SWIR1[s])</span></a>
+<a class="sourceLine" id="cb22-382" data-line-number="382"><span class="co"># lines(seq(1000, 4000, 50), exp(lm.swir.map$coeff[1] + lm.swir.map$coeff[2]*log(seq(1000, 4000, 50))), lty=4, col=&quot;red&quot;)</span></a>
+<a class="sourceLine" id="cb22-383" data-line-number="383"><span class="co"># Y.2015.swir &lt;- exp(lm.swir.map$coeff[1] + lm.swir.map$coeff[2]*log(X$SWIR1))</span></a>
+<a class="sourceLine" id="cb22-384" data-line-number="384"><span class="co"># Y.2015.swir &lt;- writeRaster(Y.2015.swir, &quot;../results/carbone/AGB_2015_SWIR1.tif&quot;)</span></a>
+<a class="sourceLine" id="cb22-385" data-line-number="385"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-386" data-line-number="386"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-387" data-line-number="387"><span class="co"># Y &lt;- Y.2015.swir</span></a>
+<a class="sourceLine" id="cb22-388" data-line-number="388"><span class="co"># X &lt;- stack(&quot;../results/images/20030127_L7_B123457_L2.tif&quot;)</span></a>
+<a class="sourceLine" id="cb22-389" data-line-number="389"><span class="co"># names(X) &lt;- c(&quot;B&quot;, &quot;G&quot;, &quot;R&quot;, &quot;NIR&quot;, &quot;SWIR1&quot;, &quot;SWIR2&quot;)</span></a>
+<a class="sourceLine" id="cb22-390" data-line-number="390"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-391" data-line-number="391"><span class="co"># Y.log &lt;- log(Y)</span></a>
+<a class="sourceLine" id="cb22-392" data-line-number="392"><span class="co"># SWIR.log &lt;- log(X$SWIR1)</span></a>
+<a class="sourceLine" id="cb22-393" data-line-number="393"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-394" data-line-number="394"><span class="co"># lm.swir &lt;- lm(Y.log[] ~ SWIR.log[])</span></a>
+<a class="sourceLine" id="cb22-395" data-line-number="395"><span class="co"># Y.swir &lt;- exp(lm.swir$coeff[1] + lm.swir$coeff[2]*SWIR.log)</span></a>
+<a class="sourceLine" id="cb22-396" data-line-number="396"><span class="co"># Y.swir &lt;- writeRaster(Y.swir, &quot;../results/carbone/AGB_2003_SWIR1.tif&quot;)</span></a>
+<a class="sourceLine" id="cb22-397" data-line-number="397"><span class="co"># </span></a>
+<a class="sourceLine" id="cb22-398" data-line-number="398"><span class="co"># Y.diff &lt;- Y.2015.swir - Y.swir</span></a>
+<a class="sourceLine" id="cb22-399" data-line-number="399"><span class="co"># Y.diff &lt;- writeRaster(Y.diff, &quot;../results/carbone/AGB_diff_SWIR1.tif&quot;)</span></a>
+<a class="sourceLine" id="cb22-400" data-line-number="400"></a>
+<a class="sourceLine" id="cb22-401" data-line-number="401"></a>
+<a class="sourceLine" id="cb22-402" data-line-number="402"></a>
+<a class="sourceLine" id="cb22-403" data-line-number="403"></a>
+<a class="sourceLine" id="cb22-404" data-line-number="404"></a>
+<a class="sourceLine" id="cb22-405" data-line-number="405"></a>
+<a class="sourceLine" id="cb22-406" data-line-number="406"></a>
+<a class="sourceLine" id="cb22-407" data-line-number="407"></a>
+<a class="sourceLine" id="cb22-408" data-line-number="408"></a>
+<a class="sourceLine" id="cb22-409" data-line-number="409"><span class="kw">ggplot</span>(plots<span class="op">@</span>data[], <span class="kw">aes</span>(<span class="dt">x=</span>cov18, <span class="dt">y=</span>BaHa)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-410" data-line-number="410"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">colour=</span>OccSol),               <span class="co"># colour depends on cond2</span></a>
+<a class="sourceLine" id="cb22-411" data-line-number="411">             <span class="dt">size=</span><span class="dv">3</span>)    <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-412" data-line-number="412"><span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>OccSol)</a></code></pre></div>
 
 </div>
 </div>

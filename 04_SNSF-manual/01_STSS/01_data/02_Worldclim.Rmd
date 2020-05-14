@@ -1,0 +1,55 @@
+
+
+### WorldClim {#SSTS-Worldclim}
+
+Les variables climatiques ont une grande influence sur les caractéristiques des forêts. Ils sont donc importants pour l'évaluation des surfaces forestières et de la biomasse sur la base d'images satellitaires. Les données climatiques de WorldClim version 2 ont servi comme base. **La température annuelle moyenne (BIO1), la saisonnalité de la température (BIO4), la précipitation annuelle (BIO12) et la saisonnalité de la précipitation (BIO15) étant identifiées comme les variables WorldClim les plus importantes pour l'évaluation des forêts.** 
+
+#### Acquisition des données
+
+Des données climatiques historiques (1970 -- 2020) avec une résolution de 30 arcsecondes (environ 1 km^2^ sur l'équateur) disponible à [WorldClim version 2](https://www.worldclim.org/data/worldclim21.html) ont été utilisées. 
+
+Pour l'analyse, des **variables climatiques mensuelles** ont été utilisées :
+
+* **prec**: Précipitations pour les mois de janvier à décembre (mm)
+* **tmax**: Température maximale pour les mois de janvier à décembre (ºC)
+* **tavg**: Température moyenne pour les mois de janvier à décembre (ºC)
+* **tmin**: Température minimale pour les mois de janvier à décembre (ºC)
+
+Et également les **variables bioclimatiques** qui en découlent :
+
+* **BIO1**: Température moyenne annuelle
+* **BIO2**: Fourchette diurne moyenne (moyenne des températures mensuelles (max temp - min temp))
+* **BIO3**: Isothermie (BIO2/BIO7) (×100)
+* **BIO4**: Saisonnalité de la température (écart-type ×100)
+* **BIO5**: Température maximale du mois le plus chaud
+* **BIO6**: Température minimale du mois le plus froid
+* **BIO7**: Gamme de température annuelle (BIO5-BIO6)
+* **BIO8**: Température moyenne du trimestre le plus humide
+* **BIO9**: Température moyenne du trimestre le plus sec
+* **BIO10**: Température moyenne du trimestre le plus chaud
+* **BIO11**: Température moyenne du trimestre le plus froid
+* **BIO12**: Précipitation annuelle
+* **BIO13**: Précipitation du mois le plus humide
+* **BIO14**: Précipitation du mois le plus sec
+* **BIO15**: Saisonalité de la précipitation (Coefficient de variation)
+* **BIO16**: Précipitation du trimestre le plus humide
+* **BIO17**: Précipitation du trimestre le plus sec
+* **BIO18**: Précipitation du trimestre le plus chaud
+* **BIO19**: Précipitation du trimestre le plus froid
+  
+
+#### Prétraitement des données
+
+Les données sont lues et reprojetées sur le raster des images Landsat (UTM 31, résolution de 30 mètres) et coupées à la taille.
+
+##### Example {-}
+
+```{r, echo=FALSE, out.width="25%", fig.show='hold', fig.align='default'}
+knitr::include_graphics(c("images/wc2.0_30s_bio_Togo-01.jpeg","images/wc2.0_30s_bio_Togo-04.jpeg", "images/wc2.0_30s_bio_Togo-12.jpeg", "images/wc2.0_30s_bio_Togo-15.jpeg"))
+``` 
+**Données bioclimatiques WorldClim version 2:** température annuelle moyenne (BIO1) / saisonalité de la température (BIO4) / précipitation annuelle (BIO12) / saisonalité de la précipitation (BIO15)
+
+##### Script R: `01_SSTS/01_data/_src/prep-Worldclim.R` {-}
+```{r, code=readLines("../01_SSTS/01_data/_src/prep-Worldclim.R"), eval=FALSE}
+```
+

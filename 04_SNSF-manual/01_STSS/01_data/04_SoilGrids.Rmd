@@ -2,6 +2,8 @@
 
 ### SoilGrids
 
+**Les données SoilGrids sur le type de sol et le carbone du sol n'ont pas encore été incluses dans les analyses** de la surface forestière et des modifications du stockage du carbone dues au changement d'utilisation des terres. Ils sont disponibles pour des analyses complémentaires. 
+
 #### Acquisition des données
 
 Les données sur les sols proviennent des [archives SoilGrids](https://files.isric.org/soilgrids/data/recent/) (documentation [SoilGrids 2017](https://www.isric.org/explore/soilgrids/faq-soilgrids-2017))
@@ -9,14 +11,19 @@ Les données sur les sols proviennent des [archives SoilGrids](https://files.isr
 
 #### Prétraitement des données
 
+Les données sont lues et reprojetées sur le raster des images Landsat (UTM 31, résolution de 30 mètres) et coupées à la taille.
+
+
 ##### Example {-}
+
+**Données pédologiques SoilGrids:** Typologie des sols WRB à gauche, Carbone du sol à 30 cm de profondeur (tC/ha) à droite
 
 ```{r, echo=FALSE, out.width="50%", fig.show='hold', fig.align='default'}
 knitr::include_graphics(c("images/TAXNWRB_250m_ll.jpeg","images/OCSTHA_M_30cm_250m_ll.jpeg"))
 ``` 
-**Données pédologiques SoilGrids:** Typologie des sols, Carbone du sol à 30 cm de profondeur (tC/ha)
 
-##### R-Script: *prep-SoilGrids.R* {-}
+
+##### Script R: `01_SSTS/01_data/_src/prep-SoilGrids.R` {-}
 ```{r, code=readLines("../01_SSTS/01_data/_src/prep-SoilGrids.R"), eval=FALSE}
 ```
 

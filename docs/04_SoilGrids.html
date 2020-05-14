@@ -32,8 +32,8 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="03_Worldclim.html"/>
-<link rel="next" href="01_sampling-grid.html"/>
+<link rel="prev" href="03_SRTM.html"/>
+<link rel="next" href="05_ProREDD.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -143,9 +143,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a><ul>
 <li class="chapter" data-level="2.1" data-path="01_Landsat.html"><a href="01_Landsat.html"><i class="fa fa-check"></i><b>2.1</b> Données de base</a><ul>
 <li class="chapter" data-level="2.1.1" data-path="01_Landsat.html"><a href="01_Landsat.html#SSTS-Landsat"><i class="fa fa-check"></i><b>2.1.1</b> Images Landsat</a></li>
-<li class="chapter" data-level="2.1.2" data-path="02_SRTM.html"><a href="02_SRTM.html"><i class="fa fa-check"></i><b>2.1.2</b> SRTM</a></li>
-<li class="chapter" data-level="2.1.3" data-path="03_Worldclim.html"><a href="03_Worldclim.html"><i class="fa fa-check"></i><b>2.1.3</b> WorldClim</a></li>
+<li class="chapter" data-level="2.1.2" data-path="02_Worldclim.html"><a href="02_Worldclim.html"><i class="fa fa-check"></i><b>2.1.2</b> WorldClim</a></li>
+<li class="chapter" data-level="2.1.3" data-path="03_SRTM.html"><a href="03_SRTM.html"><i class="fa fa-check"></i><b>2.1.3</b> SRTM</a></li>
 <li class="chapter" data-level="2.1.4" data-path="04_SoilGrids.html"><a href="04_SoilGrids.html"><i class="fa fa-check"></i><b>2.1.4</b> SoilGrids</a></li>
+<li class="chapter" data-level="2.1.5" data-path="05_ProREDD.html"><a href="05_ProREDD.html"><i class="fa fa-check"></i><b>2.1.5</b> ProREDD</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="01_sampling-grid.html"><a href="01_sampling-grid.html"><i class="fa fa-check"></i><b>2.2</b> Réseau d’échantillonnage</a></li>
 <li class="chapter" data-level="2.3" data-path="02_training-plots.html"><a href="02_training-plots.html"><i class="fa fa-check"></i><b>2.3</b> Parcelles d’entraînement</a><ul>
@@ -202,36 +203,38 @@ Système Nationale de Surveillance des Forêts</div></a>
             <section class="normal" id="section-">
 <div id="soilgrids" class="section level3">
 <h3><span class="header-section-number">2.1.4</span> SoilGrids</h3>
+<p><strong>Les données SoilGrids sur le type de sol et le carbone du sol n’ont pas encore été incluses dans les analyses</strong> de la surface forestière et des modifications du stockage du carbone dues au changement d’utilisation des terres. Ils sont disponibles pour des analyses complémentaires.</p>
 <div id="acquisition-des-donnees-2" class="section level4">
 <h4><span class="header-section-number">2.1.4.1</span> Acquisition des données</h4>
 <p>Les données sur les sols proviennent des <a href="https://files.isric.org/soilgrids/data/recent/">archives SoilGrids</a> (documentation <a href="https://www.isric.org/explore/soilgrids/faq-soilgrids-2017">SoilGrids 2017</a>)</p>
 </div>
 <div id="pretraitement-des-donnees-2" class="section level4">
 <h4><span class="header-section-number">2.1.4.2</span> Prétraitement des données</h4>
+<p>Les données sont lues et reprojetées sur le raster des images Landsat (UTM 31, résolution de 30 mètres) et coupées à la taille.</p>
 <div id="example-2" class="section level5 unnumbered">
 <h5>Example</h5>
-<p><img src="images/TAXNWRB_250m_ll.jpeg" width="50%" /><img src="images/OCSTHA_M_30cm_250m_ll.jpeg" width="50%" />
-<strong>Données pédologiques SoilGrids:</strong> Typologie des sols, Carbone du sol à 30 cm de profondeur (tC/ha)</p>
+<p><strong>Données pédologiques SoilGrids:</strong> Typologie des sols WRB à gauche, Carbone du sol à 30 cm de profondeur (tC/ha) à droite</p>
+<p><img src="images/TAXNWRB_250m_ll.jpeg" width="50%" /><img src="images/OCSTHA_M_30cm_250m_ll.jpeg" width="50%" /></p>
 </div>
-<div id="r-script-prep-soilgrids.r" class="section level5 unnumbered">
-<h5>R-Script: <em>prep-SoilGrids.R</em></h5>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">####################################################################</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co"># SSTS/data/prep-SoilGrids.R: importing SoildGrids Data</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------</span></a>
+<div id="script-r-01_ssts01_data_srcprep-soilgrids.r" class="section level5 unnumbered">
+<h5>Script R: <code>01_SSTS/01_data/_src/prep-SoilGrids.R</code></h5>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">###############################################################################</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co"># prep-SoilGrids.R: lire et reprojeter des données SoilGrids</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co"># -----------------------------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co"># 11 March 2020</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co"># 13 Mai 2020</span></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co"># Data obtained from: https://files.isric.org/soilgrids/data/recent/</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co"># Source des données: https://files.isric.org/soilgrids/data/recent/</span></a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co"># Documentation: https://www.isric.org/explore/soilgrids/faq-soilgrids-2017</span></a>
 <a class="sourceLine" id="cb9-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">IN.DIR  &lt;-<span class="st"> </span><span class="kw">paste0</span>(DIR.RAW.DAT, <span class="st">&quot;/SoilGrids&quot;</span>)</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13">OUT.DIR &lt;-<span class="st"> </span><span class="kw">paste0</span>(DIR.SST.DAT, <span class="st">&quot;/SoilGrids&quot;</span>)</a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="cf">if</span>(<span class="op">!</span><span class="kw">dir.exists</span>(OUT.DIR)) <span class="kw">dir.create</span>(OUT.DIR)</a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co"># Définitions des variables ===================================================</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">IN.DIR  &lt;-<span class="st"> </span><span class="kw">paste0</span>(DIR.RAW.DAT, <span class="st">&quot;/SoilGrids&quot;</span>)</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">OUT.DIR &lt;-<span class="st"> </span><span class="kw">paste0</span>(DIR.SST.DAT, <span class="st">&quot;/SoilGrids&quot;</span>)</a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="cf">if</span>(<span class="op">!</span><span class="kw">dir.exists</span>(OUT.DIR)) <span class="kw">dir.create</span>(OUT.DIR)</a>
 <a class="sourceLine" id="cb9-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co"># Change CRS, Resolution, Extent ------------------------</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co"># Reprojection oilGrids vers Landsat (résolution 30m, UTM 31, ...) ============</span></a>
 <a class="sourceLine" id="cb9-18" data-line-number="18"></a>
 <a class="sourceLine" id="cb9-19" data-line-number="19"><span class="kw">foreach</span>(<span class="dt">file=</span><span class="kw">dir</span>(IN.DIR, <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>)) <span class="op">%do%</span><span class="st"> </span>{</a>
 <a class="sourceLine" id="cb9-20" data-line-number="20">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
@@ -245,47 +248,55 @@ Système Nationale de Surveillance des Forêts</div></a>
 <a class="sourceLine" id="cb9-28" data-line-number="28">               <span class="st">&quot;-co INTERLEAVE=&#39;BAND&#39;&quot;</span>,</a>
 <a class="sourceLine" id="cb9-29" data-line-number="29">               <span class="st">&quot;-overwrite&quot;</span>))</a>
 <a class="sourceLine" id="cb9-30" data-line-number="30">  </a>
-<a class="sourceLine" id="cb9-31" data-line-number="31">  <span class="co"># create statistics</span></a>
-<a class="sourceLine" id="cb9-32" data-line-number="32">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalinfo -stats&quot;</span>,</a>
-<a class="sourceLine" id="cb9-33" data-line-number="33">               <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/&quot;</span>, file)))</a>
-<a class="sourceLine" id="cb9-34" data-line-number="34">}</a>
+<a class="sourceLine" id="cb9-31" data-line-number="31">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalinfo -stats&quot;</span>,</a>
+<a class="sourceLine" id="cb9-32" data-line-number="32">               <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/&quot;</span>, file)))</a>
+<a class="sourceLine" id="cb9-33" data-line-number="33">}</a>
+<a class="sourceLine" id="cb9-34" data-line-number="34"></a>
 <a class="sourceLine" id="cb9-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="co"># Figure of WRB Soil-Types</span></a>
-<a class="sourceLine" id="cb9-37" data-line-number="37"><span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/TAXNWRB_250m_ll.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">675</span>, <span class="dt">height=</span><span class="dv">1200</span>)</a>
-<a class="sourceLine" id="cb9-38" data-line-number="38">soil.types &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/TAXNWRB_250m_ll.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb9-39" data-line-number="39">soil.types &lt;-<span class="st"> </span><span class="kw">as.factor</span>(soil.types)</a>
-<a class="sourceLine" id="cb9-40" data-line-number="40">cats &lt;-<span class="st"> </span><span class="kw">levels</span>(soil.types)[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb9-41" data-line-number="41">attr &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(IN.DIR, <span class="st">&quot;/TAXNWRB_250m_ll.tif.csv&quot;</span>))</a>
-<a class="sourceLine" id="cb9-42" data-line-number="42">attr &lt;-<span class="st"> </span><span class="kw">merge</span>(cats, attr[,<span class="kw">c</span>(<span class="st">&quot;Number&quot;</span>, <span class="st">&quot;Group&quot;</span>, <span class="st">&quot;WRB_group&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;G&quot;</span>, <span class="st">&quot;B&quot;</span>)], <span class="dt">by.x =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;Number&quot;</span>)</a>
-<a class="sourceLine" id="cb9-43" data-line-number="43">cats[[<span class="st">&quot;Soil Type&quot;</span>]] &lt;-<span class="st"> </span>attr<span class="op">$</span>Group</a>
-<a class="sourceLine" id="cb9-44" data-line-number="44"><span class="kw">levels</span>(soil.types) &lt;-<span class="st"> </span>cats</a>
-<a class="sourceLine" id="cb9-45" data-line-number="45"><span class="kw">levelplot</span>(soil.types, <span class="dt">col.regions=</span><span class="kw">paste0</span>(<span class="st">&quot;#&quot;</span>, <span class="kw">as.hexmode</span>(tmp<span class="op">$</span>R),<span class="kw">as.hexmode</span>(tmp<span class="op">$</span>G),<span class="kw">as.hexmode</span>(tmp<span class="op">$</span>B)), <span class="dt">xlab=</span><span class="st">&quot;&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-46" data-line-number="46"><span class="st">  </span><span class="kw">levelplot</span>(<span class="kw">mask</span>(soil.types, TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col.regions=</span><span class="st">&quot;#FFFFFF66&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-47" data-line-number="47"><span class="st">  </span><span class="kw">layer</span>(<span class="kw">sp.polygons</span>(TGO, <span class="dt">lwd=</span><span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb9-48" data-line-number="48"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb9-49" data-line-number="49"></a>
-<a class="sourceLine" id="cb9-50" data-line-number="50"><span class="co"># Soil-type Areas</span></a>
-<a class="sourceLine" id="cb9-51" data-line-number="51">tmp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">table</span>(<span class="kw">mask</span>(soil.types, TGO)[]) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb9-52" data-line-number="52">tmp &lt;-<span class="st"> </span><span class="kw">merge</span>(tmp, attr, <span class="dt">by.x=</span><span class="st">&quot;Var1&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;ID&quot;</span>)</a>
-<a class="sourceLine" id="cb9-53" data-line-number="53">tmp<span class="op">$</span>IPCC &lt;-<span class="st"> </span><span class="ot">NA</span></a>
-<a class="sourceLine" id="cb9-54" data-line-number="54">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Leptosols&quot;</span>,<span class="st">&quot;Vertisols&quot;</span>,<span class="st">&quot;Kastanozems&quot;</span>,<span class="st">&quot;Chernozems&quot;</span>,<span class="st">&quot;Phaeozems&quot;</span>,<span class="st">&quot;Luvisols&quot;</span>,<span class="st">&quot;Alisols&quot;</span>,<span class="st">&quot;Albeluvisols&quot;</span>,<span class="st">&quot;Solonetz&quot;</span>,<span class="st">&quot;Calcisols&quot;</span>,<span class="st">&quot;Gypsisols&quot;</span>,<span class="st">&quot;Umbrisols&quot;</span>,<span class="st">&quot;Cambisols&quot;</span>,<span class="st">&quot;Regosols&quot;</span>)] &lt;-<span class="st"> &quot;HAC&quot;</span></a>
-<a class="sourceLine" id="cb9-55" data-line-number="55">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Acrisols&quot;</span>,<span class="st">&quot;Lixisols&quot;</span>,<span class="st">&quot;Nitisols&quot;</span>,<span class="st">&quot;Ferralsols&quot;</span>,<span class="st">&quot;Durisols&quot;</span>)] &lt;-<span class="st"> &quot;LAC&quot;</span></a>
-<a class="sourceLine" id="cb9-56" data-line-number="56">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Arenosols&quot;</span>)] &lt;-<span class="st"> &quot;SAN&quot;</span></a>
-<a class="sourceLine" id="cb9-57" data-line-number="57">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Podzols&quot;</span>)] &lt;-<span class="st"> &quot;POD&quot;</span></a>
-<a class="sourceLine" id="cb9-58" data-line-number="58">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Andosols&quot;</span>)] &lt;-<span class="st"> &quot;VOL&quot;</span></a>
-<a class="sourceLine" id="cb9-59" data-line-number="59">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Gleysols&quot;</span>)] &lt;-<span class="st"> &quot;WET&quot;</span></a>
-<a class="sourceLine" id="cb9-60" data-line-number="60">tmp<span class="op">$</span>IPCC[<span class="kw">is.na</span>(tmp<span class="op">$</span>WRB_group)] &lt;-<span class="st"> &quot;Other&quot;</span></a>
-<a class="sourceLine" id="cb9-61" data-line-number="61"></a>
+<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="co"># Créer des vignettes pour les donées SoilGrids ===============================</span></a>
+<a class="sourceLine" id="cb9-37" data-line-number="37"></a>
+<a class="sourceLine" id="cb9-38" data-line-number="38"><span class="co"># Types de sol WRB ------------------------------</span></a>
+<a class="sourceLine" id="cb9-39" data-line-number="39"><span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/TAXNWRB_250m_ll.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">675</span>, <span class="dt">height=</span><span class="dv">1200</span>)</a>
+<a class="sourceLine" id="cb9-40" data-line-number="40">soil.types &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/TAXNWRB_250m_ll.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb9-41" data-line-number="41">soil.types &lt;-<span class="st"> </span><span class="kw">as.factor</span>(soil.types)</a>
+<a class="sourceLine" id="cb9-42" data-line-number="42">cats &lt;-<span class="st"> </span><span class="kw">levels</span>(soil.types)[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb9-43" data-line-number="43">attr &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(IN.DIR, <span class="st">&quot;/TAXNWRB_250m_ll.tif.csv&quot;</span>))</a>
+<a class="sourceLine" id="cb9-44" data-line-number="44">attr &lt;-<span class="st"> </span><span class="kw">merge</span>(cats, attr[,<span class="kw">c</span>(<span class="st">&quot;Number&quot;</span>, <span class="st">&quot;Group&quot;</span>, <span class="st">&quot;WRB_group&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;G&quot;</span>, <span class="st">&quot;B&quot;</span>)], </a>
+<a class="sourceLine" id="cb9-45" data-line-number="45">              <span class="dt">by.x =</span> <span class="st">&quot;ID&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;Number&quot;</span>)</a>
+<a class="sourceLine" id="cb9-46" data-line-number="46">cats[[<span class="st">&quot;Soil Type&quot;</span>]] &lt;-<span class="st"> </span>attr<span class="op">$</span>Group</a>
+<a class="sourceLine" id="cb9-47" data-line-number="47"><span class="kw">levels</span>(soil.types) &lt;-<span class="st"> </span>cats</a>
+<a class="sourceLine" id="cb9-48" data-line-number="48"><span class="kw">levelplot</span>(soil.types, </a>
+<a class="sourceLine" id="cb9-49" data-line-number="49">          <span class="dt">col.regions=</span><span class="kw">paste0</span>(<span class="st">&quot;#&quot;</span>, <span class="kw">as.hexmode</span>(tmp<span class="op">$</span>R),<span class="kw">as.hexmode</span>(tmp<span class="op">$</span>G),<span class="kw">as.hexmode</span>(tmp<span class="op">$</span>B)), </a>
+<a class="sourceLine" id="cb9-50" data-line-number="50">          <span class="dt">xlab=</span><span class="st">&quot;&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-51" data-line-number="51"><span class="st">  </span><span class="kw">levelplot</span>(<span class="kw">mask</span>(soil.types, TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col.regions=</span><span class="st">&quot;#FFFFFF66&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-52" data-line-number="52"><span class="st">  </span><span class="kw">layer</span>(<span class="kw">sp.polygons</span>(TGO, <span class="dt">lwd=</span><span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb9-53" data-line-number="53"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb9-54" data-line-number="54"></a>
+<a class="sourceLine" id="cb9-55" data-line-number="55"><span class="co"># Réservoire carbone à 30 cm --------------------</span></a>
+<a class="sourceLine" id="cb9-56" data-line-number="56"><span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/OCSTHA_M_30cm_250m_ll.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">675</span>, <span class="dt">height=</span><span class="dv">1200</span>)</a>
+<a class="sourceLine" id="cb9-57" data-line-number="57">image &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/OCSTHA_M_30cm_250m_ll.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb9-58" data-line-number="58">raster<span class="op">::</span><span class="kw">plot</span>(image, <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">30</span>,<span class="dv">100</span>))</a>
+<a class="sourceLine" id="cb9-59" data-line-number="59">raster<span class="op">::</span><span class="kw">plot</span>(<span class="kw">mask</span>(image, TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb9-60" data-line-number="60">sp<span class="op">::</span><span class="kw">plot</span>(TGO, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb9-61" data-line-number="61"><span class="kw">dev.off</span>()</a>
 <a class="sourceLine" id="cb9-62" data-line-number="62"></a>
-<a class="sourceLine" id="cb9-63" data-line-number="63"><span class="co"># Figure of carbon stocks 30cm</span></a>
-<a class="sourceLine" id="cb9-64" data-line-number="64"><span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/OCSTHA_M_30cm_250m_ll.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">675</span>, <span class="dt">height=</span><span class="dv">1200</span>)</a>
-<a class="sourceLine" id="cb9-65" data-line-number="65">image &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/OCSTHA_M_30cm_250m_ll.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb9-66" data-line-number="66">raster<span class="op">::</span><span class="kw">plot</span>(image, <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">30</span>,<span class="dv">100</span>))</a>
-<a class="sourceLine" id="cb9-67" data-line-number="67">raster<span class="op">::</span><span class="kw">plot</span>(<span class="kw">mask</span>(image, TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb9-68" data-line-number="68">sp<span class="op">::</span><span class="kw">plot</span>(TGO, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb9-69" data-line-number="69"><span class="kw">dev.off</span>()</a></code></pre></div>
+<a class="sourceLine" id="cb9-63" data-line-number="63"></a>
+<a class="sourceLine" id="cb9-64" data-line-number="64"><span class="co"># Tableau des surfaces des catégories de sol selon GIEC  ======================</span></a>
+<a class="sourceLine" id="cb9-65" data-line-number="65">tmp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">table</span>(<span class="kw">mask</span>(soil.types, TGO)[]) <span class="op">*</span><span class="st"> </span><span class="dv">30</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">10000</span>)</a>
+<a class="sourceLine" id="cb9-66" data-line-number="66">tmp &lt;-<span class="st"> </span><span class="kw">merge</span>(tmp, attr, <span class="dt">by.x=</span><span class="st">&quot;Var1&quot;</span>, <span class="dt">by.y=</span><span class="st">&quot;ID&quot;</span>)</a>
+<a class="sourceLine" id="cb9-67" data-line-number="67">tmp<span class="op">$</span>IPCC &lt;-<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb9-68" data-line-number="68">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Leptosols&quot;</span>,<span class="st">&quot;Vertisols&quot;</span>,<span class="st">&quot;Kastanozems&quot;</span>,<span class="st">&quot;Chernozems&quot;</span>,</a>
+<a class="sourceLine" id="cb9-69" data-line-number="69">                              <span class="st">&quot;Phaeozems&quot;</span>,<span class="st">&quot;Luvisols&quot;</span>,<span class="st">&quot;Alisols&quot;</span>,<span class="st">&quot;Albeluvisols&quot;</span>,</a>
+<a class="sourceLine" id="cb9-70" data-line-number="70">                              <span class="st">&quot;Solonetz&quot;</span>,<span class="st">&quot;Calcisols&quot;</span>,<span class="st">&quot;Gypsisols&quot;</span>,<span class="st">&quot;Umbrisols&quot;</span>,</a>
+<a class="sourceLine" id="cb9-71" data-line-number="71">                              <span class="st">&quot;Cambisols&quot;</span>,<span class="st">&quot;Regosols&quot;</span>)] &lt;-<span class="st"> &quot;HAC&quot;</span></a>
+<a class="sourceLine" id="cb9-72" data-line-number="72">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Acrisols&quot;</span>,<span class="st">&quot;Lixisols&quot;</span>,<span class="st">&quot;Nitisols&quot;</span>,<span class="st">&quot;Ferralsols&quot;</span>,</a>
+<a class="sourceLine" id="cb9-73" data-line-number="73">                              <span class="st">&quot;Durisols&quot;</span>)] &lt;-<span class="st"> &quot;LAC&quot;</span></a>
+<a class="sourceLine" id="cb9-74" data-line-number="74">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Arenosols&quot;</span>)] &lt;-<span class="st"> &quot;SAN&quot;</span></a>
+<a class="sourceLine" id="cb9-75" data-line-number="75">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Podzols&quot;</span>)] &lt;-<span class="st"> &quot;POD&quot;</span></a>
+<a class="sourceLine" id="cb9-76" data-line-number="76">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Andosols&quot;</span>)] &lt;-<span class="st"> &quot;VOL&quot;</span></a>
+<a class="sourceLine" id="cb9-77" data-line-number="77">tmp<span class="op">$</span>IPCC[tmp<span class="op">$</span>WRB_group <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Gleysols&quot;</span>)] &lt;-<span class="st"> &quot;WET&quot;</span></a>
+<a class="sourceLine" id="cb9-78" data-line-number="78">tmp<span class="op">$</span>IPCC[<span class="kw">is.na</span>(tmp<span class="op">$</span>WRB_group)] &lt;-<span class="st"> &quot;Other&quot;</span></a></code></pre></div>
 
-</div>
 </div>
 </div>
 </div>
@@ -294,8 +305,8 @@ Système Nationale de Surveillance des Forêts</div></a>
           </div>
         </div>
       </div>
-<a href="03_Worldclim.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="01_sampling-grid.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="03_SRTM.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="05_ProREDD.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

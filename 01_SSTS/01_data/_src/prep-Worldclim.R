@@ -1,21 +1,20 @@
-####################################################################
-# SSTS/data/prep-Worldclim.R: cleaning and merging Worldclim images
-# ------------------------------------------------------------------
+###############################################################################
+# prep-Worldclim.R: lire et reprojeter les données de WorldClim
+# -----------------------------------------------------------------------------
 # Bern University of Applied Sciences
 # Oliver Gardi, <oliver.gardi@bfh.ch>
-# 11 March 2020
+# 13 Mai 2020
 
+# Définitions des variables ===================================================
 
 IN.DIR  <- paste0(DIR.RAW.DAT, "/Worldclim")
 OUT.DIR <- paste0(DIR.SST.DAT, "/Worldclim")
 if(!dir.exists(OUT.DIR)) dir.create(OUT.DIR)
 
 
-# Prepare Worldclim v2 Data ----------------------------
+# Reprojection images WorldClim vers Landsat (résolution 30m, UTM 31, ...) ====
 
 foreach(file=dir(IN.DIR, pattern=".*Togo[.]tif$")) %dopar% {
-  # wc.raster <- raster(paste0(IN.DIR, "/", file))
-  # raster.downscale(raster(paste0(IN.DIR, "/", file)), dem.30, ...)
   system(paste("gdalwarp",
                paste0(IN.DIR, "/", file),
                "-t_srs '+proj=utm +zone=31 +datum=WGS84'",
@@ -31,6 +30,8 @@ foreach(file=dir(IN.DIR, pattern=".*Togo[.]tif$")) %dopar% {
                paste0(OUT.DIR, "/", file)))
 }
 
+# Créer des vignettes pour les donées WorldClim ===============================
+
 foreach(file=dir(OUT.DIR, pattern=".*[.]tif$")) %dopar% {
   image <- stack(paste0(OUT.DIR, "/", file))
   type <- unlist(strsplit(file, "_"))[3]
@@ -40,7 +41,8 @@ foreach(file=dir(OUT.DIR, pattern=".*[.]tif$")) %dopar% {
   else if (type == "tavg") { zlim <- c(19.7,32.7); col <- rev(heat.colors(255)) }
   else                     { zlim <- NA;           col <- rev(cm.colors(255)) }
   foreach(i=1:nlayers(image)) %dopar% {
-    jpeg(paste0(OUT.DIR, "/", sub("[.]tif$", "", file), "-", str_pad(i, 2, "left", 0), ".jpeg"), width=1350, height=3000)
+    jpeg(paste0(OUT.DIR, "/", sub("[.]tif$", "", file), "-", str_pad(i, 2, "left", 0), ".jpeg"), 
+         width=1350, height=3000)
     plot(image[[i]], col=col, zlim=zlim)
     plot(mask(image[[i]], TGO, inverse=TRUE), col="#FFFFFF66", legend=FALSE, add=TRUE)
     plot(TGO, add=TRUE, lwd=3)

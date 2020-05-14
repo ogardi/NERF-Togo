@@ -202,65 +202,78 @@ Système Nationale de Surveillance des Forêts</div></a>
             <section class="normal" id="section-">
 <div id="srtm" class="section level3">
 <h3><span class="header-section-number">2.1.2</span> SRTM</h3>
+<p>Les variables topographiques telles que <strong>l’élévation, la pente et l’aspect ne sont actuellement utilisées ni pour l’évaluation des forestières ni pour l’évaluation de la biomasse</strong>, car il a été constaté que ces variables ont peu d’influence sur le pouvoir explicatif des modèles de classification ou de régression. Néanmoins, les données sont conservées et disponibles pour autres analyses.</p>
 <div id="acquisition-des-donnees" class="section level4">
 <h4><span class="header-section-number">2.1.2.1</span> Acquisition des données</h4>
+<p>Les données topographiques du SRTM ont été obtenues à partir de deux sources:</p>
+<ul>
+<li><p><strong>Les données originales avec une résolution spatiale de 1 seconde d’arc</strong> (environ 30 mètres sur l’équateur) ont été obtenues du jeu de données <code>SRTM 1 Arc-Second Global</code> disponible sur <a href="https://earthexplorer.usgs.gov/">USGS Earthexplorer</a>. Ces données à haute résolution ont des fois des lacunes (manque des données).</p></li>
+<li><p><strong>Les données SRTM ajustées avec une résolution de 3 secondes d’arc</strong> ont été obtenues à partir de <a href="http://srtm.csi.cgiar.org/srtmdata/">CGIAR SRTM 90m Digital Elevation Database v4.1</a> pour combler les lacunes des données à haute résolution.</p></li>
+</ul>
 </div>
 <div id="pretraitement-des-donnees" class="section level4">
 <h4><span class="header-section-number">2.1.2.2</span> Prétraitement des données</h4>
-<div id="r-script-prep-srtm.r" class="section level5 unnumbered">
-<h5>R-Script: <em>prep-SRTM.R</em></h5>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">####################################################################</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># SSTS/data/prep-SRTM.R: cleaning and merging SRTM data</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------</span></a>
+<p>Les données de 1 seconde d’arc sont lues et les lacunes éventuelles sont comblées avec les données ajustées de 3 secondes d’arc. Enfin, les données sont reprojetées sur le raster des images Landsat (résolution de 30 mètres) et coupées à la taille.</p>
+<p><img src="images/SRTM-1arcsec.jpeg" /></p>
+<div id="r-script-01_ssts01_data_srcprep-srtm.r" class="section level5 unnumbered">
+<h5>R-Script: <code>01_SSTS/01_data/_src/prep-SRTM.R</code></h5>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">###############################################################################</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># prep-SRTM.R: lire, nettoyer et empiler des données topographiques SRTM</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># -----------------------------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># 11 March 2020</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># 13 Mai 2020</span></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co"># Définitions des variables ===================================================</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9">IN.DIR  &lt;-<span class="st"> </span><span class="kw">paste0</span>(DIR.RAW.DAT, <span class="st">&quot;/SRTM&quot;</span>)</a>
 <a class="sourceLine" id="cb7-10" data-line-number="10">OUT.DIR &lt;-<span class="st"> </span><span class="kw">paste0</span>(DIR.SST.DAT, <span class="st">&quot;/SRTM&quot;</span>)</a>
 <a class="sourceLine" id="cb7-11" data-line-number="11"><span class="cf">if</span>(<span class="op">!</span><span class="kw">dir.exists</span>(OUT.DIR)) <span class="kw">dir.create</span>(OUT.DIR)</a>
 <a class="sourceLine" id="cb7-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb7-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co"># Prepare SRTM DEM ----------------------------</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co"># Préparation du modèle numérique d&#39;élévation SRTM ============================</span></a>
 <a class="sourceLine" id="cb7-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co"># Load 90m SRTM DEM (source: CGIAR),</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17">dem<span class="fl">.90</span> &lt;-<span class="st"> </span><span class="kw">do.call</span>(merge, <span class="kw">lapply</span>(<span class="kw">as.list</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(IN.DIR, <span class="st">&quot;/3arcsecond&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)), raster))</a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co"># Merge 30m SRTM DEM and fill voids with 90m SRTM (source: USGS)</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21">dem<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">tile=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(IN.DIR, <span class="st">&quot;/1arcsecond&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb7-22" data-line-number="22">                  <span class="dt">.combine=</span>merge, <span class="dt">.multicombine=</span><span class="ot">TRUE</span>) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb7-23" data-line-number="23">                    dem.<span class="fl">30.</span>t &lt;-<span class="st"> </span><span class="kw">raster</span>(tile)</a>
-<a class="sourceLine" id="cb7-24" data-line-number="24">                    dem.<span class="fl">90.</span>t &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">projectRaster</span>(dem<span class="fl">.90</span>, dem.<span class="fl">30.</span>t))</a>
-<a class="sourceLine" id="cb7-25" data-line-number="25">                    <span class="kw">merge</span>(dem.<span class="fl">30.</span>t, dem.<span class="fl">90.</span>t)</a>
-<a class="sourceLine" id="cb7-26" data-line-number="26">                  }</a>
-<a class="sourceLine" id="cb7-27" data-line-number="27"></a>
-<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co"># write it to the disk and reproject to reference Landsat image</span></a>
-<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="kw">writeRaster</span>(dem<span class="fl">.30</span>, <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec_raw.tif&quot;</span>), <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
-<a class="sourceLine" id="cb7-31" data-line-number="31">             <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec_raw.tif&quot;</span>),</a>
-<a class="sourceLine" id="cb7-32" data-line-number="32">             <span class="st">&quot;-t_srs &#39;+proj=utm +zone=31 +datum=WGS84&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb7-33" data-line-number="33">             <span class="st">&quot;-tr 30 30&quot;</span>,</a>
-<a class="sourceLine" id="cb7-34" data-line-number="34">             <span class="kw">paste</span>(<span class="st">&quot;-te&quot;</span>, TGO.EXT<span class="op">@</span>xmin, TGO.EXT<span class="op">@</span>ymin, TGO.EXT<span class="op">@</span>xmax, TGO.EXT<span class="op">@</span>ymax),</a>
-<a class="sourceLine" id="cb7-35" data-line-number="35">             <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.tif&quot;</span>),</a>
-<a class="sourceLine" id="cb7-36" data-line-number="36">             <span class="st">&quot;-ot &#39;Int16&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb7-37" data-line-number="37">             <span class="st">&quot;-co COMPRESS=&#39;LZW&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb7-38" data-line-number="38">             <span class="st">&quot;-co INTERLEAVE=&#39;BAND&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb7-39" data-line-number="39">             <span class="st">&quot;-overwrite&quot;</span>))</a>
-<a class="sourceLine" id="cb7-40" data-line-number="40"></a>
-<a class="sourceLine" id="cb7-41" data-line-number="41"><span class="kw">file.remove</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec_raw.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb7-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb7-43" data-line-number="43"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalinfo -stats&quot;</span>, <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.tif&quot;</span>)))</a>
-<a class="sourceLine" id="cb7-44" data-line-number="44"></a>
-<a class="sourceLine" id="cb7-45" data-line-number="45">dem &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb7-46" data-line-number="46"></a>
-<a class="sourceLine" id="cb7-47" data-line-number="47"><span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">1350</span>, <span class="dt">height=</span><span class="dv">3000</span>)</a>
-<a class="sourceLine" id="cb7-48" data-line-number="48"><span class="kw">par</span>(<span class="dt">plt=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb7-49" data-line-number="49"><span class="kw">plot</span>(dem)</a>
-<a class="sourceLine" id="cb7-50" data-line-number="50"><span class="kw">plot</span>(<span class="kw">mask</span>(dem, TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-51" data-line-number="51"><span class="kw">plot</span>(TGO, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb7-52" data-line-number="52"><span class="kw">dev.off</span>()</a></code></pre></div>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co"># Lire 90m SRTM MNE sans vides (source: http://srtm.csi.cgiar.org/srtmdata/),</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17">dem<span class="fl">.90</span> &lt;-<span class="st"> </span><span class="kw">do.call</span>(merge, <span class="kw">lapply</span>(<span class="kw">as.list</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(IN.DIR, <span class="st">&quot;/3arcsecond&quot;</span>), </a>
+<a class="sourceLine" id="cb7-18" data-line-number="18">                                            <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, </a>
+<a class="sourceLine" id="cb7-19" data-line-number="19">                                            <span class="dt">full.names=</span><span class="ot">TRUE</span>)), raster))</a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co"># Lire 30m SRTM MNE (source: USGS Earthexplorer) et remplir vides avec 90m SRTM </span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23">dem<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">tile=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(IN.DIR, <span class="st">&quot;/1arcsecond&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;.*[.]tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb7-24" data-line-number="24">                  <span class="dt">.combine=</span>merge, <span class="dt">.multicombine=</span><span class="ot">TRUE</span>) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb7-25" data-line-number="25">                    dem.<span class="fl">30.</span>t &lt;-<span class="st"> </span><span class="kw">raster</span>(tile)</a>
+<a class="sourceLine" id="cb7-26" data-line-number="26">                    dem.<span class="fl">90.</span>t &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">projectRaster</span>(dem<span class="fl">.90</span>, dem.<span class="fl">30.</span>t))</a>
+<a class="sourceLine" id="cb7-27" data-line-number="27">                    <span class="kw">merge</span>(dem.<span class="fl">30.</span>t, dem.<span class="fl">90.</span>t)</a>
+<a class="sourceLine" id="cb7-28" data-line-number="28">                  }</a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co"># Reprojection d&#39;images MNE vers Landsat (résolution 30m, UTM 31, ...) </span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="kw">writeRaster</span>(dem<span class="fl">.30</span>, <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec_raw.tif&quot;</span>), </a>
+<a class="sourceLine" id="cb7-32" data-line-number="32">            <span class="dt">datatype=</span><span class="st">&quot;INT2S&quot;</span>, </a>
+<a class="sourceLine" id="cb7-33" data-line-number="33">            <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb7-34" data-line-number="34"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalwarp&quot;</span>,</a>
+<a class="sourceLine" id="cb7-35" data-line-number="35">             <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec_raw.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb7-36" data-line-number="36">             <span class="st">&quot;-t_srs &#39;+proj=utm +zone=31 +datum=WGS84&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb7-37" data-line-number="37">             <span class="st">&quot;-tr 30 30&quot;</span>,</a>
+<a class="sourceLine" id="cb7-38" data-line-number="38">             <span class="kw">paste</span>(<span class="st">&quot;-te&quot;</span>, TGO.EXT<span class="op">@</span>xmin, TGO.EXT<span class="op">@</span>ymin, TGO.EXT<span class="op">@</span>xmax, TGO.EXT<span class="op">@</span>ymax),</a>
+<a class="sourceLine" id="cb7-39" data-line-number="39">             <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb7-40" data-line-number="40">             <span class="st">&quot;-ot &#39;Int16&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb7-41" data-line-number="41">             <span class="st">&quot;-co COMPRESS=&#39;LZW&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb7-42" data-line-number="42">             <span class="st">&quot;-co INTERLEAVE=&#39;BAND&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb7-43" data-line-number="43">             <span class="st">&quot;-overwrite&quot;</span>))</a>
+<a class="sourceLine" id="cb7-44" data-line-number="44"><span class="kw">file.remove</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec_raw.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb7-45" data-line-number="45"></a>
+<a class="sourceLine" id="cb7-46" data-line-number="46"><span class="co"># Calculer les statistiques GDAL (min, max, ...)</span></a>
+<a class="sourceLine" id="cb7-47" data-line-number="47"><span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdalinfo -stats&quot;</span>, <span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.tif&quot;</span>)))</a>
+<a class="sourceLine" id="cb7-48" data-line-number="48"></a>
+<a class="sourceLine" id="cb7-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb7-50" data-line-number="50"><span class="co"># Créer une vignettes du MNE ==================================================</span></a>
+<a class="sourceLine" id="cb7-51" data-line-number="51">dem &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb7-52" data-line-number="52"><span class="kw">jpeg</span>(<span class="kw">paste0</span>(OUT.DIR, <span class="st">&quot;/SRTM-1arcsec.jpeg&quot;</span>), <span class="dt">width=</span><span class="dv">1350</span>, <span class="dt">height=</span><span class="dv">3000</span>)</a>
+<a class="sourceLine" id="cb7-53" data-line-number="53"><span class="kw">par</span>(<span class="dt">plt=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb7-54" data-line-number="54"><span class="kw">plot</span>(dem)</a>
+<a class="sourceLine" id="cb7-55" data-line-number="55"><span class="kw">plot</span>(<span class="kw">mask</span>(dem, TGO, <span class="dt">inverse=</span><span class="ot">TRUE</span>), <span class="dt">col=</span><span class="st">&quot;#FFFFFF66&quot;</span>, <span class="dt">legend=</span><span class="ot">FALSE</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb7-56" data-line-number="56"><span class="kw">plot</span>(TGO, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lwd=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb7-57" data-line-number="57"><span class="kw">dev.off</span>()</a></code></pre></div>
 
 </div>
 </div>

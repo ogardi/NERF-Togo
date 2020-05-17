@@ -1,32 +1,43 @@
-############################################################################
-# NERF_Togo/FCC/3_create-fc-maps.R: create forest cover maps
-# --------------------------------------------------------------------------
+###############################################################################
+# 01_create-fc-maps.R: créer des cartes brutes du couvert forestier
+# -----------------------------------------------------------------------------
 # Bern University of Applied Sciences
 # Oliver Gardi, <oliver.gardi@bfh.ch>
-# 10 October 2019
+# 13 Mai 2020
 
-### DEFINITIONS ############################################################
+# Définitions des variables ===================================================
 
-# Default parameters ------------------------------------------------------- 
+COV.FC         <- 10             # Couverture des houppiers forêt/non-forêt
 
-COV.FC         <- 10
-
-SAMPLE.DIST    <- 1
+SAMPLE.DIST    <- 1              # Largeur de la lisière forêt à considérer
 N.PIXELS       <- NA             # Number of non-NA cells (will be determined later)
 SAMPLE.RATIO   <- 0.0025         # Share of non-NA cells to sample
 CAL.RATIO      <- 0.75           # Use same amount of ref-points from cal.map as from ref.map / train.points
 PREDICTORS     <- c("B", "G", "R", "NIR", "SWIR1", "SWIR2", "nbr", "ndmi", "ndvi", "evi", "BIO1", "BIO4", "BIO12", "BIO15") # "savi", "nbr2", "msavi", "x", "y" 
-SEED           <- 20191114
 
-# Function for loading an image --------------------------------------------
+
+# Définitions des fonctions ===================================================
+
+# Charger un image Landsat ----------------------------------------------------
+#
+# @param filename  Chemin du fichier landsat
+#
+# @return          Image Landsat avec bandes nommées 
+#
 
 load.image <- function(filename) {
   image <- brick(paste0(IMAGES.DIR, filename))
-  names(image) <- BANDS
+  names(image) <- SST.LSBANDS
   return(image)
 }
 
-# Function for sampling map ------------------------------------------------
+# Tirer des points d'entraînement d'une carte autour de la lisière forêt ------
+#
+# @param map       Carte forêt/non-forêt à échantillonner
+# @param n         Nombre d'échantillons à tirer
+#
+# @return          Points d'échantillon avec aatribut forêt/non-forêt
+#
 
 sample.map <- function(map, n) {
   
@@ -298,7 +309,7 @@ plot(cov.varsel, type=c("g", "o"))
 
 
 # Tree cover map for 2018 for p193
-set.seed(SEED)
+set.seed(RSEED)
 p193.2018.cov <- classify.image(image     = load.image("/p193/p193_2018_m.tif"), 
                                 bioclim   = bioclim[["p193"]],
                                 filename  = paste0(FCC.REF.DIR, "/p193_2018_COV_R.tif"),
@@ -317,7 +328,7 @@ dev.off()
 # 2018 reference forest cover maps -----------------------------------------
 
 # Forest cover map for 2018 for p193
-set.seed(SEED)
+set.seed(RSEED)
 classify.image(image     = load.image("/p193/p193_2018_m.tif"), 
                bioclim   = bioclim[["p193"]],
                filename  = paste0(FCC.REF.DIR, "/FC", COV.FC, "/p193_2018_FC", COV.FC, "_R.tif"),
@@ -328,7 +339,7 @@ classify.image(image     = load.image("/p193/p193_2018_m.tif"),
                n.cores   = 32)  
 
 # Forest cover maps 2018 for p192 and p194, calibrating with p193
-set.seed(SEED)
+set.seed(RSEED)
 registerDoParallel(.env$numCores-1)
 foreach(path=c("p192", "p194")) %dopar% {
   
@@ -349,7 +360,7 @@ foreach(path=c("p192", "p194")) %dopar% {
 # 2003 reference forest cover maps -----------------------------------------
 
 # Forest cover map for 2003 for p193
-set.seed(SEED)
+set.seed(RSEED)
 classify.image(image     = load.image("/p193/p193_2003_m.tif"), 
                bioclim   = bioclim[["p193"]],
                filename  = paste0(FCC.REF.DIR, "/FC", COV.FC, "/p193_2003_FC", COV.FC, "_R.tif"),
@@ -361,7 +372,7 @@ classify.image(image     = load.image("/p193/p193_2003_m.tif"),
 
 # # Recalibrate forest cover map for 2018, based on 2003 for p193
 #
-# set.seed(SEED)
+# set.seed(RSEED)
 # classify.image(image     = load.image("/p193/p193_2018.tif"), 
 #                bioclim   = bioclim[["p193"]],
 #                filename  = paste0(REFMAPS.DIR, "/p193_2018_FC", COV.FC, ".tif"),
@@ -373,7 +384,7 @@ classify.image(image     = load.image("/p193/p193_2003_m.tif"),
 
 
 # Forest cover maps 2003 for p192 and p194, calibrating with p193
-set.seed(SEED)
+set.seed(RSEED)
 registerDoParallel(.env$numCores-1)
 foreach(path=c("p192", "p194")) %dopar% {
 
@@ -394,7 +405,7 @@ foreach(path=c("p192", "p194")) %dopar% {
 # Forest cover maps for all dates ------------------------------------------
 
 # Forest cover maps for p193
-set.seed(SEED)
+set.seed(RSEED)
 registerDoParallel(.env$numCores-1)
 foreach(file=dir(paste0(IMAGES.DIR, "/p193"), pattern="\\_[[:digit:]]+\\_m\\.tif")) %dopar% {
 # foreach(file=c("p193_2017_m.tif", "p193_2019_m.tif")) %dopar% {     
@@ -417,7 +428,7 @@ merge(raster(paste0(FCC.RAW.DIR, "/FC", COV.FC, "/p193/p193_1990_1_F", COV.FC, "
 
 # Forest cover maps for p192 and p194 using p193 maps for calibration
 
-set.seed(SEED)
+set.seed(RSEED)
 registerDoParallel(.env$numCores-1)
 # foreach(file=c(dir(paste0(IMAGES.DIR, "/p192"), pattern="\\_[[:digit:]]+\\_m\\.tif"),
 #                dir(paste0(IMAGES.DIR, "/p194"), pattern="\\_[[:digit:]]+\\_m\\.tif"))) %dopar% { 

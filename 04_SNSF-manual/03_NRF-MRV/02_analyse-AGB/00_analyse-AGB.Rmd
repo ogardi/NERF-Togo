@@ -1,6 +1,0 @@
-
-## Analyse biomasse aérienne {#NERF-analyse-AGB}
-
-![](images/AGB-Schema.png)
-
-

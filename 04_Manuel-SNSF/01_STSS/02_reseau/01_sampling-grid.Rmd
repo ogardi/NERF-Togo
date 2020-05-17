@@ -1,0 +1,17 @@
+
+## Collecte des données {#SSTS-collecte}
+
+### Réseau d'échantillonnage
+
+Les parcelles d'échantillonage couvrent une surface de 30 x 30 mètres et **correspondent en taille, forme et position aux pixels des images Landsat**. Les parcelles d'échantillonnage sont régulièrement réparties sur le territoire du Togo, sur une grille d'une taille de maille de 480 mètres (tous les 16 pixels Landsat) ou 4,3 parcelles d'échantillonnage par km^2^. Sur l'ensemble du territoire togolais, cela donne un réseau de 250 000 parcelles. 
+
+Si nécessaire pour autres utilisation, la taille de maille de 480 mètres permet d'enlargir la maille à 679 ou 960 mètres. D'autre part, il est également possible de comprimer la maille à 340, 240, 170, 120, 85, ... mètres.
+
+![](images/SSTS-sampling-grid.png)
+        
+La grille d'échantillonnage est basée sur l'étendue du Togo (alignée avec la grille Landsat) et la taille du maillage. Les points d'échantillonnage résultants sont attribués avec les coordonnées x et y et l'ID correspondant. La grille de points résultante est enregistrée sous forme de shapefile ([télécharger archive ZIP](..//01_SSTS/02_BdD/01_reseau-SSTS/TGO_frame_480.zip)).
+
+#### Script R: `01_SSTS/02_BdD/_src/create-grid.R` {-}
+
+```{r, code=readLines("../01_SSTS/02_BdD/_src/create-grid.R"), eval=FALSE}
+```

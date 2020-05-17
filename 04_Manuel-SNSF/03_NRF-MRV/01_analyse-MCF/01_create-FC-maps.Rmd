@@ -16,7 +16,7 @@ La figure suivante illustre la **série des 13 cartes forêt/non-forêt brutes**
 ![](images/FCC-rawmaps.png)
 
 
-#### _MCF/01_create-fc-maps.R_ {-}
+#### Script R: `03_NRF-MRV/01_MCF/_src/01_create-FC-maps.R` {-}
 
 ```{r, code=readLines("../03_NRF-MRV/01_MCF/_src/01_create-FC-maps.R"), eval=FALSE}
 ```

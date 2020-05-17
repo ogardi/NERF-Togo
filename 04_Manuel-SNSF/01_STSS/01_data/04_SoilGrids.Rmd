@@ -23,7 +23,7 @@ knitr::include_graphics(c("images/TAXNWRB_250m_ll.jpeg","images/OCSTHA_M_30cm_25
 ``` 
 
 
-##### Script R: `01_SSTS/01_data/_src/prep-SoilGrids.R` {-}
+#### Script R: `01_SSTS/01_data/_src/prep-SoilGrids.R` {-}
 ```{r, code=readLines("../01_SSTS/01_data/_src/prep-SoilGrids.R"), eval=FALSE}
 ```
 

@@ -42,6 +42,8 @@ library("doParallel")   # ... sur plusieurs processeurs
 .snsf$DIR.IFN.DAT   <- paste0(.snsf$DIR.IFN, "/01_field-data")
 
 .snsf$DIR.MRV       <- "./03_NRF-MRV"
+.snsf$DIR.MRV.MCF   <- paste0(.snsf$DIR.MRV, "/01_MCF")
+.snsf$DIR.MRV.AGB   <- paste0(.snsf$DIR.MRV, "/02_AGB")
 
 # Système de référence des coordonnées ----------
 

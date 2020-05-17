@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Inventaire Forestier National | _main.utf8</title>
+  <title>4 Analyses NRF/MRV | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Inventaire Forestier National | _main.utf8" />
+  <meta property="og:title" content="4 Analyses NRF/MRV | _main.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -17,7 +17,7 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Inventaire Forestier National | _main.utf8" />
+  <meta name="twitter:title" content="4 Analyses NRF/MRV | _main.utf8" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -32,8 +32,8 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="04_outil-QGIS.html"/>
-<link rel="next" href="01_IFN-1.html"/>
+<link rel="prev" href="01_IFN-1.html"/>
+<link rel="next" href="00_analyse-FCC.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -197,52 +197,31 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="IFN" class="section level1">
-<h1><span class="header-section-number">3</span> Inventaire Forestier National</h1>
-<p>L’inventaire forestier national, combine les données collectées directement sur le terrain avec des références forestières provenant de différentes sources. Le seul ensemble de données collectées est actuellement le premier IFN-1 national inverntaire forestier qui a été réalisé par le GIZ en 2015/16. Il est utilisé dans le cadre du NRF-MRV pour déterminer les facteurs d’émission de la biomasse des arbres.</p>
-<div class="rmdtodo">
-<p>
-Un deuxième inverntaire forestier national (IFN-2) sur base des parcelles permanentes installées par IFN-1 est en cours de planification. Ce deuxième inventaire sera realise par la direction de l’environnment du Mininstère de l’environnment, du developpement durable et de la protection de la nature.
-</p>
-<p>
-En outre, d’autres ensembles de données seront intégrés dans la base de données au cours des prochaines années:
-</p>
+<div id="NRF-MRV" class="section level1">
+<h1><span class="header-section-number">4</span> Analyses NRF/MRV</h1>
+<p>Le Togo a soumis son premier <strong>Niveau de Référence pour les Forêts (NRF 1.0)</strong> en Janvier 2020 (<a href="https://redd.unfccc.int/submissions.html?country=tgo"><em>Soumissions du Togo sur la plateforme web REDD+ de la CCNUCC</em></a>). Il est basé sur l’évolution de la couverture forestier entre 2003 – 2018 (pertes et gains des terres forestières à une couverture du houppier ≥ 30%) et le stockage de carbone dans la biomasse aérienne des arbres (incl. bois mort sur pied)</p>
+<p>Les données de base qu’on a utilisé pour effectuer ce travail sont:</p>
 <ul>
-<li>
-inventaires réalisés par les universités du Togo et autres acteurs
-</li>
-<li>
-inventaire des plantations de l’ODEF
-</li>
-<li>
-données sur les feux de végétation de l’ANGE
-</li>
-<li>
-données sur l’agriculture (superficie emblavées et le cheptel) de DCID et ITRA
-</li>
-<li>
-données démographiques de INSEED
-</li>
-<li>
-…
-</li>
+<li><strong>les images Landsat de l’archive USGS (1985 – 2019)</strong> et les <strong>données climatiques WorldClim version 2</strong> pour la la cartographie de l’évolution des surfaces forestiers et la cartographie de la biomasse</li>
+<li><strong>les données du SSTS (état 2019)</strong> sur la couverture du houppier et l’utilisation des terres pour la calibration et la validation des cartes sur l’évolution des surfaces forestier</li>
+<li><strong>les données dendrométriques du IFN-1 (2015/16)</strong> pour déterminer le stockage de carbone dans la biomasse aérienne par parcelle et la calibration des cartes de la biomasse</li>
 </ul>
-</div>
-<p>Les données et les documents des enquêtes respectives sont structurés comme suit:</p>
-<pre><code>02_IFN                            # INVENTAIRE FORESTIER NATIONAL =============
-├── 01_IFN-1                        # Premier IFN 2015/16 ---------------------
-    ├── 01_data                       # données brutes      
-    ├── 02_aux                        # données auxiliaires, scripts, analyses
-    └── 03_reports                    # rapports (méthode, résultats, ...)
-└── ...                             # Autres données (IFN-2, Plantations, Feu)</code></pre>
+<p>Ce chapitre décrit <strong>l’approche méthodologique et les outils techniques</strong> utilisés pour établir ce NRF. C’est un travail en cours. Le même approche sera utilisés a) pour améliorer le NRF avec des nouvelles données et/ou mèthodes et b) pour mettre à jour régulièrement les analyses dans le cadre du Monitoring, reporting et vérification (MRV).</p>
+<p>Chaque section commence par une description de la méthodologie utilisée et des références aux points clés dans le script R correspondant, suivie par une présentation exemplaire des résultats de cette étappe et enfin du code R commenté.</p>
+<ul>
+<li><strong>Section <a href="01_Landsat.html#SSTS-BdD">2.1</a></strong> décrit l’acquisition et la préparation des données de télédétection dans le cadre du Système de Surveillance Terrestre par Satellite SSTS (Images Landsat, données WorldClim, …).</li>
+<li><strong>Section <a href="01_sampling-grid.html#SSTS-collecte">2.2</a></strong> décrit la collecte de données d’entraînement et de validation dans le cadre du SSTS.</li>
+<li><strong>Section <a href="00_analyse-FCC.html#NRF-analyse-FCC">4.1</a></strong> décrit les différentes étapes nécessaires pour la cartographie des surfaces forestières et leur évolution: la classification des séries de cartes, leur néttoyage et validation.</li>
+<li><strong>Section <a href="00_analyse-AGB.html#NRF-analyse-AGB">4.2</a></strong> décrit les différentes étapes nécessaires pour la cartographie des la biomasse aérienne: l’évaluation des données de l’IFN, la calibration des cartes de biomasse leur néttoyage et l’analyse de l’évolution de la biomasse dans le temps.</li>
+</ul>
 
             </section>
 
           </div>
         </div>
       </div>
-<a href="04_outil-QGIS.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="01_IFN-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="01_IFN-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="00_analyse-FCC.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -1,0 +1,6 @@
+
+## Analyse biomasse aérienne {#NRF-analyse-AGB}
+
+![](images/AGB-Schema.png)
+
+

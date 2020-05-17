@@ -18,7 +18,7 @@ Les shapefiles sont lus et convertis avec l'outil "grid_gridding" de [SAGA GIS](
 
 ![](images/SSTS-ProREDD.png)
 
-##### Script R: `01_SSTS/01_data/_src/prep-ProREDD.R` {-}
+#### Script R: `01_SSTS/01_data/_src/prep-ProREDD.R` {-}
 ```{r, code=readLines("../01_SSTS/01_data/_src/prep-ProREDD.R"), eval=FALSE}
 ```
 

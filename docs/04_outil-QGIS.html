@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Inventaire Forestier National | _main.utf8</title>
+  <title>2.2.4 Outil QGIS | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Inventaire Forestier National | _main.utf8" />
+  <meta property="og:title" content="2.2.4 Outil QGIS | _main.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -17,7 +17,7 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Inventaire Forestier National | _main.utf8" />
+  <meta name="twitter:title" content="2.2.4 Outil QGIS | _main.utf8" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -32,8 +32,8 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="04_outil-QGIS.html"/>
-<link rel="next" href="01_IFN-1.html"/>
+<link rel="prev" href="03_validation-plots.html"/>
+<link rel="next" href="00_IFN.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -197,52 +197,22 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="IFN" class="section level1">
-<h1><span class="header-section-number">3</span> Inventaire Forestier National</h1>
-<p>L’inventaire forestier national, combine les données collectées directement sur le terrain avec des références forestières provenant de différentes sources. Le seul ensemble de données collectées est actuellement le premier IFN-1 national inverntaire forestier qui a été réalisé par le GIZ en 2015/16. Il est utilisé dans le cadre du NRF-MRV pour déterminer les facteurs d’émission de la biomasse des arbres.</p>
-<div class="rmdtodo">
-<p>
-Un deuxième inverntaire forestier national (IFN-2) sur base des parcelles permanentes installées par IFN-1 est en cours de planification. Ce deuxième inventaire sera realise par la direction de l’environnment du Mininstère de l’environnment, du developpement durable et de la protection de la nature.
-</p>
-<p>
-En outre, d’autres ensembles de données seront intégrés dans la base de données au cours des prochaines années:
-</p>
-<ul>
-<li>
-inventaires réalisés par les universités du Togo et autres acteurs
-</li>
-<li>
-inventaire des plantations de l’ODEF
-</li>
-<li>
-données sur les feux de végétation de l’ANGE
-</li>
-<li>
-données sur l’agriculture (superficie emblavées et le cheptel) de DCID et ITRA
-</li>
-<li>
-données démographiques de INSEED
-</li>
-<li>
-…
-</li>
-</ul>
-</div>
-<p>Les données et les documents des enquêtes respectives sont structurés comme suit:</p>
-<pre><code>02_IFN                            # INVENTAIRE FORESTIER NATIONAL =============
-├── 01_IFN-1                        # Premier IFN 2015/16 ---------------------
-    ├── 01_data                       # données brutes      
-    ├── 02_aux                        # données auxiliaires, scripts, analyses
-    └── 03_reports                    # rapports (méthode, résultats, ...)
-└── ...                             # Autres données (IFN-2, Plantations, Feu)</code></pre>
+<div id="outil-qgis" class="section level3">
+<h3><span class="header-section-number">2.2.4</span> Outil QGIS</h3>
+<p>Actuellement, les parcelles d’échantillonnage du SSTS ainsi que la grille de points pour déterminer la couverture des houppiers sont stockées sous forme des fichiers Shapefile. L’acquisition des attributs est effectuée par les photo-interprètes à l’aide d’un formulaire défini dans un projet QGIS.</p>
+<p><img src="images/SSTS-qgis-form.png" /></p>
+<p>Un SSTS basé sur des fichiers limite la complexité de la structure des données (par exemple, l’enregistrement récurrent des mêmes parcelles sur des images de différentes années) ainsi que le travail parallèle de différents photo-interprètes sur les mêmes données. Actuellement, des travaux sont en cours pour transférer le SSTS vers une base de données géographiques (PostGIS) sur un serveur central au Ministère de l’Environnement et des Ressources Forestières (MERF) et pour définir un formulaire QGIS qui permet à plusieurs personnes de travailler simultanément sur les données.</p>
 
+</div>
+</div>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="04_outil-QGIS.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="01_IFN-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="03_validation-plots.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="00_IFN.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

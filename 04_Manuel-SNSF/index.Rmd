@@ -19,8 +19,8 @@ output:
       toc:
         collapse: subsection
         scroll_highlight: yes
-        before: <li><a href="https://github.com/ogardi/NERF-Togo"><b>SNSF Togo</b><br>v 1.0 / en développement</a></li>
-        after: <li><a href="https://github.com/rstudio/bookdown">Fièrement publié avec bookdown</a></li>
+        before: <li><a href="https://ogardi.github.io/NERF-Togo"><b>Manuel SNSF Togo</b><br>v 1.0 / en développement</a></li>
+        after:  <li><a href="https://github.com/ogardi/NERF-Togo">Dépôt du code sur GitHub</a></li>
       toolbar:
         position: fixed
       edit : null

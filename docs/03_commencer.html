@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1.2 Pour commencer | _main.utf8</title>
+  <title>1.2.2 Logiciel et serveur | _main.utf8</title>
   <meta name="description" content="République Togolaise —<br />
 Système Nationale de Surveillance des Forêts</div>" />
   <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1.2 Pour commencer | _main.utf8" />
+  <meta property="og:title" content="1.2.2 Logiciel et serveur | _main.utf8" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ogardi.github.io/NERF-Togo" />
   <meta property="og:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -17,7 +17,7 @@ Système Nationale de Surveillance des Forêts</div>" />
   <meta name="github-repo" content="ogardi/NERF-Togo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1.2 Pour commencer | _main.utf8" />
+  <meta name="twitter:title" content="1.2.2 Logiciel et serveur | _main.utf8" />
   
   
   <meta name="twitter:image" content="https://ogardi.github.io/NERF-Togoimages/NERF-Togo.png" />
@@ -25,14 +25,14 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-05-15" />
+<meta name="date" content="2020-05-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="01_arrangements.html"/>
+<link rel="prev" href="02_how-to.html"/>
 <link rel="next" href="00_STSS.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -133,11 +133,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Préface</a></li>
 <li class="chapter" data-level="1" data-path="00_introduction.html"><a href="00_introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
 <li class="chapter" data-level="1.1" data-path="01_arrangements.html"><a href="01_arrangements.html"><i class="fa fa-check"></i><b>1.1</b> Arrangements institutionelles</a></li>
-<li class="chapter" data-level="1.2" data-path="02_organisation.html"><a href="02_organisation.html"><i class="fa fa-check"></i><b>1.2</b> Pour commencer</a><ul>
-<li class="chapter" data-level="1.2.1" data-path="02_organisation.html"><a href="02_organisation.html#logiciel-et-serveur"><i class="fa fa-check"></i><b>1.2.1</b> Logiciel et serveur</a></li>
-<li class="chapter" data-level="1.2.2" data-path="02_organisation.html"><a href="02_organisation.html#structure-du-repertoire"><i class="fa fa-check"></i><b>1.2.2</b> Structure du répértoire</a></li>
-<li class="chapter" data-level="1.2.3" data-path="02_organisation.html"><a href="02_organisation.html#creation-dun-nouveau-projet"><i class="fa fa-check"></i><b>1.2.3</b> Création d’un nouveau projet</a></li>
-<li class="chapter" data-level="1.2.4" data-path="02_organisation.html"><a href="02_organisation.html#NRF-set-up.R"><i class="fa fa-check"></i><b>1.2.4</b> Définition des variables</a></li>
+<li class="chapter" data-level="1.2" data-path="02_how-to.html"><a href="02_how-to.html"><i class="fa fa-check"></i><b>1.2</b> Pour commencer</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="02_how-to.html"><a href="02_how-to.html#travailler-avec-github"><i class="fa fa-check"></i><b>1.2.1</b> Travailler avec GitHub</a></li>
+<li class="chapter" data-level="1.2.2" data-path="03_commencer.html"><a href="03_commencer.html"><i class="fa fa-check"></i><b>1.2.2</b> Logiciel et serveur</a></li>
+<li class="chapter" data-level="1.2.3" data-path="03_commencer.html"><a href="03_commencer.html#structure-du-repertoire"><i class="fa fa-check"></i><b>1.2.3</b> Structure du répértoire</a></li>
+<li class="chapter" data-level="1.2.4" data-path="03_commencer.html"><a href="03_commencer.html#creation-dun-nouveau-projet"><i class="fa fa-check"></i><b>1.2.4</b> Création d’un nouveau projet</a></li>
+<li class="chapter" data-level="1.2.5" data-path="03_commencer.html"><a href="03_commencer.html#NRF-set-up.R"><i class="fa fa-check"></i><b>1.2.5</b> Définition des variables</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="00_STSS.html"><a href="00_STSS.html"><i class="fa fa-check"></i><b>2</b> Système de Surveillance Terrestre</a><ul>
@@ -197,15 +198,13 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="SNSF-organisation" class="section level2">
-<h2><span class="header-section-number">1.2</span> Pour commencer</h2>
 <div id="logiciel-et-serveur" class="section level3">
-<h3><span class="header-section-number">1.2.1</span> Logiciel et serveur</h3>
+<h3><span class="header-section-number">1.2.2</span> Logiciel et serveur</h3>
 <p>La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel <a href="https://www.r-project.org">R</a>, dirigé à travers <a href="https://rstudio.com">RStudio</a>. Les scripts R sont mis à disposition dans un <a href="https://github.com/ogardi/NERF-Togo">dépot GitHub</a>. Les scripts dépendent des fois des outils GDAL disponible dans l’environnement, à installer pour les systèmes Linux avec <code>apt-get install python-gdal</code>.</p>
 <p>Le traitement et l’analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Les analyses pour le Niveau des emissions de référence pour les forêts du Togo (NERF 1.0) ont été éfféctués sur l’infrastructure informatique centrale de la BFH-HAFL (<a href="http://r.gro1.bfh.science" class="uri">http://r.gro1.bfh.science</a>, accès limité). Une fois la nouvelle infrastructure informatique puissante avec un serveur central au Ministère pour l’Environnement et Forêts (MERF) est installé et disponible, les travaux peuvent être éffectués là.</p>
 </div>
 <div id="structure-du-repertoire" class="section level3">
-<h3><span class="header-section-number">1.2.2</span> Structure du répértoire</h3>
+<h3><span class="header-section-number">1.2.3</span> Structure du répértoire</h3>
 <p>Les outils R dépendent d’une certaine structure des fichiers. Le répértoire de base <code>SNSF_Togo</code> est structuré comme suivant:</p>
 <pre><code>SNSF_Togo
 =========
@@ -301,11 +300,11 @@ SNSF_Togo
 └── SNSF_v1.x                           # Répértoire SNSF version actualisé ###########
 ```
 -->
-<p>La structure du répertoire est définit dans le script R <a href="02_organisation.html#NRF-set-up.R">.Rprofile</a> et peut être ajousté.</p>
+<p>La structure du répertoire est définit dans le script R <a href="03_commencer.html#NRF-set-up.R">.Rprofile</a> et peut être ajousté.</p>
 <p>C’est seulement les répétoires <code>src</code> et <code>manual</code> qui sont mis à diposition dans le dépôt <a href="https://github.com/ogardi/NERF-Togo">GitHub</a>. Les autres répétoires et données doivent être installés manuellement.</p>
 </div>
 <div id="creation-dun-nouveau-projet" class="section level3">
-<h3><span class="header-section-number">1.2.3</span> Création d’un nouveau projet</h3>
+<h3><span class="header-section-number">1.2.4</span> Création d’un nouveau projet</h3>
 <p>Pour la création d’un nouveau projet avec le code le plus actuel, on clone le dépôt du projet sur GitHub par la commande <code>git clone --single-branch https://github.com/ogardi/NERF-Togo.git NOM-REPERTOIRE</code>. L’installation d’une version spécifique peut être fait avec <code>git clone -b VERSION --single-branch https://github.com/ogardi/NERF-Togo.git NOM-REPERTOIRE</code>.</p>
 <p>En travaillant avec RStudio, le plus facile est de créer directement un projet RStudio au départ due dépôt GitHub (<code>File &gt; New Project ... &gt; Version Control &gt; Git</code>) avec les mêmes paramètre que l’installtion directe en haut.</p>
 <p>Dans une prochaine étape, les données doivent être rendues disponibles, soit par une nouvelle acquisition, soit par une copie des répertoires existants.</p>
@@ -316,7 +315,7 @@ SNSF_Togo
 </ul>
 </div>
 <div id="NRF-set-up.R" class="section level3">
-<h3><span class="header-section-number">1.2.4</span> Définition des variables</h3>
+<h3><span class="header-section-number">1.2.5</span> Définition des variables</h3>
 <p>Le traitement des images ainsi que les différentes analyses se font via des R-Scripts. Les variables et les fonctions utilisées dans les différents scripts sont définit dans le fichier <code>.Rprofile</code>, qui est automatiquement chargé au démarrage de R. Si le processus de chargement a réussi, vous pouvez voir un message de bienvenue suivant sur la console R.</p>
 <p>Si aucun message n’apparaît, assurez-vous que a) R est lancé dans le répertoire et b) qu’aucun message d’erreur ne se produit. Les messages d’erreur possibles sont des paquets manquants (les paquets correspondants doivent être installés en premier) ou le fait de ne pas trouver les limites administratives de GADM dans <code>../data/GADM</code> (doivent également être installés en premier).</p>
 <p>Si nécessaire les variables sont ajustées et R est redémarré. Notamment les informations sur la période analysée <code>YEARS.ALL</code> et les années à prendre en compte pour les différentes évaluations <code>YEARS.JNT</code>, <code>YEARS.VAL</code> et <code>YEARS.REF</code>.</p>
@@ -440,7 +439,7 @@ SNSF_Togo
           </div>
         </div>
       </div>
-<a href="01_arrangements.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="02_how-to.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="00_STSS.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

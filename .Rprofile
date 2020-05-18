@@ -36,13 +36,23 @@ library("doParallel")   # ... sur plusieurs processeurs
 
 .snsf$DIR.SST       <- "./01_SSTS"
 .snsf$DIR.SST.DAT   <- paste0(.snsf$DIR.SST, "/01_data")
+.snsf$DIR.SST.DAT.LST   <- paste0(.snsf$DIR.SST.DAT, "/Landsat")
+.snsf$DIR.SST.DAT.WC2   <- paste0(.snsf$DIR.SST.DAT, "/Worldclim")
+
 .snsf$DIR.SST.BDD   <- paste0(.snsf$DIR.SST, "/02_BdD")
+.snsf$DIR.SST.BDD.GRD   <- paste0(.snsf$DIR.SST.BDD, "/01_reseau-SSTS")
+.snsf$DIR.SST.BDD.TPS   <- paste0(.snsf$DIR.SST.BDD, "/02_train-plots")
+.snsf$DIR.SST.BDD.VPS   <- paste0(.snsf$DIR.SST.BDD, "/03_val-plots")
 
 .snsf$DIR.IFN       <- "./02_IFN"
 .snsf$DIR.IFN.DAT   <- paste0(.snsf$DIR.IFN, "/01_field-data")
 
 .snsf$DIR.MRV       <- "./03_NRF-MRV"
 .snsf$DIR.MRV.MCF   <- paste0(.snsf$DIR.MRV, "/01_MCF")
+.snsf$DIR.MRV.MCF.REF   <- paste0(.snsf$DIR.MRV.MCF, "/1_ref-maps")
+.snsf$DIR.MRV.MCF.RAW   <- paste0(.snsf$DIR.MRV.MCF, "/2_raw-maps")
+.snsf$DIR.MRV.MCF.CLN   <- paste0(.snsf$DIR.MRV.MCF, "/3_cln-maps")
+
 .snsf$DIR.MRV.AGB   <- paste0(.snsf$DIR.MRV, "/02_AGB")
 
 # Système de référence des coordonnées ----------

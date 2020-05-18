@@ -1,10 +1,4 @@
 
-### Logiciel et serveur
-
-La cartographie des surfaces forestier et de la biomasse aérienne des arbres se fait avec le logiciel [R](https://www.r-project.org), dirigé à travers [RStudio](https://rstudio.com). Les scripts R sont mis à disposition dans un [dépot GitHub](https://github.com/ogardi/NERF-Togo). Les scripts dépendent des fois des outils GDAL disponible dans l'environnement, à installer pour les systèmes Linux avec `apt-get install python-gdal`.
-
-Le traitement et l'analyse des images satellitaires demande des ressources intensives en terme de stockage de données (plusieurs TB) et capacité de calcul (plusieurs processeurs en parallèle). Les analyses pour le Niveau des emissions de référence pour les forêts du Togo (NERF 1.0) ont été éfféctués sur l'infrastructure informatique centrale de la BFH-HAFL (http://r.gro1.bfh.science, accès limité). Une fois la nouvelle infrastructure informatique puissante avec un serveur central au Ministère pour l'Environnement et Forêts (MERF) est  installé et disponible, les travaux peuvent être éffectués là. 
-
 ### Structure du répértoire
 
 Les outils R dépendent d'une certaine structure des fichiers. Le répértoire de base `SNSF_Togo` est structuré comme suivant: 
@@ -13,13 +7,13 @@ Les outils R dépendent d'une certaine structure des fichiers. Le répértoire d
 SNSF_Togo
 =========
 ├── data                                # Données de base externes ####################
-    ├── GADM                              # <- frontières administratives
-    ├── Landsat                           # <- images satellitaires
-    ├── SRTM                              # <- données topographiques
-    └── Worldclim                         # <- données climatiques
+    ├── GADM                              # :: frontières administratives
+    ├── Landsat                           # :: images satellitaires
+    ├── SRTM                              # :: données topographiques
+    └── Worldclim                         # :: données climatiques
     
 └── SNSF_v1.0_20200106                  # Répértoire SNSF v1.0 ########################
-    ├── .Rprofile                         # [R] initialisation
+    ├── .Rprofile                         #:: Script R de initialisation
     
     ├── 01_SSTS                           # SYSTÈME DE SURVEILLANCE TERRESTRE =========
         ├── 01_data                         #:: images et autres données pré-traités --
@@ -33,11 +27,14 @@ SNSF_Togo
         ├── 02_AGB                          #:: cartographie biomasse -----------------
         └── 03_report                       #:: rapport NRF/MRV -----------------------
         
-    ├── 04_SNSF-manual                    #:: cette documentation du SNSF =============
-    └── docs                              #:: cette documentation en HTML
+    ├── 04_Manuel                         # CETTE DOCUMENTATION DU SNSF =============
+    └── docs                              #:: site web manuel de référence
     
     
 └── SNSF_v1.x                           # Répértoire SNSF version actualisé ###########
+    ├── ...
+    └── ...
+    
 ```
 <!-- old structure
 ```
@@ -114,13 +111,13 @@ C'est seulement les répétoires `src` et `manual` qui sont mis à diposition da
 
 Pour la création d'un nouveau projet avec le code le plus actuel, on clone le dépôt du projet sur GitHub par la commande `git clone --single-branch https://github.com/ogardi/NERF-Togo.git NOM-REPERTOIRE`. L'installation d'une version spécifique peut être fait avec `git clone -b VERSION --single-branch https://github.com/ogardi/NERF-Togo.git NOM-REPERTOIRE`. 
 
-En travaillant avec RStudio, le plus facile est de créer directement un projet RStudio au départ due dépôt GitHub (`File > New Project ... > Version Control > Git`) avec les mêmes paramètre que l'installtion directe en haut.
+En travaillant avec RStudio, le plus facile est de créer directement un projet RStudio au départ due dépôt GitHub (`File > New Project ... > Version Control > Git`) avec les mêmes paramètre que l'installation directe en haut.
 
 Dans une prochaine étape, les données doivent être rendues disponibles, soit par une nouvelle acquisition, soit par une copie des répertoires existants.
 
 * S'il n'est pas encore disponible, le répertoire `../data/` doit être créé et les données de base correspondantes doivent être fournies. 
 * Dans le répertoire `./01_SSTS/02_BdD/`, le réseau d'échantillonnage ainsi que les données d'entraînement et de validation doivent être stockées.
-* En outre, les données d'inventaire doivent être stockées dans le répertoire `./03_IFN/`.
+* En outre, les données d'inventaire doivent être stockées dans le répertoire `./02_IFN/`.
 
 
 ### Définition des variables {#NRF-set-up.R}

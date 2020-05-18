@@ -1,0 +1,30 @@
+---
+title: "Example"
+author: "Oliver Gardi"
+date: "5/18/2020"
+output: html_document
+---
+
+# Titre
+## Sous-titre
+
+normal
+
+*italic*
+
+**gras**
+
+* bullet 1
+* bullet 2
+* bullet 3
+
+`code`
+
+| Tableau | col 1 | col 2 |
+|:--------|:------|------:|
+| ligne 1 | abc   |   123 |
+| ligne 2 | def   |   456 |
+
+[Markdown sur Wikipedia](https://fr.wikipedia.org/wiki/Markdown)
+
+![Logo Markdown](https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/130px-Markdown-mark.svg.png)

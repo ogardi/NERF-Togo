@@ -1,0 +1,67 @@
+
+## Pour commencer {#SNSF-organisation}
+
+### Travailler avec le SNSF
+
+#### Installation R et RStudio
+
+**Le traitement des données au sein du SNSF est principalement basé sur les scripts R (*R Project for Statistical Computing*).** Pour pouvoir travailler avec ces scripts, vous devez disposer d'une installation de [R](https://cloud.r-project.org/). En outre, l'installation des paquets suivants est nécessaire dans R :
+
+```{r eval=FALSE, tidy=FALSE}
+install.packages("sp", "rgdal", "raster", "randomForest", "caret", "openxlsx", 
+                 "dplyr", "tidyr", "ggplot2", "foreach", "doParallel", "knitr", 
+                 "rmarkdown", "tinytex")
+```
+
+Les scripts R dépendent des fois des [outils GDAL](https://gdal.org/programs/index.html#raster-programs) disponible dans l’environnement. Sur les systèmes Linux, ceux-ci peuvent être installés en utilisant `apt-get install python-gdal'.
+
+Comme interface utilisateur graphique pour R, nous recommandons l'installation de [RStudio](https://rstudio.com/products/rstudio/download/).
+
+#### Se connecter avec GitHub
+
+**Le code SNSF-Togo se trouve sur un dépôt du code GitHub** (https://github.com/ogardi/SNSF-Togo). Pour copier le code sur votre ordinateur, vous pouvez dans RStudio créer un nouveau projet à partir d'un dépôt Git comme illustré dans la figure ci-dessous.
+
+![](images/RStudio_new-project.png)
+
+**Git vous permet de vous synchroniser avec le dépôt sur GitHub.** En appuyant sur le bouton "Pull" (point 1. dans la figure ci-dessous), vous mettez à jour votre code local avec le dépôt du code sur GitHub.
+
+![](images/RStudio_git-tools.png)
+
+**Pour modifier vous-même le code sur GitHub, vous devez disposer d'un compte GitHub et d'une autorisation du [gestionnaire du dépôt](mailto:oliver.gardi@bfh.ch).** La procédure à suivre pour apporter des modifications au code est la suivante. 
+
+**Avant faire des modifications dans le code:**
+
+1. synchroniser avec le dépôt sur GitHub en utilisant le bouton "Pull" (tirer)
+
+**De temps en temps, pendant le travail:**
+
+2. confirmer les modifications apportées au code en appuyant sur le bouton "Commit". Une nouvelle fenêtre s'ouvrira.
+
+3. sélectionner les fichiers à confirmer (CTRL-A) et les marquer (ESPACE)
+
+4. joindre un message (ce qui a été modifié)
+
+5. confirmer les modifications apportées au code en appuyant sur le bouton "Commit" (confirmer)
+
+6. synchroniser de nouveau avec GitHub (et résoudre les éventuels conflits)
+
+7. télécharger les modifications sur GitHub en utilisant le bouton "Push" (pousser) 
+
+
+#### Travailler sur la documentation
+
+**Ce manuel de référence fait également partie du dépôt du code sur GitHub.** Cela signifie que pour réviser la documentation, vous devez procéder comme décrit ci-dessus.
+
+La documentation a été créée dans [Markdown](https://fr.wikipedia.org/wiki/Markdown), une syntaxe simple pour la structuration et le formatage des documents. Ces documents Markdown sont ensuite traduits en HTML par le paquet R `knitr` pour générer un site web.
+
+![](images/RStudio_markdown.png)
+
+Le répertoire `04_Manuel` contient les documents Markdown (fichiers .Rmd), le répertoire `docs` contient le site web résultant (fichiers .html).
+
+**Dans RStudio, le site web peut être généré en utilisant le bouton "Build Book".** Pour ce faire, il faut d'abord spécifier le répertoire dans lequel se trouvent les fichiers Markdown dans les configurations, comme indiqué dans la figure ci-dessous.
+
+![](images/RStudio_build-tools.png)
+
+
+
+

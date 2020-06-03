@@ -1,114 +1,132 @@
-##########################################################################
-# NERF_Togo/FCC/6_validate-fc-maps.R: validate clean forest cover maps
-# ------------------------------------------------------------------------
+###############################################################################
+# 03_validate-fc-maps.R: validation des cartes forêt/non-forêt nettoyées
+# -----------------------------------------------------------------------------
 # Bern University of Applied Sciences
 # Oliver Gardi, <oliver.gardi@bfh.ch>
-# 20 May 2019
+# 13 Mai 2020
 
-# Variables -------------------------------------------------------
+
+# Définitions des variables ===================================================
 
 COV.FC         <- 30
 
+REF.DIR <- DIR.MRV.MCF.REF
+RAW.DIR <- DIR.MRV.MCF.RAW
+CLN.DIR <- DIR.MRV.MCF.CLN
+VAL.DIR <- DIR.MRV.MCF.VAL
+TPS.DIR <- DIR.SST.BDD.TPS
+VPS.DIR <- DIR.SST.BDD.VPS
 
-ct <- list()          # List of confusion tables to be written to xls file
 
 
-# Load maps, training points --------------------------------
+ct <- list()      # liste des matrices d'érreurs (tableaux de confusion)
 
-# Load raw and clean forest / non-forest maps
 
-maps <- stack(c(paste0(FCC.RAW.DIR, "/FC", COV.FC, "/TGO/TGO_", VAL.YEARS, "_F", COV.FC, "r.tif"),
-                paste0(FCC.CLN.DIR, "/FC", COV.FC, "/TGO/TGO_", VAL.YEARS, "_F", COV.FC, "c.tif")))
+# Préparations ================================================================
 
+
+# Charger cartes et points d'entraînment --------
+
+# Cartes brutes et cartes néttoyées
+maps <- stack(c(paste0(RAW.DIR, "/FC", COV.FC, "/TGO/TGO_", YEARS.REF, "_F", COV.FC, "r.tif"),
+                paste0(CLN.DIR, "/FC", COV.FC, "/TGO/TGO_", YEARS.REF, "_F", COV.FC, "c.tif")))
 names(maps) <- sub("TGO\\_", "X", sub("\\_F[[:digit:]]{2}", "", names(maps)))
 
-
-# Load training points used for calibration and extract 2018 values from the maps
-train.plots <- readOGR(paste0(TRNPTS.DIR, "/COV_parcelles.shp"))
-train.points <- SpatialPointsDataFrame(gCentroid(train.plots, byid=TRUE),  # convert polygons to spatial points (centroids)
-                                       data.frame(COV=train.plots$ccov))    # with only COV in the attribute table
-
+# Points d'entraînement: Couverture des houppiers ...
+train.plots <- readOGR(paste0(TPS.DIR, "/COV_parcelles.shp"))
+train.points <- SpatialPointsDataFrame(gCentroid(train.plots, byid=TRUE),  # polygons -> points
+                                       data.frame(COV=train.plots$ccov))   # seulement COV
+# ... et classes forêt/non-forêt dans les cartes 2018
 train.points <- raster::extract(maps[[c("X2018r","X2018c")]], train.points, sp=TRUE)
 
-# delete rows with NAs
+# supprimer lignes avec NA
 train.points <- train.points[rowSums(is.na(train.points@data)) == 0, ]
 
-# reading validation plots ------------------------
 
-# Load validation points, clean and extract map values
-val.plots  <- readOGR(paste0(VALPTS.DIR, "/UOT_parcelles.shp"))
+# charger points de validation ------------------
+
+# Points de validation: classes forêt/non-forêt 1987, 2003, 2015, 2018 ...
+val.plots  <- readOGR(paste0(VPS.DIR, "/UOT_parcelles.shp"))
 val.points <- SpatialPointsDataFrame(gCentroid(val.plots, byid=TRUE), 
                                      data.frame(author=sub("^.*\\/", "", val.plots$author),
-                                                V1987=as.numeric(substr(val.plots$lc_87, 1, 1)), V2003=as.numeric(substr(val.plots$lc_03, 1, 1)), 
-                                                V2015=as.numeric(substr(val.plots$lc_15, 1, 1)), V2018=as.numeric(substr(val.plots$lc_18, 1, 1))))
-
+                                                V1987=as.numeric(substr(val.plots$lc_87, 1, 1)), 
+                                                V2003=as.numeric(substr(val.plots$lc_03, 1, 1)), 
+                                                V2015=as.numeric(substr(val.plots$lc_15, 1, 1)), 
+                                                V2018=as.numeric(substr(val.plots$lc_18, 1, 1))))
+# ... et classes correspondantes dans les cartes
 val.points <- raster::extract(maps, val.points, sp=TRUE)
 
-# delete rows with NAs
+# supprimer lignes avec NA
 val.points <- val.points[rowSums(is.na(val.points@data)) == 0, ]
 
-# adjusting classes of reference points ----------------------
 
-# if(COV.FC == 30) {
-#   # change the woodland (2) to non-forest
-#   val.points$V1987[val.points$V1987 == 2] <- 3
-#   val.points$V2003[val.points$V2003 == 2] <- 3
-#   val.points$V2015[val.points$V2015 == 2] <- 3
-#   val.points$V2018[val.points$V2018 == 2] <- 3
-# }
+# Ajustements terres boisées (classe 2) ---------
 
+if(COV.FC == 30) {
+  # terre boisée -> non-forêt
+  val.points$V1987[val.points$V1987 == 2] <- NONFOR
+  val.points$V2003[val.points$V2003 == 2] <- NONFOR
+  val.points$V2015[val.points$V2015 == 2] <- NONFOR
+  val.points$V2018[val.points$V2018 == 2] <- NONFOR
+}
 if(COV.FC == 10) {
-  # change the woodland (2) to forest
-  val.points$V1987[val.points$V1987 == 2] <- 1
-  val.points$V2003[val.points$V2003 == 2] <- 1
-  val.points$V2015[val.points$V2015 == 2] <- 1
-  val.points$V2018[val.points$V2018 == 2] <- 1
+  # terre boisée -> forêt
+  val.points$V1987[val.points$V1987 == 2] <- FOREST
+  val.points$V2003[val.points$V2003 == 2] <- FOREST
+  val.points$V2015[val.points$V2015 == 2] <- FOREST
+  val.points$V2018[val.points$V2018 == 2] <- FOREST
 }
 
-# set cloud/shadow class (4) to forest or non-forest, according to the map
-val.points$V1987r <- val.points$V1987; val.points$V1987r[val.points$V1987 %in% c(2,4)] <- val.points$X1987r[val.points$V1987 %in% c(2,4)]
-val.points$V2003r <- val.points$V2003; val.points$V2003r[val.points$V2003 %in% c(2,4)] <- val.points$X2003r[val.points$V2003 %in% c(2,4)]
-val.points$V2015r <- val.points$V2015; val.points$V2015r[val.points$V2015 %in% c(2,4)] <- val.points$X2015r[val.points$V2015 %in% c(2,4)]
-val.points$V2018r <- val.points$V2018; val.points$V2018r[val.points$V2018 %in% c(2,4)] <- val.points$X2018r[val.points$V2018 %in% c(2,4)]
+# Ajustements nuages/ombre (classe 4) -----------
 
-# same thing for cleaned map
-val.points$V1987c <- val.points$V1987; val.points$V1987c[val.points$V1987 %in% c(2,4)] <- val.points$X1987c[val.points$V1987 %in% c(2,4)]
-val.points$V2003c <- val.points$V2003; val.points$V2003c[val.points$V2003 %in% c(2,4)] <- val.points$X2003c[val.points$V2003 %in% c(2,4)]
-val.points$V2015c <- val.points$V2015; val.points$V2015c[val.points$V2015 %in% c(2,4)] <- val.points$X2015c[val.points$V2015 %in% c(2,4)]
-val.points$V2018c <- val.points$V2018; val.points$V2018c[val.points$V2018 %in% c(2,4)] <- val.points$X2018c[val.points$V2018 %in% c(2,4)]
+val.points$V1987r <- val.points$V1987c <- val.points$V1987; 
+val.points$V2003r <- val.points$V2003c <- val.points$V2003; 
+val.points$V2015r <- val.points$V2015c <- val.points$V2015; 
+val.points$V2018r <- val.points$V2018c <- val.points$V2018; 
+
+# Prendre la classe dans les carte brutes ...
+val.points$V1987r[val.points$V1987 %in% c(2,4)] <- val.points$X1987r[val.points$V1987 %in% c(2,4)]
+val.points$V2003r[val.points$V2003 %in% c(2,4)] <- val.points$X2003r[val.points$V2003 %in% c(2,4)]
+val.points$V2015r[val.points$V2015 %in% c(2,4)] <- val.points$X2015r[val.points$V2015 %in% c(2,4)]
+val.points$V2018r[val.points$V2018 %in% c(2,4)] <- val.points$X2018r[val.points$V2018 %in% c(2,4)]
+
+# ... et les cartes nettoyées
+val.points$V1987c[val.points$V1987 %in% c(2,4)] <- val.points$X1987c[val.points$V1987 %in% c(2,4)]
+val.points$V2003c[val.points$V2003 %in% c(2,4)] <- val.points$X2003c[val.points$V2003 %in% c(2,4)]
+val.points$V2015c[val.points$V2015 %in% c(2,4)] <- val.points$X2015c[val.points$V2015 %in% c(2,4)]
+val.points$V2018c[val.points$V2018 %in% c(2,4)] <- val.points$X2018c[val.points$V2018 %in% c(2,4)]
 
 
+# Ajustements de la régénération potentielle ----
 
-# adjusting classes of maps ----------------------
+# changer "régénération potentielle" à la classe identifiée dans les parcelles de validation
+val.points$X1987c[val.points$X1987c == PREGEN] <- val.points$V1987c[val.points$X1987c == PREGEN]
+val.points$X2003c[val.points$X2003c == PREGEN] <- val.points$V2003c[val.points$X2003c == PREGEN] 
+val.points$X2015c[val.points$X2015c == PREGEN] <- val.points$V2015c[val.points$X2015c == PREGEN] 
+val.points$X2018c[val.points$X2018c == PREGEN] <- val.points$V2018c[val.points$X2018c == PREGEN] 
 
-# for the clean maps, set regeneration (2) of the clean maps to forest/non-forest according the validation points
-val.points$X1987c[val.points$X1987c == 2] <- val.points$V1987c[val.points$X1987c == 2]
-val.points$X2003c[val.points$X2003c == 2] <- val.points$V2003c[val.points$X2003c == 2] 
-val.points$X2015c[val.points$X2015c == 2] <- val.points$V2015c[val.points$X2015c == 2] 
-val.points$X2018c[val.points$X2018c == 2] <- val.points$V2018c[val.points$X2018c == 2] 
-
-# set to non-forest where a 2 remains (regeneration on the maps and woodland in validation points)
-val.points$X1987c[val.points$X1987c == 2] <- val.points$V1987c[val.points$X1987c == 2] <- 3
-val.points$X2003c[val.points$X2003c == 2] <- val.points$V2003c[val.points$X2003c == 2] <- 3
-val.points$X2015c[val.points$X2015c == 2] <- val.points$V2015c[val.points$X2015c == 2] <- 3
-val.points$X2018c[val.points$X2018c == 2] <- val.points$V2018c[val.points$X2018c == 2] <- 3
+# Non-forêt où "régénération potentielle" dans la carte et "terre boisée" dans les parcelles de validation
+val.points$X1987c[val.points$X1987c == NONFOR] <- val.points$V1987c[val.points$X1987c == 2] <- NONFOR
+val.points$X2003c[val.points$X2003c == NONFOR] <- val.points$V2003c[val.points$X2003c == 2] <- NONFOR
+val.points$X2015c[val.points$X2015c == NONFOR] <- val.points$V2015c[val.points$X2015c == 2] <- NONFOR
+val.points$X2018c[val.points$X2018c == NONFOR] <- val.points$V2018c[val.points$X2018c == 2] <- NONFOR
 
 
 val.points@data <- mutate_all(val.points@data, as.factor)
 
 
-## DO THE WORK -------------------------------------------------------
+# Matrices d'erreurs ==========================================================
 
-# Compare forest cover map 2018 with reference 2018  ---------
+# carte 2018 vs. carte référence 2018  ----------
 
-ref.map <- raster(paste0(FCC.REF.DIR, "/FC", COV.FC, "/TGO_2018_FC", COV.FC, "_R.tif"))
+ref.map <- raster(paste0(REF.DIR, "/FC", COV.FC, "/TGO_2018_FC", COV.FC, "_R.tif"))
 ct[["MAP_REF.18r"]] <- confusionMatrix(as.factor(maps$X2018r[]), as.factor(ref.map[]))
 
-pdf(paste0(FCC.VAL.DIR, "/FC2018_vs_COV2018_FC", COV.FC, ".pdf"))
+pdf(paste0(VAL.DIR, "/FC2018_vs_COV2018_FC", COV.FC, ".pdf"))
 plot(factor(train.points$X2018r, labels=c("Forest", "Non-Forest")) ~ train.points$COV, xlab="Tree Cover 2018", ylab="Forest Cover Map 2018")
 dev.off()
 
-pdf(paste0(FCC.VAL.DIR, "/COV2018_vs_FC2018_FC", COV.FC, ".pdf"))
+pdf(paste0(VAL.DIR, "/COV2018_vs_FC2018_FC", COV.FC, ".pdf"))
 plot(train.points$COV ~ factor(train.points$X2018r, labels=c("Forest", "Non-Forest")), xlab="Forest Cover Map 2018", ylab="Tree Cover 2018")
 dev.off()
 

@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-05-18" />
+<meta name="date" content="2020-05-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -219,475 +219,521 @@ Système Nationale de Surveillance des Forêts</div></a>
 <a class="sourceLine" id="cb16-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co"># Définitions des variables ===================================================</span></a>
 <a class="sourceLine" id="cb16-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">COV.FC         &lt;-<span class="st"> </span><span class="dv">10</span>             <span class="co"># Couverture des houppiers forêt/non-forêt</span></a>
-<a class="sourceLine" id="cb16-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb16-12" data-line-number="12">SAMPLE.DIST    &lt;-<span class="st"> </span><span class="dv">1</span>              <span class="co"># Largeur de la lisière forêt à considérer</span></a>
-<a class="sourceLine" id="cb16-13" data-line-number="13">N.PIXELS       &lt;-<span class="st"> </span><span class="ot">NA</span>             <span class="co"># Number of non-NA cells (will be determined later)</span></a>
-<a class="sourceLine" id="cb16-14" data-line-number="14">SAMPLE.RATIO   &lt;-<span class="st"> </span><span class="fl">0.0025</span>         <span class="co"># Share of non-NA cells to sample</span></a>
-<a class="sourceLine" id="cb16-15" data-line-number="15">CAL.RATIO      &lt;-<span class="st"> </span><span class="fl">0.75</span>           <span class="co"># Use same amount of ref-points from cal.map as from ref.map / train.points</span></a>
-<a class="sourceLine" id="cb16-16" data-line-number="16">PREDICTORS     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;B&quot;</span>, <span class="st">&quot;G&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;NIR&quot;</span>, <span class="st">&quot;SWIR1&quot;</span>, <span class="st">&quot;SWIR2&quot;</span>, <span class="st">&quot;nbr&quot;</span>, <span class="st">&quot;ndmi&quot;</span>, <span class="st">&quot;ndvi&quot;</span>, <span class="st">&quot;evi&quot;</span>, <span class="st">&quot;BIO1&quot;</span>, <span class="st">&quot;BIO4&quot;</span>, <span class="st">&quot;BIO12&quot;</span>, <span class="st">&quot;BIO15&quot;</span>) <span class="co"># &quot;savi&quot;, &quot;nbr2&quot;, &quot;msavi&quot;, &quot;x&quot;, &quot;y&quot; </span></a>
-<a class="sourceLine" id="cb16-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co"># Seuil de la couverture des houppiers (forêt vs. non-forêt)</span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">COV.FC         &lt;-<span class="st"> </span><span class="dv">30</span>             </a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co"># Nombre de pixels à considerer comme lisière forêt </span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14">SAMPLE.DIST    &lt;-<span class="st"> </span><span class="dv">1</span>              </a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="co"># Nombre de pixels non-NA (sera déterminé plus tard)</span></a>
+<a class="sourceLine" id="cb16-17" data-line-number="17">N.PIXELS       &lt;-<span class="st"> </span><span class="ot">NA</span>        </a>
 <a class="sourceLine" id="cb16-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="co"># Définitions des fonctions ===================================================</span></a>
-<a class="sourceLine" id="cb16-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb16-21" data-line-number="21"><span class="co"># Charger un image Landsat ----------------------------------------------------</span></a>
-<a class="sourceLine" id="cb16-22" data-line-number="22"><span class="co">#</span></a>
-<a class="sourceLine" id="cb16-23" data-line-number="23"><span class="co"># @param filename  Chemin du fichier landsat</span></a>
-<a class="sourceLine" id="cb16-24" data-line-number="24"><span class="co">#</span></a>
-<a class="sourceLine" id="cb16-25" data-line-number="25"><span class="co"># @return          Image Landsat avec bandes nommées </span></a>
-<a class="sourceLine" id="cb16-26" data-line-number="26"><span class="co">#</span></a>
-<a class="sourceLine" id="cb16-27" data-line-number="27"></a>
-<a class="sourceLine" id="cb16-28" data-line-number="28">load.image &lt;-<span class="st"> </span><span class="cf">function</span>(filename) {</a>
-<a class="sourceLine" id="cb16-29" data-line-number="29">  image &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(IMAGES.DIR, filename))</a>
-<a class="sourceLine" id="cb16-30" data-line-number="30">  <span class="kw">names</span>(image) &lt;-<span class="st"> </span>SST.LSBANDS</a>
-<a class="sourceLine" id="cb16-31" data-line-number="31">  <span class="kw">return</span>(image)</a>
-<a class="sourceLine" id="cb16-32" data-line-number="32">}</a>
-<a class="sourceLine" id="cb16-33" data-line-number="33"></a>
-<a class="sourceLine" id="cb16-34" data-line-number="34"><span class="co"># Tirer des points d&#39;entraînement d&#39;une carte autour de la lisière forêt ------</span></a>
-<a class="sourceLine" id="cb16-35" data-line-number="35"><span class="co">#</span></a>
-<a class="sourceLine" id="cb16-36" data-line-number="36"><span class="co"># @param map       Carte forêt/non-forêt à échantillonner</span></a>
-<a class="sourceLine" id="cb16-37" data-line-number="37"><span class="co"># @param n         Nombre d&#39;échantillons à tirer</span></a>
-<a class="sourceLine" id="cb16-38" data-line-number="38"><span class="co">#</span></a>
-<a class="sourceLine" id="cb16-39" data-line-number="39"><span class="co"># @return          Points d&#39;échantillon avec aatribut forêt/non-forêt</span></a>
+<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="co"># Part de pixels à prendre en compte pour la calibration des cartes</span></a>
+<a class="sourceLine" id="cb16-20" data-line-number="20">SAMPLE.RATIO   &lt;-<span class="st"> </span><span class="fl">0.0025</span>        </a>
+<a class="sourceLine" id="cb16-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb16-22" data-line-number="22"><span class="co"># Part des pixels à prendre des autres chemins (calibration)</span></a>
+<a class="sourceLine" id="cb16-23" data-line-number="23">CAL.RATIO      &lt;-<span class="st"> </span><span class="fl">0.75</span> </a>
+<a class="sourceLine" id="cb16-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb16-25" data-line-number="25"><span class="co"># Bandes à utiliser pour la modélisation forêt vs. non-forêt</span></a>
+<a class="sourceLine" id="cb16-26" data-line-number="26">PREDICTORS     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;B&quot;</span>, <span class="st">&quot;G&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;NIR&quot;</span>, <span class="st">&quot;SWIR1&quot;</span>, <span class="st">&quot;SWIR2&quot;</span>, </a>
+<a class="sourceLine" id="cb16-27" data-line-number="27">                    <span class="st">&quot;nbr&quot;</span>, <span class="st">&quot;ndmi&quot;</span>, <span class="st">&quot;ndvi&quot;</span>, <span class="st">&quot;evi&quot;</span>, </a>
+<a class="sourceLine" id="cb16-28" data-line-number="28">                    <span class="st">&quot;BIO1&quot;</span>, <span class="st">&quot;BIO4&quot;</span>, <span class="st">&quot;BIO12&quot;</span>, <span class="st">&quot;BIO15&quot;</span>) </a>
+<a class="sourceLine" id="cb16-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb16-30" data-line-number="30"><span class="co"># Répertoires</span></a>
+<a class="sourceLine" id="cb16-31" data-line-number="31">LANDSAT.DIR &lt;-<span class="st"> </span>DIR.SST.DAT.LST</a>
+<a class="sourceLine" id="cb16-32" data-line-number="32">WORLDCLIM.DIR &lt;-<span class="st"> </span>DIR.SST.DAT.WC2</a>
+<a class="sourceLine" id="cb16-33" data-line-number="33">REF.DIR &lt;-<span class="st"> </span>DIR.MRV.MCF.REF</a>
+<a class="sourceLine" id="cb16-34" data-line-number="34">RAW.DIR &lt;-<span class="st"> </span>DIR.MRV.MCF.RAW</a>
+<a class="sourceLine" id="cb16-35" data-line-number="35">  </a>
+<a class="sourceLine" id="cb16-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb16-37" data-line-number="37"><span class="co"># Définitions des fonctions ===================================================</span></a>
+<a class="sourceLine" id="cb16-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb16-39" data-line-number="39"><span class="co"># Charger un image Landsat ----------------------------------------------------</span></a>
 <a class="sourceLine" id="cb16-40" data-line-number="40"><span class="co">#</span></a>
-<a class="sourceLine" id="cb16-41" data-line-number="41"></a>
-<a class="sourceLine" id="cb16-42" data-line-number="42">sample.map &lt;-<span class="st"> </span><span class="cf">function</span>(map, n) {</a>
-<a class="sourceLine" id="cb16-43" data-line-number="43">  </a>
-<a class="sourceLine" id="cb16-44" data-line-number="44">  tmp.src  &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)             <span class="co"># temporary file for masked reference map</span></a>
-<a class="sourceLine" id="cb16-45" data-line-number="45">  tmp.dst1 &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)             <span class="co"># temporary file for forest edge</span></a>
-<a class="sourceLine" id="cb16-46" data-line-number="46">  tmp.dst3 &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)             <span class="co"># temporary file for</span></a>
-<a class="sourceLine" id="cb16-47" data-line-number="47">  </a>
-<a class="sourceLine" id="cb16-48" data-line-number="48">  map &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(map, tmp.src)                               <span class="co"># write it to the disk</span></a>
-<a class="sourceLine" id="cb16-49" data-line-number="49">  </a>
-<a class="sourceLine" id="cb16-50" data-line-number="50">  <span class="co"># draw sample points around forest edge</span></a>
-<a class="sourceLine" id="cb16-51" data-line-number="51">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdal_proximity.py&quot;</span>, tmp.src, tmp.dst1,             <span class="co"># forest and 3 pixel non-forest edge (distance to nearest pixel of value 1)</span></a>
-<a class="sourceLine" id="cb16-52" data-line-number="52">               <span class="st">&quot;-values 1 -use_input_nodata YES -maxdist &quot;</span>,  SAMPLE.DIST, <span class="st">&quot; -fixed-buf-val 3&quot;</span>))</a>
-<a class="sourceLine" id="cb16-53" data-line-number="53">  dst1 &lt;-<span class="st"> </span><span class="kw">raster</span>(tmp.dst1)</a>
-<a class="sourceLine" id="cb16-54" data-line-number="54">  <span class="kw">NAvalue</span>(dst1) &lt;-<span class="st"> </span><span class="dv">65535</span></a>
-<a class="sourceLine" id="cb16-55" data-line-number="55">  <span class="kw">cat</span>(<span class="st">&quot;     &quot;</span>)</a>
-<a class="sourceLine" id="cb16-56" data-line-number="56">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdal_proximity.py&quot;</span>, tmp.src, tmp.dst3,             <span class="co"># non-forest and 3 pixel forest edge (distance to nearest pixel of value 3)</span></a>
-<a class="sourceLine" id="cb16-57" data-line-number="57">               <span class="st">&quot;-values 3 -use_input_nodata YES -maxdist &quot;</span>,  SAMPLE.DIST, <span class="st">&quot; -fixed-buf-val 1&quot;</span>))</a>
-<a class="sourceLine" id="cb16-58" data-line-number="58">  dst3 &lt;-<span class="st"> </span><span class="kw">raster</span>(tmp.dst3)</a>
-<a class="sourceLine" id="cb16-59" data-line-number="59">  <span class="kw">NAvalue</span>(dst3) &lt;-<span class="st"> </span><span class="dv">65535</span></a>
-<a class="sourceLine" id="cb16-60" data-line-number="60">  map &lt;-<span class="st"> </span><span class="kw">mask</span>(map, dst1)</a>
-<a class="sourceLine" id="cb16-61" data-line-number="61">  map &lt;-<span class="st"> </span><span class="kw">mask</span>(map, dst3)</a>
-<a class="sourceLine" id="cb16-62" data-line-number="62">  </a>
-<a class="sourceLine" id="cb16-63" data-line-number="63">  <span class="kw">unlink</span>(<span class="kw">c</span>(tmp.src, tmp.dst1, tmp.dst3))                           <span class="co"># delete temporary files</span></a>
-<a class="sourceLine" id="cb16-64" data-line-number="64">  </a>
-<a class="sourceLine" id="cb16-65" data-line-number="65">  n.classes &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(map))                                     <span class="co"># number of classes (should be two)</span></a>
-<a class="sourceLine" id="cb16-66" data-line-number="66">  <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;    -Sampling map (n=&quot;</span>, n.classes, <span class="st">&quot;*&quot;</span>, <span class="kw">round</span>(n<span class="op">/</span>n.classes), <span class="st">&quot;) ... &quot;</span>))</a>
-<a class="sourceLine" id="cb16-67" data-line-number="67">  sample.pts &lt;-<span class="st"> </span><span class="kw">sampleStratified</span>(map, <span class="kw">round</span>(n<span class="op">/</span>n.classes), <span class="dt">sp=</span><span class="ot">TRUE</span>)[,<span class="op">-</span><span class="dv">1</span>]  <span class="co"># stratified sampling (same number of samples for each class)</span></a>
-<a class="sourceLine" id="cb16-68" data-line-number="68">  <span class="kw">names</span>(sample.pts) &lt;-<span class="st"> &quot;CLASS&quot;</span></a>
-<a class="sourceLine" id="cb16-69" data-line-number="69">  <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb16-70" data-line-number="70">  <span class="kw">return</span>(sample.pts)</a>
-<a class="sourceLine" id="cb16-71" data-line-number="71">}</a>
-<a class="sourceLine" id="cb16-72" data-line-number="72"></a>
-<a class="sourceLine" id="cb16-73" data-line-number="73"><span class="co"># Function for classifying an image ----------------------------------------</span></a>
-<a class="sourceLine" id="cb16-74" data-line-number="74"></a>
-<a class="sourceLine" id="cb16-75" data-line-number="75">classify.image &lt;-<span class="st"> </span><span class="cf">function</span>(image, filename, <span class="dt">bioclim=</span><span class="ot">NULL</span>, <span class="dt">train.pts=</span><span class="ot">NULL</span>, <span class="dt">ref.map=</span><span class="ot">NULL</span>, <span class="dt">n.ref.map=</span><span class="ot">NULL</span>, <span class="dt">cal.map=</span><span class="ot">NULL</span>, <span class="dt">n.cal.map=</span><span class="ot">NULL</span>, <span class="dt">mask=</span><span class="ot">NULL</span>, <span class="dt">preds=</span><span class="ot">NULL</span>, <span class="dt">type=</span><span class="st">&quot;classification&quot;</span>, <span class="dt">crossval=</span><span class="ot">FALSE</span>, <span class="dt">prob=</span><span class="ot">FALSE</span>, <span class="dt">n.cores=</span><span class="dv">8</span>) {</a>
-<a class="sourceLine" id="cb16-76" data-line-number="76">  </a>
-<a class="sourceLine" id="cb16-77" data-line-number="77">  txtfile &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="st">&quot;&quot;</span>, filename), <span class="st">&quot;.txt&quot;</span>)</a>
-<a class="sourceLine" id="cb16-78" data-line-number="78">  <span class="kw">cat</span>(<span class="st">&quot;-- Image classification: &quot;</span>, <span class="kw">basename</span>(filename), <span class="st">&quot;/&quot;</span>, <span class="kw">date</span>(), <span class="st">&quot; --</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile)</a>
-<a class="sourceLine" id="cb16-79" data-line-number="79">  </a>
-<a class="sourceLine" id="cb16-80" data-line-number="80">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(train.pts)) {</a>
-<a class="sourceLine" id="cb16-81" data-line-number="81">    <span class="kw">cat</span>(<span class="st">&quot;    -Loading training points ... &quot;</span>)</a>
-<a class="sourceLine" id="cb16-82" data-line-number="82">    train.pts &lt;-<span class="st"> </span>train.pts[,<span class="dv">1</span>]                <span class="co"># only use first column in the attribute table (class)</span></a>
-<a class="sourceLine" id="cb16-83" data-line-number="83">    <span class="kw">names</span>(train.pts) &lt;-<span class="st"> &quot;CLASS&quot;</span></a>
-<a class="sourceLine" id="cb16-84" data-line-number="84">    <span class="kw">set_ReplCRS_warn</span>(<span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb16-85" data-line-number="85">    <span class="kw">proj4string</span>(train.pts) &lt;-<span class="st"> </span><span class="kw">proj4string</span>(image)</a>
-<a class="sourceLine" id="cb16-86" data-line-number="86">    <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb16-87" data-line-number="87">    <span class="kw">cat</span>(<span class="st">&quot;Training points:&quot;</span>, <span class="kw">nrow</span>(train.pts), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-88" data-line-number="88">  }</a>
-<a class="sourceLine" id="cb16-89" data-line-number="89">  </a>
-<a class="sourceLine" id="cb16-90" data-line-number="90">  <span class="co"># add training data from ref.map if provided</span></a>
-<a class="sourceLine" id="cb16-91" data-line-number="91">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(ref.map)) {</a>
-<a class="sourceLine" id="cb16-92" data-line-number="92">    <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;    -Masking / buffering reference map ... </span><span class="ch">\n</span><span class="st">&quot;</span>))</a>
-<a class="sourceLine" id="cb16-93" data-line-number="93">    ref.map  &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(ref.map, image[[<span class="dv">1</span>]]), <span class="kw">crop</span>(image[[<span class="dv">1</span>]], ref.map)) <span class="co"># crop/mask ref.map with image</span></a>
-<a class="sourceLine" id="cb16-94" data-line-number="94">    </a>
-<a class="sourceLine" id="cb16-95" data-line-number="95">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(mask)) ref.map &lt;-<span class="st"> </span><span class="kw">mask</span>(ref.map, mask)                      <span class="co"># mask with additional mask, if provided</span></a>
-<a class="sourceLine" id="cb16-96" data-line-number="96">    </a>
-<a class="sourceLine" id="cb16-97" data-line-number="97">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(cal.map)) {</a>
-<a class="sourceLine" id="cb16-98" data-line-number="98">      tmp &lt;-<span class="st"> </span><span class="kw">extend</span>(<span class="kw">crop</span>(cal.map, ref.map), ref.map)                      <span class="co"># cut out the piece of the calibration map that overlaps ref map and extend to refmap</span></a>
-<a class="sourceLine" id="cb16-99" data-line-number="99">      ref.map &lt;-<span class="st"> </span><span class="kw">mask</span>(ref.map, tmp, <span class="dt">inverse=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-100" data-line-number="100">    }</a>
-<a class="sourceLine" id="cb16-101" data-line-number="101">    </a>
-<a class="sourceLine" id="cb16-102" data-line-number="102">    <span class="kw">cat</span>(<span class="st">&quot;    &quot;</span>)</a>
-<a class="sourceLine" id="cb16-103" data-line-number="103">    ref.pts &lt;-<span class="st"> </span><span class="kw">sample.map</span>(ref.map, n.ref.map)</a>
-<a class="sourceLine" id="cb16-104" data-line-number="104">    <span class="kw">cat</span>(<span class="st">&quot;Ref-map points: &quot;</span>, <span class="kw">nrow</span>(ref.pts), <span class="st">&quot;/&quot;</span>, ref.map<span class="op">@</span>file<span class="op">@</span>name, <span class="st">&quot;/&quot;</span>, SAMPLE.DIST, <span class="st">&quot;px</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-105" data-line-number="105">    </a>
-<a class="sourceLine" id="cb16-106" data-line-number="106">    <span class="cf">if</span>(<span class="kw">is.null</span>(train.pts)) {</a>
-<a class="sourceLine" id="cb16-107" data-line-number="107">      train.pts &lt;-<span class="st"> </span>ref.pts                                           <span class="co"># use it as training points or add to existing training points</span></a>
-<a class="sourceLine" id="cb16-108" data-line-number="108">    } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb16-109" data-line-number="109">      train.pts &lt;-<span class="st"> </span><span class="kw">rbind</span>(train.pts, ref.pts)</a>
-<a class="sourceLine" id="cb16-110" data-line-number="110">    }</a>
-<a class="sourceLine" id="cb16-111" data-line-number="111">  }</a>
-<a class="sourceLine" id="cb16-112" data-line-number="112">  </a>
-<a class="sourceLine" id="cb16-113" data-line-number="113">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(cal.map)) {</a>
-<a class="sourceLine" id="cb16-114" data-line-number="114">    <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;    -Masking / buffering calibration map ... </span><span class="ch">\n</span><span class="st">&quot;</span>))</a>
-<a class="sourceLine" id="cb16-115" data-line-number="115">    cal.map  &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(cal.map, image[[<span class="dv">1</span>]]), <span class="kw">crop</span>(image[[<span class="dv">1</span>]], cal.map)) <span class="co"># crop/mask ref.map with image</span></a>
-<a class="sourceLine" id="cb16-116" data-line-number="116">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(mask)) cal.map &lt;-<span class="st"> </span><span class="kw">mask</span>(cal.map, mask)                      <span class="co"># mask with additional mask, if provided</span></a>
-<a class="sourceLine" id="cb16-117" data-line-number="117">    </a>
-<a class="sourceLine" id="cb16-118" data-line-number="118">    <span class="kw">cat</span>(<span class="st">&quot;    &quot;</span>)</a>
-<a class="sourceLine" id="cb16-119" data-line-number="119">    cal.pts &lt;-<span class="st"> </span><span class="kw">sample.map</span>(cal.map, n.cal.map)</a>
-<a class="sourceLine" id="cb16-120" data-line-number="120">    <span class="kw">cat</span>(<span class="st">&quot;Cal-map points: &quot;</span>, <span class="kw">nrow</span>(cal.pts), <span class="st">&quot;from&quot;</span>, cal.map<span class="op">@</span>file<span class="op">@</span>name, <span class="st">&quot;/&quot;</span>, SAMPLE.DIST, <span class="st">&quot;px</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-121" data-line-number="121">    </a>
-<a class="sourceLine" id="cb16-122" data-line-number="122">    <span class="cf">if</span>(<span class="kw">is.null</span>(train.pts)) {</a>
-<a class="sourceLine" id="cb16-123" data-line-number="123">      train.pts &lt;-<span class="st"> </span>cal.pts                                           <span class="co"># use it as training points or add to existing training points</span></a>
-<a class="sourceLine" id="cb16-124" data-line-number="124">    } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb16-125" data-line-number="125">      train.pts &lt;-<span class="st"> </span><span class="kw">rbind</span>(train.pts, cal.pts)</a>
-<a class="sourceLine" id="cb16-126" data-line-number="126">    }</a>
-<a class="sourceLine" id="cb16-127" data-line-number="127">  }</a>
-<a class="sourceLine" id="cb16-128" data-line-number="128">  </a>
-<a class="sourceLine" id="cb16-129" data-line-number="129">  <span class="kw">cat</span>(<span class="st">&quot;Total points:   &quot;</span>, <span class="kw">nrow</span>(train.pts), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-130" data-line-number="130">  </a>
-<a class="sourceLine" id="cb16-131" data-line-number="131">  <span class="co"># extract spectral values</span></a>
-<a class="sourceLine" id="cb16-132" data-line-number="132">  <span class="cf">if</span>(<span class="kw">is.null</span>(preds)) {</a>
-<a class="sourceLine" id="cb16-133" data-line-number="133">    preds &lt;-<span class="st"> </span><span class="kw">names</span>(image)</a>
-<a class="sourceLine" id="cb16-134" data-line-number="134">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(bioclim)) preds &lt;-<span class="st"> </span><span class="kw">c</span>(preds, <span class="kw">names</span>(bioclim))</a>
-<a class="sourceLine" id="cb16-135" data-line-number="135">  }</a>
-<a class="sourceLine" id="cb16-136" data-line-number="136">  </a>
-<a class="sourceLine" id="cb16-137" data-line-number="137">  <span class="kw">cat</span>(<span class="st">&quot;    -Extracting pixel values for bands:&quot;</span>, preds, <span class="st">&quot;... &quot;</span>)</a>
-<a class="sourceLine" id="cb16-138" data-line-number="138">  train.pts &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(image, train.pts, <span class="dt">sp=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-139" data-line-number="139">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(bioclim)) train.pts &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(bioclim, train.pts, <span class="dt">sp=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-140" data-line-number="140">  train.dat &lt;-<span class="st"> </span><span class="kw">na.omit</span>(train.pts<span class="op">@</span>data)[, <span class="kw">c</span>(<span class="st">&quot;CLASS&quot;</span>, preds)]</a>
-<a class="sourceLine" id="cb16-141" data-line-number="141">  <span class="cf">if</span>(type<span class="op">==</span><span class="st">&quot;classification&quot;</span>) train.dat[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">as.factor</span>(train.dat[,<span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb16-142" data-line-number="142">  <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb16-143" data-line-number="143">  </a>
-<a class="sourceLine" id="cb16-144" data-line-number="144">  <span class="co"># calibrate RandomForest classifier </span></a>
-<a class="sourceLine" id="cb16-145" data-line-number="145">  <span class="kw">cat</span>(<span class="st">&quot;    -Calibrating RandomForest ... &quot;</span>)</a>
-<a class="sourceLine" id="cb16-146" data-line-number="146">  <span class="kw">sink</span>(txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-147" data-line-number="147">  <span class="cf">if</span>(crossval) {</a>
-<a class="sourceLine" id="cb16-148" data-line-number="148">    map.model.cv &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">y =</span> train.dat[,<span class="dv">1</span>], </a>
-<a class="sourceLine" id="cb16-149" data-line-number="149">                          <span class="dt">x =</span> train.dat[,<span class="op">-</span><span class="dv">1</span>],</a>
-<a class="sourceLine" id="cb16-150" data-line-number="150">                          <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>, </a>
-<a class="sourceLine" id="cb16-151" data-line-number="151">                          <span class="dt">importance =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb16-152" data-line-number="152">                          <span class="dt">trControl =</span> <span class="kw">trainControl</span>(</a>
-<a class="sourceLine" id="cb16-153" data-line-number="153">                            <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,</a>
-<a class="sourceLine" id="cb16-154" data-line-number="154">                            <span class="dt">number =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb16-155" data-line-number="155">                            <span class="dt">repeats =</span> <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb16-156" data-line-number="156">    <span class="kw">print</span>(map.model.cv)</a>
-<a class="sourceLine" id="cb16-157" data-line-number="157">    map.model &lt;-<span class="st"> </span>map.model.cv<span class="op">$</span>finalModel</a>
-<a class="sourceLine" id="cb16-158" data-line-number="158">    <span class="kw">print</span>(map.model)</a>
-<a class="sourceLine" id="cb16-159" data-line-number="159">    <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb16-160" data-line-number="160">    <span class="kw">print</span>(<span class="kw">varImp</span>(map.model, <span class="dt">scale=</span><span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb16-161" data-line-number="161">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb16-162" data-line-number="162">    map.model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">y=</span>train.dat[,<span class="dv">1</span>], <span class="dt">x=</span>train.dat[,<span class="op">-</span><span class="dv">1</span>], <span class="dt">importance=</span><span class="ot">TRUE</span>) <span class="co"># , do.trace=100)</span></a>
-<a class="sourceLine" id="cb16-163" data-line-number="163">    <span class="co"># Parallelization of RandomForest: confusion, err.rate, mse and rsq will be NULL</span></a>
-<a class="sourceLine" id="cb16-164" data-line-number="164">    <span class="co"># https://stackoverflow.com/questions/14106010/parallel-execution-of-random-forest-in-r</span></a>
-<a class="sourceLine" id="cb16-165" data-line-number="165">    <span class="co"># map.model &lt;- foreach(ntree=rep(100, 5), .combine=randomForest::combine, .multicombine=TRUE, .packages=&#39;randomForest&#39;) %dopar% {</span></a>
-<a class="sourceLine" id="cb16-166" data-line-number="166">    <span class="co">#                 randomForest(x=ref.pts[,!(names(ref.pts) == &quot;CLASS&quot;)], y=ref.pts$CLASS, importance=TRUE, ntree=ntree)</span></a>
-<a class="sourceLine" id="cb16-167" data-line-number="167">    <span class="co">#  </span></a>
-<a class="sourceLine" id="cb16-168" data-line-number="168">    <span class="kw">print</span>(map.model)</a>
-<a class="sourceLine" id="cb16-169" data-line-number="169">    <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb16-170" data-line-number="170">    <span class="kw">print</span>(<span class="kw">varImp</span>(map.model))</a>
-<a class="sourceLine" id="cb16-171" data-line-number="171">  }</a>
-<a class="sourceLine" id="cb16-172" data-line-number="172">  <span class="kw">sink</span>()</a>
-<a class="sourceLine" id="cb16-173" data-line-number="173">  <span class="cf">if</span>(type<span class="op">==</span><span class="st">&quot;treecover&quot;</span>) {</a>
-<a class="sourceLine" id="cb16-174" data-line-number="174">    <span class="kw">cat</span>(<span class="st">&quot;R2:&quot;</span>, <span class="kw">round</span>(map.model<span class="op">$</span>rsq[<span class="dv">500</span>], <span class="dv">2</span>), <span class="st">&quot;RMSE:&quot;</span>, <span class="kw">round</span>(<span class="kw">sqrt</span>(map.model<span class="op">$</span>mse[<span class="dv">500</span>]), <span class="dv">2</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb16-175" data-line-number="175">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb16-176" data-line-number="176">    <span class="kw">cat</span>(<span class="st">&quot;OOB error rate:&quot;</span>, <span class="kw">round</span>(map.model<span class="op">$</span>err.rate[<span class="dv">500</span>,<span class="dv">1</span>], <span class="dv">2</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb16-177" data-line-number="177">  }</a>
-<a class="sourceLine" id="cb16-178" data-line-number="178">  </a>
-<a class="sourceLine" id="cb16-179" data-line-number="179">  <span class="co"># write model results</span></a>
-<a class="sourceLine" id="cb16-180" data-line-number="180">  <span class="kw">dir.create</span>(<span class="kw">dirname</span>(filename), <span class="dt">recursive=</span><span class="ot">TRUE</span>, <span class="dt">showWarnings=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb16-181" data-line-number="181">  <span class="co"># save RandomForest Model (too large)</span></a>
-<a class="sourceLine" id="cb16-182" data-line-number="182">  <span class="co"># save(map.model, file=paste0(sub(&quot;[.]tif$&quot;, &quot;&quot;, filename), &quot;r_rf.RData&quot;))</span></a>
-<a class="sourceLine" id="cb16-183" data-line-number="183">  </a>
-<a class="sourceLine" id="cb16-184" data-line-number="184">  <span class="co"># classify image</span></a>
-<a class="sourceLine" id="cb16-185" data-line-number="185">  <span class="kw">cat</span>(<span class="st">&quot;    -Creating map ... &quot;</span>)</a>
-<a class="sourceLine" id="cb16-186" data-line-number="186">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(bioclim)) image &lt;-<span class="st"> </span><span class="kw">stack</span>(image, <span class="kw">crop</span>(bioclim, image))</a>
-<a class="sourceLine" id="cb16-187" data-line-number="187">  <span class="kw">beginCluster</span>(<span class="dt">n=</span>n.cores)</a>
-<a class="sourceLine" id="cb16-188" data-line-number="188">  map &lt;-<span class="st"> </span><span class="kw">clusterR</span>(image, predict, <span class="dt">args=</span><span class="kw">list</span>(<span class="dt">model=</span>map.model))</a>
-<a class="sourceLine" id="cb16-189" data-line-number="189">  <span class="kw">endCluster</span>()</a>
-<a class="sourceLine" id="cb16-190" data-line-number="190">  </a>
-<a class="sourceLine" id="cb16-191" data-line-number="191">  <span class="co"># save map of classified image</span></a>
-<a class="sourceLine" id="cb16-192" data-line-number="192">  <span class="kw">cat</span>(<span class="st">&quot;writing map ... &quot;</span>)</a>
-<a class="sourceLine" id="cb16-193" data-line-number="193">  <span class="cf">if</span>(type<span class="op">==</span><span class="st">&quot;treecover&quot;</span>) map &lt;-<span class="st"> </span><span class="kw">floor</span>(map<span class="op">*</span><span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb16-194" data-line-number="194">  map &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(map, <span class="dt">filename=</span>filename, <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-195" data-line-number="195">  <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb16-196" data-line-number="196">  </a>
-<a class="sourceLine" id="cb16-197" data-line-number="197">  <span class="co"># create probability map </span></a>
-<a class="sourceLine" id="cb16-198" data-line-number="198">  <span class="cf">if</span>(prob<span class="op">==</span><span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb16-199" data-line-number="199">    <span class="kw">cat</span>(<span class="st">&quot;    -Creating probability map ... &quot;</span>)</a>
-<a class="sourceLine" id="cb16-200" data-line-number="200">    <span class="kw">beginCluster</span>(<span class="dt">n=</span>n.cores)</a>
-<a class="sourceLine" id="cb16-201" data-line-number="201">    prob.map &lt;-<span class="st"> </span><span class="kw">clusterR</span>(image, predict, <span class="dt">args=</span><span class="kw">list</span>(<span class="dt">model=</span>map.model, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>))</a>
-<a class="sourceLine" id="cb16-202" data-line-number="202">    <span class="kw">endCluster</span>()</a>
-<a class="sourceLine" id="cb16-203" data-line-number="203">    <span class="kw">cat</span>(<span class="st">&quot;writing map ... &quot;</span>)</a>
-<a class="sourceLine" id="cb16-204" data-line-number="204">    <span class="kw">writeRaster</span>(prob.map, <span class="dt">filename=</span><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="st">&quot;_prob.tif&quot;</span>, filename), <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-205" data-line-number="205">    <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb16-206" data-line-number="206">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb16-207" data-line-number="207">    prob.map &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb16-208" data-line-number="208">  }</a>
+<a class="sourceLine" id="cb16-41" data-line-number="41"><span class="co"># @param filename  Chemin du fichier landsat</span></a>
+<a class="sourceLine" id="cb16-42" data-line-number="42"><span class="co">#</span></a>
+<a class="sourceLine" id="cb16-43" data-line-number="43"><span class="co"># @return          Image Landsat avec bandes nommées </span></a>
+<a class="sourceLine" id="cb16-44" data-line-number="44"><span class="co">#</span></a>
+<a class="sourceLine" id="cb16-45" data-line-number="45"></a>
+<a class="sourceLine" id="cb16-46" data-line-number="46">load.image &lt;-<span class="st"> </span><span class="cf">function</span>(filename) {</a>
+<a class="sourceLine" id="cb16-47" data-line-number="47">  image &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(LANDSAT.DIR, filename))</a>
+<a class="sourceLine" id="cb16-48" data-line-number="48">  <span class="kw">names</span>(image) &lt;-<span class="st"> </span>SST.LSBANDS</a>
+<a class="sourceLine" id="cb16-49" data-line-number="49">  <span class="kw">return</span>(image)</a>
+<a class="sourceLine" id="cb16-50" data-line-number="50">}</a>
+<a class="sourceLine" id="cb16-51" data-line-number="51"></a>
+<a class="sourceLine" id="cb16-52" data-line-number="52"><span class="co"># Tirer des points d&#39;entraînement d&#39;une carte autour de la lisière forêt ------</span></a>
+<a class="sourceLine" id="cb16-53" data-line-number="53"><span class="co">#</span></a>
+<a class="sourceLine" id="cb16-54" data-line-number="54"><span class="co"># @param map       Carte forêt/non-forêt à échantillonner</span></a>
+<a class="sourceLine" id="cb16-55" data-line-number="55"><span class="co"># @param n         Nombre d&#39;échantillons à tirer</span></a>
+<a class="sourceLine" id="cb16-56" data-line-number="56"><span class="co">#</span></a>
+<a class="sourceLine" id="cb16-57" data-line-number="57"><span class="co"># @return          Points d&#39;échantillon avec aatribut forêt/non-forêt</span></a>
+<a class="sourceLine" id="cb16-58" data-line-number="58"><span class="co">#</span></a>
+<a class="sourceLine" id="cb16-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb16-60" data-line-number="60">sample.map &lt;-<span class="st"> </span><span class="cf">function</span>(map, n) {</a>
+<a class="sourceLine" id="cb16-61" data-line-number="61">  </a>
+<a class="sourceLine" id="cb16-62" data-line-number="62">  tmp.src  &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)    <span class="co"># tmp carte forêt/non-forêt</span></a>
+<a class="sourceLine" id="cb16-63" data-line-number="63">  tmp.dst1 &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)    <span class="co"># tmp lisière à l&#39;extérieur</span></a>
+<a class="sourceLine" id="cb16-64" data-line-number="64">  tmp.dst3 &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)    <span class="co"># tmp lisière à l&#39;intérieur</span></a>
+<a class="sourceLine" id="cb16-65" data-line-number="65">  </a>
+<a class="sourceLine" id="cb16-66" data-line-number="66">  <span class="co"># Écrire la carte sur le disque</span></a>
+<a class="sourceLine" id="cb16-67" data-line-number="67">  map &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(map, tmp.src)                        </a>
+<a class="sourceLine" id="cb16-68" data-line-number="68">  </a>
+<a class="sourceLine" id="cb16-69" data-line-number="69">  <span class="co"># Forêt + lisière à l&#39;extérieur de la forêt</span></a>
+<a class="sourceLine" id="cb16-70" data-line-number="70">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdal_proximity.py&quot;</span>, tmp.src, tmp.dst1,    </a>
+<a class="sourceLine" id="cb16-71" data-line-number="71">               <span class="st">&quot;-values&quot;</span>, FOREST, </a>
+<a class="sourceLine" id="cb16-72" data-line-number="72">               <span class="st">&quot;-use_input_nodata YES&quot;</span>, </a>
+<a class="sourceLine" id="cb16-73" data-line-number="73">               <span class="st">&quot;-maxdist &quot;</span>,  SAMPLE.DIST, </a>
+<a class="sourceLine" id="cb16-74" data-line-number="74">               <span class="st">&quot;-fixed-buf-val&quot;</span>, NONFOR))</a>
+<a class="sourceLine" id="cb16-75" data-line-number="75">  dst1 &lt;-<span class="st"> </span><span class="kw">raster</span>(tmp.dst1)</a>
+<a class="sourceLine" id="cb16-76" data-line-number="76">  <span class="kw">NAvalue</span>(dst1) &lt;-<span class="st"> </span><span class="dv">65535</span></a>
+<a class="sourceLine" id="cb16-77" data-line-number="77">  <span class="kw">cat</span>(<span class="st">&quot;     &quot;</span>)</a>
+<a class="sourceLine" id="cb16-78" data-line-number="78">  </a>
+<a class="sourceLine" id="cb16-79" data-line-number="79">  <span class="co"># Non-forêt + lisière à l&#39;intérieur de la forêt</span></a>
+<a class="sourceLine" id="cb16-80" data-line-number="80">  <span class="kw">system</span>(<span class="kw">paste</span>(<span class="st">&quot;gdal_proximity.py&quot;</span>, tmp.src, tmp.dst3,          </a>
+<a class="sourceLine" id="cb16-81" data-line-number="81">               <span class="st">&quot;-values&quot;</span>, NONFOR, </a>
+<a class="sourceLine" id="cb16-82" data-line-number="82">               <span class="st">&quot;-use_input_nodata YES&quot;</span>,</a>
+<a class="sourceLine" id="cb16-83" data-line-number="83">               <span class="st">&quot;-maxdist &quot;</span>,  SAMPLE.DIST, </a>
+<a class="sourceLine" id="cb16-84" data-line-number="84">               <span class="st">&quot;-fixed-buf-val&quot;</span>, FOREST))</a>
+<a class="sourceLine" id="cb16-85" data-line-number="85">  dst3 &lt;-<span class="st"> </span><span class="kw">raster</span>(tmp.dst3)</a>
+<a class="sourceLine" id="cb16-86" data-line-number="86">  <span class="kw">NAvalue</span>(dst3) &lt;-<span class="st"> </span><span class="dv">65535</span></a>
+<a class="sourceLine" id="cb16-87" data-line-number="87">  </a>
+<a class="sourceLine" id="cb16-88" data-line-number="88">  <span class="co"># Masquer la carte avec les lisières</span></a>
+<a class="sourceLine" id="cb16-89" data-line-number="89">  map &lt;-<span class="st"> </span><span class="kw">mask</span>(map, dst1)</a>
+<a class="sourceLine" id="cb16-90" data-line-number="90">  map &lt;-<span class="st"> </span><span class="kw">mask</span>(map, dst3)</a>
+<a class="sourceLine" id="cb16-91" data-line-number="91">  </a>
+<a class="sourceLine" id="cb16-92" data-line-number="92">  <span class="co"># Supprimer les fichiers temporaires</span></a>
+<a class="sourceLine" id="cb16-93" data-line-number="93">  <span class="kw">unlink</span>(<span class="kw">c</span>(tmp.src, tmp.dst1, tmp.dst3))                           </a>
+<a class="sourceLine" id="cb16-94" data-line-number="94">  </a>
+<a class="sourceLine" id="cb16-95" data-line-number="95">  <span class="co"># Echantillonnage stratifié des lisières forêt et non-forêt</span></a>
+<a class="sourceLine" id="cb16-96" data-line-number="96">  n.classes &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(map))</a>
+<a class="sourceLine" id="cb16-97" data-line-number="97">  <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;    -Sampling map (n=&quot;</span>, n.classes, <span class="st">&quot;*&quot;</span>, <span class="kw">round</span>(n<span class="op">/</span>n.classes), <span class="st">&quot;) ... &quot;</span>))</a>
+<a class="sourceLine" id="cb16-98" data-line-number="98">  sample.pts &lt;-<span class="st"> </span><span class="kw">sampleStratified</span>(map, <span class="kw">round</span>(n<span class="op">/</span>n.classes), <span class="dt">sp=</span><span class="ot">TRUE</span>)[,<span class="op">-</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb16-99" data-line-number="99">  <span class="kw">names</span>(sample.pts) &lt;-<span class="st"> &quot;CLASS&quot;</span></a>
+<a class="sourceLine" id="cb16-100" data-line-number="100">  <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb16-101" data-line-number="101">  <span class="kw">return</span>(sample.pts)</a>
+<a class="sourceLine" id="cb16-102" data-line-number="102">}</a>
+<a class="sourceLine" id="cb16-103" data-line-number="103"></a>
+<a class="sourceLine" id="cb16-104" data-line-number="104"><span class="co"># Classification d&#39;une image -------------------------------------------</span></a>
+<a class="sourceLine" id="cb16-105" data-line-number="105"><span class="co">#</span></a>
+<a class="sourceLine" id="cb16-106" data-line-number="106"><span class="co"># @param image      Image Landsat à classifier      </span></a>
+<a class="sourceLine" id="cb16-107" data-line-number="107"><span class="co"># @param filename   Nom de fichier pour la sauvegarde de la carte</span></a>
+<a class="sourceLine" id="cb16-108" data-line-number="108"><span class="co"># @param bioclim    Raster des variables bioclimatiques à utiliser</span></a>
+<a class="sourceLine" id="cb16-109" data-line-number="109"><span class="co"># @param train.pts  Points d&#39;entraînement</span></a>
+<a class="sourceLine" id="cb16-110" data-line-number="110"><span class="co"># @param ref.map    Carte de référence</span></a>
+<a class="sourceLine" id="cb16-111" data-line-number="111"><span class="co"># @param n.ref.map  Nombre de points à échantilloner</span></a>
+<a class="sourceLine" id="cb16-112" data-line-number="112"><span class="co"># @param cal.map    Carte de calibration (autre chemin WRS)</span></a>
+<a class="sourceLine" id="cb16-113" data-line-number="113"><span class="co"># @param n.cal.map  Nombre de points à échantilloner</span></a>
+<a class="sourceLine" id="cb16-114" data-line-number="114"><span class="co"># @param mask       Masque à utiliser pour ref.map et cal.map</span></a>
+<a class="sourceLine" id="cb16-115" data-line-number="115"><span class="co"># @param preds      Variables à utiliser pour le modèle</span></a>
+<a class="sourceLine" id="cb16-116" data-line-number="116"><span class="co"># @param type       Modèle de classification ou de regression</span></a>
+<a class="sourceLine" id="cb16-117" data-line-number="117"><span class="co"># @param crossval   Faire validation croisée (3 * 10-fold)</span></a>
+<a class="sourceLine" id="cb16-118" data-line-number="118"><span class="co"># @param prob       Produire également carte de probabilité</span></a>
+<a class="sourceLine" id="cb16-119" data-line-number="119"><span class="co"># @param n.cores    Nombre de processeurs à utiliser pour prédiction</span></a>
+<a class="sourceLine" id="cb16-120" data-line-number="120"><span class="co">#</span></a>
+<a class="sourceLine" id="cb16-121" data-line-number="121"><span class="co"># @return           List avec les éléments </span></a>
+<a class="sourceLine" id="cb16-122" data-line-number="122"><span class="co">#                   - model, </span></a>
+<a class="sourceLine" id="cb16-123" data-line-number="123"><span class="co">#                   - carte forêt/non-forêt</span></a>
+<a class="sourceLine" id="cb16-124" data-line-number="124"><span class="co">#                   - carte des probabilités (si disponible)</span></a>
+<a class="sourceLine" id="cb16-125" data-line-number="125"><span class="co">#</span></a>
+<a class="sourceLine" id="cb16-126" data-line-number="126"></a>
+<a class="sourceLine" id="cb16-127" data-line-number="127">classify.image &lt;-<span class="st"> </span><span class="cf">function</span>(image, filename, <span class="dt">bioclim=</span><span class="ot">NULL</span>, <span class="dt">train.pts=</span><span class="ot">NULL</span>, </a>
+<a class="sourceLine" id="cb16-128" data-line-number="128">                           <span class="dt">ref.map=</span><span class="ot">NULL</span>, <span class="dt">n.ref.map=</span><span class="ot">NULL</span>, </a>
+<a class="sourceLine" id="cb16-129" data-line-number="129">                           <span class="dt">cal.map=</span><span class="ot">NULL</span>, <span class="dt">n.cal.map=</span><span class="ot">NULL</span>, </a>
+<a class="sourceLine" id="cb16-130" data-line-number="130">                           <span class="dt">mask=</span><span class="ot">NULL</span>, <span class="dt">preds=</span><span class="ot">NULL</span>, <span class="dt">type=</span><span class="st">&quot;classification&quot;</span>, </a>
+<a class="sourceLine" id="cb16-131" data-line-number="131">                           <span class="dt">crossval=</span><span class="ot">FALSE</span>, <span class="dt">prob=</span><span class="ot">FALSE</span>, <span class="dt">n.cores=</span><span class="dv">8</span>) {</a>
+<a class="sourceLine" id="cb16-132" data-line-number="132">  </a>
+<a class="sourceLine" id="cb16-133" data-line-number="133">  <span class="co"># Ouvrir le fichier journal</span></a>
+<a class="sourceLine" id="cb16-134" data-line-number="134">  txtfile &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">sub</span>(<span class="st">&quot;[.]tif$&quot;</span>, <span class="st">&quot;&quot;</span>, filename), <span class="st">&quot;.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb16-135" data-line-number="135">  <span class="kw">cat</span>(<span class="st">&quot;-- Image classification: &quot;</span>, <span class="kw">basename</span>(filename), <span class="st">&quot;/&quot;</span>, </a>
+<a class="sourceLine" id="cb16-136" data-line-number="136">      <span class="kw">date</span>(), <span class="st">&quot; --</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile)</a>
+<a class="sourceLine" id="cb16-137" data-line-number="137">  </a>
+<a class="sourceLine" id="cb16-138" data-line-number="138">  <span class="co"># Charger des points d&#39;entraînement ---------------------</span></a>
+<a class="sourceLine" id="cb16-139" data-line-number="139">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(train.pts)) {</a>
+<a class="sourceLine" id="cb16-140" data-line-number="140">    <span class="kw">cat</span>(<span class="st">&quot;    -Loading training points ... &quot;</span>)</a>
+<a class="sourceLine" id="cb16-141" data-line-number="141">    train.pts &lt;-<span class="st"> </span>train.pts[,<span class="dv">1</span>]      <span class="co"># utiliser que la première colonne ...</span></a>
+<a class="sourceLine" id="cb16-142" data-line-number="142">    <span class="kw">names</span>(train.pts) &lt;-<span class="st"> &quot;CLASS&quot;</span>     <span class="co"># ... et nommer &quot;CLASS&quot;</span></a>
+<a class="sourceLine" id="cb16-143" data-line-number="143">    <span class="kw">set_ReplCRS_warn</span>(<span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb16-144" data-line-number="144">    <span class="kw">proj4string</span>(train.pts) &lt;-<span class="st"> </span><span class="kw">proj4string</span>(image)  <span class="co"># Système de coordonnées CRS</span></a>
+<a class="sourceLine" id="cb16-145" data-line-number="145">    <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb16-146" data-line-number="146">    <span class="kw">cat</span>(<span class="st">&quot;Training points:&quot;</span>, <span class="kw">nrow</span>(train.pts), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-147" data-line-number="147">  }</a>
+<a class="sourceLine" id="cb16-148" data-line-number="148">  </a>
+<a class="sourceLine" id="cb16-149" data-line-number="149">  <span class="co"># Ajouter des points d&#39;une carte de référence -----------</span></a>
+<a class="sourceLine" id="cb16-150" data-line-number="150">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(ref.map)) {</a>
+<a class="sourceLine" id="cb16-151" data-line-number="151">    <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;    -Masking / buffering reference map ... </span><span class="ch">\n</span><span class="st">&quot;</span>))</a>
+<a class="sourceLine" id="cb16-152" data-line-number="152">    <span class="co"># ... couper/masquer avec l&#39;image</span></a>
+<a class="sourceLine" id="cb16-153" data-line-number="153">    ref.map  &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(ref.map, image[[<span class="dv">1</span>]]), <span class="kw">crop</span>(image[[<span class="dv">1</span>]], ref.map)) </a>
+<a class="sourceLine" id="cb16-154" data-line-number="154">    <span class="co"># ... et masque additionelle (si disponible)</span></a>
+<a class="sourceLine" id="cb16-155" data-line-number="155">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(mask)) ref.map &lt;-<span class="st"> </span><span class="kw">mask</span>(ref.map, mask)             </a>
+<a class="sourceLine" id="cb16-156" data-line-number="156">    <span class="co"># Découper la carte de calibration (si disponible)</span></a>
+<a class="sourceLine" id="cb16-157" data-line-number="157">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(cal.map)) {</a>
+<a class="sourceLine" id="cb16-158" data-line-number="158">      tmp &lt;-<span class="st"> </span><span class="kw">extend</span>(<span class="kw">crop</span>(cal.map, ref.map), ref.map)</a>
+<a class="sourceLine" id="cb16-159" data-line-number="159">      ref.map &lt;-<span class="st"> </span><span class="kw">mask</span>(ref.map, tmp, <span class="dt">inverse=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-160" data-line-number="160">    }</a>
+<a class="sourceLine" id="cb16-161" data-line-number="161">    <span class="kw">cat</span>(<span class="st">&quot;    &quot;</span>)</a>
+<a class="sourceLine" id="cb16-162" data-line-number="162">    <span class="co"># Tirer des points d&#39;échantillon ...</span></a>
+<a class="sourceLine" id="cb16-163" data-line-number="163">    ref.pts &lt;-<span class="st"> </span><span class="kw">sample.map</span>(ref.map, n.ref.map)</a>
+<a class="sourceLine" id="cb16-164" data-line-number="164">    <span class="kw">cat</span>(<span class="st">&quot;Ref-map points: &quot;</span>, <span class="kw">nrow</span>(ref.pts), <span class="st">&quot;/&quot;</span>, ref.map<span class="op">@</span>file<span class="op">@</span>name, <span class="st">&quot;/&quot;</span>, </a>
+<a class="sourceLine" id="cb16-165" data-line-number="165">        SAMPLE.DIST, <span class="st">&quot;px</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-166" data-line-number="166">    <span class="co"># ... et ajouter aux points d&#39;entraînement</span></a>
+<a class="sourceLine" id="cb16-167" data-line-number="167">    <span class="cf">if</span>(<span class="kw">is.null</span>(train.pts)) {</a>
+<a class="sourceLine" id="cb16-168" data-line-number="168">      train.pts &lt;-<span class="st"> </span>ref.pts                                          </a>
+<a class="sourceLine" id="cb16-169" data-line-number="169">    } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb16-170" data-line-number="170">      train.pts &lt;-<span class="st"> </span><span class="kw">rbind</span>(train.pts, ref.pts)</a>
+<a class="sourceLine" id="cb16-171" data-line-number="171">    }</a>
+<a class="sourceLine" id="cb16-172" data-line-number="172">  }</a>
+<a class="sourceLine" id="cb16-173" data-line-number="173">  </a>
+<a class="sourceLine" id="cb16-174" data-line-number="174">  <span class="co"># Ajouter des points d&#39;une carte de calibration ---------</span></a>
+<a class="sourceLine" id="cb16-175" data-line-number="175">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(cal.map)) {</a>
+<a class="sourceLine" id="cb16-176" data-line-number="176">    <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;    -Masking / buffering calibration map ... </span><span class="ch">\n</span><span class="st">&quot;</span>))</a>
+<a class="sourceLine" id="cb16-177" data-line-number="177">    <span class="co"># ... couper/masquer avec l&#39;image</span></a>
+<a class="sourceLine" id="cb16-178" data-line-number="178">    cal.map  &lt;-<span class="st"> </span><span class="kw">mask</span>(<span class="kw">crop</span>(cal.map, image[[<span class="dv">1</span>]]), <span class="kw">crop</span>(image[[<span class="dv">1</span>]], cal.map)) </a>
+<a class="sourceLine" id="cb16-179" data-line-number="179">    <span class="co"># ... et masque additionelle (si disponible)</span></a>
+<a class="sourceLine" id="cb16-180" data-line-number="180">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(mask)) cal.map &lt;-<span class="st"> </span><span class="kw">mask</span>(cal.map, mask)                     </a>
+<a class="sourceLine" id="cb16-181" data-line-number="181">    <span class="kw">cat</span>(<span class="st">&quot;    &quot;</span>)</a>
+<a class="sourceLine" id="cb16-182" data-line-number="182">    <span class="co"># Tirer des points d&#39;échantillon ...</span></a>
+<a class="sourceLine" id="cb16-183" data-line-number="183">    cal.pts &lt;-<span class="st"> </span><span class="kw">sample.map</span>(cal.map, n.cal.map)</a>
+<a class="sourceLine" id="cb16-184" data-line-number="184">    <span class="kw">cat</span>(<span class="st">&quot;Cal-map points: &quot;</span>, <span class="kw">nrow</span>(cal.pts), <span class="st">&quot;from&quot;</span>, cal.map<span class="op">@</span>file<span class="op">@</span>name, <span class="st">&quot;/&quot;</span>, </a>
+<a class="sourceLine" id="cb16-185" data-line-number="185">        SAMPLE.DIST, <span class="st">&quot;px</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-186" data-line-number="186">    <span class="co"># ... et ajouter aux points d&#39;entraînement</span></a>
+<a class="sourceLine" id="cb16-187" data-line-number="187">    <span class="cf">if</span>(<span class="kw">is.null</span>(train.pts)) {</a>
+<a class="sourceLine" id="cb16-188" data-line-number="188">      train.pts &lt;-<span class="st"> </span>cal.pts                                      </a>
+<a class="sourceLine" id="cb16-189" data-line-number="189">    } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb16-190" data-line-number="190">      train.pts &lt;-<span class="st"> </span><span class="kw">rbind</span>(train.pts, cal.pts)</a>
+<a class="sourceLine" id="cb16-191" data-line-number="191">    }</a>
+<a class="sourceLine" id="cb16-192" data-line-number="192">  }</a>
+<a class="sourceLine" id="cb16-193" data-line-number="193">  <span class="co"># Nombre total des points d&#39;entraînement</span></a>
+<a class="sourceLine" id="cb16-194" data-line-number="194">  <span class="kw">cat</span>(<span class="st">&quot;Total points:   &quot;</span>, <span class="kw">nrow</span>(train.pts), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-195" data-line-number="195">  </a>
+<a class="sourceLine" id="cb16-196" data-line-number="196">  <span class="co"># Extraire les variables correspondantes ----------------</span></a>
+<a class="sourceLine" id="cb16-197" data-line-number="197">  <span class="co"># Utiliser toutes les variables si non-spécifiées dans les paramètres</span></a>
+<a class="sourceLine" id="cb16-198" data-line-number="198">  <span class="cf">if</span>(<span class="kw">is.null</span>(preds)) {</a>
+<a class="sourceLine" id="cb16-199" data-line-number="199">    preds &lt;-<span class="st"> </span><span class="kw">names</span>(image)</a>
+<a class="sourceLine" id="cb16-200" data-line-number="200">    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(bioclim)) preds &lt;-<span class="st"> </span><span class="kw">c</span>(preds, <span class="kw">names</span>(bioclim))</a>
+<a class="sourceLine" id="cb16-201" data-line-number="201">  }</a>
+<a class="sourceLine" id="cb16-202" data-line-number="202">  <span class="co"># Extraire les variables Landsat ...</span></a>
+<a class="sourceLine" id="cb16-203" data-line-number="203">  <span class="kw">cat</span>(<span class="st">&quot;    -Extracting pixel values for bands:&quot;</span>, preds, <span class="st">&quot;... &quot;</span>)</a>
+<a class="sourceLine" id="cb16-204" data-line-number="204">  train.pts &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(image, train.pts, <span class="dt">sp=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-205" data-line-number="205">  <span class="co"># ... et Bioclim</span></a>
+<a class="sourceLine" id="cb16-206" data-line-number="206">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(bioclim)) train.pts &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(bioclim, train.pts, <span class="dt">sp=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-207" data-line-number="207">  <span class="co"># Ignorer des lignes avec NAs</span></a>
+<a class="sourceLine" id="cb16-208" data-line-number="208">  train.dat &lt;-<span class="st"> </span><span class="kw">na.omit</span>(train.pts<span class="op">@</span>data)[, <span class="kw">c</span>(<span class="st">&quot;CLASS&quot;</span>, preds)]</a>
 <a class="sourceLine" id="cb16-209" data-line-number="209">  </a>
-<a class="sourceLine" id="cb16-210" data-line-number="210">  <span class="kw">cat</span>(<span class="st">&quot;-- Done: &quot;</span>, <span class="kw">basename</span>(filename), <span class="st">&quot;/&quot;</span>, <span class="kw">date</span>(), <span class="st">&quot; --</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-211" data-line-number="211">  </a>
-<a class="sourceLine" id="cb16-212" data-line-number="212">  <span class="kw">invisible</span>(<span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb16-213" data-line-number="213">    <span class="st">&quot;model&quot;</span>  =<span class="st"> </span>map.model,</a>
-<a class="sourceLine" id="cb16-214" data-line-number="214">    <span class="st">&quot;map&quot;</span>    =<span class="st"> </span>map,</a>
-<a class="sourceLine" id="cb16-215" data-line-number="215">    <span class="st">&quot;prob&quot;</span>   =<span class="st"> </span>prob.map</a>
-<a class="sourceLine" id="cb16-216" data-line-number="216">  ))</a>
-<a class="sourceLine" id="cb16-217" data-line-number="217">}</a>
-<a class="sourceLine" id="cb16-218" data-line-number="218"></a>
-<a class="sourceLine" id="cb16-219" data-line-number="219"></a>
-<a class="sourceLine" id="cb16-220" data-line-number="220"><span class="co">### DO THE WORK ###########################################################</span></a>
-<a class="sourceLine" id="cb16-221" data-line-number="221"></a>
-<a class="sourceLine" id="cb16-222" data-line-number="222"><span class="co"># create directories if the don&#39;t exist</span></a>
-<a class="sourceLine" id="cb16-223" data-line-number="223"><span class="kw">dir.create</span>(FCC.REF.DIR, <span class="dt">recursive=</span><span class="ot">TRUE</span>, <span class="dt">showWarnings=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb16-224" data-line-number="224"><span class="kw">dir.create</span>(FCC.RAW.DIR, <span class="dt">recursive=</span><span class="ot">TRUE</span>, <span class="dt">showWarnings=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb16-225" data-line-number="225"></a>
-<a class="sourceLine" id="cb16-226" data-line-number="226"><span class="co"># load 2018 images --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb16-227" data-line-number="227"></a>
-<a class="sourceLine" id="cb16-228" data-line-number="228">ref.p192 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(IMAGES.DIR, <span class="st">&quot;/p192/p192_2018_m.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb16-229" data-line-number="229">ref.p193 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(IMAGES.DIR, <span class="st">&quot;/p193/p193_2018_m.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb16-230" data-line-number="230">ref.p194 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(IMAGES.DIR, <span class="st">&quot;/p194/p194_2018_m.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb16-231" data-line-number="231"><span class="kw">names</span>(ref.p192) &lt;-<span class="st"> </span><span class="kw">names</span>(ref.p193) &lt;-<span class="st"> </span><span class="kw">names</span>(ref.p194) &lt;-<span class="st"> </span>BANDS</a>
-<a class="sourceLine" id="cb16-232" data-line-number="232">ref.images &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">p192=</span>ref.p192, <span class="dt">p193=</span>ref.p193, <span class="dt">p194=</span>ref.p194)</a>
-<a class="sourceLine" id="cb16-233" data-line-number="233"></a>
-<a class="sourceLine" id="cb16-234" data-line-number="234">N.PIXELS &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">p192 =</span> <span class="kw">ncell</span>(ref.p192[[<span class="st">&quot;B&quot;</span>]]) <span class="op">-</span><span class="st"> </span><span class="kw">summary</span>(ref.p192)[<span class="st">&quot;NA&#39;s&quot;</span>,<span class="st">&quot;B&quot;</span>],</a>
-<a class="sourceLine" id="cb16-235" data-line-number="235">                 <span class="dt">p193 =</span> <span class="kw">ncell</span>(ref.p193[[<span class="st">&quot;B&quot;</span>]]) <span class="op">-</span><span class="st"> </span><span class="kw">summary</span>(ref.p193)[<span class="st">&quot;NA&#39;s&quot;</span>,<span class="st">&quot;B&quot;</span>],</a>
-<a class="sourceLine" id="cb16-236" data-line-number="236">                 <span class="dt">p194 =</span> <span class="kw">ncell</span>(ref.p194[[<span class="st">&quot;B&quot;</span>]]) <span class="op">-</span><span class="st"> </span><span class="kw">summary</span>(ref.p194)[<span class="st">&quot;NA&#39;s&quot;</span>,<span class="st">&quot;B&quot;</span>])</a>
-<a class="sourceLine" id="cb16-237" data-line-number="237"></a>
-<a class="sourceLine" id="cb16-238" data-line-number="238">bioclim.p192 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(IMAGES.DIR, <span class="st">&quot;/p192/p192_bioclim.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb16-239" data-line-number="239">bioclim.p193 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(IMAGES.DIR, <span class="st">&quot;/p193/p193_bioclim.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb16-240" data-line-number="240">bioclim.p194 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(IMAGES.DIR, <span class="st">&quot;/p194/p194_bioclim.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb16-241" data-line-number="241"><span class="kw">names</span>(bioclim.p192) &lt;-<span class="st"> </span><span class="kw">names</span>(bioclim.p193) &lt;-<span class="st"> </span><span class="kw">names</span>(bioclim.p194) &lt;-<span class="st"> </span>BIOCLIM</a>
-<a class="sourceLine" id="cb16-242" data-line-number="242">bioclim &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">p192=</span>bioclim.p192, <span class="dt">p193=</span>bioclim.p193, <span class="dt">p194=</span>bioclim.p194)</a>
-<a class="sourceLine" id="cb16-243" data-line-number="243"></a>
-<a class="sourceLine" id="cb16-244" data-line-number="244"></a>
-<a class="sourceLine" id="cb16-245" data-line-number="245"><span class="co"># load training plots ------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb16-246" data-line-number="246"></a>
-<a class="sourceLine" id="cb16-247" data-line-number="247">train.plots &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="kw">paste0</span>(TRNPTS.DIR, <span class="st">&quot;/COV_parcelles.shp&quot;</span>))</a>
-<a class="sourceLine" id="cb16-248" data-line-number="248">train.plots &lt;-<span class="st"> </span>train.plots[<span class="op">!</span><span class="kw">is.na</span>(train.plots<span class="op">$</span>ccov), <span class="kw">c</span>(<span class="st">&quot;PLOTID&quot;</span>, <span class="st">&quot;ccov&quot;</span>, <span class="st">&quot;img_date&quot;</span>, <span class="st">&quot;author&quot;</span>)]</a>
-<a class="sourceLine" id="cb16-249" data-line-number="249"></a>
-<a class="sourceLine" id="cb16-250" data-line-number="250">train.plots<span class="op">$</span>author &lt;-<span class="st"> </span><span class="kw">as.factor</span>(<span class="kw">sub</span>(<span class="st">&quot;^.*</span><span class="ch">\\</span><span class="st">/</span><span class="ch">\\</span><span class="st">/&quot;</span>, <span class="st">&quot;&quot;</span>, train.plots<span class="op">$</span>author))</a>
-<a class="sourceLine" id="cb16-251" data-line-number="251"></a>
-<a class="sourceLine" id="cb16-252" data-line-number="252"><span class="co"># convert plot polygons to spatial points (centroids)</span></a>
-<a class="sourceLine" id="cb16-253" data-line-number="253">train.points &lt;-<span class="st"> </span><span class="kw">SpatialPointsDataFrame</span>(<span class="kw">gCentroid</span>(train.plots, <span class="dt">byid=</span><span class="ot">TRUE</span>),  </a>
-<a class="sourceLine" id="cb16-254" data-line-number="254">                                    <span class="kw">data.frame</span>(<span class="dt">author=</span>train.plots<span class="op">$</span>author, <span class="dt">ccov=</span>train.plots<span class="op">$</span>ccov, <span class="dt">img_date=</span><span class="kw">as.Date</span>(train.plots<span class="op">$</span>img_date)))</a>
-<a class="sourceLine" id="cb16-255" data-line-number="255"></a>
-<a class="sourceLine" id="cb16-256" data-line-number="256"><span class="co"># select only those with image date between 1.1.2017 and 31.12.2019</span></a>
-<a class="sourceLine" id="cb16-257" data-line-number="257">train.points &lt;-<span class="st"> </span>train.points[<span class="op">!</span><span class="kw">is.na</span>(train.points<span class="op">$</span>img_date) <span class="op">&amp;</span><span class="st"> </span>train.points<span class="op">$</span>img_date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2017-01-01&quot;</span>) <span class="op">&amp;</span><span class="st"> </span>train.points<span class="op">$</span>img_date <span class="op">&lt;=</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2019-12-31&quot;</span>), ]</a>
-<a class="sourceLine" id="cb16-258" data-line-number="258"><span class="kw">pdf</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/training-pts_2018.pdf&quot;</span>))</a>
-<a class="sourceLine" id="cb16-259" data-line-number="259"><span class="kw">plot</span>(train.points)</a>
-<a class="sourceLine" id="cb16-260" data-line-number="260"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb16-261" data-line-number="261"></a>
-<a class="sourceLine" id="cb16-262" data-line-number="262"><span class="co"># extract image values for train.points</span></a>
-<a class="sourceLine" id="cb16-263" data-line-number="263"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb16-264" data-line-number="264">train.points &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(ref.images), <span class="dt">.combine=</span>rbind) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb16-265" data-line-number="265">  pts &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(ref.images[[i]], train.points, <span class="dt">sp=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-266" data-line-number="266">  pts &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(bioclim[[i]], pts, <span class="dt">sp=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-267" data-line-number="267">  pts<span class="op">$</span>image &lt;-<span class="st"> </span><span class="kw">names</span>(ref.images[i])</a>
-<a class="sourceLine" id="cb16-268" data-line-number="268">  pts[, <span class="kw">c</span>(<span class="st">&quot;author&quot;</span>, <span class="st">&quot;image&quot;</span>, <span class="st">&quot;ccov&quot;</span>, BANDS, BIOCLIM)]</a>
-<a class="sourceLine" id="cb16-269" data-line-number="269">}</a>
-<a class="sourceLine" id="cb16-270" data-line-number="270"></a>
-<a class="sourceLine" id="cb16-271" data-line-number="271"><span class="co"># remove rows with NA&#39;s</span></a>
-<a class="sourceLine" id="cb16-272" data-line-number="272">train.points &lt;-<span class="st"> </span>train.points[<span class="op">!</span><span class="kw">is.na</span>(<span class="kw">rowSums</span>(train.points<span class="op">@</span>data[,<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)])), ]</a>
-<a class="sourceLine" id="cb16-273" data-line-number="273"></a>
-<a class="sourceLine" id="cb16-274" data-line-number="274"><span class="co"># discard points from authors that add confusion</span></a>
-<a class="sourceLine" id="cb16-275" data-line-number="275"><span class="co"># train.points &lt;- train.points[!train.points$author %in% c(&quot;6_Eric_AGBESSI&quot;, &quot;2_Mamalnassoh_ABIGUIME&quot;, &quot;7_Aklasson_TOLEBA&quot;, &quot;1_Ditorgue_BAKABIMA&quot;, &quot;8_Yawo_KONKO&quot;), ]</span></a>
-<a class="sourceLine" id="cb16-276" data-line-number="276"></a>
-<a class="sourceLine" id="cb16-277" data-line-number="277"><span class="co"># for(author in unique(train.points$author[!train.points$author %in% discard])) {</span></a>
-<a class="sourceLine" id="cb16-278" data-line-number="278"><span class="co">#   print(author)</span></a>
-<a class="sourceLine" id="cb16-279" data-line-number="279"><span class="co">#   map.model &lt;- randomForest(y=train.points@data[!train.points$author %in% c(author, discard),&quot;ccov&quot;], x=train.points@data[!train.points$author %in% c(author, discard),-(1:3)])</span></a>
-<a class="sourceLine" id="cb16-280" data-line-number="280"><span class="co">#   print(map.model)</span></a>
-<a class="sourceLine" id="cb16-281" data-line-number="281"><span class="co"># }</span></a>
-<a class="sourceLine" id="cb16-282" data-line-number="282"></a>
-<a class="sourceLine" id="cb16-283" data-line-number="283"></a>
-<a class="sourceLine" id="cb16-284" data-line-number="284"></a>
-<a class="sourceLine" id="cb16-285" data-line-number="285">train.points<span class="op">@</span>data &lt;-<span class="st"> </span><span class="kw">cbind</span>(train.points<span class="op">@</span>data[,<span class="kw">c</span>(<span class="st">&quot;image&quot;</span>, <span class="st">&quot;ccov&quot;</span>)],</a>
-<a class="sourceLine" id="cb16-286" data-line-number="286">                           <span class="dt">F10=</span><span class="kw">cut</span>(train.points<span class="op">$</span>ccov, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="fl">0.0</span>,<span class="fl">0.1</span>,<span class="fl">1.0</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="dt">right=</span><span class="ot">FALSE</span>, <span class="dt">include.lowest=</span><span class="ot">TRUE</span>), </a>
-<a class="sourceLine" id="cb16-287" data-line-number="287">                           <span class="dt">F30=</span><span class="kw">cut</span>(train.points<span class="op">$</span>ccov, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="fl">0.0</span>,<span class="fl">0.3</span>,<span class="fl">1.0</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="dt">right=</span><span class="ot">FALSE</span>, <span class="dt">include.lowest=</span><span class="ot">TRUE</span>), </a>
-<a class="sourceLine" id="cb16-288" data-line-number="288">                           train.points<span class="op">@</span>data[,<span class="kw">c</span>(BANDS, BIOCLIM)])</a>
+<a class="sourceLine" id="cb16-210" data-line-number="210">  <span class="co"># Calibration du modèle Random Forest -------------------</span></a>
+<a class="sourceLine" id="cb16-211" data-line-number="211">  <span class="co"># Variable catégorielle -&gt; mode de classification, autrement -&gt; régression</span></a>
+<a class="sourceLine" id="cb16-212" data-line-number="212">  <span class="cf">if</span>(type<span class="op">==</span><span class="st">&quot;classification&quot;</span>) train.dat[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">as.factor</span>(train.dat[,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb16-213" data-line-number="213">  <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb16-214" data-line-number="214">  <span class="kw">cat</span>(<span class="st">&quot;    -Calibrating RandomForest ... &quot;</span>)</a>
+<a class="sourceLine" id="cb16-215" data-line-number="215">  <span class="kw">sink</span>(txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-216" data-line-number="216">  <span class="co"># Utiliser caret::train pour validation croisée (a besoin de beaucoup de temps)</span></a>
+<a class="sourceLine" id="cb16-217" data-line-number="217">  <span class="cf">if</span>(crossval) {</a>
+<a class="sourceLine" id="cb16-218" data-line-number="218">    map.model.cv &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">y =</span> train.dat[,<span class="dv">1</span>], </a>
+<a class="sourceLine" id="cb16-219" data-line-number="219">                          <span class="dt">x =</span> train.dat[,<span class="op">-</span><span class="dv">1</span>],</a>
+<a class="sourceLine" id="cb16-220" data-line-number="220">                          <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,              <span class="co"># RandomForest</span></a>
+<a class="sourceLine" id="cb16-221" data-line-number="221">                          <span class="dt">importance =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb16-222" data-line-number="222">                          <span class="dt">trControl =</span> <span class="kw">trainControl</span>(</a>
+<a class="sourceLine" id="cb16-223" data-line-number="223">                            <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,</a>
+<a class="sourceLine" id="cb16-224" data-line-number="224">                            <span class="dt">number =</span> <span class="dv">10</span>,              <span class="co"># k-fold</span></a>
+<a class="sourceLine" id="cb16-225" data-line-number="225">                            <span class="dt">repeats =</span> <span class="dv">3</span>))             <span class="co"># répétitions</span></a>
+<a class="sourceLine" id="cb16-226" data-line-number="226">    <span class="kw">print</span>(map.model.cv)</a>
+<a class="sourceLine" id="cb16-227" data-line-number="227">    map.model &lt;-<span class="st"> </span>map.model.cv<span class="op">$</span>finalModel</a>
+<a class="sourceLine" id="cb16-228" data-line-number="228">    <span class="kw">print</span>(map.model)</a>
+<a class="sourceLine" id="cb16-229" data-line-number="229">    <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb16-230" data-line-number="230">    <span class="kw">print</span>(<span class="kw">varImp</span>(map.model, <span class="dt">scale=</span><span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb16-231" data-line-number="231">  <span class="co"># autrement randomForest directement</span></a>
+<a class="sourceLine" id="cb16-232" data-line-number="232">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb16-233" data-line-number="233">    map.model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">y=</span>train.dat[,<span class="dv">1</span>], <span class="dt">x=</span>train.dat[,<span class="op">-</span><span class="dv">1</span>], <span class="dt">importance=</span><span class="ot">TRUE</span>) <span class="co"># , do.trace=100)</span></a>
+<a class="sourceLine" id="cb16-234" data-line-number="234">    <span class="co">#</span></a>
+<a class="sourceLine" id="cb16-235" data-line-number="235">    <span class="co"># Parallélisation de RandomForest : cpossible, mais confusion, err.rate, mse et rsq seront NULL</span></a>
+<a class="sourceLine" id="cb16-236" data-line-number="236">    <span class="co"># https://stackoverflow.com/questions/14106010/parallel-execution-of-random-forest-in-r</span></a>
+<a class="sourceLine" id="cb16-237" data-line-number="237">    <span class="co"># map.model &lt;- foreach(ntree=rep(100, 5), .combine=randomForest::combine, .multicombine=TRUE, .packages=&#39;randomForest&#39;) %dopar% {</span></a>
+<a class="sourceLine" id="cb16-238" data-line-number="238">    <span class="co">#                 randomForest(x=ref.pts[,!(names(ref.pts) == &quot;CLASS&quot;)], y=ref.pts$CLASS, importance=TRUE, ntree=ntree)</span></a>
+<a class="sourceLine" id="cb16-239" data-line-number="239">    <span class="co">#  </span></a>
+<a class="sourceLine" id="cb16-240" data-line-number="240">    <span class="kw">print</span>(map.model)</a>
+<a class="sourceLine" id="cb16-241" data-line-number="241">    <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb16-242" data-line-number="242">    <span class="kw">print</span>(<span class="kw">varImp</span>(map.model))</a>
+<a class="sourceLine" id="cb16-243" data-line-number="243">  }</a>
+<a class="sourceLine" id="cb16-244" data-line-number="244">  <span class="kw">sink</span>()</a>
+<a class="sourceLine" id="cb16-245" data-line-number="245">  <span class="co"># Mesures des erreurs</span></a>
+<a class="sourceLine" id="cb16-246" data-line-number="246">  <span class="cf">if</span>(type<span class="op">==</span><span class="st">&quot;treecover&quot;</span>) {</a>
+<a class="sourceLine" id="cb16-247" data-line-number="247">    <span class="kw">cat</span>(<span class="st">&quot;R2:&quot;</span>, <span class="kw">round</span>(map.model<span class="op">$</span>rsq[<span class="dv">500</span>], <span class="dv">2</span>), <span class="st">&quot;RMSE:&quot;</span>, <span class="kw">round</span>(<span class="kw">sqrt</span>(map.model<span class="op">$</span>mse[<span class="dv">500</span>]), <span class="dv">2</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb16-248" data-line-number="248">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb16-249" data-line-number="249">    <span class="kw">cat</span>(<span class="st">&quot;OOB error rate:&quot;</span>, <span class="kw">round</span>(map.model<span class="op">$</span>err.rate[<span class="dv">500</span>,<span class="dv">1</span>], <span class="dv">2</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb16-250" data-line-number="250">  }</a>
+<a class="sourceLine" id="cb16-251" data-line-number="251">  </a>
+<a class="sourceLine" id="cb16-252" data-line-number="252">  <span class="co"># Classification de la carte forêt/non-forêt ------------</span></a>
+<a class="sourceLine" id="cb16-253" data-line-number="253">  <span class="kw">dir.create</span>(<span class="kw">dirname</span>(filename), <span class="dt">recursive=</span><span class="ot">TRUE</span>, <span class="dt">showWarnings=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb16-254" data-line-number="254">  <span class="kw">cat</span>(<span class="st">&quot;    -Creating map ... &quot;</span>)</a>
+<a class="sourceLine" id="cb16-255" data-line-number="255">  <span class="co"># empiler les couches Landsat et bioclim</span></a>
+<a class="sourceLine" id="cb16-256" data-line-number="256">  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(bioclim)) image &lt;-<span class="st"> </span><span class="kw">stack</span>(image, <span class="kw">crop</span>(bioclim, image))</a>
+<a class="sourceLine" id="cb16-257" data-line-number="257">  <span class="co"># classifier l&#39;image sur différents procésseurs en parallèle</span></a>
+<a class="sourceLine" id="cb16-258" data-line-number="258">  <span class="kw">beginCluster</span>(<span class="dt">n=</span>n.cores)</a>
+<a class="sourceLine" id="cb16-259" data-line-number="259">  map &lt;-<span class="st"> </span><span class="kw">clusterR</span>(image, predict, <span class="dt">args=</span><span class="kw">list</span>(<span class="dt">model=</span>map.model))</a>
+<a class="sourceLine" id="cb16-260" data-line-number="260">  <span class="kw">endCluster</span>()</a>
+<a class="sourceLine" id="cb16-261" data-line-number="261">  <span class="co"># sauvegarder la carte</span></a>
+<a class="sourceLine" id="cb16-262" data-line-number="262">  <span class="kw">cat</span>(<span class="st">&quot;writing map ... &quot;</span>)</a>
+<a class="sourceLine" id="cb16-263" data-line-number="263">  <span class="co"># convertir en %, si c&#39;est une carte couverture houppier</span></a>
+<a class="sourceLine" id="cb16-264" data-line-number="264">  <span class="cf">if</span>(type<span class="op">==</span><span class="st">&quot;treecover&quot;</span>) map &lt;-<span class="st"> </span><span class="kw">floor</span>(map<span class="op">*</span><span class="dv">100</span>) </a>
+<a class="sourceLine" id="cb16-265" data-line-number="265">  map &lt;-<span class="st"> </span><span class="kw">writeRaster</span>(map, <span class="dt">filename=</span>filename, <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-266" data-line-number="266">  <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb16-267" data-line-number="267">  </a>
+<a class="sourceLine" id="cb16-268" data-line-number="268">  <span class="co"># Calculer une carte de probabilité ---------------------</span></a>
+<a class="sourceLine" id="cb16-269" data-line-number="269">  <span class="cf">if</span>(prob<span class="op">==</span><span class="ot">TRUE</span>) {</a>
+<a class="sourceLine" id="cb16-270" data-line-number="270">    <span class="kw">cat</span>(<span class="st">&quot;    -Creating probability map ... &quot;</span>)</a>
+<a class="sourceLine" id="cb16-271" data-line-number="271">    <span class="kw">beginCluster</span>(<span class="dt">n=</span>n.cores)</a>
+<a class="sourceLine" id="cb16-272" data-line-number="272">    prob.map &lt;-<span class="st"> </span><span class="kw">clusterR</span>(image, predict, <span class="dt">args=</span><span class="kw">list</span>(<span class="dt">model=</span>map.model, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>))</a>
+<a class="sourceLine" id="cb16-273" data-line-number="273">    <span class="kw">endCluster</span>()</a>
+<a class="sourceLine" id="cb16-274" data-line-number="274">    <span class="kw">cat</span>(<span class="st">&quot;writing map ... &quot;</span>)</a>
+<a class="sourceLine" id="cb16-275" data-line-number="275">    <span class="kw">writeRaster</span>(prob.map, <span class="dt">filename=</span><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="st">&quot;_prob.tif&quot;</span>, filename), <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-276" data-line-number="276">    <span class="kw">cat</span>(<span class="st">&quot;done</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb16-277" data-line-number="277">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb16-278" data-line-number="278">    prob.map &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb16-279" data-line-number="279">  }</a>
+<a class="sourceLine" id="cb16-280" data-line-number="280">  </a>
+<a class="sourceLine" id="cb16-281" data-line-number="281">  <span class="kw">cat</span>(<span class="st">&quot;-- Done: &quot;</span>, <span class="kw">basename</span>(filename), <span class="st">&quot;/&quot;</span>, <span class="kw">date</span>(), <span class="st">&quot; --</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">file=</span>txtfile, <span class="dt">append=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-282" data-line-number="282">  </a>
+<a class="sourceLine" id="cb16-283" data-line-number="283">  <span class="kw">invisible</span>(<span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb16-284" data-line-number="284">    <span class="st">&quot;model&quot;</span>  =<span class="st"> </span>map.model,</a>
+<a class="sourceLine" id="cb16-285" data-line-number="285">    <span class="st">&quot;map&quot;</span>    =<span class="st"> </span>map,</a>
+<a class="sourceLine" id="cb16-286" data-line-number="286">    <span class="st">&quot;prob&quot;</span>   =<span class="st"> </span>prob.map</a>
+<a class="sourceLine" id="cb16-287" data-line-number="287">  ))</a>
+<a class="sourceLine" id="cb16-288" data-line-number="288">}</a>
 <a class="sourceLine" id="cb16-289" data-line-number="289"></a>
 <a class="sourceLine" id="cb16-290" data-line-number="290"></a>
-<a class="sourceLine" id="cb16-291" data-line-number="291"></a>
+<a class="sourceLine" id="cb16-291" data-line-number="291"><span class="co"># COMMENCER LE TRAITEMENT #####################################################</span></a>
 <a class="sourceLine" id="cb16-292" data-line-number="292"></a>
-<a class="sourceLine" id="cb16-293" data-line-number="293"><span class="co"># Parameter selection -----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb16-293" data-line-number="293"><span class="co"># Charger images 2018 ---------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb16-294" data-line-number="294"></a>
-<a class="sourceLine" id="cb16-295" data-line-number="295">cov.varsel &lt;-<span class="st"> </span><span class="kw">rfe</span>(<span class="dt">y=</span>train.points<span class="op">@</span>data[train.points<span class="op">$</span>image<span class="op">==</span><span class="st">&quot;p193&quot;</span>, <span class="st">&quot;ccov&quot;</span>],</a>
-<a class="sourceLine" id="cb16-296" data-line-number="296">                  <span class="dt">x=</span>train.points<span class="op">@</span>data[train.points<span class="op">$</span>image<span class="op">==</span><span class="st">&quot;p193&quot;</span>, PREDICTORS],</a>
-<a class="sourceLine" id="cb16-297" data-line-number="297">                  <span class="dt">sizes =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb16-298" data-line-number="298">                  <span class="dt">rfeControl=</span><span class="kw">rfeControl</span>(</a>
-<a class="sourceLine" id="cb16-299" data-line-number="299">                    <span class="dt">functions=</span>rfFuncs,        <span class="co"># use RandomForest</span></a>
-<a class="sourceLine" id="cb16-300" data-line-number="300">                    <span class="dt">method  =</span> <span class="st">&quot;repeatedcv&quot;</span>,   <span class="co"># repeated cross-validation</span></a>
-<a class="sourceLine" id="cb16-301" data-line-number="301">                    <span class="dt">number  =</span> <span class="dv">10</span>,             <span class="co"># 10-fold</span></a>
-<a class="sourceLine" id="cb16-302" data-line-number="302">                    <span class="dt">repeats =</span> <span class="dv">3</span>))             <span class="co"># 3 repeats</span></a>
-<a class="sourceLine" id="cb16-303" data-line-number="303"></a>
-<a class="sourceLine" id="cb16-304" data-line-number="304"><span class="kw">print</span>(cov.varsel)</a>
-<a class="sourceLine" id="cb16-305" data-line-number="305"><span class="kw">predictors</span>(cov.varsel)</a>
-<a class="sourceLine" id="cb16-306" data-line-number="306"><span class="kw">plot</span>(cov.varsel, <span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>, <span class="st">&quot;o&quot;</span>))</a>
-<a class="sourceLine" id="cb16-307" data-line-number="307"></a>
-<a class="sourceLine" id="cb16-308" data-line-number="308"><span class="co"># 2018 reference tree cover map (</span><span class="al">TODO</span><span class="co">) -------------------------------------</span></a>
-<a class="sourceLine" id="cb16-309" data-line-number="309"></a>
-<a class="sourceLine" id="cb16-310" data-line-number="310"></a>
-<a class="sourceLine" id="cb16-311" data-line-number="311"><span class="co"># Tree cover map for 2018 for p193</span></a>
-<a class="sourceLine" id="cb16-312" data-line-number="312"><span class="kw">set.seed</span>(RSEED)</a>
-<a class="sourceLine" id="cb16-313" data-line-number="313">p193.<span class="fl">2018.</span>cov &lt;-<span class="st"> </span><span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="st">&quot;/p193/p193_2018_m.tif&quot;</span>), </a>
-<a class="sourceLine" id="cb16-314" data-line-number="314">                                <span class="dt">bioclim   =</span> bioclim[[<span class="st">&quot;p193&quot;</span>]],</a>
-<a class="sourceLine" id="cb16-315" data-line-number="315">                                <span class="dt">filename  =</span> <span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/p193_2018_COV_R.tif&quot;</span>),</a>
-<a class="sourceLine" id="cb16-316" data-line-number="316">                                <span class="dt">train.pts =</span> train.points[train.points<span class="op">$</span>image <span class="op">==</span><span class="st"> &quot;p193&quot;</span>, <span class="st">&quot;ccov&quot;</span>],</a>
-<a class="sourceLine" id="cb16-317" data-line-number="317">                                <span class="dt">preds     =</span> PREDICTORS,</a>
-<a class="sourceLine" id="cb16-318" data-line-number="318">                                <span class="dt">type      =</span> <span class="st">&quot;treecover&quot;</span>,</a>
-<a class="sourceLine" id="cb16-319" data-line-number="319">                                <span class="dt">crossval  =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb16-320" data-line-number="320">                                <span class="dt">n.cores   =</span> <span class="dv">32</span>)</a>
-<a class="sourceLine" id="cb16-321" data-line-number="321"></a>
-<a class="sourceLine" id="cb16-322" data-line-number="322"><span class="co"># plot observed vs. predicted</span></a>
-<a class="sourceLine" id="cb16-323" data-line-number="323"><span class="kw">pdf</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/p193_2018_COV_R.pdf&quot;</span>))</a>
-<a class="sourceLine" id="cb16-324" data-line-number="324"><span class="kw">plot</span>(p193.<span class="fl">2018.</span>cov[[<span class="st">&quot;model&quot;</span>]]<span class="op">$</span>y, p193.<span class="fl">2018.</span>cov[[<span class="st">&quot;model&quot;</span>]]<span class="op">$</span>predicted, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">main=</span><span class="st">&quot;Couverture houppier p193&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Observation&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Prédiction&quot;</span>)</a>
-<a class="sourceLine" id="cb16-325" data-line-number="325"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb16-326" data-line-number="326"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb16-327" data-line-number="327"></a>
-<a class="sourceLine" id="cb16-328" data-line-number="328"><span class="co"># 2018 reference forest cover maps -----------------------------------------</span></a>
-<a class="sourceLine" id="cb16-329" data-line-number="329"></a>
-<a class="sourceLine" id="cb16-330" data-line-number="330"><span class="co"># Forest cover map for 2018 for p193</span></a>
-<a class="sourceLine" id="cb16-331" data-line-number="331"><span class="kw">set.seed</span>(RSEED)</a>
-<a class="sourceLine" id="cb16-332" data-line-number="332"><span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="st">&quot;/p193/p193_2018_m.tif&quot;</span>), </a>
-<a class="sourceLine" id="cb16-333" data-line-number="333">               <span class="dt">bioclim   =</span> bioclim[[<span class="st">&quot;p193&quot;</span>]],</a>
-<a class="sourceLine" id="cb16-334" data-line-number="334">               <span class="dt">filename  =</span> <span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>),</a>
-<a class="sourceLine" id="cb16-335" data-line-number="335">               <span class="dt">train.pts =</span> train.points[train.points<span class="op">$</span>image <span class="op">==</span><span class="st"> &quot;p193&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;F&quot;</span>, COV.FC)],</a>
-<a class="sourceLine" id="cb16-336" data-line-number="336">               <span class="dt">preds     =</span> PREDICTORS,</a>
-<a class="sourceLine" id="cb16-337" data-line-number="337">               <span class="dt">prob      =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb16-338" data-line-number="338">               <span class="dt">crossval  =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb16-339" data-line-number="339">               <span class="dt">n.cores   =</span> <span class="dv">32</span>)  </a>
-<a class="sourceLine" id="cb16-340" data-line-number="340"></a>
-<a class="sourceLine" id="cb16-341" data-line-number="341"><span class="co"># Forest cover maps 2018 for p192 and p194, calibrating with p193</span></a>
-<a class="sourceLine" id="cb16-342" data-line-number="342"><span class="kw">set.seed</span>(RSEED)</a>
-<a class="sourceLine" id="cb16-343" data-line-number="343"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb16-344" data-line-number="344"><span class="kw">foreach</span>(<span class="dt">path=</span><span class="kw">c</span>(<span class="st">&quot;p192&quot;</span>, <span class="st">&quot;p194&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb16-345" data-line-number="345">  </a>
-<a class="sourceLine" id="cb16-346" data-line-number="346">  train.pts &lt;-<span class="st"> </span>train.points[train.points<span class="op">$</span>image <span class="op">==</span><span class="st"> </span>path, <span class="kw">paste0</span>(<span class="st">&quot;F&quot;</span>, COV.FC)]</a>
-<a class="sourceLine" id="cb16-347" data-line-number="347">  </a>
-<a class="sourceLine" id="cb16-348" data-line-number="348">  <span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="kw">paste0</span>(<span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2018_m.tif&quot;</span>)), </a>
-<a class="sourceLine" id="cb16-349" data-line-number="349">                 <span class="dt">bioclim   =</span> bioclim[[path]],</a>
-<a class="sourceLine" id="cb16-350" data-line-number="350">                 <span class="dt">filename  =</span> <span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>),</a>
-<a class="sourceLine" id="cb16-351" data-line-number="351">                 <span class="dt">train.pts =</span> train.pts,</a>
-<a class="sourceLine" id="cb16-352" data-line-number="352">                 <span class="dt">cal.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
-<a class="sourceLine" id="cb16-353" data-line-number="353">                 <span class="dt">n.cal.map =</span> <span class="kw">max</span>(<span class="dv">2000</span>, <span class="kw">nrow</span>(train.pts)<span class="op">/</span>CAL.RATIO),</a>
-<a class="sourceLine" id="cb16-354" data-line-number="354">                 <span class="dt">preds     =</span> PREDICTORS,</a>
-<a class="sourceLine" id="cb16-355" data-line-number="355">                 <span class="dt">mask      =</span> TGO,</a>
-<a class="sourceLine" id="cb16-356" data-line-number="356">                 <span class="dt">prob      =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb16-357" data-line-number="357">                 <span class="dt">n.cores   =</span> <span class="dv">32</span>)</a>
-<a class="sourceLine" id="cb16-358" data-line-number="358">}</a>
+<a class="sourceLine" id="cb16-295" data-line-number="295">ref.p192 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(LANDSAT.DIR, <span class="st">&quot;/p192/p192_2018_m.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb16-296" data-line-number="296">ref.p193 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(LANDSAT.DIR, <span class="st">&quot;/p193/p193_2018_m.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb16-297" data-line-number="297">ref.p194 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(LANDSAT.DIR, <span class="st">&quot;/p194/p194_2018_m.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb16-298" data-line-number="298"><span class="kw">names</span>(ref.p192) &lt;-<span class="st"> </span><span class="kw">names</span>(ref.p193) &lt;-<span class="st"> </span><span class="kw">names</span>(ref.p194) &lt;-<span class="st"> </span>SST.LSBANDS</a>
+<a class="sourceLine" id="cb16-299" data-line-number="299">ref.images &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">p192=</span>ref.p192, <span class="dt">p193=</span>ref.p193, <span class="dt">p194=</span>ref.p194)</a>
+<a class="sourceLine" id="cb16-300" data-line-number="300"></a>
+<a class="sourceLine" id="cb16-301" data-line-number="301"><span class="co"># Détérminer le nombre de pixels non-NA</span></a>
+<a class="sourceLine" id="cb16-302" data-line-number="302">N.PIXELS &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">p192 =</span> <span class="kw">ncell</span>(ref.p192[[<span class="st">&quot;B&quot;</span>]]) <span class="op">-</span><span class="st"> </span><span class="kw">summary</span>(ref.p192)[<span class="st">&quot;NA&#39;s&quot;</span>,<span class="st">&quot;B&quot;</span>],</a>
+<a class="sourceLine" id="cb16-303" data-line-number="303">                 <span class="dt">p193 =</span> <span class="kw">ncell</span>(ref.p193[[<span class="st">&quot;B&quot;</span>]]) <span class="op">-</span><span class="st"> </span><span class="kw">summary</span>(ref.p193)[<span class="st">&quot;NA&#39;s&quot;</span>,<span class="st">&quot;B&quot;</span>],</a>
+<a class="sourceLine" id="cb16-304" data-line-number="304">                 <span class="dt">p194 =</span> <span class="kw">ncell</span>(ref.p194[[<span class="st">&quot;B&quot;</span>]]) <span class="op">-</span><span class="st"> </span><span class="kw">summary</span>(ref.p194)[<span class="st">&quot;NA&#39;s&quot;</span>,<span class="st">&quot;B&quot;</span>])</a>
+<a class="sourceLine" id="cb16-305" data-line-number="305"></a>
+<a class="sourceLine" id="cb16-306" data-line-number="306"><span class="co"># Charger variables bioclim</span></a>
+<a class="sourceLine" id="cb16-307" data-line-number="307">bioclim.p192 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(WORLDCLIM.DIR, <span class="st">&quot;/p192/p192_bioclim.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb16-308" data-line-number="308">bioclim.p193 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(WORLDCLIM.DIR, <span class="st">&quot;/p193/p193_bioclim.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb16-309" data-line-number="309">bioclim.p194 &lt;-<span class="st"> </span><span class="kw">brick</span>(<span class="kw">paste0</span>(WORLDCLIM.DIR, <span class="st">&quot;/p194/p194_bioclim.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb16-310" data-line-number="310"><span class="kw">names</span>(bioclim.p192) &lt;-<span class="st"> </span><span class="kw">names</span>(bioclim.p193) &lt;-<span class="st"> </span><span class="kw">names</span>(bioclim.p194) &lt;-<span class="st"> </span>SST.BIOCLIM</a>
+<a class="sourceLine" id="cb16-311" data-line-number="311">bioclim &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">p192=</span>bioclim.p192, <span class="dt">p193=</span>bioclim.p193, <span class="dt">p194=</span>bioclim.p194)</a>
+<a class="sourceLine" id="cb16-312" data-line-number="312"></a>
+<a class="sourceLine" id="cb16-313" data-line-number="313"></a>
+<a class="sourceLine" id="cb16-314" data-line-number="314"><span class="co"># Charger points d&#39;entraînement -----------------------------------------------</span></a>
+<a class="sourceLine" id="cb16-315" data-line-number="315"></a>
+<a class="sourceLine" id="cb16-316" data-line-number="316">train.plots &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="kw">paste0</span>(DIR.SST.BDD.TPS, <span class="st">&quot;/COV_parcelles.shp&quot;</span>))</a>
+<a class="sourceLine" id="cb16-317" data-line-number="317">train.plots &lt;-<span class="st"> </span>train.plots[<span class="op">!</span><span class="kw">is.na</span>(train.plots<span class="op">$</span>ccov),  <span class="co"># couverture des houppiers!</span></a>
+<a class="sourceLine" id="cb16-318" data-line-number="318">                           <span class="kw">c</span>(<span class="st">&quot;PLOTID&quot;</span>, <span class="st">&quot;ccov&quot;</span>, <span class="st">&quot;img_date&quot;</span>, <span class="st">&quot;author&quot;</span>)]</a>
+<a class="sourceLine" id="cb16-319" data-line-number="319"></a>
+<a class="sourceLine" id="cb16-320" data-line-number="320"><span class="co"># Convertir les polygones des parcelles en points spatiaux (centroïdes)</span></a>
+<a class="sourceLine" id="cb16-321" data-line-number="321">train.points &lt;-<span class="st"> </span><span class="kw">SpatialPointsDataFrame</span>(<span class="kw">gCentroid</span>(train.plots, <span class="dt">byid=</span><span class="ot">TRUE</span>),  </a>
+<a class="sourceLine" id="cb16-322" data-line-number="322">                                       <span class="kw">data.frame</span>(<span class="dt">author=</span>train.plots<span class="op">$</span>author, </a>
+<a class="sourceLine" id="cb16-323" data-line-number="323">                                                  <span class="dt">ccov=</span>train.plots<span class="op">$</span>ccov, </a>
+<a class="sourceLine" id="cb16-324" data-line-number="324">                                                  <span class="dt">img_date=</span><span class="kw">as.Date</span>(train.plots<span class="op">$</span>img_date)))</a>
+<a class="sourceLine" id="cb16-325" data-line-number="325"></a>
+<a class="sourceLine" id="cb16-326" data-line-number="326"><span class="co"># Pour la calibration de l&#39;image 2018, sélectionner uniquement les points </span></a>
+<a class="sourceLine" id="cb16-327" data-line-number="327"><span class="co"># d&#39;entraînement dont la date de l&#39;image GoogleEarth est entre le 1.1.2017 et le 31.12.2019</span></a>
+<a class="sourceLine" id="cb16-328" data-line-number="328">train.points &lt;-<span class="st"> </span>train.points[<span class="op">!</span><span class="kw">is.na</span>(train.points<span class="op">$</span>img_date) <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-329" data-line-number="329"><span class="st">                             </span>train.points<span class="op">$</span>img_date <span class="op">&gt;</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2017-01-01&quot;</span>) <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-330" data-line-number="330"><span class="st">                             </span>train.points<span class="op">$</span>img_date <span class="op">&lt;=</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2019-12-31&quot;</span>), ]</a>
+<a class="sourceLine" id="cb16-331" data-line-number="331"></a>
+<a class="sourceLine" id="cb16-332" data-line-number="332"><span class="co"># Illustrer la répartition des observations </span></a>
+<a class="sourceLine" id="cb16-333" data-line-number="333"><span class="kw">pdf</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/training-pts_2018.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb16-334" data-line-number="334"><span class="kw">plot</span>(train.points)</a>
+<a class="sourceLine" id="cb16-335" data-line-number="335"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb16-336" data-line-number="336"></a>
+<a class="sourceLine" id="cb16-337" data-line-number="337"><span class="co"># Extraire les valeurs d&#39;image pour les points d&#39;entraînement (en parallèle)</span></a>
+<a class="sourceLine" id="cb16-338" data-line-number="338"><span class="kw">registerDoParallel</span>(CORES)</a>
+<a class="sourceLine" id="cb16-339" data-line-number="339">train.points &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(ref.images), <span class="dt">.combine=</span>rbind) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb16-340" data-line-number="340">  pts &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(ref.images[[i]], train.points, <span class="dt">sp=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-341" data-line-number="341">  pts &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(bioclim[[i]], pts, <span class="dt">sp=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-342" data-line-number="342">  pts<span class="op">$</span>image &lt;-<span class="st"> </span><span class="kw">names</span>(ref.images[i])</a>
+<a class="sourceLine" id="cb16-343" data-line-number="343">  pts[, <span class="kw">c</span>(<span class="st">&quot;author&quot;</span>, <span class="st">&quot;image&quot;</span>, <span class="st">&quot;ccov&quot;</span>, SSTS.BANDS, SSTS.BIOCLIM)]</a>
+<a class="sourceLine" id="cb16-344" data-line-number="344">}</a>
+<a class="sourceLine" id="cb16-345" data-line-number="345"></a>
+<a class="sourceLine" id="cb16-346" data-line-number="346"><span class="co"># Supprimer les lignes avec des NA</span></a>
+<a class="sourceLine" id="cb16-347" data-line-number="347">train.points &lt;-<span class="st"> </span>train.points[<span class="op">!</span><span class="kw">is.na</span>(<span class="kw">rowSums</span>(train.points<span class="op">@</span>data[,<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)])), ]</a>
+<a class="sourceLine" id="cb16-348" data-line-number="348"></a>
+<a class="sourceLine" id="cb16-349" data-line-number="349"><span class="co"># Réorganiser le tableau des attributs (F10: forêt/non-forêt à 10% / F30: à 30%)</span></a>
+<a class="sourceLine" id="cb16-350" data-line-number="350">train.points<span class="op">@</span>data &lt;-<span class="st"> </span><span class="kw">cbind</span>(train.points<span class="op">@</span>data[,<span class="kw">c</span>(<span class="st">&quot;image&quot;</span>, <span class="st">&quot;ccov&quot;</span>)],</a>
+<a class="sourceLine" id="cb16-351" data-line-number="351">                           <span class="dt">F10=</span><span class="kw">cut</span>(train.points<span class="op">$</span>ccov, </a>
+<a class="sourceLine" id="cb16-352" data-line-number="352">                                   <span class="dt">breaks=</span><span class="kw">c</span>(<span class="fl">0.0</span>,<span class="fl">0.1</span>,<span class="fl">1.0</span>), <span class="dt">labels=</span><span class="kw">c</span>(NONFOR, FOREST), </a>
+<a class="sourceLine" id="cb16-353" data-line-number="353">                                   <span class="dt">right=</span><span class="ot">FALSE</span>, <span class="dt">include.lowest=</span><span class="ot">TRUE</span>), </a>
+<a class="sourceLine" id="cb16-354" data-line-number="354">                           <span class="dt">F30=</span><span class="kw">cut</span>(train.points<span class="op">$</span>ccov, </a>
+<a class="sourceLine" id="cb16-355" data-line-number="355">                                   <span class="dt">breaks=</span><span class="kw">c</span>(<span class="fl">0.0</span>,<span class="fl">0.3</span>,<span class="fl">1.0</span>), <span class="dt">labels=</span><span class="kw">c</span>(NONFOR, FOREST), </a>
+<a class="sourceLine" id="cb16-356" data-line-number="356">                                   <span class="dt">right=</span><span class="ot">FALSE</span>, <span class="dt">include.lowest=</span><span class="ot">TRUE</span>), </a>
+<a class="sourceLine" id="cb16-357" data-line-number="357">                           train.points<span class="op">@</span>data[,<span class="kw">c</span>(SSTS.LSBANDS, SSTS.BIOCLIM)])</a>
+<a class="sourceLine" id="cb16-358" data-line-number="358"></a>
 <a class="sourceLine" id="cb16-359" data-line-number="359"></a>
-<a class="sourceLine" id="cb16-360" data-line-number="360"><span class="co"># 2003 reference forest cover maps -----------------------------------------</span></a>
+<a class="sourceLine" id="cb16-360" data-line-number="360"><span class="co"># Séléction des variables explicatives ----------------------------------------</span></a>
 <a class="sourceLine" id="cb16-361" data-line-number="361"></a>
-<a class="sourceLine" id="cb16-362" data-line-number="362"><span class="co"># Forest cover map for 2003 for p193</span></a>
-<a class="sourceLine" id="cb16-363" data-line-number="363"><span class="kw">set.seed</span>(RSEED)</a>
-<a class="sourceLine" id="cb16-364" data-line-number="364"><span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="st">&quot;/p193/p193_2003_m.tif&quot;</span>), </a>
-<a class="sourceLine" id="cb16-365" data-line-number="365">               <span class="dt">bioclim   =</span> bioclim[[<span class="st">&quot;p193&quot;</span>]],</a>
-<a class="sourceLine" id="cb16-366" data-line-number="366">               <span class="dt">filename  =</span> <span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>),</a>
-<a class="sourceLine" id="cb16-367" data-line-number="367">               <span class="dt">ref.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
-<a class="sourceLine" id="cb16-368" data-line-number="368">               <span class="dt">n.ref.map =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[<span class="st">&quot;p193&quot;</span>]],</a>
-<a class="sourceLine" id="cb16-369" data-line-number="369">               <span class="dt">preds     =</span> PREDICTORS,</a>
-<a class="sourceLine" id="cb16-370" data-line-number="370">               <span class="dt">mask      =</span> TGO,</a>
-<a class="sourceLine" id="cb16-371" data-line-number="371">               <span class="dt">n.cores   =</span> <span class="dv">32</span>)</a>
-<a class="sourceLine" id="cb16-372" data-line-number="372"></a>
-<a class="sourceLine" id="cb16-373" data-line-number="373"><span class="co"># # Recalibrate forest cover map for 2018, based on 2003 for p193</span></a>
-<a class="sourceLine" id="cb16-374" data-line-number="374"><span class="co">#</span></a>
-<a class="sourceLine" id="cb16-375" data-line-number="375"><span class="co"># set.seed(RSEED)</span></a>
-<a class="sourceLine" id="cb16-376" data-line-number="376"><span class="co"># classify.image(image     = load.image(&quot;/p193/p193_2018.tif&quot;), </span></a>
-<a class="sourceLine" id="cb16-377" data-line-number="377"><span class="co">#                bioclim   = bioclim[[&quot;p193&quot;]],</span></a>
-<a class="sourceLine" id="cb16-378" data-line-number="378"><span class="co">#                filename  = paste0(REFMAPS.DIR, &quot;/p193_2018_FC&quot;, COV.FC, &quot;.tif&quot;),</span></a>
-<a class="sourceLine" id="cb16-379" data-line-number="379"><span class="co">#                ref.map   = raster(paste0(REFMAPS.DIR, &quot;/p193_2003_FC&quot;, COV.FC, &quot;_R.tif&quot;)),</span></a>
-<a class="sourceLine" id="cb16-380" data-line-number="380"><span class="co">#                n.ref.map = SAMPLE.RATIO * N.PIXELS[[&quot;p193&quot;]],</span></a>
-<a class="sourceLine" id="cb16-381" data-line-number="381"><span class="co">#                preds     = PREDICTORS,</span></a>
-<a class="sourceLine" id="cb16-382" data-line-number="382"><span class="co">#                mask      = TGO,</span></a>
-<a class="sourceLine" id="cb16-383" data-line-number="383"><span class="co">#                n.cores   = 32)</span></a>
-<a class="sourceLine" id="cb16-384" data-line-number="384"></a>
-<a class="sourceLine" id="cb16-385" data-line-number="385"></a>
-<a class="sourceLine" id="cb16-386" data-line-number="386"><span class="co"># Forest cover maps 2003 for p192 and p194, calibrating with p193</span></a>
-<a class="sourceLine" id="cb16-387" data-line-number="387"><span class="kw">set.seed</span>(RSEED)</a>
-<a class="sourceLine" id="cb16-388" data-line-number="388"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb16-389" data-line-number="389"><span class="kw">foreach</span>(<span class="dt">path=</span><span class="kw">c</span>(<span class="st">&quot;p192&quot;</span>, <span class="st">&quot;p194&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb16-390" data-line-number="390"></a>
-<a class="sourceLine" id="cb16-391" data-line-number="391">  <span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="kw">paste0</span>(<span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2003_m.tif&quot;</span>)), </a>
-<a class="sourceLine" id="cb16-392" data-line-number="392">                 <span class="dt">bioclim   =</span> bioclim[[path]],</a>
-<a class="sourceLine" id="cb16-393" data-line-number="393">                 <span class="dt">filename  =</span> <span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>),</a>
-<a class="sourceLine" id="cb16-394" data-line-number="394">                 <span class="dt">ref.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
-<a class="sourceLine" id="cb16-395" data-line-number="395">                 <span class="dt">n.ref.map =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>CAL.RATIO) <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[path]],</a>
-<a class="sourceLine" id="cb16-396" data-line-number="396">                 <span class="dt">cal.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
-<a class="sourceLine" id="cb16-397" data-line-number="397">                 <span class="dt">n.cal.map =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>CAL.RATIO <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[path]],</a>
-<a class="sourceLine" id="cb16-398" data-line-number="398">                 <span class="dt">preds     =</span> PREDICTORS,</a>
-<a class="sourceLine" id="cb16-399" data-line-number="399">                 <span class="dt">mask      =</span> TGO,</a>
-<a class="sourceLine" id="cb16-400" data-line-number="400">                 <span class="dt">n.cores   =</span> <span class="dv">32</span>)</a>
-<a class="sourceLine" id="cb16-401" data-line-number="401">  </a>
-<a class="sourceLine" id="cb16-402" data-line-number="402">}</a>
-<a class="sourceLine" id="cb16-403" data-line-number="403"></a>
-<a class="sourceLine" id="cb16-404" data-line-number="404"></a>
-<a class="sourceLine" id="cb16-405" data-line-number="405"><span class="co"># Forest cover maps for all dates ------------------------------------------</span></a>
+<a class="sourceLine" id="cb16-362" data-line-number="362">cov.varsel &lt;-<span class="st"> </span><span class="kw">rfe</span>(<span class="dt">y=</span>train.points<span class="op">@</span>data[train.points<span class="op">$</span>image<span class="op">==</span><span class="st">&quot;p193&quot;</span>, <span class="st">&quot;ccov&quot;</span>],</a>
+<a class="sourceLine" id="cb16-363" data-line-number="363">                  <span class="dt">x=</span>train.points<span class="op">@</span>data[train.points<span class="op">$</span>image<span class="op">==</span><span class="st">&quot;p193&quot;</span>, PREDICTORS],</a>
+<a class="sourceLine" id="cb16-364" data-line-number="364">                  <span class="dt">sizes =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb16-365" data-line-number="365">                  <span class="dt">rfeControl=</span><span class="kw">rfeControl</span>(</a>
+<a class="sourceLine" id="cb16-366" data-line-number="366">                    <span class="dt">functions=</span>rfFuncs,        <span class="co"># utiliser RandomForest</span></a>
+<a class="sourceLine" id="cb16-367" data-line-number="367">                    <span class="dt">method  =</span> <span class="st">&quot;repeatedcv&quot;</span>,   <span class="co"># validation croisée</span></a>
+<a class="sourceLine" id="cb16-368" data-line-number="368">                    <span class="dt">number  =</span> <span class="dv">10</span>,             <span class="co"># 10-fold</span></a>
+<a class="sourceLine" id="cb16-369" data-line-number="369">                    <span class="dt">repeats =</span> <span class="dv">3</span>))             <span class="co"># 3 répétitions</span></a>
+<a class="sourceLine" id="cb16-370" data-line-number="370"><span class="kw">print</span>(cov.varsel)</a>
+<a class="sourceLine" id="cb16-371" data-line-number="371"><span class="kw">predictors</span>(cov.varsel)</a>
+<a class="sourceLine" id="cb16-372" data-line-number="372"><span class="kw">plot</span>(cov.varsel, <span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>, <span class="st">&quot;o&quot;</span>))</a>
+<a class="sourceLine" id="cb16-373" data-line-number="373"></a>
+<a class="sourceLine" id="cb16-374" data-line-number="374"></a>
+<a class="sourceLine" id="cb16-375" data-line-number="375"><span class="co"># Carte de la couverture des houppiers pour 2018 (</span><span class="al">TODO</span><span class="co">) -----------------------</span></a>
+<a class="sourceLine" id="cb16-376" data-line-number="376"></a>
+<a class="sourceLine" id="cb16-377" data-line-number="377"><span class="kw">set.seed</span>(RSEED)</a>
+<a class="sourceLine" id="cb16-378" data-line-number="378">p193.<span class="fl">2018.</span>cov &lt;-<span class="st"> </span><span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="st">&quot;/p193/p193_2018_m.tif&quot;</span>), </a>
+<a class="sourceLine" id="cb16-379" data-line-number="379">                                <span class="dt">bioclim   =</span> bioclim[[<span class="st">&quot;p193&quot;</span>]],</a>
+<a class="sourceLine" id="cb16-380" data-line-number="380">                                <span class="dt">filename  =</span> <span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/p193_2018_COV_R.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb16-381" data-line-number="381">                                <span class="dt">train.pts =</span> train.points[train.points<span class="op">$</span>image <span class="op">==</span><span class="st"> &quot;p193&quot;</span>, <span class="st">&quot;ccov&quot;</span>],</a>
+<a class="sourceLine" id="cb16-382" data-line-number="382">                                <span class="dt">preds     =</span> PREDICTORS,</a>
+<a class="sourceLine" id="cb16-383" data-line-number="383">                                <span class="dt">type      =</span> <span class="st">&quot;treecover&quot;</span>,</a>
+<a class="sourceLine" id="cb16-384" data-line-number="384">                                <span class="dt">crossval  =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb16-385" data-line-number="385">                                <span class="dt">n.cores   =</span> <span class="dv">32</span>)</a>
+<a class="sourceLine" id="cb16-386" data-line-number="386"></a>
+<a class="sourceLine" id="cb16-387" data-line-number="387"><span class="co"># observé vs. prédit</span></a>
+<a class="sourceLine" id="cb16-388" data-line-number="388"><span class="kw">pdf</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/p193_2018_COV_R.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb16-389" data-line-number="389"><span class="kw">plot</span>(p193.<span class="fl">2018.</span>cov[[<span class="st">&quot;model&quot;</span>]]<span class="op">$</span>y, p193.<span class="fl">2018.</span>cov[[<span class="st">&quot;model&quot;</span>]]<span class="op">$</span>predicted, <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), </a>
+<a class="sourceLine" id="cb16-390" data-line-number="390">     <span class="dt">main=</span><span class="st">&quot;Couverture houppier p193&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Observation&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Prédiction&quot;</span>)</a>
+<a class="sourceLine" id="cb16-391" data-line-number="391"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb16-392" data-line-number="392"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb16-393" data-line-number="393"></a>
+<a class="sourceLine" id="cb16-394" data-line-number="394"><span class="co"># Cartes de référence du couvert forestier 2018 -------------------------------</span></a>
+<a class="sourceLine" id="cb16-395" data-line-number="395"></a>
+<a class="sourceLine" id="cb16-396" data-line-number="396"><span class="co"># Chemin WRS p193</span></a>
+<a class="sourceLine" id="cb16-397" data-line-number="397"><span class="kw">set.seed</span>(RSEED)</a>
+<a class="sourceLine" id="cb16-398" data-line-number="398"><span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="st">&quot;/p193/p193_2018_m.tif&quot;</span>), </a>
+<a class="sourceLine" id="cb16-399" data-line-number="399">               <span class="dt">bioclim   =</span> bioclim[[<span class="st">&quot;p193&quot;</span>]],</a>
+<a class="sourceLine" id="cb16-400" data-line-number="400">               <span class="dt">filename  =</span> <span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb16-401" data-line-number="401">               <span class="dt">train.pts =</span> train.points[train.points<span class="op">$</span>image <span class="op">==</span><span class="st"> &quot;p193&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;F&quot;</span>, COV.FC)],</a>
+<a class="sourceLine" id="cb16-402" data-line-number="402">               <span class="dt">preds     =</span> PREDICTORS,</a>
+<a class="sourceLine" id="cb16-403" data-line-number="403">               <span class="dt">prob      =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb16-404" data-line-number="404">               <span class="dt">crossval  =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb16-405" data-line-number="405">               <span class="dt">n.cores   =</span> <span class="dv">32</span>)  </a>
 <a class="sourceLine" id="cb16-406" data-line-number="406"></a>
-<a class="sourceLine" id="cb16-407" data-line-number="407"><span class="co"># Forest cover maps for p193</span></a>
+<a class="sourceLine" id="cb16-407" data-line-number="407"><span class="co"># Chemins WRS p192 and p194, utilisant p193 pour calibration</span></a>
 <a class="sourceLine" id="cb16-408" data-line-number="408"><span class="kw">set.seed</span>(RSEED)</a>
-<a class="sourceLine" id="cb16-409" data-line-number="409"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb16-410" data-line-number="410"><span class="kw">foreach</span>(<span class="dt">file=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(IMAGES.DIR, <span class="st">&quot;/p193&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb16-411" data-line-number="411"><span class="co"># foreach(file=c(&quot;p193_2017_m.tif&quot;, &quot;p193_2019_m.tif&quot;)) %dopar% {     </span></a>
-<a class="sourceLine" id="cb16-412" data-line-number="412">  </a>
-<a class="sourceLine" id="cb16-413" data-line-number="413">  <span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="kw">paste0</span>(<span class="st">&quot;/p193/&quot;</span>, file)), </a>
-<a class="sourceLine" id="cb16-414" data-line-number="414">                 <span class="dt">bioclim   =</span> bioclim[[<span class="st">&quot;p193&quot;</span>]],</a>
-<a class="sourceLine" id="cb16-415" data-line-number="415">                 <span class="dt">filename  =</span> <span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), file)),</a>
-<a class="sourceLine" id="cb16-416" data-line-number="416">                 <span class="dt">ref.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
-<a class="sourceLine" id="cb16-417" data-line-number="417">                 <span class="dt">n.ref.map =</span> SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[<span class="st">&quot;p193&quot;</span>]],</a>
-<a class="sourceLine" id="cb16-418" data-line-number="418">                 <span class="dt">preds     =</span> PREDICTORS,</a>
-<a class="sourceLine" id="cb16-419" data-line-number="419">                 <span class="dt">mask      =</span> TGO,</a>
-<a class="sourceLine" id="cb16-420" data-line-number="420">                 <span class="dt">n.cores   =</span> <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb16-421" data-line-number="421">                 <span class="co"># n.cores   = 32)  </span></a>
-<a class="sourceLine" id="cb16-422" data-line-number="422">}</a>
-<a class="sourceLine" id="cb16-423" data-line-number="423"></a>
-<a class="sourceLine" id="cb16-424" data-line-number="424"><span class="co"># merge the two p193_1990 tiles</span></a>
-<a class="sourceLine" id="cb16-425" data-line-number="425"><span class="kw">merge</span>(<span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_1990_1_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)), </a>
-<a class="sourceLine" id="cb16-426" data-line-number="426">      <span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_1990_2_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)),</a>
-<a class="sourceLine" id="cb16-427" data-line-number="427">      <span class="dt">filename=</span><span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_1990_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-428" data-line-number="428"></a>
-<a class="sourceLine" id="cb16-429" data-line-number="429"><span class="co"># Forest cover maps for p192 and p194 using p193 maps for calibration</span></a>
-<a class="sourceLine" id="cb16-430" data-line-number="430"></a>
-<a class="sourceLine" id="cb16-431" data-line-number="431"><span class="kw">set.seed</span>(RSEED)</a>
-<a class="sourceLine" id="cb16-432" data-line-number="432"><span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb16-433" data-line-number="433"><span class="co"># foreach(file=c(dir(paste0(IMAGES.DIR, &quot;/p192&quot;), pattern=&quot;\\_[[:digit:]]+\\_m\\.tif&quot;),</span></a>
-<a class="sourceLine" id="cb16-434" data-line-number="434"><span class="co">#                dir(paste0(IMAGES.DIR, &quot;/p194&quot;), pattern=&quot;\\_[[:digit:]]+\\_m\\.tif&quot;))) %dopar% { </span></a>
-<a class="sourceLine" id="cb16-435" data-line-number="435"><span class="kw">foreach</span>(<span class="dt">file=</span><span class="kw">c</span>(<span class="st">&quot;p194_1997_m.tif&quot;</span>, <span class="st">&quot;p194_2007_m.tif&quot;</span>, <span class="st">&quot;p194_2015_m.tif&quot;</span>, <span class="st">&quot;p194_2018_m.tif&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb16-436" data-line-number="436"></a>
-<a class="sourceLine" id="cb16-437" data-line-number="437">  </a>
-<a class="sourceLine" id="cb16-438" data-line-number="438">  path &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_.*&quot;</span>, <span class="st">&quot;&quot;</span>, file)</a>
-<a class="sourceLine" id="cb16-439" data-line-number="439">  </a>
-<a class="sourceLine" id="cb16-440" data-line-number="440">  <span class="cf">if</span>(<span class="kw">file.exists</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), <span class="kw">sub</span>(path, <span class="st">&quot;p193&quot;</span>, file))))) {</a>
-<a class="sourceLine" id="cb16-441" data-line-number="441">    cal.map   &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), <span class="kw">sub</span>(path, <span class="st">&quot;p193&quot;</span>, file))))</a>
-<a class="sourceLine" id="cb16-442" data-line-number="442">    n.cal.map &lt;-<span class="st"> </span>CAL.RATIO <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[path]]</a>
-<a class="sourceLine" id="cb16-443" data-line-number="443">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb16-444" data-line-number="444">    cal.map &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb16-445" data-line-number="445">    n.cal.map &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb16-446" data-line-number="446">  }</a>
-<a class="sourceLine" id="cb16-447" data-line-number="447">  </a>
-<a class="sourceLine" id="cb16-448" data-line-number="448">  <span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="kw">paste0</span>(<span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, file)), </a>
-<a class="sourceLine" id="cb16-449" data-line-number="449">                 <span class="dt">bioclim   =</span> bioclim[[path]],</a>
-<a class="sourceLine" id="cb16-450" data-line-number="450">                 <span class="dt">filename  =</span> <span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), file)),</a>
-<a class="sourceLine" id="cb16-451" data-line-number="451">                 <span class="dt">ref.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
-<a class="sourceLine" id="cb16-452" data-line-number="452">                 <span class="dt">n.ref.map =</span> (<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>CAL.RATIO) <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[path]],</a>
-<a class="sourceLine" id="cb16-453" data-line-number="453">                 <span class="dt">cal.map   =</span> cal.map,</a>
-<a class="sourceLine" id="cb16-454" data-line-number="454">                 <span class="dt">n.cal.map =</span> n.cal.map,</a>
-<a class="sourceLine" id="cb16-455" data-line-number="455">                 <span class="dt">preds     =</span> PREDICTORS,</a>
-<a class="sourceLine" id="cb16-456" data-line-number="456">                 <span class="dt">mask      =</span> TGO,</a>
-<a class="sourceLine" id="cb16-457" data-line-number="457">                 <span class="dt">n.cores   =</span> <span class="dv">16</span>)</a>
-<a class="sourceLine" id="cb16-458" data-line-number="458">                 <span class="co"># n.cores   = 6)</span></a>
-<a class="sourceLine" id="cb16-459" data-line-number="459">} </a>
-<a class="sourceLine" id="cb16-460" data-line-number="460"></a>
-<a class="sourceLine" id="cb16-461" data-line-number="461"></a>
-<a class="sourceLine" id="cb16-462" data-line-number="462"><span class="co"># Merging key date maps ---------------------------------------------------</span></a>
-<a class="sourceLine" id="cb16-463" data-line-number="463"></a>
-<a class="sourceLine" id="cb16-464" data-line-number="464"><span class="cf">for</span>(year <span class="cf">in</span> VAL.YEARS) {</a>
-<a class="sourceLine" id="cb16-465" data-line-number="465">  <span class="kw">merge</span>(<span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)),TGO), TGO),</a>
-<a class="sourceLine" id="cb16-466" data-line-number="466">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)),TGO), TGO),</a>
-<a class="sourceLine" id="cb16-467" data-line-number="467">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p194/p194_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)),TGO), TGO),</a>
-<a class="sourceLine" id="cb16-468" data-line-number="468">        <span class="dt">filename=</span><span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO/TGO_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-469" data-line-number="469">}        </a>
-<a class="sourceLine" id="cb16-470" data-line-number="470"></a>
-<a class="sourceLine" id="cb16-471" data-line-number="471"><span class="co"># and reference maps</span></a>
-<a class="sourceLine" id="cb16-472" data-line-number="472"><span class="cf">for</span>(map <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&quot;2018_FC10_R&quot;</span>, <span class="st">&quot;2018_FC10_R_prob&quot;</span>,<span class="st">&quot;2003_FC10_R&quot;</span>)) {</a>
-<a class="sourceLine" id="cb16-473" data-line-number="473"><span class="co"># for(map in c(&quot;2018_FC30_R&quot;, &quot;2018_FC30_R_prob&quot;,&quot;2003_FC30_R&quot;)) {</span></a>
-<a class="sourceLine" id="cb16-474" data-line-number="474">  <span class="kw">merge</span>(<span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_&quot;</span>, map, <span class="st">&quot;.tif&quot;</span>)),TGO), TGO),</a>
-<a class="sourceLine" id="cb16-475" data-line-number="475">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192_&quot;</span>, map, <span class="st">&quot;.tif&quot;</span>)),TGO), TGO),</a>
-<a class="sourceLine" id="cb16-476" data-line-number="476">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p194_&quot;</span>, map, <span class="st">&quot;.tif&quot;</span>)),TGO), TGO),</a>
-<a class="sourceLine" id="cb16-477" data-line-number="477">        <span class="dt">filename=</span><span class="kw">paste0</span>(FCC.REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO_&quot;</span>, map, <span class="st">&quot;.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-478" data-line-number="478">}   </a></code></pre></div>
+<a class="sourceLine" id="cb16-409" data-line-number="409"><span class="kw">registerDoParallel</span>(CORES)</a>
+<a class="sourceLine" id="cb16-410" data-line-number="410"><span class="kw">foreach</span>(<span class="dt">path=</span><span class="kw">c</span>(<span class="st">&quot;p192&quot;</span>, <span class="st">&quot;p194&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{   <span class="co"># traitement en parallèle</span></a>
+<a class="sourceLine" id="cb16-411" data-line-number="411">  train.pts &lt;-<span class="st"> </span>train.points[train.points<span class="op">$</span>image <span class="op">==</span><span class="st"> </span>path, <span class="kw">paste0</span>(<span class="st">&quot;F&quot;</span>, COV.FC)]</a>
+<a class="sourceLine" id="cb16-412" data-line-number="412">  <span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="kw">paste0</span>(<span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2018_m.tif&quot;</span>)), </a>
+<a class="sourceLine" id="cb16-413" data-line-number="413">                 <span class="dt">bioclim   =</span> bioclim[[path]],</a>
+<a class="sourceLine" id="cb16-414" data-line-number="414">                 <span class="dt">filename  =</span> <span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb16-415" data-line-number="415">                 <span class="dt">train.pts =</span> train.pts,</a>
+<a class="sourceLine" id="cb16-416" data-line-number="416">                 <span class="co"># calibration avec carte p193 ...</span></a>
+<a class="sourceLine" id="cb16-417" data-line-number="417">                 <span class="dt">cal.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
+<a class="sourceLine" id="cb16-418" data-line-number="418">                 <span class="dt">n.cal.map =</span> <span class="kw">max</span>(<span class="dv">2000</span>, <span class="kw">nrow</span>(train.pts)<span class="op">/</span>CAL.RATIO),  <span class="co"># ... avec au moin 2000 points</span></a>
+<a class="sourceLine" id="cb16-419" data-line-number="419">                 <span class="dt">preds     =</span> PREDICTORS,</a>
+<a class="sourceLine" id="cb16-420" data-line-number="420">                 <span class="dt">mask      =</span> TGO,</a>
+<a class="sourceLine" id="cb16-421" data-line-number="421">                 <span class="dt">prob      =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb16-422" data-line-number="422">                 <span class="dt">n.cores   =</span> <span class="dv">32</span>)</a>
+<a class="sourceLine" id="cb16-423" data-line-number="423">}</a>
+<a class="sourceLine" id="cb16-424" data-line-number="424"></a>
+<a class="sourceLine" id="cb16-425" data-line-number="425"><span class="co"># Cartes de référence du couvert forestier 2003 -----------------------------------------</span></a>
+<a class="sourceLine" id="cb16-426" data-line-number="426"></a>
+<a class="sourceLine" id="cb16-427" data-line-number="427"><span class="co"># Chemin WRS p193</span></a>
+<a class="sourceLine" id="cb16-428" data-line-number="428"><span class="kw">set.seed</span>(RSEED)</a>
+<a class="sourceLine" id="cb16-429" data-line-number="429"><span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="st">&quot;/p193/p193_2003_m.tif&quot;</span>), </a>
+<a class="sourceLine" id="cb16-430" data-line-number="430">               <span class="dt">bioclim   =</span> bioclim[[<span class="st">&quot;p193&quot;</span>]],</a>
+<a class="sourceLine" id="cb16-431" data-line-number="431">               <span class="dt">filename  =</span> <span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb16-432" data-line-number="432">               <span class="co"># sur base de la carte de référence 2018</span></a>
+<a class="sourceLine" id="cb16-433" data-line-number="433">               <span class="dt">ref.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
+<a class="sourceLine" id="cb16-434" data-line-number="434">               <span class="dt">n.ref.map =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[<span class="st">&quot;p193&quot;</span>]],</a>
+<a class="sourceLine" id="cb16-435" data-line-number="435">               <span class="dt">preds     =</span> PREDICTORS,</a>
+<a class="sourceLine" id="cb16-436" data-line-number="436">               <span class="dt">mask      =</span> TGO,</a>
+<a class="sourceLine" id="cb16-437" data-line-number="437">               <span class="dt">n.cores   =</span> <span class="dv">32</span>)</a>
+<a class="sourceLine" id="cb16-438" data-line-number="438"></a>
+<a class="sourceLine" id="cb16-439" data-line-number="439"><span class="co"># Chemins WRS p192 and p194, utilisant p193 pour calibration</span></a>
+<a class="sourceLine" id="cb16-440" data-line-number="440"><span class="kw">set.seed</span>(RSEED)</a>
+<a class="sourceLine" id="cb16-441" data-line-number="441"><span class="kw">registerDoParallel</span>(CORES)</a>
+<a class="sourceLine" id="cb16-442" data-line-number="442"><span class="kw">foreach</span>(<span class="dt">path=</span><span class="kw">c</span>(<span class="st">&quot;p192&quot;</span>, <span class="st">&quot;p194&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{   <span class="co"># traitement en parallèle</span></a>
+<a class="sourceLine" id="cb16-443" data-line-number="443">  <span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="kw">paste0</span>(<span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2003_m.tif&quot;</span>)), </a>
+<a class="sourceLine" id="cb16-444" data-line-number="444">                 <span class="dt">bioclim   =</span> bioclim[[path]],</a>
+<a class="sourceLine" id="cb16-445" data-line-number="445">                 <span class="dt">filename  =</span> <span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb16-446" data-line-number="446">                 <span class="co"># sur base de la carte de référence 2018 ...</span></a>
+<a class="sourceLine" id="cb16-447" data-line-number="447">                 <span class="dt">ref.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
+<a class="sourceLine" id="cb16-448" data-line-number="448">                 <span class="dt">n.ref.map =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>CAL.RATIO) <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[path]],</a>
+<a class="sourceLine" id="cb16-449" data-line-number="449">                 <span class="co"># ... et calibration avec carte p193 ...</span></a>
+<a class="sourceLine" id="cb16-450" data-line-number="450">                 <span class="dt">cal.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
+<a class="sourceLine" id="cb16-451" data-line-number="451">                 <span class="dt">n.cal.map =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>CAL.RATIO <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[path]],</a>
+<a class="sourceLine" id="cb16-452" data-line-number="452">                 <span class="dt">preds     =</span> PREDICTORS,</a>
+<a class="sourceLine" id="cb16-453" data-line-number="453">                 <span class="dt">mask      =</span> TGO,</a>
+<a class="sourceLine" id="cb16-454" data-line-number="454">                 <span class="dt">n.cores   =</span> <span class="dv">32</span>)</a>
+<a class="sourceLine" id="cb16-455" data-line-number="455">}</a>
+<a class="sourceLine" id="cb16-456" data-line-number="456"></a>
+<a class="sourceLine" id="cb16-457" data-line-number="457"></a>
+<a class="sourceLine" id="cb16-458" data-line-number="458"><span class="co"># Cartes du couvert forestier brutes pour toutes les dates --------------------</span></a>
+<a class="sourceLine" id="cb16-459" data-line-number="459"></a>
+<a class="sourceLine" id="cb16-460" data-line-number="460"><span class="co"># Chemin WRS p193</span></a>
+<a class="sourceLine" id="cb16-461" data-line-number="461"><span class="kw">set.seed</span>(RSEED)</a>
+<a class="sourceLine" id="cb16-462" data-line-number="462"><span class="kw">registerDoParallel</span>(CORES)</a>
+<a class="sourceLine" id="cb16-463" data-line-number="463"><span class="kw">foreach</span>(<span class="dt">file=</span><span class="kw">dir</span>(<span class="kw">paste0</span>(LANDSAT.DIR, <span class="st">&quot;/p193&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif&quot;</span>)) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb16-464" data-line-number="464">  <span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="kw">paste0</span>(<span class="st">&quot;/p193/&quot;</span>, file)), </a>
+<a class="sourceLine" id="cb16-465" data-line-number="465">                 <span class="dt">bioclim   =</span> bioclim[[<span class="st">&quot;p193&quot;</span>]],</a>
+<a class="sourceLine" id="cb16-466" data-line-number="466">                 <span class="dt">filename  =</span> <span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), file)),</a>
+<a class="sourceLine" id="cb16-467" data-line-number="467">                 <span class="dt">ref.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
+<a class="sourceLine" id="cb16-468" data-line-number="468">                 <span class="dt">n.ref.map =</span> SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[<span class="st">&quot;p193&quot;</span>]],</a>
+<a class="sourceLine" id="cb16-469" data-line-number="469">                 <span class="dt">preds     =</span> PREDICTORS,</a>
+<a class="sourceLine" id="cb16-470" data-line-number="470">                 <span class="dt">mask      =</span> TGO,</a>
+<a class="sourceLine" id="cb16-471" data-line-number="471">                 <span class="dt">n.cores   =</span> <span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb16-472" data-line-number="472">}</a>
+<a class="sourceLine" id="cb16-473" data-line-number="473"></a>
+<a class="sourceLine" id="cb16-474" data-line-number="474"><span class="co"># fusionner les deux tuiles p193_1990</span></a>
+<a class="sourceLine" id="cb16-475" data-line-number="475"><span class="kw">merge</span>(<span class="kw">raster</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_1990_1_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)), </a>
+<a class="sourceLine" id="cb16-476" data-line-number="476">      <span class="kw">raster</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_1990_2_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)),</a>
+<a class="sourceLine" id="cb16-477" data-line-number="477">      <span class="dt">filename=</span><span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_1990_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), </a>
+<a class="sourceLine" id="cb16-478" data-line-number="478">      <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-479" data-line-number="479"></a>
+<a class="sourceLine" id="cb16-480" data-line-number="480"><span class="co"># Chemins WRS p192 and p194, utilisant ...</span></a>
+<a class="sourceLine" id="cb16-481" data-line-number="481"><span class="kw">set.seed</span>(RSEED)</a>
+<a class="sourceLine" id="cb16-482" data-line-number="482"><span class="kw">registerDoParallel</span>(CORES)</a>
+<a class="sourceLine" id="cb16-483" data-line-number="483"><span class="kw">foreach</span>(<span class="dt">file=</span><span class="kw">c</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(LANDSAT.DIR, <span class="st">&quot;/p192&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif&quot;</span>),</a>
+<a class="sourceLine" id="cb16-484" data-line-number="484">               <span class="kw">dir</span>(<span class="kw">paste0</span>(LANDSAT.DIR, <span class="st">&quot;/p194&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;</span><span class="ch">\\</span><span class="st">_[[:digit:]]+</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif&quot;</span>))) <span class="op">%dopar%</span><span class="st"> </span>{ </a>
+<a class="sourceLine" id="cb16-485" data-line-number="485">  path &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_.*&quot;</span>, <span class="st">&quot;&quot;</span>, file)</a>
+<a class="sourceLine" id="cb16-486" data-line-number="486">  <span class="co"># ... carte p193 pour la calibration (s&#39;il existe, pour la même année)</span></a>
+<a class="sourceLine" id="cb16-487" data-line-number="487">  <span class="cf">if</span>(<span class="kw">file.exists</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), <span class="kw">sub</span>(path, <span class="st">&quot;p193&quot;</span>, file))))) {</a>
+<a class="sourceLine" id="cb16-488" data-line-number="488">    cal.map   &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), <span class="kw">sub</span>(path, <span class="st">&quot;p193&quot;</span>, file))))</a>
+<a class="sourceLine" id="cb16-489" data-line-number="489">    n.cal.map &lt;-<span class="st"> </span>CAL.RATIO <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[path]]</a>
+<a class="sourceLine" id="cb16-490" data-line-number="490">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb16-491" data-line-number="491">    cal.map &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb16-492" data-line-number="492">    n.cal.map &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb16-493" data-line-number="493">  }</a>
+<a class="sourceLine" id="cb16-494" data-line-number="494">  <span class="kw">classify.image</span>(<span class="dt">image     =</span> <span class="kw">load.image</span>(<span class="kw">paste0</span>(<span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, file)), </a>
+<a class="sourceLine" id="cb16-495" data-line-number="495">                 <span class="dt">bioclim   =</span> bioclim[[path]],</a>
+<a class="sourceLine" id="cb16-496" data-line-number="496">                 <span class="dt">filename  =</span> <span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_m</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), file)),</a>
+<a class="sourceLine" id="cb16-497" data-line-number="497">                 <span class="dt">ref.map   =</span> <span class="kw">raster</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;_2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R.tif&quot;</span>)),</a>
+<a class="sourceLine" id="cb16-498" data-line-number="498">                 <span class="dt">n.ref.map =</span> (<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>CAL.RATIO) <span class="op">*</span><span class="st"> </span>SAMPLE.RATIO <span class="op">*</span><span class="st"> </span>N.PIXELS[[path]],</a>
+<a class="sourceLine" id="cb16-499" data-line-number="499">                 <span class="dt">cal.map   =</span> cal.map,</a>
+<a class="sourceLine" id="cb16-500" data-line-number="500">                 <span class="dt">n.cal.map =</span> n.cal.map,</a>
+<a class="sourceLine" id="cb16-501" data-line-number="501">                 <span class="dt">preds     =</span> PREDICTORS,</a>
+<a class="sourceLine" id="cb16-502" data-line-number="502">                 <span class="dt">mask      =</span> TGO,</a>
+<a class="sourceLine" id="cb16-503" data-line-number="503">                 <span class="dt">n.cores   =</span> <span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb16-504" data-line-number="504">} </a>
+<a class="sourceLine" id="cb16-505" data-line-number="505"></a>
+<a class="sourceLine" id="cb16-506" data-line-number="506"></a>
+<a class="sourceLine" id="cb16-507" data-line-number="507"><span class="co"># Fusionner les cartes p192, p193 et p194 pour les dates clés ... -------------</span></a>
+<a class="sourceLine" id="cb16-508" data-line-number="508"></a>
+<a class="sourceLine" id="cb16-509" data-line-number="509"><span class="cf">for</span>(year <span class="cf">in</span> YEARS.REF) {</a>
+<a class="sourceLine" id="cb16-510" data-line-number="510">  <span class="kw">merge</span>(<span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)),TGO), TGO),</a>
+<a class="sourceLine" id="cb16-511" data-line-number="511">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)),TGO), TGO),</a>
+<a class="sourceLine" id="cb16-512" data-line-number="512">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p194/p194_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)),TGO), TGO),</a>
+<a class="sourceLine" id="cb16-513" data-line-number="513">        <span class="dt">filename=</span><span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO/TGO_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-514" data-line-number="514">}        </a>
+<a class="sourceLine" id="cb16-515" data-line-number="515"></a>
+<a class="sourceLine" id="cb16-516" data-line-number="516"><span class="co"># ... et le cartes de référence 2018 et 2003</span></a>
+<a class="sourceLine" id="cb16-517" data-line-number="517"><span class="cf">for</span>(map <span class="cf">in</span> <span class="kw">c</span>(<span class="kw">paste0</span>(<span class="st">&quot;2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R&quot;</span>), </a>
+<a class="sourceLine" id="cb16-518" data-line-number="518">             <span class="kw">paste0</span>(<span class="st">&quot;2018_FC&quot;</span>, COV.FC, <span class="st">&quot;_R_prob&quot;</span>),</a>
+<a class="sourceLine" id="cb16-519" data-line-number="519">             <span class="kw">paste0</span>(<span class="st">&quot;2003_FC&quot;</span>, COV.FC, <span class="st">&quot;_R&quot;</span>))) {</a>
+<a class="sourceLine" id="cb16-520" data-line-number="520">  <span class="kw">merge</span>(<span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193_&quot;</span>, map, <span class="st">&quot;.tif&quot;</span>)),TGO), TGO),</a>
+<a class="sourceLine" id="cb16-521" data-line-number="521">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192_&quot;</span>, map, <span class="st">&quot;.tif&quot;</span>)),TGO), TGO),</a>
+<a class="sourceLine" id="cb16-522" data-line-number="522">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p194_&quot;</span>, map, <span class="st">&quot;.tif&quot;</span>)),TGO), TGO),</a>
+<a class="sourceLine" id="cb16-523" data-line-number="523">        <span class="dt">filename=</span><span class="kw">paste0</span>(REF.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO_&quot;</span>, map, <span class="st">&quot;.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb16-524" data-line-number="524">}</a></code></pre></div>
 
 </div>
 </div>

@@ -521,5 +521,4 @@ for(map in c(paste0("2018_FC", COV.FC, "_R"),
         mask(crop(brick(paste0(REF.DIR, "/FC", COV.FC, "/p192_", map, ".tif")),TGO), TGO),
         mask(crop(brick(paste0(REF.DIR, "/FC", COV.FC, "/p194_", map, ".tif")),TGO), TGO),
         filename=paste0(REF.DIR, "/FC", COV.FC, "/TGO_", map, ".tif"), overwrite=TRUE)
-}   
-                 
+}

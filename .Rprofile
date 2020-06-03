@@ -49,9 +49,10 @@ library("doParallel")   # ... sur plusieurs processeurs
 
 .snsf$DIR.MRV       <- "./03_NRF-MRV"
 .snsf$DIR.MRV.MCF   <- paste0(.snsf$DIR.MRV, "/01_MCF")
-.snsf$DIR.MRV.MCF.REF   <- paste0(.snsf$DIR.MRV.MCF, "/1_ref-maps")
-.snsf$DIR.MRV.MCF.RAW   <- paste0(.snsf$DIR.MRV.MCF, "/2_raw-maps")
-.snsf$DIR.MRV.MCF.CLN   <- paste0(.snsf$DIR.MRV.MCF, "/3_cln-maps")
+.snsf$DIR.MRV.MCF.REF   <- paste0(.snsf$DIR.MRV.MCF, "/01_ref-maps")
+.snsf$DIR.MRV.MCF.RAW   <- paste0(.snsf$DIR.MRV.MCF, "/02_raw-maps")
+.snsf$DIR.MRV.MCF.CLN   <- paste0(.snsf$DIR.MRV.MCF, "/03_cln-maps")
+.snsf$DIR.MRV.MCF.VAL   <- paste0(.snsf$DIR.MRV.MCF, "/04_validation")
 
 .snsf$DIR.MRV.AGB   <- paste0(.snsf$DIR.MRV, "/02_AGB")
 

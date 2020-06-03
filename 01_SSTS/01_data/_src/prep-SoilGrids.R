@@ -76,4 +76,3 @@ tmp$IPCC[tmp$WRB_group %in% c("Podzols")] <- "POD"
 tmp$IPCC[tmp$WRB_group %in% c("Andosols")] <- "VOL"
 tmp$IPCC[tmp$WRB_group %in% c("Gleysols")] <- "WET"
 tmp$IPCC[is.na(tmp$WRB_group)] <- "Other"
-

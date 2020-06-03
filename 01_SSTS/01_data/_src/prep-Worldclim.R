@@ -49,4 +49,3 @@ foreach(file=dir(OUT.DIR, pattern=".*[.]tif$")) %dopar% {
     dev.off()
   }
 }
-

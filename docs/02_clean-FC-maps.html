@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-05-18" />
+<meta name="date" content="2020-05-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -229,278 +229,232 @@ Système Nationale de Surveillance des Forêts</div></a>
 <p>La figure suivante montre les <strong>cartes forêt/non-forêt après la nettoyage temporelle et spatiale</strong> pour une région au sud de Kpalimé (voir <a href="01_create-FC-maps.html#NRF-create-fc-maps-figure">série des cartes brutes</a> pour comparaison).</p>
 <p><img src="images/FCC-clnmaps.png" /></p>
 </div>
-<div id="mcf02_clean-fc-maps.r" class="section level4 unnumbered">
-<h4><em>MCF/02_clean-fc-maps.R</em></h4>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co">##########################################################################</span></a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co"># NERF_Togo/FCC/4_clean-fc-maps_orig.R: clean time-serie of raw forest cover maps</span></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------------</span></a>
+<div id="script-r-03_nrf-mrv01_mcf_src02_clean-fc-maps.r" class="section level4 unnumbered">
+<h4>Script R: <code>03_NRF-MRV/01_MCF/_src/02_clean-fc-maps.R</code></h4>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co">###############################################################################</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co"># 02_clean-fc-maps.R: nettoyage des cartes brutes du couvert forestier</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co"># -----------------------------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
 <a class="sourceLine" id="cb17-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
-<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="co"># 20 May 2019</span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="co"># 13 Mai 2020</span></a>
 <a class="sourceLine" id="cb17-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb17-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb17-9" data-line-number="9"><span class="co"># Default parameters -------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb17-9" data-line-number="9"><span class="co"># Définitions des variables ===================================================</span></a>
 <a class="sourceLine" id="cb17-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb17-11" data-line-number="11">COV.FC         &lt;-<span class="st"> </span><span class="dv">30</span></a>
 <a class="sourceLine" id="cb17-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co"># Function for temporal cleaning of path ------------------------------------</span></a>
-<a class="sourceLine" id="cb17-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb17-15" data-line-number="15">clean.temporal &lt;-<span class="st"> </span><span class="cf">function</span>(path) {</a>
-<a class="sourceLine" id="cb17-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb17-17" data-line-number="17">  <span class="co"># Preparation -------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb17-18" data-line-number="18">  </a>
-<a class="sourceLine" id="cb17-19" data-line-number="19">  maps &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path), <span class="dt">pattern=</span><span class="st">&quot;.*[[:digit:]]{4}</span><span class="ch">\\</span><span class="st">_F.*</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb17-20" data-line-number="20">  map.names &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;r$&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(maps))</a>
-<a class="sourceLine" id="cb17-21" data-line-number="21">  map.cols  &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="kw">paste0</span>(path, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">_&quot;</span>), <span class="st">&quot;X&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_[[:alnum:]]+$&quot;</span>, <span class="st">&quot;M&quot;</span>, map.names))</a>
-<a class="sourceLine" id="cb17-22" data-line-number="22">  </a>
-<a class="sourceLine" id="cb17-23" data-line-number="23">  no.map.cols &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;X&quot;</span>, PERIOD[<span class="op">!</span>PERIOD <span class="op">%in%</span><span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;[[:alpha:]]&quot;</span>, <span class="st">&quot;&quot;</span>, map.cols)], <span class="st">&quot;_&quot;</span>)</a>
-<a class="sourceLine" id="cb17-24" data-line-number="24">  col.order &lt;-<span class="st"> </span><span class="kw">c</span>(map.cols, no.map.cols)[<span class="kw">order</span>(<span class="kw">c</span>(map.cols, no.map.cols))]</a>
-<a class="sourceLine" id="cb17-25" data-line-number="25">  </a>
-<a class="sourceLine" id="cb17-26" data-line-number="26">  maps.values &lt;-<span class="st"> </span><span class="kw">values</span>(maps)                              <span class="co"># extract vector with cell values (huge matrix, takes some time)</span></a>
-<a class="sourceLine" id="cb17-27" data-line-number="27">  <span class="kw">colnames</span>(maps.values) &lt;-<span class="st"> </span>map.cols</a>
+<a class="sourceLine" id="cb17-13" data-line-number="13">RAW.DIR &lt;-<span class="st"> </span>DIR.MRV.MCF.RAW</a>
+<a class="sourceLine" id="cb17-14" data-line-number="14">CLN.DIR &lt;-<span class="st"> </span>DIR.MRV.MCF.CLN</a>
+<a class="sourceLine" id="cb17-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb17-16" data-line-number="16"><span class="co"># Définitions des fonctions ===================================================</span></a>
+<a class="sourceLine" id="cb17-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb17-18" data-line-number="18"><span class="co"># Nettoyage temporel d&#39;une série d&#39;images -------------------------------------</span></a>
+<a class="sourceLine" id="cb17-19" data-line-number="19"><span class="co">#</span></a>
+<a class="sourceLine" id="cb17-20" data-line-number="20"><span class="co"># @param path  Chemin WRS</span></a>
+<a class="sourceLine" id="cb17-21" data-line-number="21"><span class="co">#</span></a>
+<a class="sourceLine" id="cb17-22" data-line-number="22"><span class="co"># @return       -- </span></a>
+<a class="sourceLine" id="cb17-23" data-line-number="23"><span class="co">#</span></a>
+<a class="sourceLine" id="cb17-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb17-25" data-line-number="25">clean.temporal &lt;-<span class="st"> </span><span class="cf">function</span>(path) {</a>
+<a class="sourceLine" id="cb17-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb17-27" data-line-number="27">  <span class="co"># Préparation des images --------------------------------</span></a>
 <a class="sourceLine" id="cb17-28" data-line-number="28">  </a>
-<a class="sourceLine" id="cb17-29" data-line-number="29">  nsubsets &lt;-<span class="st"> </span>numCores <span class="op">-</span><span class="st"> </span><span class="dv">1</span>                                 <span class="co"># define subsets for parallel processing</span></a>
-<a class="sourceLine" id="cb17-30" data-line-number="30">  subsets  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">floor</span>((<span class="dv">1</span><span class="op">:</span>nsubsets)<span class="op">*</span>(<span class="kw">nrow</span>(maps.values)<span class="op">/</span>nsubsets)))    </a>
-<a class="sourceLine" id="cb17-31" data-line-number="31">  </a>
-<a class="sourceLine" id="cb17-32" data-line-number="32">  </a>
-<a class="sourceLine" id="cb17-33" data-line-number="33">  </a>
-<a class="sourceLine" id="cb17-34" data-line-number="34">  <span class="co"># Parallel cleaning of pixel trajectories ###############################</span></a>
-<a class="sourceLine" id="cb17-35" data-line-number="35">  </a>
-<a class="sourceLine" id="cb17-36" data-line-number="36">  <span class="kw">registerDoParallel</span>(.env<span class="op">$</span>numCores<span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb17-37" data-line-number="37">  maps.values.clean &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>nsubsets, <span class="dt">.combine=</span>rbind) <span class="op">%dopar%</span><span class="st"> </span>{</a>
-<a class="sourceLine" id="cb17-38" data-line-number="38">    </a>
-<a class="sourceLine" id="cb17-39" data-line-number="39">    <span class="co"># 0. get subset from maps.values</span></a>
-<a class="sourceLine" id="cb17-40" data-line-number="40">    val &lt;-<span class="st"> </span>maps.values[(subsets[i]<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>subsets[i<span class="op">+</span><span class="dv">1</span>], ]       <span class="co"># get one tile of the matrix</span></a>
-<a class="sourceLine" id="cb17-41" data-line-number="41">    val[<span class="op">!</span>(<span class="kw">is.na</span>(val) <span class="op">|</span><span class="st"> </span>val <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))] &lt;-<span class="st"> </span><span class="ot">NA</span>              <span class="co"># set everything to NA that is not NA already or 1,3</span></a>
-<a class="sourceLine" id="cb17-42" data-line-number="42">    </a>
-<a class="sourceLine" id="cb17-43" data-line-number="43">    </a>
-<a class="sourceLine" id="cb17-44" data-line-number="44">    <span class="co"># 1. remove isolated NAs</span></a>
-<a class="sourceLine" id="cb17-45" data-line-number="45">    str   &lt;-<span class="st"> </span><span class="kw">apply</span>(val, <span class="dv">1</span>, paste, <span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)              <span class="co"># convert to strings</span></a>
-<a class="sourceLine" id="cb17-46" data-line-number="46">    str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot;9&quot;</span>, str)                           <span class="co"># replace NA with 9</span></a>
-<a class="sourceLine" id="cb17-47" data-line-number="47">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {                         <span class="co"># clean until convergence</span></a>
-<a class="sourceLine" id="cb17-48" data-line-number="48">      str &lt;-<span class="st"> </span>str.c</a>
-<a class="sourceLine" id="cb17-49" data-line-number="49">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;^(.*3)9(9*3.*)$&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">13</span><span class="ch">\\</span><span class="st">2&quot;</span>, str.c)    <span class="co"># set NA to the corrsponding class</span></a>
-<a class="sourceLine" id="cb17-50" data-line-number="50">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;^(.*1)9(9*1.*)$&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">11</span><span class="ch">\\</span><span class="st">2&quot;</span>, str.c)                 </a>
-<a class="sourceLine" id="cb17-51" data-line-number="51">    }                                                       <span class="co"># convert back to numeric vector</span></a>
-<a class="sourceLine" id="cb17-52" data-line-number="52">    val &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">as.numeric</span>(<span class="kw">unlist</span>(<span class="kw">strsplit</span>(str.c, <span class="st">&quot;&quot;</span>))), <span class="dt">ncol=</span><span class="kw">ncol</span>(val), <span class="dt">byrow=</span><span class="ot">TRUE</span>)   </a>
-<a class="sourceLine" id="cb17-53" data-line-number="53">    val[val<span class="op">==</span><span class="dv">9</span>] &lt;-<span class="st"> </span><span class="ot">NA</span>                                       <span class="co"># and set NAs again</span></a>
-<a class="sourceLine" id="cb17-54" data-line-number="54">    <span class="kw">colnames</span>(val) &lt;-<span class="st"> </span>map.cols</a>
-<a class="sourceLine" id="cb17-55" data-line-number="55">    </a>
-<a class="sourceLine" id="cb17-56" data-line-number="56">    <span class="co"># 2. clean trajectories with sliding window</span></a>
-<a class="sourceLine" id="cb17-57" data-line-number="57">    val.c   &lt;-<span class="st"> </span>val</a>
-<a class="sourceLine" id="cb17-58" data-line-number="58">    val.o &lt;-<span class="st"> </span>val[] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb17-59" data-line-number="59">    iter    &lt;-<span class="st"> </span><span class="dv">0</span>                                            <span class="co"># clean until convergence</span></a>
-<a class="sourceLine" id="cb17-60" data-line-number="60">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(val, val.c) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">identical</span>(val.o, val.c)) {   </a>
-<a class="sourceLine" id="cb17-61" data-line-number="61">      iter &lt;-<span class="st"> </span>iter<span class="op">+</span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb17-62" data-line-number="62">      <span class="kw">message</span>(<span class="st">&quot;    -Clean modal: iteration &quot;</span>, iter, <span class="st">&quot; ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb17-63" data-line-number="63">      val.o &lt;-<span class="st"> </span>val</a>
-<a class="sourceLine" id="cb17-64" data-line-number="64">      val &lt;-<span class="st"> </span>val.c</a>
-<a class="sourceLine" id="cb17-65" data-line-number="65">      <span class="cf">for</span>(l <span class="cf">in</span> <span class="dv">3</span><span class="op">:</span>(<span class="kw">ncol</span>(val)<span class="op">-</span><span class="dv">2</span>)) {                             <span class="co"># 3rd - 3rd last year: modal window size 5 </span></a>
-<a class="sourceLine" id="cb17-66" data-line-number="66">        val.c[,l] &lt;-<span class="st"> </span><span class="kw">apply</span>(val[,(l<span class="dv">-2</span>)<span class="op">:</span>(l<span class="op">+</span><span class="dv">2</span>)], <span class="dv">1</span>, modal, <span class="dt">na.rm=</span><span class="ot">TRUE</span>, <span class="dt">ties=</span><span class="st">&#39;NA&#39;</span>)</a>
-<a class="sourceLine" id="cb17-67" data-line-number="67">      }</a>
-<a class="sourceLine" id="cb17-68" data-line-number="68">      <span class="cf">for</span>(l <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="kw">ncol</span>(val)<span class="op">-</span><span class="dv">1</span>)) {                           <span class="co"># 2nd and 2nd last year: modal window size 3 </span></a>
-<a class="sourceLine" id="cb17-69" data-line-number="69">        val.c[,l] &lt;-<span class="st"> </span><span class="kw">apply</span>(val.c[,(l<span class="dv">-1</span>)<span class="op">:</span>(l<span class="op">+</span><span class="dv">1</span>)], <span class="dv">1</span>, modal, <span class="dt">na.rm=</span><span class="ot">TRUE</span>, <span class="dt">ties=</span><span class="st">&#39;NA&#39;</span>)</a>
-<a class="sourceLine" id="cb17-70" data-line-number="70">      }</a>
-<a class="sourceLine" id="cb17-71" data-line-number="71">      <span class="kw">message</span>(<span class="st">&quot;done&quot;</span>)</a>
-<a class="sourceLine" id="cb17-72" data-line-number="72">    }</a>
-<a class="sourceLine" id="cb17-73" data-line-number="73">    val &lt;-<span class="st"> </span>val.c</a>
-<a class="sourceLine" id="cb17-74" data-line-number="74">    </a>
-<a class="sourceLine" id="cb17-75" data-line-number="75">    <span class="co"># 3. final regexp cleaning</span></a>
-<a class="sourceLine" id="cb17-76" data-line-number="76">    val   &lt;-<span class="st"> </span><span class="kw">cbind</span>(val, <span class="kw">matrix</span>(<span class="dt">nrow=</span><span class="kw">nrow</span>(val),              <span class="co"># add years with no observation               </span></a>
-<a class="sourceLine" id="cb17-77" data-line-number="77">                               <span class="dt">ncol=</span><span class="kw">length</span>(no.map.cols), <span class="dt">dimnames=</span><span class="kw">list</span>(<span class="ot">NULL</span>, no.map.cols)))</a>
-<a class="sourceLine" id="cb17-78" data-line-number="78">    val   &lt;-<span class="st"> </span>val[, col.order]                               <span class="co"># order correctly           </span></a>
-<a class="sourceLine" id="cb17-79" data-line-number="79">    str   &lt;-<span class="st"> </span><span class="kw">apply</span>(val, <span class="dv">1</span>, paste, <span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)              <span class="co"># convert to strings</span></a>
-<a class="sourceLine" id="cb17-80" data-line-number="80">    str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot;9&quot;</span>, str)                           <span class="co"># replace NA with 9</span></a>
-<a class="sourceLine" id="cb17-81" data-line-number="81">    </a>
-<a class="sourceLine" id="cb17-82" data-line-number="82">    <span class="co"># replace remaining NAs with preceeding land-cover</span></a>
-<a class="sourceLine" id="cb17-83" data-line-number="83">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {                         <span class="co"># clean until convergence</span></a>
-<a class="sourceLine" id="cb17-84" data-line-number="84">      str &lt;-<span class="st"> </span>str.c</a>
-<a class="sourceLine" id="cb17-85" data-line-number="85">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;39&quot;</span>, <span class="st">&quot;33&quot;</span>, str.c)                      <span class="co"># set NA to preceeding class</span></a>
-<a class="sourceLine" id="cb17-86" data-line-number="86">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;19&quot;</span>, <span class="st">&quot;11&quot;</span>, str.c)                 </a>
-<a class="sourceLine" id="cb17-87" data-line-number="87">    }</a>
-<a class="sourceLine" id="cb17-88" data-line-number="88">    str &lt;-<span class="st"> &quot;&quot;</span></a>
-<a class="sourceLine" id="cb17-89" data-line-number="89">    </a>
-<a class="sourceLine" id="cb17-90" data-line-number="90">    <span class="co"># replace trailing NAs with following land-cover</span></a>
-<a class="sourceLine" id="cb17-91" data-line-number="91">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {                         <span class="co"># clean until convergence</span></a>
-<a class="sourceLine" id="cb17-92" data-line-number="92">      str &lt;-<span class="st"> </span>str.c</a>
-<a class="sourceLine" id="cb17-93" data-line-number="93">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;93&quot;</span>, <span class="st">&quot;33&quot;</span>, str.c)                      <span class="co"># set NA to following class</span></a>
-<a class="sourceLine" id="cb17-94" data-line-number="94">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;91&quot;</span>, <span class="st">&quot;11&quot;</span>, str.c)                 </a>
-<a class="sourceLine" id="cb17-95" data-line-number="95">    }</a>
-<a class="sourceLine" id="cb17-96" data-line-number="96">    str &lt;-<span class="st"> &quot;&quot;</span></a>
-<a class="sourceLine" id="cb17-97" data-line-number="97">    </a>
-<a class="sourceLine" id="cb17-98" data-line-number="98">    <span class="co"># removing isolated 1s (regeneration that is lost again, not)</span></a>
-<a class="sourceLine" id="cb17-99" data-line-number="99">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {</a>
-<a class="sourceLine" id="cb17-100" data-line-number="100">      str &lt;-<span class="st"> </span>str.c</a>
-<a class="sourceLine" id="cb17-101" data-line-number="101">      str.c &lt;-<span class="kw">gsub</span>(<span class="st">&quot;^(.*3)1(1{0,9}3.*)$&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">13</span><span class="ch">\\</span><span class="st">2&quot;</span>, str.c)  <span class="co"># removing series of 1s up to length 10</span></a>
-<a class="sourceLine" id="cb17-102" data-line-number="102">      <span class="co">#str.c &lt;-gsub(&quot;^(.*33)1(1*33.*)$&quot;, &quot;\\13\\2&quot;, str.c)</span></a>
-<a class="sourceLine" id="cb17-103" data-line-number="103">    }</a>
-<a class="sourceLine" id="cb17-104" data-line-number="104">    str &lt;-<span class="st"> &quot;&quot;</span></a>
-<a class="sourceLine" id="cb17-105" data-line-number="105">    </a>
-<a class="sourceLine" id="cb17-106" data-line-number="106">    <span class="co"># consider regeneration only as forest after 10 years (before it is considered as potential regeneration 2)</span></a>
-<a class="sourceLine" id="cb17-107" data-line-number="107">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {</a>
-<a class="sourceLine" id="cb17-108" data-line-number="108">      str &lt;-<span class="st"> </span>str.c</a>
-<a class="sourceLine" id="cb17-109" data-line-number="109">      <span class="co"># irgendetwas -&gt; nichtwald -&gt; (potentielle regen, max 8) -&gt; Wald -&gt; irgendetwas</span></a>
-<a class="sourceLine" id="cb17-110" data-line-number="110">      str.c &lt;-<span class="kw">gsub</span>(<span class="st">&quot;^(.*32{0,8})1(.*)$&quot;</span>, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">12</span><span class="ch">\\</span><span class="st">2&quot;</span>, str.c)</a>
-<a class="sourceLine" id="cb17-111" data-line-number="111">    }</a>
-<a class="sourceLine" id="cb17-112" data-line-number="112">    str &lt;-<span class="st"> &quot;&quot;</span></a>
-<a class="sourceLine" id="cb17-113" data-line-number="113">    </a>
-<a class="sourceLine" id="cb17-114" data-line-number="114">    </a>
-<a class="sourceLine" id="cb17-115" data-line-number="115">    val &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">as.numeric</span>(<span class="kw">unlist</span>(<span class="kw">strsplit</span>(str.c, <span class="st">&quot;&quot;</span>))), <span class="dt">ncol=</span><span class="kw">ncol</span>(val), <span class="dt">byrow=</span><span class="ot">TRUE</span>) <span class="co"># convert back to numeric vector</span></a>
-<a class="sourceLine" id="cb17-116" data-line-number="116">    val[val<span class="op">==</span><span class="dv">9</span>] &lt;-<span class="st"> </span><span class="ot">NA</span>                                                                  <span class="co"># and set NAs again</span></a>
-<a class="sourceLine" id="cb17-117" data-line-number="117">    <span class="kw">colnames</span>(val) &lt;-<span class="st"> </span>col.order</a>
-<a class="sourceLine" id="cb17-118" data-line-number="118">    val[,<span class="kw">grepl</span>(<span class="st">&quot;M$&quot;</span>, <span class="kw">colnames</span>(val))]                                                   <span class="co"># and get data for map layers</span></a>
-<a class="sourceLine" id="cb17-119" data-line-number="119">    </a>
-<a class="sourceLine" id="cb17-120" data-line-number="120">    <span class="co"># in order to be considered as forest in 2003, a pixels needs to be forest as well in 2000 and 1991</span></a>
-<a class="sourceLine" id="cb17-121" data-line-number="121">    <span class="co"># in order to be considered as &quot;regeneration&quot; in 2018, a pixel needs to be forest from 2008 onwards</span></a>
-<a class="sourceLine" id="cb17-122" data-line-number="122">    </a>
-<a class="sourceLine" id="cb17-123" data-line-number="123">  }</a>
-<a class="sourceLine" id="cb17-124" data-line-number="124">  </a>
-<a class="sourceLine" id="cb17-125" data-line-number="125">  <span class="co"># Write the result to the disk --------------------------------------------</span></a>
-<a class="sourceLine" id="cb17-126" data-line-number="126">  <span class="co"># without the &quot;uncleaned&quot; first and the last layer</span></a>
-<a class="sourceLine" id="cb17-127" data-line-number="127">  <span class="kw">values</span>(maps) &lt;-<span class="st"> </span>maps.values.clean</a>
-<a class="sourceLine" id="cb17-128" data-line-number="128">  </a>
-<a class="sourceLine" id="cb17-129" data-line-number="129">  <span class="kw">writeRaster</span>(<span class="kw">dropLayer</span>(maps, <span class="kw">c</span>(<span class="dv">1</span>,<span class="kw">nlayers</span>(maps))), </a>
-<a class="sourceLine" id="cb17-130" data-line-number="130">              <span class="dt">filename=</span><span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, map.names[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nlayers</span>(maps)<span class="op">-</span><span class="dv">1</span>)], <span class="st">&quot;c.tif&quot;</span>), </a>
-<a class="sourceLine" id="cb17-131" data-line-number="131">              <span class="dt">bylayer=</span><span class="ot">TRUE</span>, <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb17-132" data-line-number="132">  </a>
-<a class="sourceLine" id="cb17-133" data-line-number="133">  </a>
-<a class="sourceLine" id="cb17-134" data-line-number="134">  <span class="co"># write trajectories to textfile</span></a>
-<a class="sourceLine" id="cb17-135" data-line-number="135">  maps.strings &lt;-<span class="st"> </span><span class="kw">apply</span>(maps.values.clean, <span class="dv">1</span>, paste, <span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb17-136" data-line-number="136">  <span class="kw">sink</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/Trajectories.txt&quot;</span>))</a>
-<a class="sourceLine" id="cb17-137" data-line-number="137">  <span class="kw">print</span>(<span class="kw">table</span>(maps.strings))</a>
-<a class="sourceLine" id="cb17-138" data-line-number="138">  <span class="kw">sink</span>()</a>
-<a class="sourceLine" id="cb17-139" data-line-number="139"></a>
-<a class="sourceLine" id="cb17-140" data-line-number="140">}</a>
-<a class="sourceLine" id="cb17-141" data-line-number="141"></a>
-<a class="sourceLine" id="cb17-142" data-line-number="142"></a>
-<a class="sourceLine" id="cb17-143" data-line-number="143"></a>
-<a class="sourceLine" id="cb17-144" data-line-number="144"></a>
-<a class="sourceLine" id="cb17-145" data-line-number="145"></a>
-<a class="sourceLine" id="cb17-146" data-line-number="146"></a>
-<a class="sourceLine" id="cb17-147" data-line-number="147"></a>
-<a class="sourceLine" id="cb17-148" data-line-number="148"></a>
-<a class="sourceLine" id="cb17-149" data-line-number="149"></a>
-<a class="sourceLine" id="cb17-150" data-line-number="150"></a>
-<a class="sourceLine" id="cb17-151" data-line-number="151"></a>
-<a class="sourceLine" id="cb17-152" data-line-number="152"><span class="co"># Functions for spatial cleaning of a set of images -----------------------</span></a>
-<a class="sourceLine" id="cb17-153" data-line-number="153"></a>
-<a class="sourceLine" id="cb17-154" data-line-number="154"><span class="co"># Remove forest/defor/regen pixels that NEVER has been part of &quot;forest &gt; 0.5ha&quot; since 2003</span></a>
-<a class="sourceLine" id="cb17-155" data-line-number="155">clean.spatial.forest &lt;-<span class="st"> </span><span class="cf">function</span>(maps, <span class="dt">exclude =</span> <span class="ot">NULL</span>, <span class="dt">size=</span><span class="dv">6</span>, <span class="dt">connectedness=</span><span class="dv">8</span>){</a>
-<a class="sourceLine" id="cb17-156" data-line-number="156">  <span class="co"># default: at least 6 connected pixels (0.54 ha) with 8-connectedness</span></a>
-<a class="sourceLine" id="cb17-157" data-line-number="157">  </a>
-<a class="sourceLine" id="cb17-158" data-line-number="158">  tmp1 &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb17-159" data-line-number="159">  tmp2 &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb17-160" data-line-number="160">  </a>
-<a class="sourceLine" id="cb17-161" data-line-number="161">  fcc.map &lt;-<span class="st"> </span><span class="kw">apply</span>(maps[[<span class="op">-</span>exclude]][], <span class="dv">1</span>, paste, <span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb17-162" data-line-number="162">  onceforest.map &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)</a>
-<a class="sourceLine" id="cb17-163" data-line-number="163">  onceforest.map[] &lt;-<span class="st"> </span><span class="ot">NA</span> </a>
-<a class="sourceLine" id="cb17-164" data-line-number="164">  </a>
-<a class="sourceLine" id="cb17-165" data-line-number="165">  <span class="co"># onceforest.map &lt;- fcc.map                             # create &quot;once-forest&quot; map</span></a>
-<a class="sourceLine" id="cb17-166" data-line-number="166">  onceforest.map[<span class="kw">grepl</span>(<span class="st">&quot;^3*$&quot;</span>,    fcc.map)] &lt;-<span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb17-167" data-line-number="167">  onceforest.map[<span class="kw">grepl</span>(<span class="st">&quot;^.*1.*$&quot;</span>, fcc.map)] &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb17-168" data-line-number="168">  onceforest.map[<span class="kw">grepl</span>(<span class="st">&quot;^.*2.*$&quot;</span>, fcc.map)] &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb17-169" data-line-number="169">  <span class="kw">writeRaster</span>(onceforest.map, tmp1)</a>
-<a class="sourceLine" id="cb17-170" data-line-number="170">                                                        <span class="co"># remove isolated forest patches &lt; xy ha</span></a>
-<a class="sourceLine" id="cb17-171" data-line-number="171">  <span class="kw">system</span>(<span class="kw">paste0</span>(<span class="st">&quot;gdal_sieve.py -st &quot;</span>, size, <span class="st">&quot; -&quot;</span>, connectedness, <span class="st">&quot; -nomask &quot;</span>, tmp1, <span class="st">&quot; &quot;</span>, tmp2))</a>
-<a class="sourceLine" id="cb17-172" data-line-number="172">  onceforest.map.clean &lt;-<span class="st"> </span><span class="kw">raster</span>(tmp2)</a>
-<a class="sourceLine" id="cb17-173" data-line-number="173">  onceforest.map.clean[onceforest.map.clean <span class="op">==</span><span class="st"> </span><span class="dv">-2147483648</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
-<a class="sourceLine" id="cb17-174" data-line-number="174">                                                        <span class="co"># mask the maps with this cleaned forest map</span></a>
-<a class="sourceLine" id="cb17-175" data-line-number="175">  maps.clean &lt;-<span class="st"> </span><span class="kw">mask</span>(maps, onceforest.map.clean, <span class="dt">maskvalue=</span><span class="dv">3</span>, <span class="dt">updatevalue=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb17-176" data-line-number="176">  <span class="kw">writeRaster</span>(maps.clean, <span class="dt">filename=</span><span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO/&quot;</span>, <span class="kw">names</span>(maps.clean), <span class="st">&quot;f.tif&quot;</span>), </a>
-<a class="sourceLine" id="cb17-177" data-line-number="177">              <span class="dt">bylayer=</span><span class="ot">TRUE</span>, <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb17-178" data-line-number="178">  </a>
-<a class="sourceLine" id="cb17-179" data-line-number="179">}</a>
-<a class="sourceLine" id="cb17-180" data-line-number="180"></a>
-<a class="sourceLine" id="cb17-181" data-line-number="181">clean.spatial.fcc &lt;-<span class="st"> </span><span class="cf">function</span>(maps, <span class="dt">size=</span><span class="dv">3</span>, <span class="dt">connectedness=</span><span class="dv">8</span>){</a>
-<a class="sourceLine" id="cb17-182" data-line-number="182">  </a>
-<a class="sourceLine" id="cb17-183" data-line-number="183">  <span class="co"># at least 3 connected pixels (8-connectedness)</span></a>
-<a class="sourceLine" id="cb17-184" data-line-number="184">  </a>
-<a class="sourceLine" id="cb17-185" data-line-number="185">  <span class="co"># combine the maps 2003, 2005 and 2018 </span></a>
-<a class="sourceLine" id="cb17-186" data-line-number="186">  <span class="co"># change:            0    &quot;321&quot; &quot;112&quot; &quot;122&quot; &quot;322&quot; &quot;132&quot; &quot;332&quot; &quot;113&quot; &quot;213&quot; &quot;313&quot;  </span></a>
-<a class="sourceLine" id="cb17-187" data-line-number="187">  <span class="co"># stable non-forest: 3    &quot;333&quot;</span></a>
-<a class="sourceLine" id="cb17-188" data-line-number="188">  <span class="co"># stable forest:     1    &quot;111&quot;</span></a>
-<a class="sourceLine" id="cb17-189" data-line-number="189">  </a>
-<a class="sourceLine" id="cb17-190" data-line-number="190">  <span class="co"># filter the map (forest islands and non-forest islands are also filtered out)</span></a>
-<a class="sourceLine" id="cb17-191" data-line-number="191">  <span class="kw">system</span>(<span class="st">&quot;/Library/Frameworks/GDAL.framework/Programs/gdal_sieve.py -st 3 -8 -nomask ./results/forest.tif ./results/forest_ha.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb17-192" data-line-number="192">  </a>
-<a class="sourceLine" id="cb17-193" data-line-number="193">}</a>
-<a class="sourceLine" id="cb17-194" data-line-number="194"></a>
-<a class="sourceLine" id="cb17-195" data-line-number="195"></a>
-<a class="sourceLine" id="cb17-196" data-line-number="196"></a>
-<a class="sourceLine" id="cb17-197" data-line-number="197"></a>
-<a class="sourceLine" id="cb17-198" data-line-number="198"><span class="co">### DO THE WORK ###########################################################</span></a>
+<a class="sourceLine" id="cb17-29" data-line-number="29">  <span class="co"># Charger les cartes brutes</span></a>
+<a class="sourceLine" id="cb17-30" data-line-number="30">  maps &lt;-<span class="st"> </span><span class="kw">stack</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path), </a>
+<a class="sourceLine" id="cb17-31" data-line-number="31">                    <span class="dt">pattern=</span><span class="st">&quot;.*[[:digit:]]{4}</span><span class="ch">\\</span><span class="st">_F.*</span><span class="ch">\\</span><span class="st">.tif$&quot;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb17-32" data-line-number="32">  map.names &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;r$&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(maps))</a>
+<a class="sourceLine" id="cb17-33" data-line-number="33">  <span class="co"># Noms de cartes à utiliser dans les colonnes de la matrice</span></a>
+<a class="sourceLine" id="cb17-34" data-line-number="34">  map.cols  &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="kw">paste0</span>(path, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">_&quot;</span>), <span class="st">&quot;X&quot;</span>, <span class="kw">sub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">_[[:alnum:]]+$&quot;</span>, <span class="st">&quot;M&quot;</span>, map.names))</a>
+<a class="sourceLine" id="cb17-35" data-line-number="35">  <span class="co"># Names à utiliser pour les années sans carte</span></a>
+<a class="sourceLine" id="cb17-36" data-line-number="36">  no.map.cols &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;X&quot;</span>, YEARS.ALL[<span class="op">!</span>YEARS.ALL <span class="op">%in%</span><span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;[[:alpha:]]&quot;</span>, <span class="st">&quot;&quot;</span>, map.cols)], <span class="st">&quot;_&quot;</span>)</a>
+<a class="sourceLine" id="cb17-37" data-line-number="37">  <span class="co"># Joindre et ordonner les noms de colonnes</span></a>
+<a class="sourceLine" id="cb17-38" data-line-number="38">  col.order &lt;-<span class="st"> </span><span class="kw">c</span>(map.cols, no.map.cols)[<span class="kw">order</span>(<span class="kw">c</span>(map.cols, no.map.cols))]</a>
+<a class="sourceLine" id="cb17-39" data-line-number="39">  <span class="co"># Convertir les cartes en matrice (une carte par colonne, prend du temps)</span></a>
+<a class="sourceLine" id="cb17-40" data-line-number="40">  maps.values &lt;-<span class="st"> </span><span class="kw">values</span>(maps)                           </a>
+<a class="sourceLine" id="cb17-41" data-line-number="41">  <span class="kw">colnames</span>(maps.values) &lt;-<span class="st"> </span>map.cols</a>
+<a class="sourceLine" id="cb17-42" data-line-number="42">  </a>
+<a class="sourceLine" id="cb17-43" data-line-number="43">  <span class="co"># Nettoyage parallèle des trajectoires des pixels -------</span></a>
+<a class="sourceLine" id="cb17-44" data-line-number="44">  </a>
+<a class="sourceLine" id="cb17-45" data-line-number="45">  <span class="co"># Définir des sous-ensembles des pixels (lignes) pour le traitement parallèle</span></a>
+<a class="sourceLine" id="cb17-46" data-line-number="46">  nsubsets &lt;-<span class="st"> </span>CORES               </a>
+<a class="sourceLine" id="cb17-47" data-line-number="47">  subsets  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">floor</span>((<span class="dv">1</span><span class="op">:</span>nsubsets)<span class="op">*</span>(<span class="kw">nrow</span>(maps.values)<span class="op">/</span>nsubsets)))    </a>
+<a class="sourceLine" id="cb17-48" data-line-number="48">  <span class="co"># Traitement en parallèle</span></a>
+<a class="sourceLine" id="cb17-49" data-line-number="49">  <span class="kw">registerDoParallel</span>(CORES)</a>
+<a class="sourceLine" id="cb17-50" data-line-number="50">  maps.values.clean &lt;-<span class="st"> </span><span class="kw">foreach</span>(<span class="dt">i=</span><span class="dv">1</span><span class="op">:</span>nsubsets, <span class="dt">.combine=</span>rbind) <span class="op">%dopar%</span><span class="st"> </span>{</a>
+<a class="sourceLine" id="cb17-51" data-line-number="51">    </a>
+<a class="sourceLine" id="cb17-52" data-line-number="52">    <span class="co"># 0. obtenir un sous-ensemble à partir de maps.values</span></a>
+<a class="sourceLine" id="cb17-53" data-line-number="53">    val &lt;-<span class="st"> </span>maps.values[(subsets[i]<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>subsets[i<span class="op">+</span><span class="dv">1</span>], ]     </a>
+<a class="sourceLine" id="cb17-54" data-line-number="54">    <span class="co"># mettre tout en NA qui n&#39;est pas de la forêt ou non-forêt</span></a>
+<a class="sourceLine" id="cb17-55" data-line-number="55">    val[<span class="op">!</span>(<span class="kw">is.na</span>(val) <span class="op">|</span><span class="st"> </span>val <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(FOREST,NONFOR))] &lt;-<span class="st"> </span><span class="ot">NA</span>    </a>
+<a class="sourceLine" id="cb17-56" data-line-number="56">    </a>
+<a class="sourceLine" id="cb17-57" data-line-number="57">    <span class="co"># 1. Supprimer les NA isolées ----</span></a>
+<a class="sourceLine" id="cb17-58" data-line-number="58">    str   &lt;-<span class="st"> </span><span class="kw">apply</span>(val, <span class="dv">1</span>, paste, <span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)  <span class="co"># convertir en chaînes de caractères</span></a>
+<a class="sourceLine" id="cb17-59" data-line-number="59">    str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot;9&quot;</span>, str)               <span class="co"># remplacer NA avec 9</span></a>
+<a class="sourceLine" id="cb17-60" data-line-number="60">    <span class="co"># Nettoyer jusqu&#39;à la convergence</span></a>
+<a class="sourceLine" id="cb17-61" data-line-number="61">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {             </a>
+<a class="sourceLine" id="cb17-62" data-line-number="62">      str &lt;-<span class="st"> </span>str.c</a>
+<a class="sourceLine" id="cb17-63" data-line-number="63">      <span class="co"># Mettre NA dans la classe correspondante (forêt ou non-forêt)</span></a>
+<a class="sourceLine" id="cb17-64" data-line-number="64">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;^(.*&quot;</span>, NONFOR, <span class="st">&quot;)9(9*&quot;</span>, NONFOR, <span class="st">&quot;.*)$&quot;</span>), <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">1&quot;</span>, NONFOR, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">2&quot;</span>), str.c) </a>
+<a class="sourceLine" id="cb17-65" data-line-number="65">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;^(.*&quot;</span>, FOREST, <span class="st">&quot;)9(9*&quot;</span>, FOREST, <span class="st">&quot;.*)$&quot;</span>), <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">1&quot;</span>, FOREST, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">2&quot;</span>), str.c)                 </a>
+<a class="sourceLine" id="cb17-66" data-line-number="66">    }                                                       </a>
+<a class="sourceLine" id="cb17-67" data-line-number="67">    <span class="co"># Reconvertir en matrice numérique</span></a>
+<a class="sourceLine" id="cb17-68" data-line-number="68">    val &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">as.numeric</span>(<span class="kw">unlist</span>(<span class="kw">strsplit</span>(str.c, <span class="st">&quot;&quot;</span>))), <span class="dt">ncol=</span><span class="kw">ncol</span>(val), <span class="dt">byrow=</span><span class="ot">TRUE</span>)   </a>
+<a class="sourceLine" id="cb17-69" data-line-number="69">    val[val<span class="op">==</span><span class="dv">9</span>] &lt;-<span class="st"> </span><span class="ot">NA</span>                           <span class="co"># remplacer les 9 avec NA</span></a>
+<a class="sourceLine" id="cb17-70" data-line-number="70">    <span class="kw">colnames</span>(val) &lt;-<span class="st"> </span>map.cols</a>
+<a class="sourceLine" id="cb17-71" data-line-number="71">    </a>
+<a class="sourceLine" id="cb17-72" data-line-number="72">    <span class="co"># 2. nettoyer les trajectoires avec fenêtre coulissante ----</span></a>
+<a class="sourceLine" id="cb17-73" data-line-number="73">    val.c   &lt;-<span class="st"> </span>val</a>
+<a class="sourceLine" id="cb17-74" data-line-number="74">    val.o &lt;-<span class="st"> </span>val[] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb17-75" data-line-number="75">    iter    &lt;-<span class="st"> </span><span class="dv">0</span>   </a>
+<a class="sourceLine" id="cb17-76" data-line-number="76">    <span class="co"># Nettoyer jusqu&#39;à la convergence</span></a>
+<a class="sourceLine" id="cb17-77" data-line-number="77">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(val, val.c) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">identical</span>(val.o, val.c)) {   </a>
+<a class="sourceLine" id="cb17-78" data-line-number="78">      iter &lt;-<span class="st"> </span>iter<span class="op">+</span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb17-79" data-line-number="79">      <span class="kw">message</span>(<span class="st">&quot;    -Clean modal: iteration &quot;</span>, iter, <span class="st">&quot; ... &quot;</span>, <span class="dt">appendLF =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb17-80" data-line-number="80">      val.o &lt;-<span class="st"> </span>val  <span class="co"># valeurs actuelles -&gt; anciennes valeurs</span></a>
+<a class="sourceLine" id="cb17-81" data-line-number="81">      val &lt;-<span class="st"> </span>val.c  <span class="co"># valeurs nettoyées -&gt; valuers actuelles</span></a>
+<a class="sourceLine" id="cb17-82" data-line-number="82">      <span class="co"># 3ème - 3ème l&#39;année dernière : fenêtre modale taille 5 </span></a>
+<a class="sourceLine" id="cb17-83" data-line-number="83">      <span class="cf">for</span>(l <span class="cf">in</span> <span class="dv">3</span><span class="op">:</span>(<span class="kw">ncol</span>(val)<span class="op">-</span><span class="dv">2</span>)) {                             </a>
+<a class="sourceLine" id="cb17-84" data-line-number="84">        val.c[,l] &lt;-<span class="st"> </span><span class="kw">apply</span>(val[,(l<span class="dv">-2</span>)<span class="op">:</span>(l<span class="op">+</span><span class="dv">2</span>)], <span class="dv">1</span>, modal, <span class="dt">na.rm=</span><span class="ot">TRUE</span>, <span class="dt">ties=</span><span class="st">&#39;NA&#39;</span>)</a>
+<a class="sourceLine" id="cb17-85" data-line-number="85">      }</a>
+<a class="sourceLine" id="cb17-86" data-line-number="86">      <span class="co"># 2e et 2e l&#39;année dernière : fenêtre modale taille 3 </span></a>
+<a class="sourceLine" id="cb17-87" data-line-number="87">      <span class="cf">for</span>(l <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="kw">ncol</span>(val)<span class="op">-</span><span class="dv">1</span>)) {                           </a>
+<a class="sourceLine" id="cb17-88" data-line-number="88">        val.c[,l] &lt;-<span class="st"> </span><span class="kw">apply</span>(val.c[,(l<span class="dv">-1</span>)<span class="op">:</span>(l<span class="op">+</span><span class="dv">1</span>)], <span class="dv">1</span>, modal, <span class="dt">na.rm=</span><span class="ot">TRUE</span>, <span class="dt">ties=</span><span class="st">&#39;NA&#39;</span>)</a>
+<a class="sourceLine" id="cb17-89" data-line-number="89">      }</a>
+<a class="sourceLine" id="cb17-90" data-line-number="90">      <span class="kw">message</span>(<span class="st">&quot;done&quot;</span>)</a>
+<a class="sourceLine" id="cb17-91" data-line-number="91">    }</a>
+<a class="sourceLine" id="cb17-92" data-line-number="92">    val &lt;-<span class="st"> </span>val.c    <span class="co"># valeurs nettoyées -&gt; valuers actuelles</span></a>
+<a class="sourceLine" id="cb17-93" data-line-number="93">    </a>
+<a class="sourceLine" id="cb17-94" data-line-number="94">    <span class="co"># 3. nettoyage final regexp ----</span></a>
+<a class="sourceLine" id="cb17-95" data-line-number="95">    <span class="co"># ajouter des années sans observation (cartes)</span></a>
+<a class="sourceLine" id="cb17-96" data-line-number="96">    val   &lt;-<span class="st"> </span><span class="kw">cbind</span>(val, <span class="kw">matrix</span>(<span class="dt">nrow=</span><span class="kw">nrow</span>(val),                            </a>
+<a class="sourceLine" id="cb17-97" data-line-number="97">                               <span class="dt">ncol=</span><span class="kw">length</span>(no.map.cols), <span class="dt">dimnames=</span><span class="kw">list</span>(<span class="ot">NULL</span>, no.map.cols)))</a>
+<a class="sourceLine" id="cb17-98" data-line-number="98">    <span class="co"># ordonner correctement </span></a>
+<a class="sourceLine" id="cb17-99" data-line-number="99">    val   &lt;-<span class="st"> </span>val[, col.order]                                        </a>
+<a class="sourceLine" id="cb17-100" data-line-number="100">    str   &lt;-<span class="st"> </span><span class="kw">apply</span>(val, <span class="dv">1</span>, paste, <span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)           <span class="co"># convertir en chaînes de caractères</span></a>
+<a class="sourceLine" id="cb17-101" data-line-number="101">    str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot;9&quot;</span>, str)                        <span class="co"># remplacer NA avec 9</span></a>
+<a class="sourceLine" id="cb17-102" data-line-number="102">    <span class="co"># Nettoyer jusqu&#39;à la convergence</span></a>
+<a class="sourceLine" id="cb17-103" data-line-number="103">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {                     </a>
+<a class="sourceLine" id="cb17-104" data-line-number="104">      str &lt;-<span class="st"> </span>str.c</a>
+<a class="sourceLine" id="cb17-105" data-line-number="105">      <span class="co"># 3.1 remplacer NA par la classe précédente</span></a>
+<a class="sourceLine" id="cb17-106" data-line-number="106">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(NONFOR, <span class="st">&quot;9&quot;</span>), <span class="kw">paste0</span>(NONFOR, NONFOR), str.c)                   </a>
+<a class="sourceLine" id="cb17-107" data-line-number="107">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(FOREST, <span class="st">&quot;9&quot;</span>), <span class="kw">paste0</span>(FOREST, FOREST), str.c)                </a>
+<a class="sourceLine" id="cb17-108" data-line-number="108">    }</a>
+<a class="sourceLine" id="cb17-109" data-line-number="109">    str &lt;-<span class="st"> &quot;&quot;</span></a>
+<a class="sourceLine" id="cb17-110" data-line-number="110">    <span class="co"># Nettoyer jusqu&#39;à la convergence</span></a>
+<a class="sourceLine" id="cb17-111" data-line-number="111">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {                         </a>
+<a class="sourceLine" id="cb17-112" data-line-number="112">      str &lt;-<span class="st"> </span>str.c</a>
+<a class="sourceLine" id="cb17-113" data-line-number="113">      <span class="co"># 3.2 remplacer NA par la classe suivante</span></a>
+<a class="sourceLine" id="cb17-114" data-line-number="114">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;9&quot;</span>, NONFOR), <span class="kw">paste0</span>(NONFOR, NONFOR), str.c)                   </a>
+<a class="sourceLine" id="cb17-115" data-line-number="115">      str.c &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;9&quot;</span>, FOREST), <span class="kw">paste0</span>(FOREST, FOREST), str.c)                </a>
+<a class="sourceLine" id="cb17-116" data-line-number="116">    }</a>
+<a class="sourceLine" id="cb17-117" data-line-number="117">    str &lt;-<span class="st"> &quot;&quot;</span></a>
+<a class="sourceLine" id="cb17-118" data-line-number="118">    <span class="co"># Nettoyer jusqu&#39;à la convergence</span></a>
+<a class="sourceLine" id="cb17-119" data-line-number="119">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {</a>
+<a class="sourceLine" id="cb17-120" data-line-number="120">      str &lt;-<span class="st"> </span>str.c</a>
+<a class="sourceLine" id="cb17-121" data-line-number="121">      <span class="co"># 3.3 suppression des 1 isolés jusqu&#39;à une longueur de 10 (régénération qui est à nouveau perdue)</span></a>
+<a class="sourceLine" id="cb17-122" data-line-number="122">      str.c &lt;-<span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;^(.*&quot;</span>, NONFOR, <span class="st">&quot;)&quot;</span>, FOREST, <span class="st">&quot;(&quot;</span>, FOREST, <span class="st">&quot;{0,9}&quot;</span>, NONFOR, <span class="st">&quot;.*)$&quot;</span>), </a>
+<a class="sourceLine" id="cb17-123" data-line-number="123">                   <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">1&quot;</span>, NONFOR, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">2&quot;</span>), str.c) </a>
+<a class="sourceLine" id="cb17-124" data-line-number="124">    }</a>
+<a class="sourceLine" id="cb17-125" data-line-number="125">    str &lt;-<span class="st"> &quot;&quot;</span></a>
+<a class="sourceLine" id="cb17-126" data-line-number="126">    <span class="co"># Nettoyer jusqu&#39;à la convergence</span></a>
+<a class="sourceLine" id="cb17-127" data-line-number="127">    <span class="cf">while</span>(<span class="op">!</span><span class="kw">identical</span>(str, str.c)) {</a>
+<a class="sourceLine" id="cb17-128" data-line-number="128">      str &lt;-<span class="st"> </span>str.c</a>
+<a class="sourceLine" id="cb17-129" data-line-number="129">      <span class="co"># 3.4 considérer la régénération seulement comme une forêt à partir de 10 ans </span></a>
+<a class="sourceLine" id="cb17-130" data-line-number="130">      <span class="co"># avant qu&#39;elle ne soit considérée comme une régénération potentielle PREGEN</span></a>
+<a class="sourceLine" id="cb17-131" data-line-number="131">      str.c &lt;-<span class="kw">gsub</span>(<span class="kw">paste0</span>(<span class="st">&quot;^(.*&quot;</span>,NONFOREST,PREGEN, <span class="st">&quot;{0,8})&quot;</span>, FOREST, <span class="st">&quot;(.*)$&quot;</span>), </a>
+<a class="sourceLine" id="cb17-132" data-line-number="132">                   <span class="kw">paste0</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">1&quot;</span>, PREGEN, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">2&quot;</span>), str.c)</a>
+<a class="sourceLine" id="cb17-133" data-line-number="133">    }</a>
+<a class="sourceLine" id="cb17-134" data-line-number="134">    str &lt;-<span class="st"> &quot;&quot;</span></a>
+<a class="sourceLine" id="cb17-135" data-line-number="135">    <span class="co"># Reconvertir en matrice numérique</span></a>
+<a class="sourceLine" id="cb17-136" data-line-number="136">    val &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">as.numeric</span>(<span class="kw">unlist</span>(<span class="kw">strsplit</span>(str.c, <span class="st">&quot;&quot;</span>))), <span class="dt">ncol=</span><span class="kw">ncol</span>(val), <span class="dt">byrow=</span><span class="ot">TRUE</span>) </a>
+<a class="sourceLine" id="cb17-137" data-line-number="137">    val[val<span class="op">==</span><span class="dv">9</span>] &lt;-<span class="st"> </span><span class="ot">NA</span>                           <span class="co"># remplacer les 9 avec NA</span></a>
+<a class="sourceLine" id="cb17-138" data-line-number="138">    <span class="kw">colnames</span>(val) &lt;-<span class="st"> </span>col.order</a>
+<a class="sourceLine" id="cb17-139" data-line-number="139">    val[,<span class="kw">grepl</span>(<span class="st">&quot;M$&quot;</span>, <span class="kw">colnames</span>(val))]            <span class="co"># et extraire les données pour les années des cartes</span></a>
+<a class="sourceLine" id="cb17-140" data-line-number="140">  }</a>
+<a class="sourceLine" id="cb17-141" data-line-number="141">  </a>
+<a class="sourceLine" id="cb17-142" data-line-number="142">  <span class="co"># Sauvegarder le résultat -------------------------------</span></a>
+<a class="sourceLine" id="cb17-143" data-line-number="143">  <span class="kw">values</span>(maps) &lt;-<span class="st"> </span>maps.values.clean</a>
+<a class="sourceLine" id="cb17-144" data-line-number="144">  <span class="co"># supprimer la première et la dernière carte &quot;non nettoyée&quot;</span></a>
+<a class="sourceLine" id="cb17-145" data-line-number="145">  <span class="kw">writeRaster</span>(<span class="kw">dropLayer</span>(maps, <span class="kw">c</span>(<span class="dv">1</span>,<span class="kw">nlayers</span>(maps))), </a>
+<a class="sourceLine" id="cb17-146" data-line-number="146">              <span class="dt">filename=</span><span class="kw">paste0</span>(CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/&quot;</span>, map.names[<span class="dv">2</span><span class="op">:</span>(<span class="kw">nlayers</span>(maps)<span class="op">-</span><span class="dv">1</span>)], <span class="st">&quot;c.tif&quot;</span>), </a>
+<a class="sourceLine" id="cb17-147" data-line-number="147">              <span class="dt">bylayer=</span><span class="ot">TRUE</span>, <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb17-148" data-line-number="148">  </a>
+<a class="sourceLine" id="cb17-149" data-line-number="149">  <span class="co"># écrire des trajectoires dans un fichier texte</span></a>
+<a class="sourceLine" id="cb17-150" data-line-number="150">  maps.strings &lt;-<span class="st"> </span><span class="kw">apply</span>(maps.values.clean, <span class="dv">1</span>, paste, <span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb17-151" data-line-number="151">  <span class="kw">sink</span>(<span class="kw">paste0</span>(CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/&quot;</span>, path, <span class="st">&quot;/Trajectories.txt&quot;</span>))</a>
+<a class="sourceLine" id="cb17-152" data-line-number="152">  <span class="kw">print</span>(<span class="kw">table</span>(maps.strings))</a>
+<a class="sourceLine" id="cb17-153" data-line-number="153">  <span class="kw">sink</span>()</a>
+<a class="sourceLine" id="cb17-154" data-line-number="154"></a>
+<a class="sourceLine" id="cb17-155" data-line-number="155">}</a>
+<a class="sourceLine" id="cb17-156" data-line-number="156"></a>
+<a class="sourceLine" id="cb17-157" data-line-number="157"></a>
+<a class="sourceLine" id="cb17-158" data-line-number="158"><span class="co"># Nettoyage spatiale d&#39;une série d&#39;images -------------------------------------</span></a>
+<a class="sourceLine" id="cb17-159" data-line-number="159"><span class="co">#</span></a>
+<a class="sourceLine" id="cb17-160" data-line-number="160"><span class="co"># @description Supprimer les pixels de forêt/déforestion/régénération qui n&#39;ont </span></a>
+<a class="sourceLine" id="cb17-161" data-line-number="161"><span class="co">#              JAMAIS fait partie de &quot;forêt &gt; 0,5 ha&quot; depuis 2003</span></a>
+<a class="sourceLine" id="cb17-162" data-line-number="162"><span class="co">#</span></a>
+<a class="sourceLine" id="cb17-163" data-line-number="163"><span class="co"># @param maps           Série des cartes</span></a>
+<a class="sourceLine" id="cb17-164" data-line-number="164"><span class="co"># @param exclude        Cartes à ignorer</span></a>
+<a class="sourceLine" id="cb17-165" data-line-number="165"><span class="co"># @param size           Nombre minimal de pixels connectés</span></a>
+<a class="sourceLine" id="cb17-166" data-line-number="166"><span class="co"># @param connectedness  Nombre de pixels qui comptent comme connectés</span></a>
+<a class="sourceLine" id="cb17-167" data-line-number="167"><span class="co">#</span></a>
+<a class="sourceLine" id="cb17-168" data-line-number="168"><span class="co"># @return       -- </span></a>
+<a class="sourceLine" id="cb17-169" data-line-number="169"><span class="co">#</span></a>
+<a class="sourceLine" id="cb17-170" data-line-number="170"></a>
+<a class="sourceLine" id="cb17-171" data-line-number="171"><span class="co"># </span></a>
+<a class="sourceLine" id="cb17-172" data-line-number="172">clean.spatial.forest &lt;-<span class="st"> </span><span class="cf">function</span>(maps, <span class="dt">exclude =</span> <span class="ot">NULL</span>, <span class="dt">size=</span><span class="dv">6</span>, <span class="dt">connectedness=</span><span class="dv">8</span>){</a>
+<a class="sourceLine" id="cb17-173" data-line-number="173">  </a>
+<a class="sourceLine" id="cb17-174" data-line-number="174">  tmp1 &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb17-175" data-line-number="175">  tmp2 &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">pattern =</span> <span class="st">&quot;&quot;</span>, <span class="dt">fileext =</span> <span class="st">&quot;.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb17-176" data-line-number="176">  </a>
+<a class="sourceLine" id="cb17-177" data-line-number="177">  fcc.map &lt;-<span class="st"> </span><span class="kw">apply</span>(maps[[<span class="op">-</span>exclude]][], <span class="dv">1</span>, paste, <span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb17-178" data-line-number="178">  onceforest.map &lt;-<span class="st"> </span><span class="kw">raster</span>(maps)</a>
+<a class="sourceLine" id="cb17-179" data-line-number="179">  onceforest.map[] &lt;-<span class="st"> </span><span class="ot">NA</span> </a>
+<a class="sourceLine" id="cb17-180" data-line-number="180">  </a>
+<a class="sourceLine" id="cb17-181" data-line-number="181">  <span class="co"># créer une carte &quot;forêt une fois&quot;</span></a>
+<a class="sourceLine" id="cb17-182" data-line-number="182">  onceforest.map[<span class="kw">grepl</span>(<span class="kw">paste0</span>(<span class="st">&quot;^&quot;</span>, NONFOR, <span class="st">&quot;*$&quot;</span>),    fcc.map)] &lt;-<span class="st"> </span>NONFOR</a>
+<a class="sourceLine" id="cb17-183" data-line-number="183">  onceforest.map[<span class="kw">grepl</span>(<span class="kw">paste0</span>(<span class="st">&quot;^.*&quot;</span>, FOREST, <span class="st">&quot;.*$&quot;</span>), fcc.map)] &lt;-<span class="st"> </span>FOREST</a>
+<a class="sourceLine" id="cb17-184" data-line-number="184">  onceforest.map[<span class="kw">grepl</span>(<span class="kw">paste0</span>(<span class="st">&quot;^.*&quot;</span>, PREGEN, <span class="st">&quot;.*$&quot;</span>), fcc.map)] &lt;-<span class="st"> </span>FOREST</a>
+<a class="sourceLine" id="cb17-185" data-line-number="185">  <span class="kw">writeRaster</span>(onceforest.map, tmp1)</a>
+<a class="sourceLine" id="cb17-186" data-line-number="186">  </a>
+<a class="sourceLine" id="cb17-187" data-line-number="187">  <span class="co"># supprimer les parcelles de forêt isolées &lt; xy ha</span></a>
+<a class="sourceLine" id="cb17-188" data-line-number="188">  <span class="kw">system</span>(<span class="kw">paste0</span>(<span class="st">&quot;gdal_sieve.py -st &quot;</span>, size, <span class="st">&quot; -&quot;</span>, connectedness, <span class="st">&quot; -nomask &quot;</span>, tmp1, <span class="st">&quot; &quot;</span>, tmp2))</a>
+<a class="sourceLine" id="cb17-189" data-line-number="189">  onceforest.map.clean &lt;-<span class="st"> </span><span class="kw">raster</span>(tmp2)</a>
+<a class="sourceLine" id="cb17-190" data-line-number="190">  onceforest.map.clean[onceforest.map.clean <span class="op">==</span><span class="st"> </span><span class="dv">-2147483648</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb17-191" data-line-number="191">                                                        </a>
+<a class="sourceLine" id="cb17-192" data-line-number="192">  <span class="co"># masquer les cartes avec cette carte forestière nettoyée</span></a>
+<a class="sourceLine" id="cb17-193" data-line-number="193">  maps.clean &lt;-<span class="st"> </span><span class="kw">mask</span>(maps, onceforest.map.clean, <span class="dt">maskvalue=</span>NONFOR, <span class="dt">updatevalue=</span>NONFOR)</a>
+<a class="sourceLine" id="cb17-194" data-line-number="194">  <span class="kw">writeRaster</span>(maps.clean, <span class="dt">filename=</span><span class="kw">paste0</span>(CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO/&quot;</span>, <span class="kw">names</span>(maps.clean), <span class="st">&quot;f.tif&quot;</span>), </a>
+<a class="sourceLine" id="cb17-195" data-line-number="195">              <span class="dt">bylayer=</span><span class="ot">TRUE</span>, <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>, <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb17-196" data-line-number="196">  </a>
+<a class="sourceLine" id="cb17-197" data-line-number="197">}</a>
+<a class="sourceLine" id="cb17-198" data-line-number="198"></a>
 <a class="sourceLine" id="cb17-199" data-line-number="199"></a>
-<a class="sourceLine" id="cb17-200" data-line-number="200"><span class="co"># change extent of p192_2019 to the extent of other p192 images (</span><span class="al">TODO</span><span class="co">: to be done already in 1_prepare-images.R)</span></a>
-<a class="sourceLine" id="cb17-201" data-line-number="201"><span class="kw">extend</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2019_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)), <span class="kw">raster</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2018_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)), </a>
-<a class="sourceLine" id="cb17-202" data-line-number="202">       <span class="dt">filename=</span><span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2019_F&quot;</span>, COV.FC, <span class="st">&quot;rt.tif&quot;</span>), <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>)</a>
-<a class="sourceLine" id="cb17-203" data-line-number="203"><span class="kw">file.rename</span>(<span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2019_F&quot;</span>, COV.FC, <span class="st">&quot;rt.tif&quot;</span>), <span class="kw">paste0</span>(FCC.RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2019_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>))</a>
-<a class="sourceLine" id="cb17-204" data-line-number="204"></a>
-<a class="sourceLine" id="cb17-205" data-line-number="205"><span class="co"># Temporal cleaning of paths ----------------------------------------------</span></a>
-<a class="sourceLine" id="cb17-206" data-line-number="206"></a>
-<a class="sourceLine" id="cb17-207" data-line-number="207"><span class="cf">for</span>(path <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&quot;p192&quot;</span>, <span class="st">&quot;p193&quot;</span>, <span class="st">&quot;p194&quot;</span>)) {</a>
-<a class="sourceLine" id="cb17-208" data-line-number="208">  <span class="kw">clean.temporal</span>(path)</a>
-<a class="sourceLine" id="cb17-209" data-line-number="209">} </a>
-<a class="sourceLine" id="cb17-210" data-line-number="210"></a>
-<a class="sourceLine" id="cb17-211" data-line-number="211"></a>
+<a class="sourceLine" id="cb17-200" data-line-number="200"><span class="co"># COMMENCER LE TRAITEMENT #####################################################</span></a>
+<a class="sourceLine" id="cb17-201" data-line-number="201"></a>
+<a class="sourceLine" id="cb17-202" data-line-number="202"><span class="co"># changer l&#39;étendue de p192_2019 à l&#39;étendue des autres images p192 -----------</span></a>
+<a class="sourceLine" id="cb17-203" data-line-number="203"><span class="co"># </span><span class="al">TODO</span><span class="co"> : à faire déjà dans 01_SSTS/01_data/_src/prep-Landsat.R</span></a>
+<a class="sourceLine" id="cb17-204" data-line-number="204"><span class="kw">extend</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2019_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)), <span class="kw">raster</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2018_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>)), </a>
+<a class="sourceLine" id="cb17-205" data-line-number="205">       <span class="dt">filename=</span><span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2019_F&quot;</span>, COV.FC, <span class="st">&quot;rt.tif&quot;</span>), <span class="dt">format=</span><span class="st">&quot;GTiff&quot;</span>, <span class="dt">datatype=</span><span class="st">&quot;INT2U&quot;</span>)</a>
+<a class="sourceLine" id="cb17-206" data-line-number="206"><span class="kw">file.rename</span>(<span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2019_F&quot;</span>, COV.FC, <span class="st">&quot;rt.tif&quot;</span>), <span class="kw">paste0</span>(RAW.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_2019_F&quot;</span>, COV.FC, <span class="st">&quot;r.tif&quot;</span>))</a>
+<a class="sourceLine" id="cb17-207" data-line-number="207"></a>
+<a class="sourceLine" id="cb17-208" data-line-number="208"><span class="co"># Nettoyage temporel des chemins ----------------------------------------------</span></a>
+<a class="sourceLine" id="cb17-209" data-line-number="209"><span class="cf">for</span>(path <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&quot;p192&quot;</span>, <span class="st">&quot;p193&quot;</span>, <span class="st">&quot;p194&quot;</span>)) {</a>
+<a class="sourceLine" id="cb17-210" data-line-number="210">  <span class="kw">clean.temporal</span>(path)</a>
+<a class="sourceLine" id="cb17-211" data-line-number="211">} </a>
 <a class="sourceLine" id="cb17-212" data-line-number="212"></a>
-<a class="sourceLine" id="cb17-213" data-line-number="213"><span class="co"># Merging paths -----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb17-214" data-line-number="214"></a>
-<a class="sourceLine" id="cb17-215" data-line-number="215"><span class="cf">for</span>(year <span class="cf">in</span> JNT.YEARS) {</a>
-<a class="sourceLine" id="cb17-216" data-line-number="216">  <span class="kw">merge</span>(<span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;c.tif&quot;</span>)), TGO), TGO),</a>
-<a class="sourceLine" id="cb17-217" data-line-number="217">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;c.tif&quot;</span>)), TGO), TGO),</a>
-<a class="sourceLine" id="cb17-218" data-line-number="218">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p194/p194_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;c.tif&quot;</span>)), TGO), TGO),</a>
-<a class="sourceLine" id="cb17-219" data-line-number="219">        <span class="dt">filename=</span><span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO/TGO_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;c.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb17-220" data-line-number="220">}</a>
-<a class="sourceLine" id="cb17-221" data-line-number="221"></a>
-<a class="sourceLine" id="cb17-222" data-line-number="222"><span class="co"># merge(mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p193/p193_1990_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-223" data-line-number="223"><span class="co">#       mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p192/p192_1991_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-224" data-line-number="224"><span class="co">#       mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p194/p194_1997_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-225" data-line-number="225"><span class="co">#       filename=paste0(FCC.CLN.DIR, &quot;/TGO/1_clean/TGO_1991_F30c.tif&quot;), overwrite=TRUE)</span></a>
-<a class="sourceLine" id="cb17-226" data-line-number="226"><span class="co"># </span></a>
-<a class="sourceLine" id="cb17-227" data-line-number="227"><span class="co"># merge(mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p193/p193_2000_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-228" data-line-number="228"><span class="co">#       mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p192/p192_2001_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-229" data-line-number="229"><span class="co">#       mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p194/p194_2000_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-230" data-line-number="230"><span class="co">#       filename=paste0(FCC.CLN.DIR, &quot;/TGO/1_clean/TGO_2000_F30c.tif&quot;), overwrite=TRUE)</span></a>
-<a class="sourceLine" id="cb17-231" data-line-number="231"><span class="co"># </span></a>
-<a class="sourceLine" id="cb17-232" data-line-number="232"><span class="co"># merge(mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p193/p193_2009_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-233" data-line-number="233"><span class="co">#       mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p192/p192_2011_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-234" data-line-number="234"><span class="co">#       mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p194/p194_2010_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-235" data-line-number="235"><span class="co">#       filename=paste0(FCC.CLN.DIR, &quot;/TGO/1_clean/TGO_2010_F30c.tif&quot;), overwrite=TRUE)</span></a>
-<a class="sourceLine" id="cb17-236" data-line-number="236"><span class="co"># </span></a>
-<a class="sourceLine" id="cb17-237" data-line-number="237"><span class="co"># merge(mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p193/p193_2013_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-238" data-line-number="238"><span class="co">#       mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p192/p192_2013_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-239" data-line-number="239"><span class="co">#       mask(crop(brick(paste0(FCC.CLN.DIR, &quot;/p194/p194_2012_F30c.tif&quot;)), TGO), TGO),</span></a>
-<a class="sourceLine" id="cb17-240" data-line-number="240"><span class="co">#       filename=paste0(FCC.CLN.DIR, &quot;/TGO/1_clean/TGO_2013_F30c.tif&quot;), overwrite=TRUE)</span></a>
-<a class="sourceLine" id="cb17-241" data-line-number="241"></a>
-<a class="sourceLine" id="cb17-242" data-line-number="242"></a>
-<a class="sourceLine" id="cb17-243" data-line-number="243"><span class="co"># Spatial cleaning of results (only from 2003 onwards) -----------------------------------</span></a>
-<a class="sourceLine" id="cb17-244" data-line-number="244"></a>
-<a class="sourceLine" id="cb17-245" data-line-number="245"><span class="kw">clean.spatial.forest</span>(<span class="dt">maps =</span> <span class="kw">stack</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(FCC.CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO&quot;</span>), <span class="dt">pattern =</span> <span class="st">&quot;c</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)),</a>
-<a class="sourceLine" id="cb17-246" data-line-number="246">                     <span class="dt">exclude =</span> <span class="kw">c</span>(<span class="dv">1</span>), <span class="dt">size =</span> <span class="dv">6</span>, <span class="dt">connectedness =</span> <span class="dv">8</span>) <span class="co"># exclude the first layer (1987) for creating the forest / non-forest mask  </span></a>
-<a class="sourceLine" id="cb17-247" data-line-number="247"></a>
-<a class="sourceLine" id="cb17-248" data-line-number="248"><span class="co"># # and put together in one stack</span></a>
-<a class="sourceLine" id="cb17-249" data-line-number="249"><span class="co"># tmp &lt;- stack(dir(paste0(FCC.CLN.DIR, &quot;/TGO/2_clean_05ha&quot;), pattern=&quot;.*[[:digit:]]{4}.*&quot;, full.names=TRUE))</span></a>
-<a class="sourceLine" id="cb17-250" data-line-number="250"><span class="co"># writeRaster(tmp, paste0(FCC.CLN.DIR, &quot;/TGO/2_clean_05ha/TGO_stack_F30c_05ha.tif&quot;), overwrite=TRUE) </span></a>
-<a class="sourceLine" id="cb17-251" data-line-number="251"><span class="co"># </span></a>
-<a class="sourceLine" id="cb17-252" data-line-number="252"><span class="co"># # Loading PHCF-Filter -----------------------------------------------------</span></a>
-<a class="sourceLine" id="cb17-253" data-line-number="253"><span class="co"># # pixels with value 1 will only remain if they are in squares of 4 or adjacent to that</span></a>
-<a class="sourceLine" id="cb17-254" data-line-number="254"><span class="co"># # otherwise, if they are adjacent to a pixel with value &#39;2&#39; they will be converted to &#39;2&#39;</span></a>
-<a class="sourceLine" id="cb17-255" data-line-number="255"><span class="co"># # otherwise, they will be converted to zero</span></a>
-<a class="sourceLine" id="cb17-256" data-line-number="256"><span class="co"># </span></a>
-<a class="sourceLine" id="cb17-257" data-line-number="257"><span class="co"># # compiling and loading C code that implements the PHCF filter</span></a>
-<a class="sourceLine" id="cb17-258" data-line-number="258"><span class="co"># system(&quot;R CMD SHLIB ./phcf_filter/phcf_filter.c&quot;)</span></a>
-<a class="sourceLine" id="cb17-259" data-line-number="259"><span class="co"># dyn.load(&quot;../phcf_filter/phcf_filter.so&quot;)</span></a>
-<a class="sourceLine" id="cb17-260" data-line-number="260"><span class="co"># </span></a>
-<a class="sourceLine" id="cb17-261" data-line-number="261"><span class="co"># # defining function for facilitating the use of the C function</span></a>
-<a class="sourceLine" id="cb17-262" data-line-number="262"><span class="co"># phcf_pt &lt;- function(defor) {</span></a>
-<a class="sourceLine" id="cb17-263" data-line-number="263"><span class="co">#   res &lt;- .C(&quot;phcf_filter&quot;, nrow(defor), ncol(defor), as.integer(defor[]))</span></a>
-<a class="sourceLine" id="cb17-264" data-line-number="264"><span class="co">#   return(res[[3]])</span></a>
-<a class="sourceLine" id="cb17-265" data-line-number="265"><span class="co"># }</span></a>
-<a class="sourceLine" id="cb17-266" data-line-number="266"><span class="co"># </span></a>
-<a class="sourceLine" id="cb17-267" data-line-number="267"><span class="co"># clean.spatial.fcc(maps = stack(raster(paste0(FCC.CLN.DIR, &quot;/TGO/2_clean_05ha/TGO_2003_F30c_05ha.tif&quot;)), </span></a>
-<a class="sourceLine" id="cb17-268" data-line-number="268"><span class="co">#                                raster(paste0(FCC.CLN.DIR, &quot;/TGO/2_clean_05ha/TGO_2015_F30c_05ha.tif&quot;)), </span></a>
-<a class="sourceLine" id="cb17-269" data-line-number="269"><span class="co">#                                raster(paste0(FCC.CLN.DIR, &quot;/TGO/2_clean_05ha/TGO_2018_F30c_05ha.tif&quot;))),</span></a>
-<a class="sourceLine" id="cb17-270" data-line-number="270"><span class="co">#                   size = 3, connectedness = 8)</span></a></code></pre></div>
+<a class="sourceLine" id="cb17-213" data-line-number="213"><span class="co"># Fusionner les cartes p192, p193 et p194 pour les dates conjointes -----------</span></a>
+<a class="sourceLine" id="cb17-214" data-line-number="214"><span class="cf">for</span>(year <span class="cf">in</span> YEARS.JNT) {</a>
+<a class="sourceLine" id="cb17-215" data-line-number="215">  <span class="kw">merge</span>(<span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p193/p193_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;c.tif&quot;</span>)), TGO), TGO),</a>
+<a class="sourceLine" id="cb17-216" data-line-number="216">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p192/p192_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;c.tif&quot;</span>)), TGO), TGO),</a>
+<a class="sourceLine" id="cb17-217" data-line-number="217">        <span class="kw">mask</span>(<span class="kw">crop</span>(<span class="kw">brick</span>(<span class="kw">paste0</span>(CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/p194/p194_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;c.tif&quot;</span>)), TGO), TGO),</a>
+<a class="sourceLine" id="cb17-218" data-line-number="218">        <span class="dt">filename=</span><span class="kw">paste0</span>(CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO/TGO_&quot;</span>, year, <span class="st">&quot;_F&quot;</span>, COV.FC, <span class="st">&quot;c.tif&quot;</span>), <span class="dt">overwrite=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb17-219" data-line-number="219">}</a>
+<a class="sourceLine" id="cb17-220" data-line-number="220"></a>
+<a class="sourceLine" id="cb17-221" data-line-number="221"><span class="co"># Spatial cleaning of results (only from 2003 onwards) -----------------------------------</span></a>
+<a class="sourceLine" id="cb17-222" data-line-number="222"><span class="co"># exclure la première couche (1987) pour la création du masque forêt/non-forêt  </span></a>
+<a class="sourceLine" id="cb17-223" data-line-number="223"><span class="kw">clean.spatial.forest</span>(<span class="dt">maps =</span> <span class="kw">stack</span>(<span class="kw">dir</span>(<span class="kw">paste0</span>(CLN.DIR, <span class="st">&quot;/FC&quot;</span>, COV.FC, <span class="st">&quot;/TGO&quot;</span>), <span class="dt">pattern =</span> <span class="st">&quot;c</span><span class="ch">\\</span><span class="st">.tif&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)),</a>
+<a class="sourceLine" id="cb17-224" data-line-number="224">                     <span class="dt">exclude =</span> <span class="kw">c</span>(<span class="dv">1</span>), <span class="dt">size =</span> <span class="dv">6</span>, <span class="dt">connectedness =</span> <span class="dv">8</span>) </a></code></pre></div>
 
 </div>
 </div>

@@ -35,7 +35,7 @@ La figure suivante montre les **cartes forêt/non-forêt après la nettoyage tem
 
 ![](images/FCC-clnmaps.png)
 
-#### _MCF/02_clean-fc-maps.R_ {-}
+#### Script R: `03_NRF-MRV/01_MCF/_src/02_clean-fc-maps.R` {-}
 
 ```{r, code=readLines("../03_NRF-MRV/01_MCF/_src/02_clean-fc-maps.R"), eval=FALSE}
 ```

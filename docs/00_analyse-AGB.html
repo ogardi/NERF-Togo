@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-05-20" />
+<meta name="date" content="2020-06-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
 <style type="text/css">
@@ -128,7 +129,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="https://ogardi.github.io/SNSF-Togo"><b>Manuel SNSF Togo</b><br>v 1.0 / en développement</a></li>
+<li><a href="https://ogardi.github.io/SNSF-Togo"><b>Manuel SNSF Togo</b><br>NRF v1.1 ( <i>en révision</i> )</a></li>
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Préface</a></li>
 <li class="chapter" data-level="1" data-path="00_introduction.html"><a href="00_introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
@@ -199,7 +200,11 @@ Système Nationale de Surveillance des Forêts</div></a>
             <section class="normal" id="section-">
 <div id="NRF-analyse-AGB" class="section level2">
 <h2><span class="header-section-number">4.2</span> Analyse biomasse aérienne</h2>
+<p>Comme pour le couvert forestier, <strong>la biomasse aérienne est également cartographiée</strong> à la résolution des images Landsat (30 x 30 mètres). Tout d’abord, les données d’inventaire IFN-1 des années 2015/16 sont évalués pour leur biomasse aérienne. <strong>La biomasse aérienne trouvé sur les parcelles d’échantillon IFN-1 sont ensuite utilisées pour calibrer un modèle de régression <em>RandomForest</em> sur base des images satellitaires Landsat de l’année 2015 et les données climatiques WorldClim</strong>. Ce modèle de biomasse est ensuite appliqué à l’ensemble de l’image Landsat et les données WorldClim pour obtenir une carte complète de la biomasse aérienne pour l’année de référence 2015.</p>
+<p>Le schéma ci-dessous montre le processus d’analyse.</p>
 <p><img src="images/AGB-Schema.png" /></p>
+<p><strong>La carte de référence de la biomasse aérienne 2015 sert comme base pour déterminer des cartes correspondantes pour les années 2003 (début de la période de référence) et 2018 (fin de la période de référence).</strong></p>
+<p>Finalement, les différences entre les cartes de la biomasse 2003 et 2018 servent comme <strong>facteurs d’émission pour les pixels déterminés comme déforestation ou reboisement</strong> par l’analyse des surfaces forestiers au cours de la même période (voir section <a href="00_analyse-FCC.html#NRF-analyse-MCF">4.1</a>).</p>
 
             </section>
 

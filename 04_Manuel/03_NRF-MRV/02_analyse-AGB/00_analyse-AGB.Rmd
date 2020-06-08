@@ -1,6 +1,12 @@
 
 ## Analyse biomasse aérienne {#NRF-analyse-AGB}
 
+Comme pour le couvert forestier, **la biomasse aérienne est également cartographiée** à la résolution des images Landsat (30 x 30 mètres). Tout d'abord, les données d'inventaire IFN-1 des années 2015/16 sont évalués pour leur biomasse aérienne. **La biomasse aérienne trouvé sur les parcelles d'échantillon IFN-1 sont ensuite utilisées pour calibrer un modèle de régression *RandomForest* sur base des images satellitaires Landsat de l'année 2015 et les données climatiques WorldClim**. Ce modèle de biomasse est ensuite appliqué à l'ensemble de l'image Landsat et les données WorldClim pour obtenir une carte complète de la biomasse aérienne pour l'année de référence 2015.
+
+Le schéma ci-dessous montre le processus d'analyse.
+
 ![](images/AGB-Schema.png)
 
+**La carte de référence de la biomasse aérienne 2015 sert comme base pour déterminer des cartes correspondantes pour les années 2003 (début de la période de référence) et 2018 (fin de la période de référence).**
 
+Finalement, les différences entre les cartes de la biomasse 2003 et 2018 servent comme **facteurs d'émission pour les pixels déterminés comme déforestation ou reboisement** par l'analyse des surfaces forestiers au cours de la même période (voir section \@ref(NRF-analyse-MCF)).

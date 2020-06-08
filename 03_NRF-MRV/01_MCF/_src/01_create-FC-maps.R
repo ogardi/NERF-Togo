@@ -291,7 +291,6 @@ classify.image <- function(image, filename, bioclim=NULL, train.pts=NULL,
 # COMMENCER LE TRAITEMENT #####################################################
 
 # Charger images 2018 ---------------------------------------------------------
-
 ref.p192 <- brick(paste0(LANDSAT.DIR, "/p192/p192_2018_m.tif"))
 ref.p193 <- brick(paste0(LANDSAT.DIR, "/p193/p193_2018_m.tif"))
 ref.p194 <- brick(paste0(LANDSAT.DIR, "/p194/p194_2018_m.tif"))
@@ -312,7 +311,6 @@ bioclim <- list(p192=bioclim.p192, p193=bioclim.p193, p194=bioclim.p194)
 
 
 # Charger points d'entraînement -----------------------------------------------
-
 train.plots <- readOGR(paste0(DIR.SST.BDD.TPS, "/COV_parcelles.shp"))
 train.plots <- train.plots[!is.na(train.plots$ccov),  # couverture des houppiers!
                            c("PLOTID", "ccov", "img_date", "author")]
@@ -359,11 +357,11 @@ train.points@data <- cbind(train.points@data[,c("image", "ccov")],
 
 # Séléction des variables explicatives ----------------------------------------
 
-cov.varsel <- rfe(y=train.points@data[train.points$image=="p193", "ccov"],
-                  x=train.points@data[train.points$image=="p193", PREDICTORS],
+cov.varsel <- rfe(y = train.points@data[train.points$image=="p193", "ccov"],
+                  x = train.points@data[train.points$image=="p193", PREDICTORS],
                   sizes = c(4, 6, 8, 10),
-                  rfeControl=rfeControl(
-                    functions=rfFuncs,        # utiliser RandomForest
+                  rfeControl = rfeControl(
+                    functions = rfFuncs,      # utiliser RandomForest
                     method  = "repeatedcv",   # validation croisée
                     number  = 10,             # 10-fold
                     repeats = 3))             # 3 répétitions
@@ -504,7 +502,7 @@ foreach(file=c(dir(paste0(LANDSAT.DIR, "/p192"), pattern="\\_[[:digit:]]+\\_m\\.
 } 
 
 
-# Fusionner les cartes p192, p193 et p194 pour les dates clés ... -------------
+# Fusionner les cartes des chemins p192, p193 et p194 pour dates clés ... -----
 
 for(year in YEARS.REF) {
   merge(mask(crop(brick(paste0(RAW.DIR, "/FC", COV.FC, "/p193/p193_", year, "_F", COV.FC, "r.tif")),TGO), TGO),

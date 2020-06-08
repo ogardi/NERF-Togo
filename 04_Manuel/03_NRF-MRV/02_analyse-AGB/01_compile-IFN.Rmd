@@ -3,9 +3,35 @@
 
 #### Description {-}
 
-Description de la méthodologie / script
+La détermination de la biomasse arborée est basée sur les données de l'inventaire forestier IFN-1 réalisé en 2015/16, en utilisant les données des parcelles (coordonnées du centre de la parcelle et strate de couverture du sol IFN), ainsi que les espèces d'arbres, le diamètre à hauteur poitrine (D à 1.3m) et la hauteur de **tous les arbres avec DHP ≥ 10 cm enregistrés dans un rayon de 20 mètres autour du centre de la parcelle**.
 
-#### _AGB/2_compile-IFN.R_ {-}
+Toutes les espèces d'arbres sont attribuées avec leur **densité de bois basale ou infradensité, compilée par l'étude de la biomasse de Fonton et al (2018) en utilisant les bases de données [GlobalWoodDensityDatabase](https://doi.org/10.5061/dryad.234) de Zanne et al. (2009) et [ICRAF Wood Density](http://db.worldagroforestry.org/wd)**. La fonction allométrique de [Chave et al. (2014)](https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.12629) est utilisé pour estimer la biomasse aérienne des arbres sur base de la densité du bois $\rho$, du diamètre à hauteur poitrine $D$ et de la hauteur totale $H$ des arbres: $B_{aérienne} = 0.0673 (\rho D^2 H)^{0.976}$. Selon l'étude de Fonton et al. 2018 **la fonction allométrique de [Chave et al. (2014)](https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.12629) est la fonction la plus approprié pour l'estimation de la biomasse aérienne des arbres au Togo**. 
+
+Par la suite, les biomasses des arbres en surface sont additionnées pour toutes les parcelles et converties en tonnes de matière sèche par hectare. Cela est fait séparément pour les arbres vivants et les arbres morts. Sur la base de la biomasse aérienne par hectare, la biomasse racinaire est estimée à l'aide du **rapport racine-tige de [Mokany et al (2006)](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1365-2486.2005.001043.x) pour les forêts sèches tropicales** (0,563 ± 0,086 pour les forêts avec $B_{aérienne} ≤ 20$ t/ha et 0,275 ± 0,003 pour les forêts avec $B_{aérienne} > 20$ t/ha).
+
+
+#### Example
+
+Répartition spatiale des **945 placettes d'inventaire de l'IFN-1** (la taille du cercle correspond à la biomasse trouvée sur les placettes) et répartition de la biomasse aérienne dans les différentes strates de l'IFN (données en tonnes de matière sèche par hectare). 
+
+![](images/AGB-IFN.png)
+Biomasse déterminée à partir des données IFN-1 (en tonnes de matière sèche par hectare) par strate IFN et par compartiment : biomasse aérienne des arbres, bois mort, biomasse racinaire des arbres, et biomasse totale des arbres.
+```{r, echo=FALSE}
+tab <- read.csv("images/AGB-LULC.csv")
+names(tab) <- c("Strate IFN", "$n$", 
+                "$\\\\\\mu$", "$\\\\\\sigma$", 
+                "$\\\\\\mu$", "$\\\\\\sigma$", 
+                "$\\\\\\mu$", "$\\\\\\sigma$", 
+                "$\\\\\\mu$", "$\\\\\\sigma$")
+tab %>%
+  kable(digits = 1) %>%
+  kable_styling() %>%
+  add_header_above(c(" ", " ", "$B_{aérienne}$" = 2, 
+                     "$B_{morte}$" = 2, "$B_{racinaire}$" = 2, 
+                     "$B_{totale}$" = 2))
+```
+
+#### Script R: `03_NRF-MRV/02_AGB/_src/01_compile-AGB.R` {-}
 
 ```{r, code=readLines("../03_NRF-MRV/02_AGB/_src/01_compile-AGB.R"), eval=FALSE}
 ```

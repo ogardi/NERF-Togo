@@ -1,7 +1,7 @@
 
-## Analyse surfaces forestiers {#NRF-analyse-FCC}
+## Analyse surfaces forestiers {#NRF-analyse-MCF}
 
-L'analyse des surfaces forestiers est fait par une **classification supervisée**. Les données du SSTS sur la couverture des houppiers (Section \@ref(SSTS-couverture-houppiers)) est utilisé pour calibrer un modèle de classification Random Forest sur base des images satellitaires Landsat et les données climatiques Worldclim v2. Tous les parcelles d'entraînement avec une **couverture des houppiers ≥ 30%** sont considérées comme forêt, les autres comme non-forêts. 
+L'analyse des surfaces forestiers est fait par une **classification supervisée**. Les données du SSTS sur la couverture des houppiers (section \@ref(SSTS-couverture-houppiers)) est utilisé pour calibrer un modèle de classification *RandomForest* sur base des images satellitaires Landsat et les données climatiques Worldclim v2. Tous les parcelles d'entraînement avec une **couverture des houppiers ≥ 30%** sont considérées comme forêt, les autres comme non-forêts. 
 
 Le schéma suivant montre les étapes pour la production des cartes forêt/non-forêt sur toute la période 1986 -- 2019:
 

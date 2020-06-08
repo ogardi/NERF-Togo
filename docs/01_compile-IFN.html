@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-05-20" />
+<meta name="date" content="2020-06-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
 <style type="text/css">
@@ -128,7 +129,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="https://ogardi.github.io/SNSF-Togo"><b>Manuel SNSF Togo</b><br>v 1.0 / en développement</a></li>
+<li><a href="https://ogardi.github.io/SNSF-Togo"><b>Manuel SNSF Togo</b><br>NRF v1.1 ( <i>en révision</i> )</a></li>
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Préface</a></li>
 <li class="chapter" data-level="1" data-path="00_introduction.html"><a href="00_introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
@@ -201,114 +202,460 @@ Système Nationale de Surveillance des Forêts</div></a>
 <h3><span class="header-section-number">4.2.1</span> Analyse des données IFN</h3>
 <div id="description" class="section level4 unnumbered">
 <h4>Description</h4>
-<p>Description de la méthodologie / script</p>
+<p>La détermination de la biomasse arborée est basée sur les données de l’inventaire forestier IFN-1 réalisé en 2015/16, en utilisant les données des parcelles (coordonnées du centre de la parcelle et strate de couverture du sol IFN), ainsi que les espèces d’arbres, le diamètre à hauteur poitrine (D à 1.3m) et la hauteur de <strong>tous les arbres avec DHP ≥ 10 cm enregistrés dans un rayon de 20 mètres autour du centre de la parcelle</strong>.</p>
+<p>Toutes les espèces d’arbres sont attribuées avec leur <strong>densité de bois basale ou infradensité, compilée par l’étude de la biomasse de Fonton et al (2018) en utilisant les bases de données <a href="https://doi.org/10.5061/dryad.234">GlobalWoodDensityDatabase</a> de Zanne et al. (2009) et <a href="http://db.worldagroforestry.org/wd">ICRAF Wood Density</a></strong>. La fonction allométrique de <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.12629">Chave et al. (2014)</a> est utilisé pour estimer la biomasse aérienne des arbres sur base de la densité du bois <span class="math inline">\(\rho\)</span>, du diamètre à hauteur poitrine <span class="math inline">\(D\)</span> et de la hauteur totale <span class="math inline">\(H\)</span> des arbres: <span class="math inline">\(B_{aérienne} = 0.0673 (\rho D^2 H)^{0.976}\)</span>. Selon l’étude de Fonton et al. 2018 <strong>la fonction allométrique de <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.12629">Chave et al. (2014)</a> est la fonction la plus approprié pour l’estimation de la biomasse aérienne des arbres au Togo</strong>.</p>
+<p>Par la suite, les biomasses des arbres en surface sont additionnées pour toutes les parcelles et converties en tonnes de matière sèche par hectare. Cela est fait séparément pour les arbres vivants et les arbres morts. Sur la base de la biomasse aérienne par hectare, la biomasse racinaire est estimée à l’aide du <strong>rapport racine-tige de <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1365-2486.2005.001043.x">Mokany et al (2006)</a> pour les forêts sèches tropicales</strong> (0,563 ± 0,086 pour les forêts avec <span class="math inline">\(B_{aérienne} ≤ 20\)</span> t/ha et 0,275 ± 0,003 pour les forêts avec <span class="math inline">\(B_{aérienne} &gt; 20\)</span> t/ha).</p>
 </div>
-<div id="agb2_compile-ifn.r" class="section level4 unnumbered">
-<h4><em>AGB/2_compile-IFN.R</em></h4>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co">####################################################################</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co"># NERF_Togo/AGB/2_compile-IFN.R: evaluating AGB of IFN plots</span></a>
-<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co"># ------------------------------------------------------------------</span></a>
+<div id="example-7" class="section level4">
+<h4><span class="header-section-number">4.2.1.1</span> Example</h4>
+<p>Répartition spatiale des <strong>945 placettes d’inventaire de l’IFN-1</strong> (la taille du cercle correspond à la biomasse trouvée sur les placettes) et répartition de la biomasse aérienne dans les différentes strates de l’IFN (données en tonnes de matière sèche par hectare).</p>
+<img src="images/AGB-IFN.png" />
+Biomasse déterminée à partir des données IFN-1 (en tonnes de matière sèche par hectare) par strate IFN et par compartiment : biomasse aérienne des arbres, bois mort, biomasse racinaire des arbres, et biomasse totale des arbres.
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="border-bottom:hidden" colspan="1">
+</th>
+<th style="border-bottom:hidden" colspan="1">
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+<span class="math inline">\(B_{aérienne}\)</span>
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+<span class="math inline">\(B_{morte}\)</span>
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+<span class="math inline">\(B_{racinaire}\)</span>
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+<span class="math inline">\(B_{totale}\)</span>
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+Strate IFN
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(n\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(\\\mu\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(\\\sigma\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(\\\mu\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(\\\sigma\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(\\\mu\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(\\\sigma\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(\\\mu\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(\\\sigma\)</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cultures_Jachères/Fourrées
+</td>
+<td style="text-align:right;">
+108
+</td>
+<td style="text-align:right;">
+20.0
+</td>
+<td style="text-align:right;">
+31.7
+</td>
+<td style="text-align:right;">
+2.3
+</td>
+<td style="text-align:right;">
+8.6
+</td>
+<td style="text-align:right;">
+6.6
+</td>
+<td style="text-align:right;">
+8.4
+</td>
+<td style="text-align:right;">
+28.9
+</td>
+<td style="text-align:right;">
+40.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Forêts claires/savanes boisées
+</td>
+<td style="text-align:right;">
+251
+</td>
+<td style="text-align:right;">
+50.1
+</td>
+<td style="text-align:right;">
+33.5
+</td>
+<td style="text-align:right;">
+2.1
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+14.4
+</td>
+<td style="text-align:right;">
+8.7
+</td>
+<td style="text-align:right;">
+66.6
+</td>
+<td style="text-align:right;">
+42.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Forêts denses
+</td>
+<td style="text-align:right;">
+138
+</td>
+<td style="text-align:right;">
+96.8
+</td>
+<td style="text-align:right;">
+69.7
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+26.8
+</td>
+<td style="text-align:right;">
+19.0
+</td>
+<td style="text-align:right;">
+127.3
+</td>
+<td style="text-align:right;">
+89.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Forêts riveraines/marécageuses
+</td>
+<td style="text-align:right;">
+101
+</td>
+<td style="text-align:right;">
+84.1
+</td>
+<td style="text-align:right;">
+66.1
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+5.9
+</td>
+<td style="text-align:right;">
+23.3
+</td>
+<td style="text-align:right;">
+18.0
+</td>
+<td style="text-align:right;">
+110.8
+</td>
+<td style="text-align:right;">
+84.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Plantations forestières
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+23.3
+</td>
+<td style="text-align:right;">
+19.6
+</td>
+<td style="text-align:right;">
+0.1
+</td>
+<td style="text-align:right;">
+0.1
+</td>
+<td style="text-align:right;">
+7.9
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+<td style="text-align:right;">
+31.2
+</td>
+<td style="text-align:right;">
+24.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Plantations fruitières et de palmiers
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+18.9
+</td>
+<td style="text-align:right;">
+21.0
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+5.4
+</td>
+<td style="text-align:right;">
+25.3
+</td>
+<td style="text-align:right;">
+27.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Savane arborée/savane arbustive
+</td>
+<td style="text-align:right;">
+277
+</td>
+<td style="text-align:right;">
+16.4
+</td>
+<td style="text-align:right;">
+15.4
+</td>
+<td style="text-align:right;">
+0.7
+</td>
+<td style="text-align:right;">
+1.6
+</td>
+<td style="text-align:right;">
+6.3
+</td>
+<td style="text-align:right;">
+4.1
+</td>
+<td style="text-align:right;">
+23.3
+</td>
+<td style="text-align:right;">
+19.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="script-r-03_nrf-mrv02_agb_src01_compile-agb.r" class="section level4 unnumbered">
+<h4>Script R: <code>03_NRF-MRV/02_AGB/_src/01_compile-AGB.R</code></h4>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co">###############################################################################</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co"># 01_compile-AGB.R: Évaluation de la biomasse des données de l&#39;IFN</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co"># -----------------------------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"><span class="co"># Bern University of Applied Sciences</span></a>
 <a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co"># Oliver Gardi, &lt;oliver.gardi@bfh.ch&gt;</span></a>
-<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co"># 3 December 2019</span></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co"># 13 Mai 2020</span></a>
 <a class="sourceLine" id="cb21-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb21-8" data-line-number="8">PLOT.SIZE &lt;-<span class="st"> </span><span class="dv">20</span><span class="op">^</span><span class="dv">2</span><span class="op">*</span>pi          <span class="co"># Plot size in square meters</span></a>
-<a class="sourceLine" id="cb21-9" data-line-number="9">RSR.Y    &lt;-<span class="st"> </span><span class="fl">0.563</span>             <span class="co"># Root-shoot ratios according Mokany</span></a>
-<a class="sourceLine" id="cb21-10" data-line-number="10">RSR.Y.SE &lt;-<span class="st"> </span><span class="fl">0.086</span></a>
-<a class="sourceLine" id="cb21-11" data-line-number="11">RSR.O    &lt;-<span class="st"> </span><span class="fl">0.275</span></a>
-<a class="sourceLine" id="cb21-12" data-line-number="12">RSR.O.SE &lt;-<span class="st"> </span><span class="fl">0.003</span></a>
-<a class="sourceLine" id="cb21-13" data-line-number="13">RSR.AGB  &lt;-<span class="st"> </span><span class="dv">20</span> </a>
-<a class="sourceLine" id="cb21-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb21-15" data-line-number="15"><span class="co"># read inventory data</span></a>
-<a class="sourceLine" id="cb21-16" data-line-number="16"><span class="co"># -------------------</span></a>
-<a class="sourceLine" id="cb21-17" data-line-number="17">plots &lt;-<span class="st"> </span><span class="kw">read.xlsx</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/IFN/IFN-Togo-2015.xlsx&quot;</span>), <span class="st">&quot;placettes&quot;</span>)[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
-<a class="sourceLine" id="cb21-18" data-line-number="18"><span class="kw">names</span>(plots) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;PlotID&quot;</span>, <span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;LULC&quot;</span>)</a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co"># Définitions des variables ===================================================</span></a>
+<a class="sourceLine" id="cb21-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">PLOT.SIZE &lt;-<span class="st"> </span><span class="dv">20</span><span class="op">^</span><span class="dv">2</span><span class="op">*</span>pi  <span class="co"># Taille de la parcelle en mètres carrés</span></a>
+<a class="sourceLine" id="cb21-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb21-12" data-line-number="12"><span class="co"># Rapports racines-tige forêts tropicales sèches selon Mokany et al. (2006)</span></a>
+<a class="sourceLine" id="cb21-13" data-line-number="13"><span class="co"># https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1365-2486.2005.001043.x</span></a>
+<a class="sourceLine" id="cb21-14" data-line-number="14">RSR.Y    &lt;-<span class="st"> </span><span class="fl">0.563</span>     <span class="co"># moyenne pour la jeune forêt      </span></a>
+<a class="sourceLine" id="cb21-15" data-line-number="15">RSR.Y.SE &lt;-<span class="st"> </span><span class="fl">0.086</span>     <span class="co"># écart type pour la jeune forêt  </span></a>
+<a class="sourceLine" id="cb21-16" data-line-number="16">RSR.O    &lt;-<span class="st"> </span><span class="fl">0.275</span>     <span class="co"># moyenne pour les forêts matures </span></a>
+<a class="sourceLine" id="cb21-17" data-line-number="17">RSR.O.SE &lt;-<span class="st"> </span><span class="fl">0.003</span>     <span class="co"># écart type pour les forêts matures</span></a>
+<a class="sourceLine" id="cb21-18" data-line-number="18">RSR.AGB  &lt;-<span class="st"> </span><span class="dv">20</span>        <span class="co"># Seuil biomasse aérienne jeunes forêts &lt;-&gt; forêts matures</span></a>
 <a class="sourceLine" id="cb21-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb21-20" data-line-number="20">trees &lt;-<span class="st"> </span><span class="kw">read.xlsx</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/IFN/IFN-Togo-2015.xlsx&quot;</span>), <span class="st">&quot;arbres&quot;</span>)[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">8</span>)]</a>
-<a class="sourceLine" id="cb21-21" data-line-number="21"><span class="kw">names</span>(trees) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;PlotID&quot;</span>, <span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Status&quot;</span>, <span class="st">&quot;DBH&quot;</span>, <span class="st">&quot;H&quot;</span>)</a>
+<a class="sourceLine" id="cb21-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb21-21" data-line-number="21"><span class="co"># Lire et préparer les données IFN-1 ==========================================</span></a>
 <a class="sourceLine" id="cb21-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb21-23" data-line-number="23"><span class="co"># merge with specific wood densities used by from Fonton et al. 2018</span></a>
-<a class="sourceLine" id="cb21-24" data-line-number="24">species &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">table</span>(trees<span class="op">$</span>Species))</a>
-<a class="sourceLine" id="cb21-25" data-line-number="25"><span class="kw">names</span>(species) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Count&quot;</span>)</a>
-<a class="sourceLine" id="cb21-26" data-line-number="26">fonton &lt;-<span class="st"> </span><span class="kw">read.csv2</span>(<span class="kw">paste0</span>(DATA.DIR, <span class="st">&quot;/IFN/donnees_Tg_Fonton.csv&quot;</span>), <span class="dt">encoding=</span><span class="st">&quot;latin1&quot;</span>)[,<span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">7</span>)]</a>
-<a class="sourceLine" id="cb21-27" data-line-number="27">fonton &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="kw">list</span>(<span class="dt">D=</span>fonton<span class="op">$</span>wsg), <span class="dt">by=</span><span class="kw">list</span>(<span class="dt">Species=</span>fonton<span class="op">$</span>NOM), <span class="dt">FUN=</span>modal)</a>
-<a class="sourceLine" id="cb21-28" data-line-number="28">species &lt;-<span class="st"> </span><span class="kw">merge</span>(species[,<span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Count&quot;</span>)], </a>
-<a class="sourceLine" id="cb21-29" data-line-number="29">                     fonton[,<span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;D&quot;</span>)], <span class="dt">by=</span><span class="st">&quot;Species&quot;</span>)</a>
-<a class="sourceLine" id="cb21-30" data-line-number="30">species<span class="op">$</span>Source &lt;-<span class="st"> &quot;Fonton&quot;</span></a>
-<a class="sourceLine" id="cb21-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb21-23" data-line-number="23">plots &lt;-<span class="st"> </span><span class="kw">read.xlsx</span>(<span class="kw">paste0</span>(DIR.RAW.DAT, <span class="st">&quot;/IFN/IFN-Togo-2015.xlsx&quot;</span>), <span class="st">&quot;placettes&quot;</span>)[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
+<a class="sourceLine" id="cb21-24" data-line-number="24"><span class="kw">names</span>(plots) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;PlotID&quot;</span>, <span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;LULC&quot;</span>)</a>
+<a class="sourceLine" id="cb21-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb21-26" data-line-number="26">trees &lt;-<span class="st"> </span><span class="kw">read.xlsx</span>(<span class="st">&quot;~/Downloads/IFN-Togo-2015.xlsx&quot;</span>, <span class="st">&quot;arbres&quot;</span>)[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">8</span>)]</a>
+<a class="sourceLine" id="cb21-27" data-line-number="27"><span class="kw">names</span>(trees) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;PlotID&quot;</span>, <span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Status&quot;</span>, <span class="st">&quot;DBH&quot;</span>, <span class="st">&quot;H&quot;</span>)</a>
+<a class="sourceLine" id="cb21-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb21-29" data-line-number="29"><span class="co"># Tableau avec les espèces et le nombre d&#39;observations</span></a>
+<a class="sourceLine" id="cb21-30" data-line-number="30">species &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">table</span>(trees<span class="op">$</span>Species))</a>
+<a class="sourceLine" id="cb21-31" data-line-number="31"><span class="kw">names</span>(species) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Count&quot;</span>)</a>
 <a class="sourceLine" id="cb21-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb21-33" data-line-number="33"><span class="co"># merge tree table with species densities</span></a>
-<a class="sourceLine" id="cb21-34" data-line-number="34"><span class="co"># -------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb21-35" data-line-number="35">trees &lt;-<span class="st"> </span><span class="kw">merge</span>(trees, species, <span class="dt">by=</span><span class="st">&quot;Species&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb21-37" data-line-number="37"><span class="co"># estimer la biomasse des arbres avec la fonction de Chave et al. (2014)</span></a>
-<a class="sourceLine" id="cb21-38" data-line-number="38"><span class="co"># ----------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb21-39" data-line-number="39">trees<span class="op">$</span>AGB &lt;-<span class="st"> </span><span class="fl">0.0673</span> <span class="op">*</span><span class="st"> </span>(trees<span class="op">$</span>D <span class="op">*</span><span class="st"> </span>trees<span class="op">$</span>DBH<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>trees<span class="op">$</span>H)<span class="op">^</span><span class="fl">0.976</span></a>
-<a class="sourceLine" id="cb21-40" data-line-number="40">trees<span class="op">$</span>AGBm &lt;-<span class="st"> </span>trees<span class="op">$</span>AGBv &lt;-<span class="st"> </span>trees<span class="op">$</span>AGB                <span class="co"># copier les valeurs dans une colonne bois mort</span></a>
-<a class="sourceLine" id="cb21-41" data-line-number="41">trees<span class="op">$</span>AGBv[trees<span class="op">$</span>Status <span class="op">!=</span><span class="st"> &quot;V&quot;</span>] &lt;-<span class="st"> </span><span class="dv">0</span>       <span class="co"># mettre ?? zero la biomass l?? o?? l&#39;arbre n&#39;est pas vivant</span></a>
-<a class="sourceLine" id="cb21-42" data-line-number="42">trees<span class="op">$</span>AGBm[trees<span class="op">$</span>Status <span class="op">==</span><span class="st"> &quot;V&quot;</span>] &lt;-<span class="st"> </span><span class="dv">0</span>       <span class="co"># mettre ?? zero le bois mort l?? o?? l&#39;arbre est vivant</span></a>
-<a class="sourceLine" id="cb21-43" data-line-number="43"></a>
-<a class="sourceLine" id="cb21-44" data-line-number="44"><span class="co"># aggregation de la biomasse est le bois mort par plots (somme)</span></a>
-<a class="sourceLine" id="cb21-45" data-line-number="45"><span class="co"># ----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb21-46" data-line-number="46">plots &lt;-<span class="st"> </span><span class="kw">merge</span>(plots, </a>
-<a class="sourceLine" id="cb21-47" data-line-number="47">               <span class="kw">aggregate</span>(trees[,<span class="kw">c</span>(<span class="st">&quot;AGBv&quot;</span>, <span class="st">&quot;AGBm&quot;</span>)], <span class="dt">by=</span><span class="kw">list</span>(<span class="dt">PlotID=</span>trees<span class="op">$</span>PlotID), </a>
-<a class="sourceLine" id="cb21-48" data-line-number="48">                         <span class="dt">FUN=</span><span class="cf">function</span>(x) <span class="kw">sum</span>(x) <span class="op">*</span><span class="st"> </span><span class="dv">10000</span> <span class="op">/</span><span class="st"> </span>PLOT.SIZE <span class="op">/</span><span class="st"> </span><span class="dv">1000</span>),  </a>
-<a class="sourceLine" id="cb21-49" data-line-number="49">               <span class="dt">by=</span><span class="st">&quot;PlotID&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>)                        <span class="co"># joindre tmp avec notre tableau plotss</span></a>
-<a class="sourceLine" id="cb21-50" data-line-number="50">plots<span class="op">$</span>AGBv[<span class="kw">is.na</span>(plots<span class="op">$</span>AGBv)] &lt;-<span class="st"> </span><span class="dv">0</span>                                            <span class="co"># mettre ?? zero la biomasse et le bois mort pour les plotss sans valeurs (NA)</span></a>
-<a class="sourceLine" id="cb21-51" data-line-number="51">plots<span class="op">$</span>AGBm[<span class="kw">is.na</span>(plots<span class="op">$</span>AGBm)] &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb21-52" data-line-number="52">plots<span class="op">$</span>AGB &lt;-<span class="st"> </span>plots<span class="op">$</span>AGBv <span class="op">+</span><span class="st"> </span>plots<span class="op">$</span>AGBm</a>
-<a class="sourceLine" id="cb21-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb21-33" data-line-number="33"><span class="co"># fusionner avec les densités de bois basales ---------------------------------</span></a>
+<a class="sourceLine" id="cb21-34" data-line-number="34"><span class="co"># Densité basale: rapport entre mass anhydre et volume vert (à l&#39;état saturé)</span></a>
+<a class="sourceLine" id="cb21-35" data-line-number="35"><span class="co"># Source des données: étude biomasse de Fonton et al. 2018</span></a>
+<a class="sourceLine" id="cb21-36" data-line-number="36">fonton &lt;-<span class="st"> </span><span class="kw">read.csv2</span>(<span class="kw">paste0</span>(DIR.RAW.DAT, <span class="st">&quot;/IFN/donnees_Tg_Fonton.csv&quot;</span>), <span class="dt">encoding=</span><span class="st">&quot;latin1&quot;</span>)[,<span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">7</span>)]</a>
+<a class="sourceLine" id="cb21-37" data-line-number="37">fonton &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="kw">list</span>(<span class="dt">D=</span>fonton<span class="op">$</span>wsg), <span class="dt">by=</span><span class="kw">list</span>(<span class="dt">Species=</span>fonton<span class="op">$</span>NOM), <span class="dt">FUN=</span>modal)</a>
+<a class="sourceLine" id="cb21-38" data-line-number="38">species &lt;-<span class="st"> </span><span class="kw">merge</span>(species[,<span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Count&quot;</span>)], </a>
+<a class="sourceLine" id="cb21-39" data-line-number="39">                     fonton[,<span class="kw">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;D&quot;</span>)], <span class="dt">by=</span><span class="st">&quot;Species&quot;</span>)</a>
+<a class="sourceLine" id="cb21-40" data-line-number="40">species<span class="op">$</span>Source &lt;-<span class="st"> &quot;Fonton&quot;</span></a>
+<a class="sourceLine" id="cb21-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb21-42" data-line-number="42"><span class="co"># fusionner avec les arbres dans l&#39;IFN-1</span></a>
+<a class="sourceLine" id="cb21-43" data-line-number="43">trees &lt;-<span class="st"> </span><span class="kw">merge</span>(trees, species, <span class="dt">by=</span><span class="st">&quot;Species&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb21-44" data-line-number="44"></a>
+<a class="sourceLine" id="cb21-45" data-line-number="45"><span class="co"># estimer la biomasse aérienne des arbres  ------------------------------------</span></a>
+<a class="sourceLine" id="cb21-46" data-line-number="46"><span class="co"># en utilisant la fonction allométrique de Chave et al. (2014)</span></a>
+<a class="sourceLine" id="cb21-47" data-line-number="47"><span class="co"># https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.12629</span></a>
+<a class="sourceLine" id="cb21-48" data-line-number="48">trees<span class="op">$</span>AGB &lt;-<span class="st"> </span><span class="fl">0.0673</span> <span class="op">*</span><span class="st"> </span>(trees<span class="op">$</span>D <span class="op">*</span><span class="st"> </span>trees<span class="op">$</span>DBH<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>trees<span class="op">$</span>H)<span class="op">^</span><span class="fl">0.976</span></a>
+<a class="sourceLine" id="cb21-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb21-50" data-line-number="50"><span class="co"># distinguer la biomasse des arbres vivants et celle des arbres morts</span></a>
+<a class="sourceLine" id="cb21-51" data-line-number="51">trees<span class="op">$</span>AGBm &lt;-<span class="st"> </span>trees<span class="op">$</span>AGBv &lt;-<span class="st"> </span>trees<span class="op">$</span>AGB    <span class="co"># Dupliquer les valeurs de la biomasse ...</span></a>
+<a class="sourceLine" id="cb21-52" data-line-number="52">trees<span class="op">$</span>AGBv[trees<span class="op">$</span>Status <span class="op">!=</span><span class="st"> &quot;V&quot;</span>] &lt;-<span class="st"> </span><span class="dv">0</span>     <span class="co"># ... et mettre à 0 aux endroits appropriés</span></a>
+<a class="sourceLine" id="cb21-53" data-line-number="53">trees<span class="op">$</span>AGBm[trees<span class="op">$</span>Status <span class="op">==</span><span class="st"> &quot;V&quot;</span>] &lt;-<span class="st"> </span><span class="dv">0</span>       </a>
 <a class="sourceLine" id="cb21-54" data-line-number="54"></a>
-<a class="sourceLine" id="cb21-55" data-line-number="55"><span class="co"># estimer la biomasse racinaire par plot avec les facteurs root-shoot de Mokany et al. (2006) pour les for??ts tropicales s??ches</span></a>
-<a class="sourceLine" id="cb21-56" data-line-number="56"><span class="co"># -----------------------------------------------------------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb21-57" data-line-number="57">plots<span class="op">$</span>BGB[plots<span class="op">$</span>AGBv <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>plots<span class="op">$</span>AGBv[plots<span class="op">$</span>AGBv <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.Y</a>
-<a class="sourceLine" id="cb21-58" data-line-number="58">plots<span class="op">$</span>BGB[plots<span class="op">$</span>AGBv  <span class="op">&gt;</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>plots<span class="op">$</span>AGBv[plots<span class="op">$</span>AGBv  <span class="op">&gt;</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.O </a>
-<a class="sourceLine" id="cb21-59" data-line-number="59"></a>
-<a class="sourceLine" id="cb21-60" data-line-number="60">plots<span class="op">$</span>BM &lt;-<span class="st"> </span>plots<span class="op">$</span>AGB <span class="op">+</span><span class="st"> </span>plots<span class="op">$</span>BGB</a>
-<a class="sourceLine" id="cb21-61" data-line-number="61"></a>
-<a class="sourceLine" id="cb21-62" data-line-number="62"><span class="co"># write plot coordinates and biomass to file</span></a>
-<a class="sourceLine" id="cb21-63" data-line-number="63"><span class="co"># ------------------------------------------</span></a>
-<a class="sourceLine" id="cb21-64" data-line-number="64"></a>
-<a class="sourceLine" id="cb21-65" data-line-number="65"><span class="kw">write.csv</span>(plots, <span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/IFN-plots.csv&quot;</span>),</a>
-<a class="sourceLine" id="cb21-66" data-line-number="66">          <span class="dt">row.names =</span> <span class="ot">FALSE</span>) <span class="co">#, fileEncoding = &quot;macintosh&quot;)</span></a>
+<a class="sourceLine" id="cb21-55" data-line-number="55"><span class="co"># biomasse aérienne et bois mort par parcelle (somme des arbres) --------------</span></a>
+<a class="sourceLine" id="cb21-56" data-line-number="56">plots &lt;-<span class="st"> </span><span class="kw">merge</span>(plots, </a>
+<a class="sourceLine" id="cb21-57" data-line-number="57">               <span class="kw">aggregate</span>(trees[,<span class="kw">c</span>(<span class="st">&quot;AGBv&quot;</span>, <span class="st">&quot;AGBm&quot;</span>)], </a>
+<a class="sourceLine" id="cb21-58" data-line-number="58">                         <span class="dt">by=</span><span class="kw">list</span>(<span class="dt">PlotID=</span>trees<span class="op">$</span>PlotID), </a>
+<a class="sourceLine" id="cb21-59" data-line-number="59">                         <span class="co"># somme dbiomasse es arbres -&gt; à l&#39;héctare -&gt; en tonne</span></a>
+<a class="sourceLine" id="cb21-60" data-line-number="60">                         <span class="dt">FUN=</span><span class="cf">function</span>(x) <span class="kw">sum</span>(x) <span class="op">*</span><span class="st"> </span><span class="dv">10000</span> <span class="op">/</span><span class="st"> </span>PLOT.SIZE <span class="op">/</span><span class="st"> </span><span class="dv">1000</span>),  </a>
+<a class="sourceLine" id="cb21-61" data-line-number="61">               <span class="dt">by=</span><span class="st">&quot;PlotID&quot;</span>, <span class="dt">all.x=</span><span class="ot">TRUE</span>)  </a>
+<a class="sourceLine" id="cb21-62" data-line-number="62"><span class="co"># mettre à 0 la biomasse et le bois mort pour les parcelles sans valeurs (NA)</span></a>
+<a class="sourceLine" id="cb21-63" data-line-number="63">plots<span class="op">$</span>AGBv[<span class="kw">is.na</span>(plots<span class="op">$</span>AGBv)] &lt;-<span class="st"> </span><span class="dv">0</span>                                            </a>
+<a class="sourceLine" id="cb21-64" data-line-number="64">plots<span class="op">$</span>AGBm[<span class="kw">is.na</span>(plots<span class="op">$</span>AGBm)] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb21-65" data-line-number="65">plots<span class="op">$</span>AGB &lt;-<span class="st"> </span>plots<span class="op">$</span>AGBv <span class="op">+</span><span class="st"> </span>plots<span class="op">$</span>AGBm</a>
+<a class="sourceLine" id="cb21-66" data-line-number="66"></a>
 <a class="sourceLine" id="cb21-67" data-line-number="67"></a>
-<a class="sourceLine" id="cb21-68" data-line-number="68"></a>
-<a class="sourceLine" id="cb21-69" data-line-number="69"><span class="co"># produire le tableau crois?? avec les biomasses par strate (fonctionalit?? de l&#39;extension dplyr)</span></a>
-<a class="sourceLine" id="cb21-70" data-line-number="70"><span class="co"># ---------------------------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb21-71" data-line-number="71"><span class="kw">pdf</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGB-vs-LULC.pdf&quot;</span>))</a>
-<a class="sourceLine" id="cb21-72" data-line-number="72"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">cex.axis=</span><span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb21-73" data-line-number="73"><span class="kw">boxplot</span>(plots<span class="op">$</span>AGBv<span class="op">~</span>plots<span class="op">$</span>LULC, <span class="dt">las=</span><span class="dv">2</span>, <span class="dt">ylab=</span><span class="st">&quot;AGB (t/ha)&quot;</span>, <span class="dt">xlab=</span><span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb21-74" data-line-number="74"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb21-68" data-line-number="68"><span class="co"># estimer la biomasse racinaire par parcelle ----------------------------------</span></a>
+<a class="sourceLine" id="cb21-69" data-line-number="69"><span class="co"># avec les facteurs root-shoot de Mokany et al. (2006) </span></a>
+<a class="sourceLine" id="cb21-70" data-line-number="70"></a>
+<a class="sourceLine" id="cb21-71" data-line-number="71"><span class="co"># jeunes forêts</span></a>
+<a class="sourceLine" id="cb21-72" data-line-number="72">plots<span class="op">$</span>BGB[plots<span class="op">$</span>AGBv <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>plots<span class="op">$</span>AGBv[plots<span class="op">$</span>AGBv <span class="op">&lt;=</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.Y</a>
+<a class="sourceLine" id="cb21-73" data-line-number="73"><span class="co"># forêts matures</span></a>
+<a class="sourceLine" id="cb21-74" data-line-number="74">plots<span class="op">$</span>BGB[plots<span class="op">$</span>AGBv  <span class="op">&gt;</span><span class="st"> </span>RSR.AGB] &lt;-<span class="st"> </span>plots<span class="op">$</span>AGBv[plots<span class="op">$</span>AGBv  <span class="op">&gt;</span><span class="st"> </span>RSR.AGB] <span class="op">*</span><span class="st"> </span>RSR.O </a>
 <a class="sourceLine" id="cb21-75" data-line-number="75"></a>
-<a class="sourceLine" id="cb21-76" data-line-number="76"><span class="kw">pdf</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGBm-vs-LULC.pdf&quot;</span>))</a>
-<a class="sourceLine" id="cb21-77" data-line-number="77"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">cex.axis=</span><span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb21-78" data-line-number="78"><span class="kw">boxplot</span>(plots<span class="op">$</span>AGBm<span class="op">~</span>plots<span class="op">$</span>LULC, <span class="dt">las=</span><span class="dv">2</span>, <span class="dt">ylab=</span><span class="st">&quot;Bmort (t/ha)&quot;</span>, <span class="dt">xlab=</span><span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb21-79" data-line-number="79"><span class="kw">dev.off</span>()</a>
-<a class="sourceLine" id="cb21-80" data-line-number="80"></a>
-<a class="sourceLine" id="cb21-81" data-line-number="81"><span class="co"># biomass per LU/LC category</span></a>
-<a class="sourceLine" id="cb21-82" data-line-number="82">bm.lulc.tab &lt;-<span class="st"> </span>plots <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-83" data-line-number="83"><span class="st">  </span><span class="kw">group_by</span>(LULC) <span class="op">%&gt;%</span><span class="st">                                                       </span><span class="co"># grouper par strate</span></a>
-<a class="sourceLine" id="cb21-84" data-line-number="84"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">length</span>(AGB),</a>
-<a class="sourceLine" id="cb21-85" data-line-number="85">            <span class="dt">AGBv.mean=</span><span class="kw">mean</span>(AGBv), <span class="dt">AGBv.sd=</span><span class="kw">sd</span>(AGBv),     <span class="co"># definir les colonnes et le calcul des valeurs</span></a>
-<a class="sourceLine" id="cb21-86" data-line-number="86">            <span class="dt">BGB.mean=</span><span class="kw">mean</span>(BGB), <span class="dt">BGB.sd=</span><span class="kw">sd</span>(BGB),</a>
-<a class="sourceLine" id="cb21-87" data-line-number="87">            <span class="dt">AGBm.mean=</span><span class="kw">mean</span>(AGBm), <span class="dt">AGBm.sd=</span><span class="kw">sd</span>(AGBm),     <span class="co"># definir les colonnes et le calcul des valeurs</span></a>
-<a class="sourceLine" id="cb21-88" data-line-number="88">            <span class="dt">BM.mean =</span><span class="kw">mean</span>(BM),  <span class="dt">BM.sd =</span><span class="kw">sd</span>(BM))</a>
-<a class="sourceLine" id="cb21-89" data-line-number="89"></a>
-<a class="sourceLine" id="cb21-90" data-line-number="90"><span class="kw">write.csv</span>(bm.lulc.tab, <span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGB_LULC.csv&quot;</span>), </a>
-<a class="sourceLine" id="cb21-91" data-line-number="91">          <span class="dt">row.names =</span> <span class="ot">FALSE</span>) <span class="co">#, fileEncoding = &quot;macintosh&quot;)</span></a>
-<a class="sourceLine" id="cb21-92" data-line-number="92"></a>
-<a class="sourceLine" id="cb21-93" data-line-number="93"><span class="co"># differences biomass per LU/LC conversion</span></a>
-<a class="sourceLine" id="cb21-94" data-line-number="94">dbm.lulc.tab &lt;-<span class="st"> </span>bm.lulc.tab <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-95" data-line-number="95"><span class="st">  </span><span class="kw">expand</span>(<span class="dt">FROM=</span><span class="kw">nesting</span>(LULC, AGB.mean, AGB.sd, BGB.mean, BGB.sd, BM.mean, BM.sd), </a>
-<a class="sourceLine" id="cb21-96" data-line-number="96">         <span class="dt">TO=</span><span class="kw">nesting</span>(LULC, AGB.mean, AGB.sd, BGB.mean, BGB.sd, BM.mean, BM.sd)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-97" data-line-number="97"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">from =</span> FROM<span class="op">$</span>LULC, <span class="dt">to =</span> TO<span class="op">$</span>LULC,</a>
-<a class="sourceLine" id="cb21-98" data-line-number="98">         <span class="dt">dAGB.mean=</span>TO<span class="op">$</span>AGB.mean <span class="op">-</span><span class="st"> </span>FROM<span class="op">$</span>AGB.mean, <span class="dt">dAGB.sd=</span><span class="kw">sqrt</span>(FROM<span class="op">$</span>AGB.sd<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>TO<span class="op">$</span>AGB.sd<span class="op">^</span><span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb21-99" data-line-number="99">         <span class="dt">dBGB.mean=</span>TO<span class="op">$</span>BGB.mean <span class="op">-</span><span class="st"> </span>FROM<span class="op">$</span>BGB.mean, <span class="dt">dBGB.sd=</span><span class="kw">sqrt</span>(FROM<span class="op">$</span>BGB.sd<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>TO<span class="op">$</span>BGB.sd<span class="op">^</span><span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb21-100" data-line-number="100">         <span class="dt">dBM.mean =</span>TO<span class="op">$</span>BM.mean  <span class="op">-</span><span class="st"> </span>FROM<span class="op">$</span>BM.mean,  <span class="dt">dBM.sd =</span><span class="kw">sqrt</span>(FROM<span class="op">$</span>BM.sd<span class="op">^</span><span class="dv">2</span>  <span class="op">+</span><span class="st"> </span>TO<span class="op">$</span>BM.sd<span class="op">^</span><span class="dv">2</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-101" data-line-number="101"><span class="st">  </span><span class="kw">select</span>(<span class="kw">c</span>(from, to, dAGB.mean, dAGB.sd, dBGB.mean, dBGB.sd, dBM.mean, dBM.sd))</a>
-<a class="sourceLine" id="cb21-102" data-line-number="102"></a>
-<a class="sourceLine" id="cb21-103" data-line-number="103"><span class="kw">write.csv</span>(dbm.lulc.tab, <span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGB_LULC-diff.csv&quot;</span>), </a>
-<a class="sourceLine" id="cb21-104" data-line-number="104">          <span class="dt">row.names =</span> <span class="ot">FALSE</span>) <span class="co">#, fileEncoding = &quot;macintosh&quot;)</span></a></code></pre></div>
+<a class="sourceLine" id="cb21-76" data-line-number="76"><span class="co"># Biomasse totale = biomasse aérienne (vivant et mort) + biomasse racinaire</span></a>
+<a class="sourceLine" id="cb21-77" data-line-number="77">plots<span class="op">$</span>BM &lt;-<span class="st"> </span>plots<span class="op">$</span>AGB <span class="op">+</span><span class="st"> </span>plots<span class="op">$</span>BGB</a>
+<a class="sourceLine" id="cb21-78" data-line-number="78"></a>
+<a class="sourceLine" id="cb21-79" data-line-number="79"></a>
+<a class="sourceLine" id="cb21-80" data-line-number="80"><span class="co"># Sauvegarder le résultat et production des figures et tableaux ===============</span></a>
+<a class="sourceLine" id="cb21-81" data-line-number="81"><span class="co"># Note: sur Mac utiliser fileEncoding = &quot;macintosh&quot; </span></a>
+<a class="sourceLine" id="cb21-82" data-line-number="82"></a>
+<a class="sourceLine" id="cb21-83" data-line-number="83"><span class="kw">write.csv</span>(plots, <span class="kw">paste0</span>(DIR.MRV.AGB.REF, <span class="st">&quot;/IFN-plots.csv&quot;</span>), </a>
+<a class="sourceLine" id="cb21-84" data-line-number="84">          <span class="dt">row.names =</span> <span class="ot">FALSE</span>) <span class="co">#, fileEncoding = &quot;macintosh&quot;)</span></a>
+<a class="sourceLine" id="cb21-85" data-line-number="85"></a>
+<a class="sourceLine" id="cb21-86" data-line-number="86"></a>
+<a class="sourceLine" id="cb21-87" data-line-number="87"><span class="co"># distribution des biomasses par strate IFN ------------------------------------</span></a>
+<a class="sourceLine" id="cb21-88" data-line-number="88"></a>
+<a class="sourceLine" id="cb21-89" data-line-number="89"><span class="co"># boxplot biomasse aérienne</span></a>
+<a class="sourceLine" id="cb21-90" data-line-number="90"><span class="kw">pdf</span>(<span class="kw">paste0</span>(DIR.MRV.AGB.REF, <span class="st">&quot;/AGB-vs-LULC.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb21-91" data-line-number="91"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">cex.axis=</span><span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb21-92" data-line-number="92"><span class="kw">boxplot</span>(plots<span class="op">$</span>AGBv<span class="op">~</span>plots<span class="op">$</span>LULC, <span class="dt">las=</span><span class="dv">2</span>, <span class="dt">ylab=</span><span class="st">&quot;AGB (t/ha)&quot;</span>, <span class="dt">xlab=</span><span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb21-93" data-line-number="93"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb21-94" data-line-number="94"></a>
+<a class="sourceLine" id="cb21-95" data-line-number="95"><span class="co"># boxplot bois mort</span></a>
+<a class="sourceLine" id="cb21-96" data-line-number="96"><span class="kw">pdf</span>(<span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGBm-vs-LULC.pdf&quot;</span>))</a>
+<a class="sourceLine" id="cb21-97" data-line-number="97"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">11</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">cex.axis=</span><span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb21-98" data-line-number="98"><span class="kw">boxplot</span>(plots<span class="op">$</span>AGBm<span class="op">~</span>plots<span class="op">$</span>LULC, <span class="dt">las=</span><span class="dv">2</span>, <span class="dt">ylab=</span><span class="st">&quot;Bmort (t/ha)&quot;</span>, <span class="dt">xlab=</span><span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb21-99" data-line-number="99"><span class="kw">dev.off</span>()</a>
+<a class="sourceLine" id="cb21-100" data-line-number="100"></a>
+<a class="sourceLine" id="cb21-101" data-line-number="101"><span class="co"># tableau biomass per LU/LC category (moyenne et écart type)</span></a>
+<a class="sourceLine" id="cb21-102" data-line-number="102">bm.lulc.tab &lt;-<span class="st"> </span>plots <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-103" data-line-number="103"><span class="st">  </span><span class="kw">group_by</span>(LULC) <span class="op">%&gt;%</span><span class="st">            </span><span class="co"># grouper par strate</span></a>
+<a class="sourceLine" id="cb21-104" data-line-number="104"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">length</span>(AGB),      <span class="co"># definir colonnes et calcul des valeurs</span></a>
+<a class="sourceLine" id="cb21-105" data-line-number="105">            <span class="dt">AGBv.mean=</span><span class="kw">mean</span>(AGBv), <span class="dt">AGBv.sd=</span><span class="kw">sd</span>(AGBv),     </a>
+<a class="sourceLine" id="cb21-106" data-line-number="106">            <span class="dt">BGB.mean=</span><span class="kw">mean</span>(BGB), <span class="dt">BGB.sd=</span><span class="kw">sd</span>(BGB),</a>
+<a class="sourceLine" id="cb21-107" data-line-number="107">            <span class="dt">AGBm.mean=</span><span class="kw">mean</span>(AGBm), <span class="dt">AGBm.sd=</span><span class="kw">sd</span>(AGBm), </a>
+<a class="sourceLine" id="cb21-108" data-line-number="108">            <span class="dt">BM.mean =</span><span class="kw">mean</span>(BM),  <span class="dt">BM.sd =</span><span class="kw">sd</span>(BM))</a>
+<a class="sourceLine" id="cb21-109" data-line-number="109"><span class="kw">write.csv</span>(bm.lulc.tab, <span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGB_LULC.csv&quot;</span>), </a>
+<a class="sourceLine" id="cb21-110" data-line-number="110">          <span class="dt">row.names =</span> <span class="ot">FALSE</span>) <span class="co">#, fileEncoding = &quot;macintosh&quot;)</span></a>
+<a class="sourceLine" id="cb21-111" data-line-number="111"></a>
+<a class="sourceLine" id="cb21-112" data-line-number="112"><span class="co"># différences biomasse par type de conversion LU/LC ---------------------------</span></a>
+<a class="sourceLine" id="cb21-113" data-line-number="113">dbm.lulc.tab &lt;-<span class="st"> </span>bm.lulc.tab <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-114" data-line-number="114"><span class="st">  </span><span class="kw">expand</span>(<span class="dt">FROM =</span> <span class="kw">nesting</span>(LULC, AGB.mean, AGB.sd, BGB.mean, BGB.sd, BM.mean, BM.sd), </a>
+<a class="sourceLine" id="cb21-115" data-line-number="115">         <span class="dt">TO   =</span> <span class="kw">nesting</span>(LULC, AGB.mean, AGB.sd, BGB.mean, BGB.sd, BM.mean, BM.sd)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-116" data-line-number="116"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">from =</span> FROM<span class="op">$</span>LULC, <span class="dt">to =</span> TO<span class="op">$</span>LULC,</a>
+<a class="sourceLine" id="cb21-117" data-line-number="117">         <span class="dt">dAGB.mean =</span> TO<span class="op">$</span>AGB.mean <span class="op">-</span><span class="st"> </span>FROM<span class="op">$</span>AGB.mean, <span class="dt">dAGB.sd=</span><span class="kw">sqrt</span>(FROM<span class="op">$</span>AGB.sd<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>TO<span class="op">$</span>AGB.sd<span class="op">^</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb21-118" data-line-number="118">         <span class="dt">dBGB.mean =</span> TO<span class="op">$</span>BGB.mean <span class="op">-</span><span class="st"> </span>FROM<span class="op">$</span>BGB.mean, <span class="dt">dBGB.sd=</span><span class="kw">sqrt</span>(FROM<span class="op">$</span>BGB.sd<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>TO<span class="op">$</span>BGB.sd<span class="op">^</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb21-119" data-line-number="119">         <span class="dt">dBM.mean  =</span> TO<span class="op">$</span>BM.mean  <span class="op">-</span><span class="st"> </span>FROM<span class="op">$</span>BM.mean,  <span class="dt">dBM.sd =</span><span class="kw">sqrt</span>(FROM<span class="op">$</span>BM.sd<span class="op">^</span><span class="dv">2</span>  <span class="op">+</span><span class="st"> </span>TO<span class="op">$</span>BM.sd<span class="op">^</span><span class="dv">2</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-120" data-line-number="120"><span class="st">  </span><span class="kw">select</span>(<span class="kw">c</span>(from, to, dAGB.mean, dAGB.sd, dBGB.mean, dBGB.sd, dBM.mean, dBM.sd))</a>
+<a class="sourceLine" id="cb21-121" data-line-number="121"><span class="kw">write.csv</span>(dbm.lulc.tab, <span class="kw">paste0</span>(AGB.REF.DIR, <span class="st">&quot;/AGB_LULC-diff.csv&quot;</span>), </a>
+<a class="sourceLine" id="cb21-122" data-line-number="122">          <span class="dt">row.names =</span> <span class="ot">FALSE</span>) <span class="co">#, fileEncoding = &quot;macintosh&quot;)</span></a></code></pre></div>
 
 </div>
 </div>

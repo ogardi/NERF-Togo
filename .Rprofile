@@ -16,8 +16,10 @@ library("openxlsx")     # Lire et écrire des fichiers Excel (xlsx)
 library("dplyr")        # Fonctions pour manipuler des données
 library("tidyr")        # Fonctions pour reorganiser des données
 library("ggplot2")      # Production des figures
+library("RColorBrewer") # palettes de couleurs
 library("foreach")      # Faire des calcules en parallèle ...
 library("doParallel")   # ... sur plusieurs processeurs
+library("knitr")        # pour la documentation html
 
 
 # Créer un environnement caché  ===============================================
@@ -55,6 +57,7 @@ library("doParallel")   # ... sur plusieurs processeurs
 .snsf$DIR.MRV.MCF.VAL   <- paste0(.snsf$DIR.MRV.MCF, "/04_validation")
 
 .snsf$DIR.MRV.AGB   <- paste0(.snsf$DIR.MRV, "/02_AGB")
+.snsf$DIR.MRV.AGB.REF   <- paste0(.snsf$DIR.MRV.AGB, "/01_ref-maps")
 
 # Système de référence des coordonnées ----------
 

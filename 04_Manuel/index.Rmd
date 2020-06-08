@@ -19,7 +19,7 @@ output:
       toc:
         collapse: subsection
         scroll_highlight: yes
-        before: <li><a href="https://ogardi.github.io/SNSF-Togo"><b>Manuel SNSF Togo</b><br>v 1.0 / en développement</a></li>
+        before: <li><a href="https://ogardi.github.io/SNSF-Togo"><b>Manuel SNSF Togo</b><br>NRF v1.1 ( <i>en révision</i> )</a></li>
         after:  <li><a href="https://github.com/ogardi/SNSF-Togo">Dépôt du code sur GitHub</a></li>
       toolbar:
         position: fixed
@@ -41,6 +41,11 @@ output:
         all: ['facebook', 'twitter', 'linkedin', 'weibo', 'instapaper']
       info: yes
 ---
+
+```{r, echo=FALSE}
+library("knitr")
+library("kableExtra")
+```
 
 ![](images/NERF-Togo.png)
 

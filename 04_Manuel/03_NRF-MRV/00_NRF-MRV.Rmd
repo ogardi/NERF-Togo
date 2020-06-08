@@ -1,7 +1,7 @@
 
 # Analyses NRF/MRV {#NRF-MRV}
 
-Le Togo a soumis son premier **Niveau de Référence pour les Forêts (NRF 1.0)** en Janvier 2020 ([*Soumissions du Togo sur la plateforme web REDD+ de la CCNUCC*](https://redd.unfccc.int/submissions.html?country=tgo)). Il est basé sur l'évolution de la couverture forestier entre 2003 -- 2018 (pertes et gains des terres forestières à une couverture du houppier ≥ 30%) et le stockage de carbone dans la biomasse aérienne des arbres (incl. bois mort sur pied)
+Le Togo a soumis son premier **Niveau de Référence pour les Forêts (NRF v1.0)** en Janvier 2020 ([*Soumissions du Togo sur la plateforme web REDD+ de la CCNUCC*](https://redd.unfccc.int/submissions.html?country=tgo)). Il est basé sur l'évolution de la couverture forestier entre 2003 -- 2018 (pertes et gains des terres forestières à une couverture du houppier ≥ 30%) et le stockage de carbone dans la biomasse aérienne des arbres (incl. bois mort sur pied)
 
 Les données de base qu'on a utilisé pour effectuer ce travail sont: 
 
@@ -15,5 +15,5 @@ Chaque section commence par une description de la méthodologie utilisée et des
 
 - **Section \@ref(SSTS-BdD)** décrit l'acquisition et la préparation des données de télédétection dans le cadre du Système de Surveillance Terrestre par Satellite SSTS (Images Landsat, données WorldClim, ...).
 - **Section \@ref(SSTS-collecte)** décrit la collecte de données d'entraînement et de validation dans le cadre du SSTS.
-- **Section \@ref(NRF-analyse-FCC)** décrit les différentes étapes nécessaires pour la cartographie des surfaces forestières et leur évolution: la classification des séries de cartes, leur néttoyage et validation.
+- **Section \@ref(NRF-analyse-MCF)** décrit les différentes étapes nécessaires pour la cartographie des surfaces forestières et leur évolution: la classification des séries de cartes, leur néttoyage et validation.
 - **Section \@ref(NRF-analyse-AGB)** décrit les différentes étapes nécessaires pour la cartographie des la biomasse aérienne: l'évaluation des données de l'IFN, la calibration des cartes de biomasse leur néttoyage et l'analyse de l'évolution de la biomasse dans le temps.

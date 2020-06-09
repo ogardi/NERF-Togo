@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-06-03" />
+<meta name="date" content="2020-06-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@ Système Nationale de Surveillance des Forêts</div>" />
   
   
 <link rel="prev" href="01_compile-IFN.html"/>
-<link rel="next" href="03_clean-AGB-maps.html"/>
+<link rel="next" href="00_analyse-ER.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -174,9 +174,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="00_analyse-AGB.html"><a href="00_analyse-AGB.html"><i class="fa fa-check"></i><b>4.2</b> Analyse biomasse aérienne</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="01_compile-IFN.html"><a href="01_compile-IFN.html"><i class="fa fa-check"></i><b>4.2.1</b> Analyse des données IFN</a></li>
 <li class="chapter" data-level="4.2.2" data-path="02_create-AGB-maps.html"><a href="02_create-AGB-maps.html"><i class="fa fa-check"></i><b>4.2.2</b> Calibration et prédiction</a></li>
-<li class="chapter" data-level="4.2.3" data-path="03_clean-AGB-maps.html"><a href="03_clean-AGB-maps.html"><i class="fa fa-check"></i><b>4.2.3</b> Nettoyage des cartes brutes</a></li>
-<li class="chapter" data-level="4.2.4" data-path="04_analyze-AGB-maps.html"><a href="04_analyze-AGB-maps.html"><i class="fa fa-check"></i><b>4.2.4</b> Production des résultats</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3" data-path="00_analyse-ER.html"><a href="00_analyse-ER.html"><i class="fa fa-check"></i><b>4.3</b> Analyse émissions/séquestrations</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ogardi/SNSF-Togo">Dépôt du code sur GitHub</a></li>
@@ -202,10 +201,19 @@ Système Nationale de Surveillance des Forêts</div></a>
 <h3><span class="header-section-number">4.2.2</span> Calibration et prédiction</h3>
 <div id="description-1" class="section level4 unnumbered">
 <h4>Description</h4>
-<p>Description de la méthodologie / script</p>
+<p>A partir de la <strong>biomasse aérienne déterminée sur les parcelles IFN en 2015/16</strong> (t/ha matière sèche), un modèle de biomasse est calibré sur bases de <a href="01_Landsat.html#SSTS-Landsat">l’image satellitaire Landsat</a> de 2015 (bandes et indices <code>B, G, R, NIR, SWIR1, SWIR2, nbr, ndmi, ndvi, evi</code>) et les <a href="02_Worldclim.html#SSTS-Worldclim">données climatiques Worldclim</a> (<code>BIO1, BIO4, BIO12, BIO15</code>). Ce sont les mêmes variables qui ont déjà été utilisées pour la <a href="01_create-FC-maps.html#NRF-create-fc-maps">classification forêt/non-forêt</a>.</p>
+<p><strong>Dans une première étape, les variables sont extraites</strong>, c’est-à-dire que les valeurs des pixels sous les rayons des parcelles sont lues à partir des images Landsat et Worldclim et moyennées en conséquence. Ensuite, les variable sont mis en correspandance avec les biomasses aériennes à travers un <strong>modèle de régression <code>RandomForest</code></strong>. Ce modèle est utilisé pour créer une carte de la biomasse aérienne pour l’année 2015.</p>
+<p>En supposant que la biomasse sur la plupart des pixels reste constante, <strong>la carte de la biomasse aérienne 2015 est utilisée comme base pour calibrer des cartes pour les années 2003 et 2018</strong> (début et fin de la période de référence) avec la même méthode: 0,1% des pixels de la carte de la biomasse 2015 (environ 100 000 pixels) sont utilisés comme pixels d’entraînement pour la calibration d’un modèle RandomForest qui est ensuite utilisé pour la production de la carte.</p>
 </div>
-<div id="agb3_create-agb-maps.r" class="section level4 unnumbered">
-<h4><em>AGB/3_create-AGB-maps.R</em></h4>
+<div id="example-8" class="section level4">
+<h4><span class="header-section-number">4.2.2.1</span> Example</h4>
+<p>Répartition spatiale des <strong>945 placettes d’inventaire de l’IFN-1</strong> (la taille du cercle correspond à la biomasse trouvée sur les placettes) et carte de la biomasse aérienne résultant. Le diagramme de dispersion montre la correlation entre la biomasse sur la carte et celle trouvé sur les parcelles de l’IFN (<span class="math inline">\(R^2 = 70.7%\)</span>). La carte sous-estime les fortes biomasses (effet de saturation).</p>
+<p><img src="images/AGB-refmap-2015.png" /></p>
+<p>Utilisation de la <strong>carte de biomasse 2015 comme référence pour la calibration des cartes 2003 et 2018</strong>. Le détail montre une région au sud de Kpalimé.</p>
+<p><img src="images/AGB-rawmaps.png" /></p>
+</div>
+<div id="script-r-03_nrf-mrv02_agb_src02_create-agb-maps.r" class="section level4 unnumbered">
+<h4>Script R: <code>03_NRF-MRV/02_AGB/_src/02_create-AGB-maps.R</code></h4>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co">###############################################################################</span></a>
 <a class="sourceLine" id="cb22-2" data-line-number="2"><span class="co"># 02_create-AGB-maps.R: Modélisation et création des cartes de biomasse</span></a>
 <a class="sourceLine" id="cb22-3" data-line-number="3"><span class="co"># -----------------------------------------------------------------------------</span></a>
@@ -734,13 +742,14 @@ Système Nationale de Surveillance des Forêts</div></a>
 
 </div>
 </div>
+</div>
             </section>
 
           </div>
         </div>
       </div>
 <a href="01_compile-IFN.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="03_clean-AGB-maps.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="00_analyse-ER.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -25,7 +25,7 @@ Système Nationale de Surveillance des Forêts</div>" />
 <meta name="author" content="Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima" />
 
 
-<meta name="date" content="2020-06-03" />
+<meta name="date" content="2020-06-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,9 +174,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="00_analyse-AGB.html"><a href="00_analyse-AGB.html"><i class="fa fa-check"></i><b>4.2</b> Analyse biomasse aérienne</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="01_compile-IFN.html"><a href="01_compile-IFN.html"><i class="fa fa-check"></i><b>4.2.1</b> Analyse des données IFN</a></li>
 <li class="chapter" data-level="4.2.2" data-path="02_create-AGB-maps.html"><a href="02_create-AGB-maps.html"><i class="fa fa-check"></i><b>4.2.2</b> Calibration et prédiction</a></li>
-<li class="chapter" data-level="4.2.3" data-path="03_clean-AGB-maps.html"><a href="03_clean-AGB-maps.html"><i class="fa fa-check"></i><b>4.2.3</b> Nettoyage des cartes brutes</a></li>
-<li class="chapter" data-level="4.2.4" data-path="04_analyze-AGB-maps.html"><a href="04_analyze-AGB-maps.html"><i class="fa fa-check"></i><b>4.2.4</b> Production des résultats</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3" data-path="00_analyse-ER.html"><a href="00_analyse-ER.html"><i class="fa fa-check"></i><b>4.3</b> Analyse émissions/séquestrations</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ogardi/SNSF-Togo">Dépôt du code sur GitHub</a></li>
@@ -198,7 +197,7 @@ Système Nationale de Surveillance des Forêts</div></a>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="production-des-cartes-foretnon-foret" class="section level3">
+<div id="NRF-create-fc-maps" class="section level3">
 <h3><span class="header-section-number">4.1.1</span> Production des cartes Forêt/Non-Forêt</h3>
 <p>La <strong>production de la carte forêt/non-forêt 2018</strong> est basée sur la couverture des houppiers déterminée dans les <a href="02_training-plots.html#SSTS-training-plots">parcelles d’entraînement</a>, les <a href="01_Landsat.html#SSTS-Landsat">images satellitaires Landsat</a> (bandes et indices <code>B, G, R, NIR, SWIR1, SWIR2, nbr, ndmi, ndvi, evi</code>) et les <a href="02_Worldclim.html#SSTS-Worldclim">données climatiques Worldclim</a> (<code>BIO1, BIO4, BIO12, BIO15</code>).</p>
 <p>Dans une première étape, les variables Landsat et Worldclim sont extraites pour toutes les <strong>parcelles d’entraînement de la période de référence 1.1.2017 - 31.12.2018</strong> et les parcelles d’entraînement sont classées comme “forestières” ou “non forestières” en fonction de leur couverture des houppiers (forêt ≥ 30% de couverture des houppiers). Par la suite, des cartes forêt/non-forêt 2018 sont produites pour chaque chemin WRS. Pour cela, la fonction <code>classify.image()</code> est utilisée, qui crée un modèle de classification en <strong>utilisant l’algorithme RandomForest</strong> et une carte correspondante. Pour le chemin WRS central p193, l’algorithme de classification est calibré uniquement sur la base des parcelles d’entraînement. Pour les chemins p192 et p194, des données d’entraînement supplémentaires basées sur la carte p193 sont utilisées pour assurer la calibration entre les chemins.</p>

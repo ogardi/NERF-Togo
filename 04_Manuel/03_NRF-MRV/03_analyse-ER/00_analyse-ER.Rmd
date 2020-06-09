@@ -1,0 +1,13 @@
+
+## Analyse émissions/séquestrations
+
+#### Description {-}
+
+Description de la méthodologie / script
+
+#### Script R: `03_NRF-MRV/02_AGB/_src/04_analyze-ER.R` {-}
+
+```{r, code=readLines("../03_NRF-MRV/02_AGB/_src/04_analyze-ER.R"), eval=FALSE}
+```
+
+

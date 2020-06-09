@@ -3,9 +3,23 @@
 
 #### Description {-}
 
-Description de la méthodologie / script
+A partir de la **biomasse aérienne déterminée sur les parcelles IFN en 2015/16** (t/ha matière sèche), un modèle de biomasse est calibré sur bases de [l'image satellitaire Landsat](#SSTS-Landsat) de 2015 (bandes et indices `B, G, R, NIR, SWIR1, SWIR2, nbr, ndmi, ndvi, evi`) et les [données climatiques Worldclim](#SSTS-Worldclim) (`BIO1, BIO4, BIO12, BIO15`). Ce sont les mêmes variables qui ont déjà été utilisées pour la [classification forêt/non-forêt](#NRF-create-fc-maps).
 
-#### _AGB/3_create-AGB-maps.R_ {-}
+**Dans une première étape, les variables sont extraites**, c'est-à-dire que les valeurs des pixels sous les rayons des parcelles sont lues à partir des images Landsat et Worldclim et moyennées en conséquence. Ensuite, les variable sont mis en correspandance avec les biomasses aériennes à travers un **modèle de régression `RandomForest`**. Ce modèle est utilisé pour créer une carte de la biomasse aérienne pour l'année 2015. 
+
+En supposant que la biomasse sur la plupart des pixels reste constante, **la carte de la biomasse aérienne 2015 est utilisée comme base pour calibrer des cartes pour les années 2003 et 2018** (début et fin de la période de référence) avec la même méthode: 0,1% des pixels de la carte de la biomasse 2015 (environ 100 000 pixels) sont utilisés comme pixels d'entraînement pour la calibration d'un modèle RandomForest qui est ensuite utilisé pour la production de la carte.
+
+#### Example
+
+Répartition spatiale des **945 placettes d'inventaire de l'IFN-1** (la taille du cercle correspond à la biomasse trouvée sur les placettes) et carte de la biomasse aérienne résultant. Le diagramme de dispersion montre la correlation entre la biomasse sur la carte et celle trouvé sur les parcelles de l'IFN ($R^2 = 70.7%$). La carte sous-estime les fortes biomasses (effet de saturation).
+
+![](images/AGB-refmap-2015.png)
+
+Utilisation de la **carte de biomasse 2015 comme référence pour la calibration des cartes 2003 et 2018**. Le détail montre une région au sud de Kpalimé.
+
+![](images/AGB-rawmaps.png)
+
+#### Script R: `03_NRF-MRV/02_AGB/_src/02_create-AGB-maps.R` {-}
 
 ```{r, code=readLines("../03_NRF-MRV/02_AGB/_src/02_create-AGB-maps.R"), eval=FALSE}
 ```

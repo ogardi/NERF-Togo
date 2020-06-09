@@ -1,5 +1,5 @@
 
-### Production des cartes Forêt/Non-Forêt
+### Production des cartes Forêt/Non-Forêt {#NRF-create-fc-maps}
 
 La **production de la carte forêt/non-forêt 2018** est basée sur la couverture des houppiers déterminée dans les [parcelles d'entraînement](#SSTS-training-plots), les [images satellitaires Landsat](#SSTS-Landsat) (bandes et indices `B, G, R, NIR, SWIR1, SWIR2, nbr, ndmi, ndvi, evi`) et les [données climatiques Worldclim](#SSTS-Worldclim) (`BIO1, BIO4, BIO12, BIO15`). 
 

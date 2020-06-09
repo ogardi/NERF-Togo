@@ -58,6 +58,7 @@ library("knitr")        # pour la documentation html
 
 .snsf$DIR.MRV.AGB   <- paste0(.snsf$DIR.MRV, "/02_AGB")
 .snsf$DIR.MRV.AGB.REF   <- paste0(.snsf$DIR.MRV.AGB, "/01_ref-maps")
+.snsf$DIR.MRV.AGB.RES   <- paste0(.snsf$DIR.MRV.AGB, "/02_results")
 
 # Système de référence des coordonnées ----------
 
@@ -73,6 +74,11 @@ library("knitr")        # pour la documentation html
                    readOGR(paste0(.snsf$DIR.RAW.DAT, "/GADM/gadm36_TGO_0.shp")),
                      .snsf$UTM.31
                  )
+
+snsf$TGO.REG     <- spTransform(
+                      readOGR(paste0(.snsf$DIR.RAW.DAT, "/GADM/gadm36_TGO_1.shp")),
+                        .snsf$UTM.31
+                    )
 
 .snsf$TGO.EXT <- extent(151155, 373005, 670665, 1238175)  # xmin, xmax, ymin, ymax
 

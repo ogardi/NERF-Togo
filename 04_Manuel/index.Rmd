@@ -4,13 +4,31 @@ title: |
     | Système Nationale de Surveillance des Forêts
 subtitle: "Manuel de référence"
 author: "Oliver Gardi, Fifonsi Dangbo, Sophie Dzigbod, Ditorgue Bakabima"
-date: "`r Sys.Date()`"
+date: "Version NRF v1.1 / `r Sys.Date()`"
 cover-image: "images/NERF-Togo.png"
 github-repo: "ogardi/NERF-Togo"
 url: "https://ogardi.github.io/SNSF-Togo"
 site: bookdown::bookdown_site
-documentclass: book
+documentclass: krantz
+classoption: a4paper, notitlepage, 12pt, krantz2
+# documentclass: book
+# classoption: notitlepage
 output:
+  bookdown::pdf_book:
+    includes:
+      in_header: latex/preamble.tex
+      before_body: latex/before_body.tex
+      after_body: latex/after_body.tex
+    dev: "cairo_pdf"
+    keep_tex: yes
+    citation_package: natbib
+    latex_engine: pdflatex
+    template: null
+    toc: FALSE
+    toc_depth: 3
+    toc_unnumbered: no
+    toc_appendix: yes
+#    quote_footer: ["\\VA{", "}{}"]
   bookdown::gitbook:
     split_by: "rmd"
     css: css/style.css

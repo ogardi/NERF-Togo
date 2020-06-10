@@ -3,7 +3,38 @@
 
 #### Description {-}
 
-Description de la méthodologie / script
+Le calcul des **émissions de CO~2~ dues à la déforestation et à la séquestration par le reboisement** au cours de la période de référence 2003--2018 est basé sur les [cartes forêt/non-forêt néttoyées](#NRF-clean-fc-maps) de 2003 et 2018, ainsi que sur les [cartes de la biomasse aérienne](#NRF-agb-maps) des années correspondantes. 
+
+Dans une première étape, la **biomasse racinaire est calculée sur la base des cartes de la biomasse aérienne**, en utilisant les **rapports racine-tige de [Mokany et al (2006)](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1365-2486.2005.001043.x) pour les forêts sèches tropicales**.
+
+**Le calcul des émissions de CO~2~, et fait sur base des cartes de biomasse (aérienne et racinaire) de l'année 2003, en considerant que les pixels qui ont été classés comme forêt en 2003 et comme non-forêt en 2018**. La biomasse restant après la déforestation est pris en compte par la soustraction de la biomasse moyenne des pixels non-forêt en 2018. Pour les pixels où une différence négative en résulte (augmentation de la biomasse malgré la déforestation), celle-ci est fixée à 0. La conversion de la biomasse en CO~2~ se fait au moyen d'une teneur en carbone de la biomasse de 0,47 ([GIEC, 2006](https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/4_Volume4/V4_04_Ch4_Forest_Land.pdf#page=48)) et du rapport des poids moléculaires CO~2~/C de 44/12.
+
+**La même procédure est utilisée pour calculer la séquestration due au reboisement entre 2003 et 2018**. La biomasse des pixels reboisés de 2003 est soustraite de celle de 2018. Lorsque la différence est négative (diminution de la biomasse malgré le reboisement), elle est fixée à 0.
+
+
+#### Example
+
+**Les résultats sont évalués pour l'ensemble du territoire du Togo et les différents régions**: La superficie annuelle déboisée (ha/a), la perte moyenne de biomasse et de CO~2~ due à la déforestation par hectare déboisé (tCO~2~/ha) et la perte annuelle totale sur la zone analysée (tCO~2~/a). L'évaluation de la croissance de la biomasse et de la séquestration du CO~2~ due au reboisement est effectuée de manière analogue.
+
+```{r, echo=FALSE}
+tab <- read.csv("images/NERF-Results.csv")[,c(1,3,8,9, 11, 16, 17)]
+tab$defor.area.a   <- -tab$defor.area.a
+tab$defor.co2.ha   <- -tab$defor.co2.ha
+tab$defor.co2.a   <-  -tab$defor.co2.a
+tab$tot.area.a   <- tab$regen.area.a + tab$defor.area.a
+tab$tot.co2.a  <- tab$regen.co2.a + tab$defor.co2.a
+
+names(tab) <- c("Région", 
+                "ha/a", "tCO~2~/ha", "tCO~2~/a", 
+                "ha/a", "tCO~2~/ha", "tCO~2~/a",
+                "ha/a", "tCO~2~/a")
+tab %>%
+  kable(digits = c(0, 0,1,0, 0, 1, 0, 0, 0), format.args = list(big.mark = "'")) %>%
+  kable_styling() %>%
+  add_header_above(c(" ", "Déforestation" = 3, 
+                          "Reboisement" = 3,
+                          "Total" = 2))
+```
 
 #### Script R: `03_NRF-MRV/02_AGB/_src/04_analyze-ER.R` {-}
 

@@ -1,4 +1,5 @@
 output_dir: "../docs"
+book_filename: "SNSF-Togo_Manuel"
 repo: "https://github.com/ogardi/SNSF-Togo"
 rmd_subdir: true
 delete_merged_file: true

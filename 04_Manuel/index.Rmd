@@ -11,53 +11,6 @@ url: "https://ogardi.github.io/SNSF-Togo"
 site: bookdown::bookdown_site
 documentclass: krantz
 classoption: a4paper, notitlepage, 12pt, krantz2
-# documentclass: book
-# classoption: notitlepage
-output:
-  bookdown::pdf_book:
-    includes:
-      in_header: latex/preamble.tex
-      before_body: latex/before_body.tex
-      after_body: latex/after_body.tex
-    dev: "cairo_pdf"
-    keep_tex: yes
-    citation_package: natbib
-    latex_engine: pdflatex
-    template: null
-    toc: FALSE
-    toc_depth: 3
-    toc_unnumbered: no
-    toc_appendix: yes
-#    quote_footer: ["\\VA{", "}{}"]
-  bookdown::gitbook:
-    split_by: "rmd"
-    css: css/style.css
-    highlight: tango
-    config:
-      toc:
-        collapse: subsection
-        scroll_highlight: yes
-        before: <li><a href="https://ogardi.github.io/SNSF-Togo"><b>Manuel SNSF Togo</b><br>NRF v1.1 ( <i>en révision</i> )</a></li>
-        after:  <li><a href="https://github.com/ogardi/SNSF-Togo">Dépôt du code sur GitHub</a></li>
-      toolbar:
-        position: fixed
-      edit : null
-      download: null
-      search: yes
-      fontsettings:
-        theme: white
-        family: sans
-        size: 2
-      sharing:
-        facebook: no
-        github: no
-        twitter: no
-        linkedin: no
-        weibo: no
-        instapaper: no
-        vk: no
-        all: ['facebook', 'twitter', 'linkedin', 'weibo', 'instapaper']
-      info: yes
 ---
 
 ```{r, echo=FALSE}

@@ -11,7 +11,7 @@ En supposant que la biomasse sur la plupart des pixels reste constante, **la car
 
 #### Example
 
-Répartition spatiale des **945 placettes d'inventaire de l'IFN-1** (la taille du cercle correspond à la biomasse trouvée sur les placettes) et carte de la biomasse aérienne résultant. Le diagramme de dispersion montre la correlation entre la biomasse sur la carte et celle trouvé sur les parcelles de l'IFN ($R^2 = 70.7%$). La carte sous-estime les fortes biomasses (effet de saturation).
+Répartition spatiale des **945 placettes d'inventaire de l'IFN-1** (la taille du cercle correspond à la biomasse trouvée sur les placettes) et carte de la biomasse aérienne résultant. Le diagramme de dispersion montre la correlation entre la biomasse sur la carte et celle trouvé sur les parcelles de l'IFN (R^2^ = 70.7%). La carte sous-estime les fortes biomasses (effet de saturation).
 
 ![](images/AGB-refmap-2015.png)
 

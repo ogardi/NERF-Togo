@@ -75,7 +75,7 @@ library("knitr")        # pour la documentation html
                      .snsf$UTM.31
                  )
 
-snsf$TGO.REG     <- spTransform(
+.snsf$TGO.REG     <- spTransform(
                       readOGR(paste0(.snsf$DIR.RAW.DAT, "/GADM/gadm36_TGO_1.shp")),
                         .snsf$UTM.31
                     )

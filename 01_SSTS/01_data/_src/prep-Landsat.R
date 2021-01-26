@@ -94,6 +94,10 @@ in.image.list <- list(
   p192.2019 = list(paste0(IN.DIR, "/192_054/2019/LC081920542018122301T1-SC20190405164258/"),
                    paste0(IN.DIR, "/192_055/2019/LC081920552018122301T1-SC20190405163359/"),
                    paste0(IN.DIR, "/192_056/2019/LC081920562018122301T1-SC20190405163342/")),
+  
+  p192.2020 = list(paste0(IN.DIR, "/192_054/2020/LC081920542020012701T1-SC20200224112049/"),
+                   paste0(IN.DIR, "/192_055/2020/LC081920552020012701T1-SC20200224112213/"),
+                   paste0(IN.DIR, "/192_056/2020/LC081920562020012701T1-SC20200224112158/")),
 
   # Chemin WRS p193 -----------------------------
 
@@ -162,6 +166,11 @@ in.image.list <- list(
                    paste0(IN.DIR, "/193_053/2019/LC081930532019021601T1-SC20190405181518/"),
                    paste0(IN.DIR, "/193_054/2019/LC081930542019021601T1-SC20190405183609/"),
                    paste0(IN.DIR, "/193_055/2019/LC081930552019021601T1-SC20190405181507/")),
+  
+  p193.2020 = list(paste0(IN.DIR, "/193_052/2020/LC081930522020010201T1-SC20210121071838/"),
+                   paste0(IN.DIR, "/193_053/2020/LC081930532020010201T1-SC20200224112134/"),
+                   paste0(IN.DIR, "/193_054/2020/LC081930542020010201T1-SC20200224112140/"),
+                   paste0(IN.DIR, "/193_055/2020/LC081930552020010201T1-SC20200224112235/")),
 
   # Chemin WRS p194 -----------------------------
 
@@ -202,150 +211,198 @@ in.image.list <- list(
                    paste0(IN.DIR, "/194_053/2018/LC081940532017121801T1-SC20190405174114/")),
 
   p194.2019 = list(paste0(IN.DIR, "/194_052/2019/LC081940522019012201T1-SC20190405172019/"),
-                   paste0(IN.DIR, "/194_053/2019/LC081940532019012201T1-SC20190405172055/"))
+                   paste0(IN.DIR, "/194_053/2019/LC081940532019012201T1-SC20190405172055/")),
+  
+  p194.2020 = list(paste0(IN.DIR, "/194_052/2020/LC081940522020010901T1-SC20200224112249/"),
+                   paste0(IN.DIR, "/194_053/2020/LC081940532020010901T1-SC20200224112242/"))
 
 )
 
 # Fonction pour traiter et fusionner un ensemble d'images Landsat =============
 #
 # @param in.image.dirs liste des répertoires des images à traiter
-# @param ext           l'étendue dà utiliser pour le recadrage des images
-# @param filename      nom de fichier pour la sauvegarde de l'image traitée
+# @param ext           l'étendue à utiliser pour le recadrage des images
+# @param filename      nom du fichier pour la sauvegarde de l'image traitée
 # @param overwrite     retraiter et écraser des images déjà existantes
 # @param log           écrire les informations sur le processus dans un fichier
 #
 # @return              objet raster de l'image traitée (invisible)
 #
+# prepare.landsat <- function(in.image.dirs, 
+#                             ext=NULL, 
+#                             filename=NULL, 
+#                             overwrite=FALSE, 
+#                             log=TRUE) {
+#   
+#   if(!file.exist(filename) | overwrite==TRUE) {
+#   
+#     # Ouvrir le fichier journal si un nom de fichier et log==true
+#     if(!is.null(filename) & log==TRUE) {
+#       dir.create(dirname(filename), recursive = TRUE, showWarnings = FALSE)
+#       logfile <- file(sub("\\.[[:alnum:]]+$", ".log", filename), open="wt")
+#       sink(logfile, type="output")
+#       sink(logfile, type="message")
+#       message(date())
+#     }
+#     
+#     # Pour chaque image ... 
+#     for(image.dir in in.image.dirs) {
+#       
+#       tmp1 <- paste0(image.dir, "tmp1.tif")
+#       tmp2 <- paste0(image.dir, "tmp2.tif")
+#       unlink(c(tmp1, tmp2))
+#       
+#       image.name   <- substr(dir(image.dir)[1], 1, 40)
+#       image.sensor <- substr(image.name, 0,4)
+#       image.scene  <- paste0(substr(image.name, 11, 13), "_", substr(image.name, 14, 16))
+#       image.date   <- substr(image.name, 18, 21)
+#       image.path   <- as.numeric(substr(image.scene, 1, 3))
+#       image.row    <- as.numeric(substr(image.scene, 5, 7))
+#        
+#       if(image.sensor=="LC08") {
+#         bands <- "^.*_(pixel_qa|band2|band3|band4|band5|band6|band7|evi|msavi|nbr|nbr2|ndmi|ndvi|savi).tif$"
+#       } else {
+#         bands <- "^.*_(pixel_qa|band1|band2|band3|band4|band5|band7|evi|msavi|nbr|nbr2|ndmi|ndvi|savi).tif$"
+#       }
+#       
+#       message("- ", image.name, ": ", appendLF = FALSE)
+#       
+#       # ... empiler les couches
+#       message("stacking ... ", appendLF = FALSE)
+#       system(paste("gdal_merge.py -q -n -9999 -separate -ot Int16 -of GTiff -o", tmp1, paste(grep(bands, dir(image.dir, full.names=TRUE), value=TRUE), collapse=" ")))
+#       
+#       # ... couper et masquer l'image avec l'étendue et le WRS
+#       message("crop/mask ... ", appendLF = FALSE)
+#       wrs <- spTransform(WRS[WRS$PATH==image.path & WRS$ROW==image.row, ], CRS=UTM.31)
+#       if(!is.null(ext)) wrs <- crop(wrs, ext)
+#       wrs.file <- tempfile()
+#       writeOGR(wrs, dirname(wrs.file), basename(wrs.file), driver="ESRI Shapefile")
+#       system(paste("gdalwarp -q -t_srs EPSG:32631 -cutline", paste0(wrs.file, ".shp"), "-crop_to_cutline", tmp1, tmp2))
+#       message("done")
+#     }
+#     
+#     # Fusionner les images (scènes) dans les listes
+#     message("- merging to ", basename(filename), " ... ", appendLF = FALSE)
+#     system(paste("gdal_merge.py -q -n -9999 -a_nodata -9999 -ot Int16 -of GTiff -o", filename, paste0(unlist(in.image.dirs), "tmp2.tif", collapse=" ")))
+#   
+#     # Delete temporary files
+#     message("unlink tmpfiles ... ", appendLF = FALSE)
+#     unlink(c(paste0(unlist(in.image.dirs), "tmp1.tif"), paste0(unlist(in.image.dirs), "tmp2.tif")))
+#     message("done")
+#     
+#     # Fermer le fichier journal
+#     if(!is.null(filename) & log==TRUE) {
+#       sink(type="output")
+#       sink(type="message")
+#     }
+#   }
+# }
+
+
 prepare.landsat <- function(in.image.dirs, 
-                            ext=NULL, 
-                            filename=NULL, 
-                            overwrite=FALSE, 
-                            log=TRUE) {
+                            filename,
+                            ext, 
+                            overwrite = FALSE,
+                            log = TRUE) {
   
-  # Charger le fichier, si le fichier existe et overwrite==FALSE
-  if(!is.null(filename) && file.exists(filename) && overwrite==FALSE) {
-    message("- loading from file ", filename)
-    out.image <- stack(filename)
+  if(!file.exists(filename) | overwrite==TRUE) {
     
-  } else {
+    dir.create(dirname(filename), recursive = TRUE, showWarnings = FALSE)
     
     # Ouvrir le fichier journal si un nom de fichier et log==true
-    if(!is.null(filename) & log==TRUE) {
-      dir.create(dirname(filename), recursive = TRUE, showWarnings = FALSE)
-      logfile <- file(sub("\\.[[:alnum:]]+$", ".log", filename), open="wt")
+    if(log==TRUE) {
+      logfile <- file(sub(".tif", ".log", filename), open="wt")
       sink(logfile, type="output")
       sink(logfile, type="message")
-      message(date())
+      message(filename, " -- ", date())
     }
     
-    # Listes vides pour les images et des bandes de qualité
-    images <- list()
-    qas <- list()
+    # répértoire pour les différents couches
+    vrt.dir <- sub(".tif", "", filename)
+    dir.create(vrt.dir, showWarnings = FALSE)
     
-    # Pour chaque image ... 
-    for(image.dir in in.image.dirs) {
-      
-      image.sensor <- substr(basename(image.dir), 0,4) 
-      if(image.sensor=="LC08") {
-        regexp <- "^.*_(pixel_qa|band2|band3|band4|band5|band6|band7|evi|msavi|nbr|nbr2|ndmi|ndvi|savi).tif$"
-      } else {
-        regexp <- "^.*_(pixel_qa|band1|band2|band3|band4|band5|band7|evi|msavi|nbr|nbr2|ndmi|ndvi|savi).tif$"
-      }
-      image <- stack(grep(regexp, dir(image.dir, full.names=TRUE), value=TRUE))
-      image.name   <- substr(names(image)[1], 1, 40)
-      image.scene  <- paste0(substr(image.name, 11, 13), "_", substr(image.name, 14, 16))
-      image.date   <- substr(image.name, 18, 21)
-      image.path   <- as.numeric(substr(image.scene, 1, 3))
-      image.row    <- as.numeric(substr(image.scene, 5, 7))
-      
-      # ... renommer les couches de l'image
-      names(image) <- c("qa", SST.LSBANDS)
-      
-      message("- ", image.name, ": ", appendLF = FALSE)
-      
-      # ... recadrer l'image avec l'étendue (le cas échéant)
-      if(!is.null(ext)) {
-        message("crop ext ... ", appendLF = FALSE)
-        image <- crop(image, ext)
-      }
-      
-      # ... recadrer et masquer avec WRS
-      message("crop/mask WRS2 ... ", appendLF = FALSE)
-      wrs <- spTransform(WRS[WRS$PATH==image.path & WRS$ROW==image.row, ], CRS=crs(image))
-      image <- mask(crop(image, wrs), wrs)
-      
-      # ... extraire la bande de qualité
-      qa <- image[[1]]
-      image <- dropLayer(image, 1)
-      
-      # ... supprimer les valeurs de réflectance non valides
-      message("clean sr ... ", appendLF = FALSE)
-      for(i in 1:6) {
-        image[[i]] <- reclassify(image[[i]], cbind(-Inf, 0, NA), right=FALSE)
-        image[[i]] <- reclassify(image[[i]], cbind(10000, Inf, NA), right=TRUE)
-      }
-      
-      # ... supprimer les valeurs d'indices non valides
-      for(i in 7:13) {
-        image[[i]] <- reclassify(image[[i]], cbind(-Inf, -10000, NA), right=FALSE)
-        image[[i]] <- reclassify(image[[i]], cbind(10000, Inf, NA), right=TRUE)
-      }
-
-      # ... mettre l'ensemble de la pile à NA là où une seule couche est NA
-      m <- sum(image)
-      image <- mask(image, m)
-      
-      # ... ajouter l'image et la bande de qualité aux listes correspondantes
-      images[[length(images)+1]] <- image
-      qas[[length(qas)+1]] <- qa
+    # tous les fichiers 
+    files <- unlist(lapply(in.image.dirs, dir, full.names = TRUE))
+    
+    # étendue pour couper
+    tmp <- tempfile()
+    system(paste("gdalbuildvrt", tmp, paste(grep("_band7.tif$", files, value=TRUE), collapse=" ")))
+    img.tmp <- raster(tmp)
+    img.ext <- extent(img.tmp)
+    p194 <- compareCRS(img.tmp, UTM.30)
+    
+    if(p194) {
+      ext <- as(ext, "SpatialPolygons")
+      proj4string(ext) <- UTM.31
+      ext <- extent(spTransform(ext, UTM.30))
     }
     
-    # Fusionner les images (scènes) dans les listes
-    message("- merging scenes ... ", appendLF = FALSE)
-    out.image <- do.call(merge, images)
-    out.qa <- do.call(merge, qas)
+    xmin <- max(ext@xmin, img.ext@xmin)
+    ymin <- max(ext@ymin, img.ext@ymin)
+    xmax <- min(ext@xmax, img.ext@xmax)
+    ymax <- min(ext@ymax, img.ext@ymax)
     
-    # Sauvegarder l'image fusionné dans un fichier
-    if (!is.null(filename) && (!file.exists(filename) || overwrite == TRUE)) {
-      message("writing to file ", filename, " ... ", appendLF = FALSE)
-      out.image <- writeRaster(out.image, 
-                               filename = filename, 
-                               overwrite = overwrite, 
-                               datatype="INT2S", 
-                               options=c("COMPRESS=NONE"))
-      names(out.image) <- SST.LSBANDS
-      out.qa <- writeRaster(out.qa, 
-                            filename = sub("[.]tif$", paste0("_qa", image.sensor, ".tif"), filename), 
-                            overwrite = overwrite, 
-                            datatype="INT2S")
+    stripe <- basename(files[1])
+    stripe <- paste0(substr(stripe, 1, 13), "xxx", substr(stripe, 17, 40))
+    
+    sensor <- substr(stripe, 1, 4)
+     
+    # cominber images, bandes 1-5 (L8 2-6)
+    for(b in c(paste0("sr_band", 1:5+(sensor == "LC08")), "sr_band7", "sr_evi", "sr_msavi", "sr_nbr", "sr_nbr2", "sr_ndmi", "sr_ndvi", "sr_savi", "pixel_qa")) {
+      system(paste("gdalbuildvrt", paste0(vrt.dir, "/", stripe, "_", b, ".vrt"), 
+                   "-te", xmin,  ymin, xmax, ymax,
+                   paste(grep(paste0("^.*_", b, ".tif$"), files, value=TRUE), collapse=" ")))
+    }
+    
+    # empiler les bandes en virtual raster vrt
+    system(paste("gdalbuildvrt -separate", sub(".tif", ".vrt", filename),
+                 paste0(vrt.dir, "/*_sr_*.vrt")))
+    
+    
+    # Using single band as mask for vrt is not working!
+    # system(paste("gdal_translate -b 1 -b 2 -b 3 -b 4 -b 5 -b 6 -mask 14", sub(".tif", ".vrt", filename), sub(".tif", "_mask.tif", filename)))
+    
+    # masquer et sauvegarder comme tif 
+    maskvalues <- c(QA.CLOUD, QA.ICE, QA.SHADOW, QA.WATER)
+    system(paste("pksetmask -i", sub(".tif", ".vrt", filename), 
+                           "-m", paste0(vrt.dir, "/*_pixel_qa.vrt"), 
+                           paste("-msknodata",  maskvalues, collapse=" "),  
+                           paste(rep("-nodata -9999", length(maskvalues)), collapse = " "),
+                           "-o", filename))
+    
+    # transformer en UTM31 (pour p194)
+    if(p194) {
+      system(paste("gdalwarp -t_srs EPSG:32631",
+                   "-tr 30 30",
+                   "-te 147255 1017495 222165 1238265",
+                   filename, sub(".tif", "_repr.tif", filename)))
+      file.rename(sub(".tif", "_repr.tif", filename), filename)
+    }
+    
+    # créer vignette
+    image <- brick(filename)
+    jpeg(sub("[.]tif$", ".jpeg", filename), width=1350, height=3000)
+    par(plt=c(0,1,0,1))
+    raster::plot(spTransform(TGO, UTM.31), col="yellow")
+    plotRGB(image, r=6, g=5, b=3, stretch="lin", bgalpha = 0, add=TRUE)
+    raster::plot(mask(image[[1]], spTransform(TGO, UTM.31), inverse=TRUE), col="#FFFFFF66", legend=FALSE, add=TRUE)
+    raster::plot(spTransform(TGO, UTM.31), add=TRUE, lwd=3)
+    dev.off()
+    
+    # Fermer le fichier journal
+    if(log==TRUE) {
+      sink(type="output")
+      sink(type="message")
     }
   }
-  
-  message("done")
-  print(out.image)
-  
-  # Fermer le fichier journal
-  if(!is.null(filename) & log==TRUE) {
-    sink(type="output")
-    sink(type="message")
-  }
-  
-  # Retourner l'image de manière invisible
-  invisible(out.image)
-  
 }
 
 
 # COMMENCER LE TRAITEMENT #####################################################
-# Attention, peut facilement remplir le répertoire tmp ! 
-# Peut-être seulement traiter une partie des images et ensuite redémarrer R
-
-# Étendue du Togo + 5km de tampon en UTM 30 pour le chemin p194
-TGO.EXT.30 <- extent(spTransform(TGO, UTM.30)) + 10000
 
 # Pour chaque ensembles d'images (année/chemin), en parallèle, ...
 registerDoParallel(CORES-1)
-foreach(i=1:length(in.image.list)) %dopar% { 
+foreach(i=1:length(in.image.list)) %dopar% {
   
   # ... extraire la liste des images à traiter
   in.image.dirs <- in.image.list[[i]]
@@ -355,12 +412,8 @@ foreach(i=1:length(in.image.list)) %dopar% {
   year <- name[2]   # p.ex. "1986"
   tile <- name[3]   # p.ex. "NA" (ou 1,2, ...)
   
-  # ... étendue UTM 30 pour chemin p194 et UTM 31 pour les autres
-  if(path == "p194") tmp.ext <- TGO.EXT.30 else tmp.ext <- TGO.EXT
-  
   # ... répertoire pour sauvegarder l'image
   out.image.dir <- paste0(OUT.DIR, "/", path)
-  if(!dir.exists(out.image.dir)) dir.create(out.image.dir)
   
   # ... nom du fichier
   if(is.na(tile)) {
@@ -372,71 +425,17 @@ foreach(i=1:length(in.image.list)) %dopar% {
   # ... et faire le travail
   message("Processing ", path, "_", year)
   prepare.landsat(in.image.dirs, 
-                  ext = tmp.ext, 
+                  ext = TGO.EXT, 
                   filename = filename, 
-                  overwrite=FALSE, 
+                  overwrite=TRUE, 
                   log=TRUE)
   
 }
 
-# Supprimer les fichiers temporaires dans le répertoir tmp
-tmp_dir <- tempdir()
-files <- list.files(tmp_dir, full.names = T, recursive=T)
-file.remove(files)
-
 # Fusionner les fichiers journaux 
-for(dir in dir(paste0(OUT.DIR), full.names=TRUE)) {
-  path <- basename(dir)
-  system(paste0("tail -n +1 ", dir, "/*.log > ", dir, "/", path, ".tmp"))
-  system(paste0("rm ", dir, "/*.log"))
-  system(paste0("mv ", dir, "/", path, ".tmp ", dir, "/", path, ".log"))
-}
-
-
-# Reprojection des images p194 de UTM 30 à UTM 31 =============================
-p194.dir  <- paste0(OUT.DIR, "/p194")
-
-# Pour chaque image p194, en parallèle, ...
-registerDoParallel(CORES-1)
-foreach(image=dir(p194.dir, pattern=".*[.]tif$")) %dopar% {
-  
-  image  <- paste0(p194.dir,  "/", image)
-  image.utm30 <- sub("[.]tif$", "utm30.tif", image)
-  file.rename(image, image.utm30)
-  
-  # ... transformer l'image en utilisant l'outil externe "gdalwarp"
-  system(paste("gdalwarp",
-               image.utm30,
-               "-t_srs '+proj=utm +zone=31 +datum=WGS84'",
-               "-tr 30 30",
-               "-te 147255 1017495 222165 1238265",
-               image,
-               "-ot 'Int16'",
-               "-overwrite"))
-  
-  # ... supprimer l'image UTM 30
-  file.remove(image.utm30)
-}
-
-
-# Masquer images avec bande de qualité (nuages/ombres) ========================
-registerDoParallel(CORES-1)
-foreach(file=dir(OUT.DIR, pattern=".*\\_[[:digit:]]+\\.tif$", full.names = TRUE, recursive=TRUE)) %dopar% {
-  qa    <- raster(dir(dirname(file), pattern=gsub("\\_", "\\_", sub("\\.tif", "_qa*", basename(file))), full.names=TRUE))
-  image <- mask(brick(file), qa %in% c(QA.CLOUD, QA.SHADOW, QA.WATER, QA.ICE), maskvalue=TRUE)
-  writeRaster(image, sub("\\.tif", "_m.tif", file), overwrite = TRUE, datatype="INT2S", options=c("COMPRESS=NONE"))
-}
-
-
-# Créer des vignettes de chaque image =========================================
-registerDoParallel(CORES-1)
-foreach(filename=dir(OUT.DIR, pattern="p19.*[.]tif$", recursive=TRUE, full.names=TRUE)) %dopar% {
-  image <- brick(filename)
-  jpeg(sub("[.]tif$", ".jpeg", filename), width=1350, height=3000)
-  par(plt=c(0,1,0,1))
-  plot(spTransform(TGO, UTM.31))
-  plotRGB(image, r=6, g=5, b=3, stretch="lin", add=TRUE)
-  plot(mask(image[[1]], spTransform(TGO, UTM.31), inverse=TRUE), col="#FFFFFF66", legend=FALSE, add=TRUE)
-  plot(spTransform(TGO, UTM.31), add=TRUE, lwd=3)
-  dev.off()
+for(d in list.dirs(paste0(OUT.DIR), recursive=FALSE, full.names=TRUE)) {
+  path <- basename(d)
+  system(paste0("tail -n +1 ", d, "/*.log > ", d, "/", path, ".tmp"))
+  system(paste0("rm ", d, "/*.log"))
+  system(paste0("mv ", d, "/", path, ".tmp ", d, "/", path, ".log"))
 }

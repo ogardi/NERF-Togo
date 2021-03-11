@@ -10,11 +10,13 @@
 library("sp")           # Classes et méthodes pour les données spatiales
 library("rgdal")        # Geospatial Data Abstraction Library
 library("raster")       # Analyse et modélisation des données géographiques
+library("rasterVis")    # illuster raster catégoriel
 library("randomForest") # Algorithme de classification et régression
 library("caret")        # Outils pour classification et régression
 library("openxlsx")     # Lire et écrire des fichiers Excel (xlsx)
 library("dplyr")        # Fonctions pour manipuler des données
 library("tidyr")        # Fonctions pour reorganiser des données
+library("stringr")      # Pour fonction str_pad
 library("ggplot2")      # Production des figures
 library("RColorBrewer") # palettes de couleurs
 library("foreach")      # Faire des calcules en parallèle ...

@@ -13,45 +13,33 @@ if(!dir.exists(OUT.DIR)) dir.create(OUT.DIR)
 
 # Préparation du modèle numérique d'élévation SRTM ============================
 
-# Lire 90m SRTM MNE sans vides (source: http://srtm.csi.cgiar.org/srtmdata/),
-dem.90 <- do.call(merge, lapply(as.list(dir(paste0(IN.DIR, "/3arcsecond"), 
-                                            pattern=".*[.]tif$", 
-                                            full.names=TRUE)), raster))
+# Lire 30m SRTM MNE (source: USGS Earthexplorer), et
+# remplir vides avec 90m SRTM (source: http://srtm.csi.cgiar.org/srtmdata/)
 
+system(paste("gdalbuildvrt", paste0(OUT.DIR, "/SRTM_1as.vrt"), 
+             "-resolution highest",
+             paste0(dir(paste0(IN.DIR, "/3arcsecond"), 
+                        pattern=".*[.]tif$", full.names=TRUE), collapse = " "),
+             paste0(dir(paste0(IN.DIR, "/1arcsecond"), 
+                        pattern=".*[.]tif$", full.names=TRUE), collapse = " ")))
 
-# Lire 30m SRTM MNE (source: USGS Earthexplorer) et remplir vides avec 90m SRTM 
-dem.30 <- foreach(tile=dir(paste0(IN.DIR, "/1arcsecond"), pattern=".*[.]tif$", full.names=TRUE),
-                  .combine=merge, .multicombine=TRUE) %dopar% {
-                    dem.30.t <- raster(tile)
-                    dem.90.t <- round(projectRaster(dem.90, dem.30.t))
-                    merge(dem.30.t, dem.90.t)
-                  }
-
-# Reprojection d'images MNE vers Landsat (résolution 30m, UTM 31, ...) 
-writeRaster(dem.30, paste0(OUT.DIR, "/SRTM-1arcsec_raw.tif"), 
-            datatype="INT2S", 
-            overwrite=TRUE)
-system(paste("gdalwarp",
-             paste0(OUT.DIR, "/SRTM-1arcsec_raw.tif"),
-             "-t_srs '+proj=utm +zone=31 +datum=WGS84'",
+# Reprojection vers Landsat (résolution 30m, UTM 31, ...) 
+system(paste("gdalwarp -t_srs EPSG:32631",
+             paste0(OUT.DIR, "/SRTM_1as.vrt"),
              "-tr 30 30",
              paste("-te", TGO.EXT@xmin, TGO.EXT@ymin, TGO.EXT@xmax, TGO.EXT@ymax),
-             paste0(OUT.DIR, "/SRTM-1arcsec.tif"),
-             "-ot 'Int16'",
-             "-co COMPRESS='LZW'",
-             "-co INTERLEAVE='BAND'",
+             paste0(OUT.DIR, "/SRTM_30m.tif"),
+             "-ot Int16",
+             "-dstnodata -9999",
              "-overwrite"))
-file.remove(paste0(OUT.DIR, "/SRTM-1arcsec_raw.tif"))
-
-# Calculer les statistiques GDAL (min, max, ...)
-system(paste("gdalinfo -stats", paste0(OUT.DIR, "/SRTM-1arcsec.tif")))
 
 
 # Créer une vignettes du MNE ==================================================
-dem <- raster(paste0(OUT.DIR, "/SRTM-1arcsec.tif"))
-jpeg(paste0(OUT.DIR, "/SRTM-1arcsec.jpeg"), width=1350, height=3000)
-par(plt=c(0,1,0,1))
-plot(dem)
-plot(mask(dem, TGO, inverse=TRUE), col="#FFFFFF66", legend=FALSE, add=TRUE)
-plot(TGO, add=TRUE, lwd=3)
+dem <- raster(paste0(OUT.DIR, "/SRTM_30m.tif"))
+jpeg(paste0(OUT.DIR, "/SRTM_30m.jpeg"), width=570, height=1200)
+par(mai=c(0,0,0,0))
+raster::plot(TGO, col = "purple")
+raster::plot(dem, add = TRUE, bgalpha = 0)
+raster::plot(mask(dem, TGO, inverse=TRUE), col="#FFFFFF66", legend=FALSE, add=TRUE)
+raster::plot(TGO, add=TRUE, lwd=3)
 dev.off()

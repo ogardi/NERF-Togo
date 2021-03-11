@@ -98,6 +98,10 @@ in.image.list <- list(
   p192.2020 = list(paste0(IN.DIR, "/192_054/2020/LC081920542020012701T1-SC20200224112049/"),
                    paste0(IN.DIR, "/192_055/2020/LC081920552020012701T1-SC20200224112213/"),
                    paste0(IN.DIR, "/192_056/2020/LC081920562020012701T1-SC20200224112158/")),
+  
+  p192.2021 = list(paste0(IN.DIR, "/192_054/2021/LC081920542021011301T1-SC20210311141418/"),
+                   paste0(IN.DIR, "/192_055/2021/LC081920552021011301T1-SC20210311141448/"),
+                   paste0(IN.DIR, "/192_056/2021/LC081920562021011301T1-SC20210311141403/")),
 
   # Chemin WRS p193 -----------------------------
 
@@ -171,6 +175,11 @@ in.image.list <- list(
                    paste0(IN.DIR, "/193_053/2020/LC081930532020010201T1-SC20200224112134/"),
                    paste0(IN.DIR, "/193_054/2020/LC081930542020010201T1-SC20200224112140/"),
                    paste0(IN.DIR, "/193_055/2020/LC081930552020010201T1-SC20200224112235/")),
+  
+  p193.2021 = list(paste0(IN.DIR, "/193_052/2021/LC081930522021012001T1-SC20210311141507/"),
+                   paste0(IN.DIR, "/193_053/2021/LC081930532021012001T1-SC20210311141519/"),
+                   paste0(IN.DIR, "/193_054/2021/LC081930542021012001T1-SC20210311141506/"),
+                   paste0(IN.DIR, "/193_055/2021/LC081930552021012001T1-SC20210311141446/")),
 
   # Chemin WRS p194 -----------------------------
 
@@ -214,7 +223,10 @@ in.image.list <- list(
                    paste0(IN.DIR, "/194_053/2019/LC081940532019012201T1-SC20190405172055/")),
   
   p194.2020 = list(paste0(IN.DIR, "/194_052/2020/LC081940522020010901T1-SC20200224112249/"),
-                   paste0(IN.DIR, "/194_053/2020/LC081940532020010901T1-SC20200224112242/"))
+                   paste0(IN.DIR, "/194_053/2020/LC081940532020010901T1-SC20200224112242/")),
+  
+  p194.2021 = list(paste0(IN.DIR, "/194_052/2021/LC081940522021012701T1-SC20210311141413/"),
+                   paste0(IN.DIR, "/194_053/2021/LC081940532021012701T1-SC20210311141450/"))
 
 )
 
@@ -383,10 +395,10 @@ prepare.landsat <- function(in.image.dirs,
     image <- brick(filename)
     jpeg(sub("[.]tif$", ".jpeg", filename), width=1350, height=3000)
     par(plt=c(0,1,0,1))
-    raster::plot(spTransform(TGO, UTM.31), col="yellow")
+    raster::plot(TGO, col="yellow")
     plotRGB(image, r=6, g=5, b=3, stretch="lin", bgalpha = 0, add=TRUE)
-    raster::plot(mask(image[[1]], spTransform(TGO, UTM.31), inverse=TRUE), col="#FFFFFF66", legend=FALSE, add=TRUE)
-    raster::plot(spTransform(TGO, UTM.31), add=TRUE, lwd=3)
+    raster::plot(mask(image[[1]], TGO, inverse=TRUE), col="#FFFFFF66", legend=FALSE, add=TRUE)
+    raster::plot(TGO, add=TRUE, lwd=3)
     dev.off()
     
     # Fermer le fichier journal
@@ -427,7 +439,7 @@ foreach(i=1:length(in.image.list)) %dopar% {
   prepare.landsat(in.image.dirs, 
                   ext = TGO.EXT, 
                   filename = filename, 
-                  overwrite=TRUE, 
+                  overwrite=FALSE, 
                   log=TRUE)
   
 }

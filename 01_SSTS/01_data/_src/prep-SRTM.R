@@ -29,6 +29,7 @@ system(paste("gdalwarp -t_srs EPSG:32631",
              "-tr 30 30",
              paste("-te", TGO.EXT@xmin, TGO.EXT@ymin, TGO.EXT@xmax, TGO.EXT@ymax),
              paste0(OUT.DIR, "/SRTM_30m.tif"),
+             "-r bilinear",             # interpolation bilinéaire
              "-ot Int16",
              "-dstnodata -9999",
              "-overwrite"))

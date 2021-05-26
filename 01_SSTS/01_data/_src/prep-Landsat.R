@@ -11,7 +11,7 @@ IN.DIR  <- paste0(DIR.RAW.DAT, "/Landsat")
 OUT.DIR <- paste0(DIR.SST.DAT, "/Landsat")
 if(!dir.exists(OUT.DIR)) dir.create(OUT.DIR)
 
-WRS     <- readOGR(paste0(IN.DIR, "/WRS2/WRS2_descending.shp"))    # Scènes WRS
+# WRS     <- readOGR(paste0(IN.DIR, "/WRS2/WRS2_descending.shp"))    # Scènes WRS
 
 # Masques de nuages et d'eau pour Landsat 4-7 et Landsat 8   ------------------
 # voir les guides des produits de réflexion de surface Landsat 4-7 et Landsat 8
@@ -321,7 +321,7 @@ prepare.landsat <- function(in.image.dirs,
     
     dir.create(dirname(filename), recursive = TRUE, showWarnings = FALSE)
     
-    # Ouvrir le fichier journal si un nom de fichier et log==true
+    # Ouvrir le fichier journal si log==true
     if(log==TRUE) {
       logfile <- file(sub(".tif", ".log", filename), open="wt")
       sink(logfile, type="output")
@@ -344,15 +344,16 @@ prepare.landsat <- function(in.image.dirs,
     p194 <- compareCRS(img.tmp, UTM.30)
     
     if(p194) {
+      ext.orig <- ext
       ext <- as(ext, "SpatialPolygons")
       proj4string(ext) <- UTM.31
       ext <- extent(spTransform(ext, UTM.30))
     }
     
-    xmin <- max(ext@xmin, img.ext@xmin)
-    ymin <- max(ext@ymin, img.ext@ymin)
-    xmax <- min(ext@xmax, img.ext@xmax)
-    ymax <- min(ext@ymax, img.ext@ymax)
+    # xmin <- max(ext@xmin, img.ext@xmin)
+    # ymin <- max(ext@ymin, img.ext@ymin)
+    # xmax <- min(ext@xmax, img.ext@xmax)
+    # ymax <- min(ext@ymax, img.ext@ymax)
     
     stripe <- basename(files[1])
     stripe <- paste0(substr(stripe, 1, 13), "xxx", substr(stripe, 17, 40))
@@ -362,7 +363,7 @@ prepare.landsat <- function(in.image.dirs,
     # cominber images, bandes 1-5 (L8 2-6)
     for(b in c(paste0("sr_band", 1:5+(sensor == "LC08")), "sr_band7", "sr_evi", "sr_msavi", "sr_nbr", "sr_nbr2", "sr_ndmi", "sr_ndvi", "sr_savi", "pixel_qa")) {
       system(paste("gdalbuildvrt", paste0(vrt.dir, "/", stripe, "_", b, ".vrt"), 
-                   "-te", xmin,  ymin, xmax, ymax,
+                   "-te", ext@xmin, ext@ymin, ext@xmax, ext@ymax,
                    paste(grep(paste0("^.*_", b, ".tif$"), files, value=TRUE), collapse=" ")))
     }
     
@@ -386,7 +387,7 @@ prepare.landsat <- function(in.image.dirs,
     if(p194) {
       system(paste("gdalwarp -t_srs EPSG:32631",
                    "-tr 30 30",
-                   "-te 147255 1017495 222165 1238265",
+                   "-te", ext.orig@xmin, ext.orig@ymin, ext.orig@xmax, ext.orig@ymax,
                    filename, sub(".tif", "_repr.tif", filename)))
       file.rename(sub(".tif", "_repr.tif", filename), filename)
     }
@@ -437,12 +438,13 @@ foreach(i=1:length(in.image.list)) %dopar% {
   # ... et faire le travail
   message("Processing ", path, "_", year)
   prepare.landsat(in.image.dirs, 
-                  ext = TGO.EXT, 
+                  ext = WRS.EXT[[path]], 
                   filename = filename, 
                   overwrite=FALSE, 
                   log=TRUE)
   
 }
+
 
 # Fusionner les fichiers journaux 
 for(d in list.dirs(paste0(OUT.DIR), recursive=FALSE, full.names=TRUE)) {

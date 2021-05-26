@@ -10,8 +10,10 @@
 library("sp")           # Classes et méthodes pour les données spatiales
 library("rgdal")        # Geospatial Data Abstraction Library
 library("raster")       # Analyse et modélisation des données géographiques
+library("rgeos")        # Opérations spatiales
 library("rasterVis")    # illuster raster catégoriel
 library("randomForest") # Algorithme de classification et régression
+library("ranger")       # Algorithme de classification et régression efficace
 library("caret")        # Outils pour classification et régression
 library("openxlsx")     # Lire et écrire des fichiers Excel (xlsx)
 library("dplyr")        # Fonctions pour manipuler des données
@@ -29,10 +31,10 @@ library("knitr")        # pour la documentation html
 
 # Années / Périodes -----------------------------
 
-.snsf$YEARS.ALL <-   1985:2019                                  # - tous
-.snsf$YEARS.JNT <- c(1987, 2003, 2005, 2007, 2015, 2017, 2018)  # - conjointes
-.snsf$YEARS.REF <- c(1987, 2003,             2015,       2018)  # - référence
-.snsf$YEARS.NRF <- c(      2003,             2015,       2018)  # - NRF
+.snsf$YEARS.ALL <-   1985:2021                                  # - tous
+.snsf$YEARS.JNT <- c(1987, 2003, 2005, 2007, 2015, 2017, 2018, 2019, 2020)  # - conjointes
+.snsf$YEARS.REF <- c(1987, 2003,             2015,       2018, 2019, 2020)  # - référence
+.snsf$YEARS.NRF <- c(      2003,             2015,       2018, 2019, 2020)  # - NRF
 
 # Répertoires -----------------------------------
 
@@ -82,7 +84,12 @@ library("knitr")        # pour la documentation html
                         .snsf$UTM.31
                     )
 
-.snsf$TGO.EXT <- extent(151155, 373005, 670665, 1238175)  # xmin, xmax, ymin, ymax
+.snsf$TGO.EXT <-  extent(151155, 373005,  670665, 1238175)  # xmin, xmax, ymin, ymax
+
+.snsf$WRS.EXT <- list(
+  p192 = extent(216885, 373005,  670665, 1075215),
+  p193 = extent(151155, 373005,  683085, 1238175),
+  p194 = extent(151155, 222165, 1017495, 1238175))
 
 # Noms des couches de données -------------------
 
@@ -104,7 +111,7 @@ library("knitr")        # pour la documentation html
 .snsf$CORES <- detectCores()
 
 # Semence pour le générateur de nombres aléatoires
-.snsf$RSEED <- 20191114
+.snsf$RSEED <- 20210316
 
 # Attacher l'environnement
 attach(.snsf)

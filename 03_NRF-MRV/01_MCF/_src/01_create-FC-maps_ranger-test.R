@@ -7,6 +7,8 @@
 
 # Définitions des variables ===================================================
 
+source("init.R")
+
 # Seuil de la couverture des houppiers (forêt vs. non-forêt)
 COV.FC         <- 30             
 
@@ -100,6 +102,7 @@ sample.map <- function(map, n) {
   cat("done\n")
   return(sample.pts)
 }
+  
 
 # Classification d'une image -------------------------------------------
 #
@@ -128,194 +131,192 @@ classify.image <- function(image, filename, bioclim=NULL, train.pts=NULL,
                            ref.map=NULL, n.ref.map=NULL, 
                            cal.map=NULL, n.cal.map=NULL, 
                            mask=NULL, preds=NULL, type="classification", 
-                           n.cores=CORES-1, doParallel=FALSE, overwrite=TRUE) {
+                           n.cores=CORES-1) {
   
-  if(!file.exists(filename) | overwrite) {
-    # Ouvrir le fichier journal
-    txtfile <- paste0(sub("[.]tif$", "", filename), ".txt")
-    cat("-- Image classification: ", basename(filename), "/", date(), " --\n", file=txtfile)
+  # Ouvrir le fichier journal
+  txtfile <- paste0(sub("[.]tif$", "", filename), ".txt")
+  cat("-- Image classification: ", basename(filename), "/", 
+      date(), " --\n", file=txtfile)
   
-    # Empiler les couches Landsat et bioclim
-    if(!is.null(bioclim)) image <- raster::stack(image, crop(bioclim, image))
-    # et utiliser toutes les variables si non-spécifiées dans les paramètres
-    if(!is.null(preds)){
-      image <- image[[preds]]
-    } else {
-      preds <- names(image)
-    }
-  
-    # Charger des points d'entraînement ---------------------
-    if(!is.null(train.pts)) {
-      cat("    -Loading training points ... ")
-      train.pts <- train.pts[,1]      # utiliser que la première colonne ...
-      names(train.pts) <- "CLASS"     # ... et nommer "CLASS"
-      set_ReplCRS_warn(FALSE)
-      proj4string(train.pts) <- proj4string(image)  # Système de coordonnées CRS
-      cat("done\n")
-      cat("Training points:", nrow(train.pts), "\n", file=txtfile, append=TRUE)
-    }
-  
-    # Ajouter des points d'une carte de référence -----------
-    if(!is.null(ref.map)) {
-      cat(paste0("    -Masking / buffering reference map ... \n"))
-      # ... couper/masquer avec l'image
-      ref.map  <- mask(crop(ref.map, image[[1]]), crop(image[[1]], ref.map)) 
-      # ... et masque additionelle (si disponible)
-      if(!is.null(mask)) ref.map <- mask(ref.map, mask)             
-      # Découper la carte de calibration (si disponible)
-      if(!is.null(cal.map)) {
-        tmp <- extend(crop(cal.map, ref.map), ref.map)
-        ref.map <- mask(ref.map, tmp, inverse=TRUE)
-      }
-      cat("    ")
-      # Tirer des points d'échantillon ...
-      ref.pts <- sample.map(ref.map, n.ref.map)
-      cat("Ref-map points: ", nrow(ref.pts), "/", ref.map@file@name, "/", 
-          SAMPLE.DIST, "px\n", file=txtfile, append=TRUE)
-      # ... et ajouter aux points d'entraînement
-      if(is.null(train.pts)) {
-        train.pts <- ref.pts                                          
-      } else {
-        train.pts <- rbind(train.pts, ref.pts)
-      }
-    }
-  
-    # Ajouter des points d'une carte de calibration ---------
-    if(!is.null(cal.map)) {
-      cat(paste0("    -Masking / buffering calibration map ... \n"))
-      # ... couper/masquer avec l'image
-      cal.map  <- mask(crop(cal.map, image[[1]]), crop(image[[1]], cal.map)) 
-      # ... et masque additionelle (si disponible)
-      if(!is.null(mask)) cal.map <- mask(cal.map, mask)                     
-      cat("    ")
-      # Tirer des points d'échantillon ...
-      cal.pts <- sample.map(cal.map, n.cal.map)
-      cat("Cal-map points: ", nrow(cal.pts), "from", cal.map@file@name, "/", 
-          SAMPLE.DIST, "px\n", file=txtfile, append=TRUE)
-      # ... et ajouter aux points d'entraînement
-      if(is.null(train.pts)) {
-        train.pts <- cal.pts                                      
-      } else {
-        train.pts <- rbind(train.pts, cal.pts)
-      }
-    }
-    # Nombre total des points d'entraînement
-    cat("Total points:   ", nrow(train.pts), "\n", file=txtfile, append=TRUE)
-  
-    # Extraire les variables correspondantes ----------------
-  
-    # Extraire les variables Landsat ...
-    cat("    -Extracting pixel values for bands:", preds, "... ")
-    registerDoParallel(n.cores)
-    train.pts <- foreach(subset=split(train.pts, f=rep_len(1:n.cores, nrow(train.pts))), .combine=rbind) %dopar% {
-      raster::extract(image, subset, sp=TRUE)
-    }
-    stopImplicitCluster()
-  
-    # Ignorer des lignes avec NAs
-    train.dat <- na.omit(train.pts@data)[, c("CLASS", preds)]
-  
-    # Calibration du modèle Random Forest -------------------
-    # Variable catégorielle -> mode de classification, autrement -> régression
-    if(type=="classification") train.dat[,1] <- as.factor(train.dat[,1])
-    cat("done\n")
-  
-    cat("    -Calibrating RandomForest ... ")
-    sink(txtfile, append=TRUE)
-    if(doParallel) {
-      registerDoParallel(n.cores)
-      # Parallélisation de RandomForest : cpossible, mais confusion, err.rate, mse et rsq seront NULL
-      # https://stackoverflow.com/questions/14106010/parallel-execution-of-random-forest-in-r
-      map.model <- foreach(ntree=rep(ceiling(500/n.cores), n.cores), .combine=randomForest::combine, .multicombine=TRUE, .packages='randomForest') %dopar% {
-                      randomForest(y=train.dat[,1], x=train.dat[,-1], importance=TRUE, ntree=ntree)
-      }
-      #  
-      #print(varImp(map.model))
-      stopImplicitCluster()
-    } else {
-      map.model <- randomForest(y=train.dat[,1], x=train.dat[,-1], importance=TRUE, ntree=500) # , do.trace=100)
-      # Mesures des erreurs
-      if(type=="treecover") {
-        cat("R2:", round(map.model$rsq[500], 2), "RMSE:", round(sqrt(map.model$mse[500]), 2), "\n")
-      } else {
-        cat("OOB error rate:", round(map.model$err.rate[500,1], 2), "\n")
-      }
-    }
-  
-    print(map.model)
-    cat("\n")
-    print(randomForest::importance(map.model))
-    sink()
-  
-  
-    # Classification de la carte forêt/non-forêt ------------
-    dir.create(dirname(filename), recursive=TRUE, showWarnings=FALSE)
-    cat("    -Predicting map ... ")
-  
-    # if(type=="treecover"){
-    #   args <- list(model=map.model)
-    # } else {
-    #   args <- list(model=map.model, type="prob", index=2)
-    # }
-    # beginCluster(n=n.cores)
-    # map <- round(10000*clusterR(image, raster::predict, args=args), 0)
-    # endCluster()
-  
-    b <- blockSize(image)
-
-    registerDoParallel(n.cores)
-    # loop over blocks
-    l.res <- foreach(i=1:length(b$row)) %dopar% {
-      # read values for block
-      # format is a matrix with rows the cells values and columns the layers
-      r_in <- readStart(image)
-      val <- getValues(r_in, row = b$row[i], nrows = b$nrows[i])
-      readStop(r_in)
-      res <- rep(NA, nrow(val))
-      ids <- which(complete.cases(val))
-      if(nrow(val[ids,]) > 0) {
-        if(type=="treecover"){
-          res[ids] <- predict(map.model, val[ids,])
-        } else {
-          res[ids] <- predict(map.model, val[ids,], type="prob")[,as.character(FOREST)]
-        }
-      }
-      return(res)
-    }
-    stopImplicitCluster()
-  
-  
-    cat("writing map ... ")
-    if(type=="treecover") {
-      map <- writeStart(raster(image), filename, datatype="INT2S", format="GTiff", overwrite=TRUE)
-      # write to output file
-      for(i in 1:length(l.res)) {
-        writeValues(map, 10000*l.res[[i]], b$row[i])
-      }
-      map <- writeStop(map)
-      # map <- writeRaster(map, filename=filename, format="GTiff", datatype="INT2S", overwrite=TRUE)
-      prob.map = NULL
-    } else {
-      prob.map <- writeStart(raster(image), sub("[.]tif$", "_prob.tif", filename), datatype="INT2S", format="GTiff", overwrite=TRUE)
-      # write to output file
-      for(i in 1:length(l.res)) {
-        writeValues(prob.map, 10000*l.res[[i]], b$row[i]) 
-      }
-      prob.map <- writeStop(prob.map)
-      # prob.map <- writeRaster(map, filename=sub("[.]tif$", "_prob.tif", filename), format="GTiff", datatype="INT2S", overwrite=TRUE)
-      map      <- writeRaster(FOREST * (prob.map >= 5000), filename, datatype="INT1U", format="GTiff", overwrite=TRUE)
-    }
-  
-    cat("done\n")
-  
-    cat("-- Done: ", basename(filename), "/", date(), " --\n", file=txtfile, append=TRUE)
-  
-    invisible(list(
-      "model"  = map.model,
-      "map"    = map,
-      "prob"   = prob.map
-    ))
+  # Empiler les couches Landsat et bioclim
+  if(!is.null(bioclim)) image <- raster::stack(image, crop(bioclim, image))
+  # et utiliser toutes les variables si non-spécifiées dans les paramètres
+  if(!is.null(preds)){
+    image <- image[[preds]]
+  } else {
+    preds <- names(image)
   }
+  
+  # Charger des points d'entraînement ---------------------
+  if(!is.null(train.pts)) {
+    cat("    -Loading training points ... ")
+    train.pts <- train.pts[,1]      # utiliser que la première colonne ...
+    names(train.pts) <- "CLASS"     # ... et nommer "CLASS"
+    set_ReplCRS_warn(FALSE)
+    proj4string(train.pts) <- proj4string(image)  # Système de coordonnées CRS
+    cat("done\n")
+    cat("Training points:", nrow(train.pts), "\n", file=txtfile, append=TRUE)
+  }
+  
+  # Ajouter des points d'une carte de référence -----------
+  if(!is.null(ref.map)) {
+    cat(paste0("    -Masking / buffering reference map ... \n"))
+    # ... couper/masquer avec l'image
+    ref.map  <- mask(crop(ref.map, image[[1]]), crop(image[[1]], ref.map)) 
+    # ... et masque additionelle (si disponible)
+    if(!is.null(mask)) ref.map <- mask(ref.map, mask)             
+    # Découper la carte de calibration (si disponible)
+    if(!is.null(cal.map)) {
+      tmp <- extend(crop(cal.map, ref.map), ref.map)
+      ref.map <- mask(ref.map, tmp, inverse=TRUE)
+    }
+    cat("    ")
+    # Tirer des points d'échantillon ...
+    ref.pts <- sample.map(ref.map, n.ref.map)
+    cat("Ref-map points: ", nrow(ref.pts), "/", ref.map@file@name, "/", 
+        SAMPLE.DIST, "px\n", file=txtfile, append=TRUE)
+    # ... et ajouter aux points d'entraînement
+    if(is.null(train.pts)) {
+      train.pts <- ref.pts                                          
+    } else {
+      train.pts <- rbind(train.pts, ref.pts)
+    }
+  }
+  
+  # Ajouter des points d'une carte de calibration ---------
+  if(!is.null(cal.map)) {
+    cat(paste0("    -Masking / buffering calibration map ... \n"))
+    # ... couper/masquer avec l'image
+    cal.map  <- mask(crop(cal.map, image[[1]]), crop(image[[1]], cal.map)) 
+    # ... et masque additionelle (si disponible)
+    if(!is.null(mask)) cal.map <- mask(cal.map, mask)                     
+    cat("    ")
+    # Tirer des points d'échantillon ...
+    cal.pts <- sample.map(cal.map, n.cal.map)
+    cat("Cal-map points: ", nrow(cal.pts), "from", cal.map@file@name, "/", 
+        SAMPLE.DIST, "px\n", file=txtfile, append=TRUE)
+    # ... et ajouter aux points d'entraînement
+    if(is.null(train.pts)) {
+      train.pts <- cal.pts                                      
+    } else {
+      train.pts <- rbind(train.pts, cal.pts)
+    }
+  }
+  # Nombre total des points d'entraînement
+  cat("Total points:   ", nrow(train.pts), "\n", file=txtfile, append=TRUE)
+  
+  
+  # Extraire les variables correspondantes ----------------
+  
+  # Extraire les variables Landsat ...
+  cat("    -Extracting pixel values for bands:", preds, "... ")
+  registerDoParallel(n.cores)
+  train.pts <- foreach(subset=split(train.pts, f=rep_len(1:n.cores, nrow(train.pts))), .combine=rbind) %dopar% {
+    raster::extract(image, subset, sp=TRUE)
+  }
+  stopImplicitCluster()
+  
+  # Ignorer des lignes avec NAs
+  train.dat <- na.omit(train.pts@data)[, c("CLASS", preds)]
+  
+  
+  # Calibration du modèle Random Forest -------------------
+  
+  # Variable catégorielle -> mode de classification, autrement -> régression
+  if(type=="classification") train.dat[,1] <- as.factor(train.dat[,1])
+  cat("done\n")
+  cat("    -Calibrating RandomForest ... ")
+  sink(txtfile, append=TRUE)
+  # Utiliser caret::train pour validation croisée (a besoin de beaucoup de temps)
+  map.model <- ranger(y=train.dat[,1], x=train.dat[,-1], 
+                        importance="impurity", mtry = 2,
+                        probability = is.factor(train.dat[,1]),
+                        num.threads = n.cores,
+                        keep.inbag = TRUE)
+  print(map.model)
+  cat("\n")
+  imp <- importance(map.model)
+  print(imp[order(imp, decreasing = TRUE)])
+  sink()
+  # Mesures des erreurs
+  cat("Prediction error:", round(map.model$prediction.error, 2), "\n")
+  
+  # Classification de la carte forêt/non-forêt ------------
+  dir.create(dirname(filename), recursive=TRUE, showWarnings=FALSE)
+  cat("    -Creating map ... ")
+  
+  r_in <- readStart(image)
+  val <- values(r_in)
+  readStop(r_in)
+  res <- rep(NA, nrow(val))
+  ids <- which(complete.cases(val))
+  if(type=="classification"){
+    res[ids] <- predict(map.model, val[ids,], num.threads=n.cores)$predictions[,as.character(FOREST)]
+    prob.map <- writeStart(raster(r_in), sub("[.]tif$", "_prob.tif", filename), datatype="INT2S", format="GTiff", overwrite=TRUE)
+    prob.map <- writeValues(prob.map, 10000*res, 1)
+    writeStop(prob.map)
+    cat("converting to F/NF map ... ")
+    map <- writeRaster(FOREST * (prob.map >= 5000), filename, datatype="INT1U", format="GTiff", overwrite=TRUE)
+  } else {
+    prob.map = NULL
+    res[ids] <- predict(map.model, val[ids,], num.threads=n.cores)$predictions
+    map <- writeStart(raster(r_in), filename, datatype="INT2S", format="GTiff", overwrite=TRUE)
+    map <- writeValues(map, 10000*res, 1)
+    writeStop(map)
+  }
+  cat("done\n")
+  
+  
+  # Option 2: using foreach -- takes too much memory
+  # b <- blockSize(image)
+  # 
+  # registerDoParallel(n.cores)
+  # # loop over blocks
+  # l.res <- foreach(i=1:length(b$row)) %dopar% {
+  #   # read values for block
+  #   # format is a matrix with rows the cells values and columns the layers
+  #   r_in <- readStart(image)
+  #   val <- getValues(r_in, row = b$row[i], nrows = b$nrows[i])
+  #   readStop(r_in)
+  #   res <- rep(NA, length(val))
+  #   ids <- which(complete.cases(val))
+  #   res[ids] <- predict(map.model, val[ids,], num.threads=1)$predictions[,as.character(FOREST)]
+  #   return(res)
+  # }
+  # stopImplicitCluster()
+  # 
+  # map <- writeStart(raster(r_in), filename, datatype="INT2S", format="GTiff", overwrite=TRUE)
+  # # write to output file
+  # for(i in 1:length(l.res)) {
+  #   writeValues(map, 10000*l.res[[i]], b$row[i])
+  # }
+  # map <- writeStop(map)
+  
+  # Option 3: using clusterR  -- does not use all nodes, small blocks uneven use of nodes
+  # beginCluster(n=n.cores)
+  # map <- clusterR(image, raster::predict,
+  #                 args=list(model=map.model,
+  #                           fun=function(model, data) {
+  #                                 predict(model, data, num.threads=1)$predictions[,2]
+  #                                }))
+  # endCluster()
+  #
+  # prob.map <- raster::predict(image, map.model, sub("[.]tif$", "_prob.tif", filename), 
+  # fun=function(model, data) 10000*predict(model, data, num.threads=n.cores)$predictions[,as.character(FOREST)], 
+  # datatype="INT2S", format="GTiff", overwrite=TRUE)
+  
+  # sauvegarder la carte
+  
+  # convertir en %, si c'est une carte couverture houppier
+  
+  
+  cat("-- Done: ", basename(filename), "/", date(), " --\n", file=txtfile, append=TRUE)
+  
+  invisible(list(
+    "model"  = map.model,
+    "map"    = map,
+    "prob"   = prob.map
+  ))
 }
 
 
@@ -389,38 +390,37 @@ train.points@data <- cbind(train.points@data[,c("image", "ccov")],
 
 
 # Séléction des variables explicatives ----------------------------------------
+# TODO: implement with ranger https://github.com/topepo/caret/issues/555 / https://github.com/topepo/caret/issues/1062
 
-cov.varsel <- rfe(y = train.points@data[train.points$image=="p193", "ccov"],
-                  x = train.points@data[train.points$image=="p193", PREDICTORS],
-                  sizes = c(4, 6, 8, 10),
-                  rfeControl = rfeControl(
-                    functions = rfFuncs,      # utiliser RandomForest
-                    method  = "repeatedcv",   # validation croisée
-                    number  = 10,             # 10-fold
-                    repeats = 3))             # 3 répétitions
-print(cov.varsel)
-predictors(cov.varsel)
-plot(cov.varsel, type=c("g", "o"))
+# cov.varsel <- rfe(y = train.points@data[train.points$image=="p193", "ccov"],
+#                   x = train.points@data[train.points$image=="p193", PREDICTORS],
+#                   sizes = c(4, 6, 8, 10),
+#                   rfeControl = rfeControl(
+#                     functions = rfFuncs,      # utiliser RandomForest
+#                     method  = "repeatedcv",   # validation croisée
+#                     number  = 10,             # 10-fold
+#                     repeats = 3))             # 3 répétitions
+# print(cov.varsel)
+# predictors(cov.varsel)
+# plot(cov.varsel, type=c("g", "o"))
 
 
 # Carte de la couverture des houppiers pour 2018 (TODO) -----------------------
 
-# set.seed(RSEED)
-# p193.2018.cov <- classify.image(image     = load.image("/p193/p193_2018.tif"), 
-#                                 bioclim   = bioclim[["p193"]],
-#                                 filename  = paste0(REF.DIR, "/p193_2018_COV_R.tif"),
-#                                 train.pts = train.points[train.points$image == "p193", "ccov"],
-#                                 preds     = PREDICTORS,
-#                                 type      = "treecover",
-#                                 crossval  = TRUE,
-#                                 n.cores   = 32)
-# 
-# # observé vs. prédit
-# pdf(paste0(REF.DIR, "/p193_2018_COV_R.pdf"))
-# plot(p193.2018.cov[["model"]]$y, p193.2018.cov[["model"]]$predicted, xlim=c(0,1), ylim=c(0,1), 
-#      main="Couverture houppier p193", xlab="Observation", ylab="Prédiction")
-# abline(0,1)
-# dev.off()
+set.seed(RSEED)
+p193.2018.cov <- classify.image(image     = load.image("/p193/p193_2018.tif"), 
+                                bioclim   = bioclim[["p193"]],
+                                filename  = paste0(REF.DIR, "/p193_2018_COV_R.tif"),
+                                train.pts = train.points[train.points$image == "p193", "ccov"],
+                                preds     = PREDICTORS,
+                                type      = "treecover")
+
+# observé vs. prédit
+pdf(paste0(REF.DIR, "/p193_2018_COV_R.pdf"))
+plot(p193.2018.cov[["model"]]$y, p193.2018.cov[["model"]]$predicted, xlim=c(0,1), ylim=c(0,1), 
+     main="Couverture houppier p193", xlab="Observation", ylab="Prédiction")
+abline(0,1)
+dev.off()
 
 # Cartes de référence du couvert forestier 2018 -------------------------------
 
@@ -430,11 +430,14 @@ classify.image(image     = load.image("/p193/p193_2018.tif"),
                bioclim   = bioclim[["p193"]],
                filename  = paste0(REF.DIR, "/FC", COV.FC, "/p193_2018_FC", COV.FC, "_R.tif"),
                train.pts = train.points[train.points$image == "p193", paste0("F", COV.FC)],
-               preds     = PREDICTORS)
+               preds     = PREDICTORS),
+               prob      = TRUE,
+               crossval  = TRUE,
+               n.cores   = 32)  
 
 # Chemins WRS p192 and p194, utilisant p193 pour calibration
 set.seed(RSEED)
-registerDoParallel(2)
+registerDoParallel(CORES-1)
 foreach(path=c("p192", "p194")) %dopar% {   # traitement en parallèle
   train.pts <- train.points[train.points$image == path, paste0("F", COV.FC)]
   classify.image(image     = load.image(paste0("/", path, "/", path, "_2018.tif")), 
@@ -447,7 +450,7 @@ foreach(path=c("p192", "p194")) %dopar% {   # traitement en parallèle
                  mask      = TGO,
                  preds     = PREDICTORS,
                  prob      = TRUE,
-                 n.cores   = floor((CORES - 1)/2))
+                 n.cores   = 32)
 }
 stopImplicitCluster()
 
@@ -463,13 +466,13 @@ classify.image(image     = load.image("/p193/p193_2003.tif"),
                n.ref.map = 2 * SAMPLE.RATIO * N.PIXELS[["p193"]],
                preds     = PREDICTORS,
                mask      = TGO,
-               doParallel= TRUE)
+               n.cores   = 30)
 
 # Chemins WRS p192 and p194, utilisant p193 pour calibration
 set.seed(RSEED)
-registerDoParallel(2)
+registerDoParallel(CORES)
 foreach(path=c("p192", "p194")) %dopar% {   # traitement en parallèle
-  classify.image(image     = load.image(paste0("/", path, "/", path, "_2003.tif")), 
+  classify.image(image     = load.image(paste0("/", path, "/", path, "_2003_m.tif")), 
                  bioclim   = bioclim[[path]],
                  filename  = paste0(REF.DIR, "/FC", COV.FC, "/", path, "_2003_FC", COV.FC, "_R.tif"),
                  # sur base de la carte de référence 2018 ...
@@ -480,51 +483,41 @@ foreach(path=c("p192", "p194")) %dopar% {   # traitement en parallèle
                  n.cal.map = 2 * CAL.RATIO * SAMPLE.RATIO * N.PIXELS[[path]],
                  preds     = PREDICTORS,
                  mask      = TGO,
-                 doParallel= TRUE)
-                 # n.cores   = floor((CORES - 1)/2))
+                 n.cores   = 32)
 }
-stopImplicitCluster()
 
 
 # Cartes du couvert forestier brutes pour toutes les dates --------------------
 
 # Chemin WRS p193
 set.seed(RSEED)
-# registerDoParallel(length(dir(paste0(LANDSAT.DIR, "/p193"), pattern="[_][[:digit:]]+[.]tif")))
-foreach(file=dir(paste0(LANDSAT.DIR, "/p193"), pattern="[_][[:digit:]]+[.]tif")) %do% {
+registerDoParallel(CORES)
+foreach(file=dir(paste0(LANDSAT.DIR, "/p193"), pattern="\\_[[:digit:]]+\\_m\\.tif")) %dopar% {
   classify.image(image     = load.image(paste0("/p193/", file)), 
                  bioclim   = bioclim[["p193"]],
-                 filename  = paste0(RAW.DIR, "/FC", COV.FC, "/p193/", sub("[.]tif$", paste0("_F", COV.FC, "r.tif"), file)),
+                 filename  = paste0(RAW.DIR, "/FC", COV.FC, "/p193/", sub("\\_m\\.tif$", paste0("_F", COV.FC, "r.tif"), file)),
                  ref.map   = raster(paste0(REF.DIR, "/FC", COV.FC, "/p193_2003_FC", COV.FC, "_R.tif")),
                  n.ref.map = SAMPLE.RATIO * N.PIXELS[["p193"]],
                  preds     = PREDICTORS,
                  mask      = TGO,
-                 n.cores   = 50,
-                 doParallel= TRUE,
-                 overwrite = FALSE) 
+                 n.cores   = 6)
 }
-#stopImplicitCluster()
 
 # fusionner les deux tuiles p193_1990
-merge(raster(paste0(RAW.DIR, "/FC", COV.FC, "/p193/p193_1990_1_F", COV.FC, "r_prob.tif")), 
-      raster(paste0(RAW.DIR, "/FC", COV.FC, "/p193/p193_1990_2_F", COV.FC, "r_prob.tif")),
-      filename=paste0(RAW.DIR, "/FC", COV.FC, "/p193/p193_1990_F", COV.FC, "r_prob.tif"), 
-      format="GTiff", datatype="INT2S", overwrite=TRUE)
 merge(raster(paste0(RAW.DIR, "/FC", COV.FC, "/p193/p193_1990_1_F", COV.FC, "r.tif")), 
       raster(paste0(RAW.DIR, "/FC", COV.FC, "/p193/p193_1990_2_F", COV.FC, "r.tif")),
       filename=paste0(RAW.DIR, "/FC", COV.FC, "/p193/p193_1990_F", COV.FC, "r.tif"), 
-      format="GTiff", datatype="INT1U", overwrite=TRUE)
-
+      format="GTiff", datatype="INT2U", overwrite=TRUE)
 
 # Chemins WRS p192 and p194, utilisant ...
 set.seed(RSEED)
-#registerDoParallel(CORES)
-foreach(file=c(dir(paste0(LANDSAT.DIR, "/p192"), pattern="[_][[:digit:]]+[.]tif"),
-               dir(paste0(LANDSAT.DIR, "/p194"), pattern="[_][[:digit:]]+[.]tif"))) %do% { 
-  path <- sub("[_].*", "", file)
+registerDoParallel(CORES)
+foreach(file=c(dir(paste0(LANDSAT.DIR, "/p192"), pattern="\\_[[:digit:]]+\\_m\\.tif"),
+               dir(paste0(LANDSAT.DIR, "/p194"), pattern="\\_[[:digit:]]+\\_m\\.tif"))) %dopar% { 
+  path <- sub("\\_.*", "", file)
   # ... carte p193 pour la calibration (s'il existe, pour la même année)
-  if(file.exists(paste0(RAW.DIR, "/FC", COV.FC, "/p193/", sub("[.]tif$", paste0("_F", COV.FC, "r.tif"), sub(path, "p193", file))))) {
-    cal.map   <- raster(paste0(RAW.DIR, "/FC", COV.FC, "/p193/", sub("[.]tif$", paste0("_F", COV.FC, "r.tif"), sub(path, "p193", file))))
+  if(file.exists(paste0(RAW.DIR, "/FC", COV.FC, "/p193/", sub("\\_m\\.tif$", paste0("_F", COV.FC, "r.tif"), sub(path, "p193", file))))) {
+    cal.map   <- raster(paste0(RAW.DIR, "/FC", COV.FC, "/p193/", sub("\\_m\\.tif$", paste0("_F", COV.FC, "r.tif"), sub(path, "p193", file))))
     n.cal.map <- CAL.RATIO * SAMPLE.RATIO * N.PIXELS[[path]]
   } else {
     cal.map <- NULL
@@ -532,21 +525,18 @@ foreach(file=c(dir(paste0(LANDSAT.DIR, "/p192"), pattern="[_][[:digit:]]+[.]tif"
   }
   classify.image(image     = load.image(paste0("/", path, "/", file)), 
                  bioclim   = bioclim[[path]],
-                 filename  = paste0(RAW.DIR, "/FC", COV.FC, "/", path, "/", sub("[.]tif$", paste0("_F", COV.FC, "r.tif"), file)),
+                 filename  = paste0(RAW.DIR, "/FC", COV.FC, "/", path, "/", sub("\\_m\\.tif$", paste0("_F", COV.FC, "r.tif"), file)),
                  ref.map   = raster(paste0(REF.DIR, "/FC", COV.FC, "/", path, "_2003_FC", COV.FC, "_R.tif")),
                  n.ref.map = (1 - CAL.RATIO) * SAMPLE.RATIO * N.PIXELS[[path]],
                  cal.map   = cal.map,
                  n.cal.map = n.cal.map,
                  preds     = PREDICTORS,
                  mask      = TGO,
-                 n.cores   = 50,
-                 doParallel= TRUE,
-                 overwrite = FALSE)
-}  
+                 n.cores   = 6)
+} 
 
 
 # Fusionner les cartes des chemins p192, p193 et p194 pour dates clés ... -----
-dir.create(paste0(RAW.DIR, "/FC", COV.FC, "/TGO"))
 
 for(year in YEARS.REF) {
   merge(mask(crop(brick(paste0(RAW.DIR, "/FC", COV.FC, "/p193/p193_", year, "_F", COV.FC, "r.tif")),TGO), TGO),

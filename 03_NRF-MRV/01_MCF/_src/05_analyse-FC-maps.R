@@ -6,6 +6,8 @@
 # 20 May 2019
 
 COV.FC         <- 30
+CLN.DIR <- DIR.MRV.MCF.CLN
+RES.DIR <- DIR.MRV.MCF.RES
 
 # Function for building forest cover table ---------------------------------
 
@@ -19,28 +21,25 @@ fc <- function(map, aoi=NULL) {
   # forest to 3
   
   tab.fc <- map[]
-  tab.fc[tab.fc == 3] <- 0
-  tab.fc[tab.fc == 1] <- 3
-  tab.fc[tab.fc == 2] <- 1
   
   
   for(i in 2:ncol(tab.fc)) {
-    tab.fc[!is.na(tab.fc[,i]) & tab.fc[,i] == 3 & !is.na(tab.fc[,i-1]) & tab.fc[,i-1] < 3, i] <- 2  # mark as regeneration when it was non-forest or regeneration before
+    tab.fc[!is.na(tab.fc[,i]) & tab.fc[,i] == FOREST & !is.na(tab.fc[,i-1]) & tab.fc[,i-1] < FOREST, i] <- REGEN  # mark as regeneration when it was non-forest or regeneration before
   }
   
   tab.fcc <- tab.fc[,1:ncol(tab.fc)-1]
-  tab.fcc[] <- 0
+  tab.fcc[] <- NONFOR
   for(i in 1:ncol(tab.fcc)) {
-    tab.fcc[tab.fc[,i] <= 1 & tab.fc[,i+1] >= 2, i]   <- 1           # mark forest gain
-    tab.fcc[tab.fc[,i] >= 2 & tab.fc[,i+1] <= 1, i]   <- 2           # mark forest loss
+    tab.fcc[tab.fc[,i] <= PREGEN & tab.fc[,i+1] >= REGEN, i]   <- 1           # mark forest gain
+    tab.fcc[tab.fc[,i] >= REGEN & tab.fc[,i+1] <= PREGEN, i]   <- 2           # mark forest loss
   }
   
   dates <- as.numeric(substr(names(map), 2, 5))
   
   fc <- data.frame(year     = dates, 
-                   initi.ha = colSums(tab.fc==3, na.rm=TRUE) * 30^2/10000, 
-                   secon.ha = colSums(tab.fc==2, na.rm=TRUE) * 30^2/10000,
-                   poten.ha = colSums(tab.fc==1, na.rm=TRUE) * 30^2/10000)
+                   initi.ha = colSums(tab.fc==FOREST, na.rm=TRUE) * 30^2/10000, 
+                   secon.ha = colSums(tab.fc==REGEN, na.rm=TRUE) * 30^2/10000,
+                   poten.ha = colSums(tab.fc==PREGEN, na.rm=TRUE) * 30^2/10000)
   
   fc$total.ha <-   fc$initi.ha + fc$secon.ha
   fc$defor.ha <-   -c(colSums(tab.fcc==2, na.rm=TRUE) * 30^2/10000, NA)
@@ -155,47 +154,48 @@ plot.fcc <- function(fc, zone=NULL, breaks=NULL, filename=NULL) {
 
 # Load and rename forest-cover maps ----------------------------
 
-maps <- stack(dir(paste0(FCC.CLN.DIR, "/FC", COV.FC, "/TGO"), pattern = "cf.tif", full.names = TRUE))
+maps <- raster::stack(dir(paste0(CLN.DIR, "/FC", COV.FC, "/TGO"), pattern = "cf.tif", full.names = TRUE))
 names(maps) <- paste0("X", substr(names(maps), 5, 8))
 
 # Create forest cover tables for different periods ------------------------------------
 
 fc.all      <- fc(maps)
-write.csv(fc.all, paste0(FCC.RES.DIR, "/TGO/TGO_fc.csv"), row.names=FALSE)
+write.csv(fc.all, paste0(RES.DIR, "/TGO/TGO_fc.csv"), row.names=FALSE)
 
-fc.all <- read.csv(paste0(FCC.RES.DIR, "/TGO/TGO_fc.csv"))
+fc.all <- read.csv(paste0(RES.DIR, "/TGO/TGO_fc.csv"))
 
 fc.cln <- fc.all
 fc.cln <- fc.cln[!fc.cln$year %in% c(1987, 1991, 2000), ]
 
 fcc(fc.cln)
 fcc(fc.cln, c(2003, 2018))
-fcc(fc.cln, c(2003, 2015, 2017, 2018))
+fcc(fc.cln, c(2003, 2015, 2017, 2018, 2019, 2020))
 
-write.xlsx(list("Total" = fcc(fc.cln)), file = paste0(FCC.RES.DIR, "/TGO/TGO_fcc-all-dates.xlsx"))
-write.xlsx(list("Total" = fcc(fc.cln, c(2003, 2018))), file = paste0(FCC.RES.DIR, "/TGO/TGO_fcc-03-18.xlsx"))
-write.xlsx(list("Total" = fcc(fc.cln, c(2003, 2015, 2018))), file = paste0(FCC.RES.DIR, "/TGO/TGO_fcc-03-15-18.xlsx"))
+write.xlsx(list("Total" = fcc(fc.cln)), file = paste0(RES.DIR, "/TGO/TGO_fcc-all-dates.xlsx"))
+write.xlsx(list("Total" = fcc(fc.cln, c(2003, 2018))), file = paste0(RES.DIR, "/TGO/TGO_fcc-03-18.xlsx"))
+write.xlsx(list("Total" = fcc(fc.cln, c(2003, 2015, 2018))), file = paste0(RES.DIR, "/TGO/TGO_fcc-03-15-18.xlsx"))
 
-plot.fc(fc.cln,  "TGO", paste0(FCC.RES.DIR, "/TGO/TGO_fc.pdf"))
-plot.fcc(fc = fc.cln, zone = "TGO", breaks=c(2003, 2015, 2018), filename=paste0(FCC.RES.DIR, "/TGO/TGO_fcc.pdf"))
+plot.fc(fc.cln,  "TGO", paste0(RES.DIR, "/TGO/TGO_fc.pdf"))
+plot.fcc(fc = fc.cln, zone = "TGO", breaks=c(2003, 2015, 2018), filename=paste0(RES.DIR, "/TGO/TGO_fcc.pdf"))
 
-registerDoParallel(.env$numCores-1)
-foreach(i=1:length(TGO.reg)) %do% {
+registerDoParallel(CORES-1)
+foreach(i=1:length(TGO.REG)) %do% {
   
-  region <- TGO.reg[i,]
-  # fc.all <- fc(maps, aoi=region)
-  # write.csv(fc.all, paste0(RESULTS.DIR, "/tables/", region$NAME_1, "_fc.csv"), row.names=FALSE)
+  region <- TGO.REG[i,]
+  dir.create(paste0(RES.DIR, "/", region$NAME_1), showWarnings = FALSE)
+  fc.all <- fc(maps, aoi=region)
+  write.csv(fc.all, paste0(RES.DIR, "/", region$NAME_1, "/", region$NAME_1, "_fc.csv"), row.names=FALSE)
   
-  fc.all <- read.csv(paste0(RESULTS.DIR, "/tables/", region$NAME_1, "_fc.csv"))
+  fc.all <- read.csv(paste0(RES.DIR, "/", region$NAME_1, "/", region$NAME_1, "_fc.csv"))
   
   fc.cln <- fc.all[!fc.all$year %in% c(1987, 1991, 2000), ]
   
-  plot.fc(fc.cln,  region$NAME_1, paste0(RESULTS.DIR, "/figures/", region$NAME_1, "_fc.pdf"))
-  plot.fcc(fc.cln, region$NAME_1, breaks=c(2003, 2015, 2018), paste0(RESULTS.DIR, "/figures/", region$NAME_1, "_fcc.pdf"))
+  plot.fc(fc.cln,  region$NAME_1, paste0(RES.DIR, "/", region$NAME_1, "/", region$NAME_1, "_fc.pdf"))
+  plot.fcc(fc.cln, region$NAME_1, breaks=c(2003, 2015, 2018), paste0(RES.DIR, "/", region$NAME_1, "/", region$NAME_1, "_fcc.pdf"))
   
-  write.xlsx(list("Total" = fcc(fc.cln)), file = paste0(RESULTS.DIR, "/tables/", region$NAME_1, "_fcc-all-dates.xlsx"))
-  write.xlsx(list("Total" = fcc(fc.cln, c(2003, 2018))), file = paste0(RESULTS.DIR, "/tables/", region$NAME_1, "_fcc-03-18.xlsx"))
-  write.xlsx(list("Total" = fcc(fc.cln, c(2003, 2015, 2018))), file = paste0(RESULTS.DIR, "/tables/", region$NAME_1, "_fcc-03-15-18.xlsx"))
+  write.xlsx(list("Total" = fcc(fc.cln)), file = paste0(RES.DIR, "/", region$NAME_1, "/", region$NAME_1, "_fcc-all-dates.xlsx"))
+  write.xlsx(list("Total" = fcc(fc.cln, c(2003, 2018))), file = paste0(RES.DIR, "/", region$NAME_1, "/", region$NAME_1, "_fcc-03-18.xlsx"))
+  write.xlsx(list("Total" = fcc(fc.cln, c(2003, 2015, 2018))), file = paste0(RES.DIR, "/", region$NAME_1, "/", region$NAME_1, "_fcc-03-15-18.xlsx"))
   
 }
 

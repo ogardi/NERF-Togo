@@ -10,6 +10,8 @@
 # Source: https://github.com/openforis/accuracy-assessment/blob/master/Rscripts/error_matrix_analysis.R
 
 VALSET <- "FC30_flex"
+VAL.DIR <- DIR.MRV.MCF.VAL
+CLN.DIR <- DIR.MRV.MCF.CLN
 
 # Function for estimating accuracies ----------------------------------
   
@@ -105,65 +107,67 @@ accuracy.estimate <- function(areas.map, error.matrix, filename=NULL, pixelsize=
 # DO THE WORK ----------------------------------
 
 # load the error matrices (R object ct)
-load(paste0(FCC.VAL.DIR, "/ConfTab_", VALSET, ".RData"))
+load(paste0(VAL.DIR, "/", VALSET, "_ConfTab.RData"))
 
 # load the predictions and convert "potential regeneration (2)" to "non-forest (3)"
-fc.2003 <- brick(paste0(FCC.CLN.DIR, "/FC30/TGO/TGO_2003_F30cf.tif")); fc.2003[fc.2003==2] <- 3
-fc.2015 <- brick(paste0(FCC.CLN.DIR, "/FC30/TGO/TGO_2015_F30cf.tif")); fc.2015[fc.2015==2] <- 3
-fc.2018 <- brick(paste0(FCC.CLN.DIR, "/FC30/TGO/TGO_2018_F30cf.tif")); fc.2018[fc.2018==2] <- 3
+fc.2003 <- brick(paste0(CLN.DIR, "/FC30/TGO/TGO_2003_F30cf.tif")); fc.2003[fc.2003==PREGEN] <- NONFOR
+fc.2015 <- brick(paste0(CLN.DIR, "/FC30/TGO/TGO_2015_F30cf.tif")); fc.2015[fc.2015==PREGEN] <- NONFOR
+fc.2018 <- brick(paste0(CLN.DIR, "/FC30/TGO/TGO_2018_F30cf.tif")); fc.2018[fc.2018==PREGEN] <- NONFOR
 
 # create 3-date transition map 
 fcc  <-  100 * fc.2003 + 10 * fc.2015 + 1 * fc.2018
 
 # get pixel counts (takes time) and separate for different dates / transitions
 freq <- table(fcc[])
-tmp <- as.numeric(freq); names(tmp) <- names(freq); freq <- tmp
+tmp <- as.numeric(freq)
+names(tmp) <- str_pad(names(freq),3,"left", "0")
+freq <- tmp
 
-freq.03.15.18        <- c(freq["111"], freq["113"], freq["131"], freq["133"], freq["311"], freq["313"], freq["331"], freq["333"])
-names(freq.03.15.18) <- c("111", "113", "131", "133", "311", "313", "331", "333"); freq.03.15.18[is.na(freq.03.15.18)] <- 0
+freq.03.15.18        <- c(freq["333"], freq["330"], freq["303"], freq["300"], freq["033"], freq["030"], freq["003"], freq["000"])
+names(freq.03.15.18) <- c("333", "330", "303", "300", "033", "030", "003", "000"); freq.03.15.18[is.na(freq.03.15.18)] <- 0
 
-freq.03.18        <- c(sum(freq["111"],freq["131"], na.rm=T), sum(freq["113"],freq["133"], na.rm=T),
-                       sum(freq["311"],freq["331"], na.rm=T), sum(freq["313"],freq["333"], na.rm=T))
-names(freq.03.18) <- c("11", "13", "31", "33"); freq.03.18[is.na(freq.03.18)] <- 0
+freq.03.18        <- c(sum(freq["333"],freq["303"], na.rm=T), sum(freq["330"],freq["300"], na.rm=T),
+                       sum(freq["033"],freq["003"], na.rm=T), sum(freq["030"],freq["000"], na.rm=T))
+names(freq.03.18) <- c("33", "30", "03", "00"); freq.03.18[is.na(freq.03.18)] <- 0
 
-freq.03.15        <- c(sum(freq["111"],freq["113"], na.rm=T), sum(freq["131"],freq["133"], na.rm=T),
-                       sum(freq["311"],freq["313"], na.rm=T), sum(freq["331"],freq["333"], na.rm=T))
-names(freq.03.15) <- c("11", "13", "31", "33"); freq.03.15[is.na(freq.03.15)] <- 0
+freq.03.15        <- c(sum(freq["333"],freq["330"], na.rm=T), sum(freq["303"],freq["300"], na.rm=T),
+                       sum(freq["033"],freq["030"], na.rm=T), sum(freq["003"],freq["000"], na.rm=T))
+names(freq.03.15) <- c("33", "30", "03", "00"); freq.03.15[is.na(freq.03.15)] <- 0
 
-freq.15.18        <- c(sum(freq["111"],freq["311"], na.rm=T), sum(freq["113"],freq["313"], na.rm=T),
-                       sum(freq["131"],freq["331"], na.rm=T), sum(freq["133"],freq["333"], na.rm=T))
-names(freq.15.18) <- c("11", "13", "31", "33"); freq.15.18[is.na(freq.15.18)] <- 0
+freq.15.18        <- c(sum(freq["333"],freq["033"], na.rm=T), sum(freq["330"],freq["030"], na.rm=T),
+                       sum(freq["303"],freq["003"], na.rm=T), sum(freq["300"],freq["000"], na.rm=T))
+names(freq.15.18) <- c("33", "30", "03", "00"); freq.15.18[is.na(freq.15.18)] <- 0
 
-freq.03           <- c(sum(freq["111"],freq["131"], freq["113"],freq["133"], na.rm=T),
-                       sum(freq["311"],freq["331"], freq["313"],freq["333"], na.rm=T))
-names(freq.03)    <- c("1", "3"); freq.03[is.na(freq.03)] <- 0
+freq.03           <- c(sum(freq["333"],freq["303"], freq["330"],freq["300"], na.rm=T),
+                       sum(freq["033"],freq["003"], freq["030"],freq["000"], na.rm=T))
+names(freq.03)    <- c("3", "0"); freq.03[is.na(freq.03)] <- 0
   
-freq.15           <- c(sum(freq["111"],freq["311"], freq["113"],freq["313"], na.rm=T),
-                       sum(freq["131"],freq["331"], freq["133"],freq["333"], na.rm=T))
-names(freq.15)    <- c("1", "3"); freq.15[is.na(freq.15)] <- 0
+freq.15           <- c(sum(freq["333"],freq["033"], freq["330"],freq["030"], na.rm=T),
+                       sum(freq["303"],freq["003"], freq["300"],freq["000"], na.rm=T))
+names(freq.15)    <- c("3", "0"); freq.15[is.na(freq.15)] <- 0
 
-freq.18           <- c(sum(freq["111"],freq["311"], freq["131"],freq["331"], na.rm=T),
-                       sum(freq["113"],freq["313"], freq["133"],freq["333"], na.rm=T))
-names(freq.18)    <- c("1", "3"); freq.18[is.na(freq.18)] <- 0
+freq.18           <- c(sum(freq["333"],freq["033"], freq["303"],freq["003"], na.rm=T),
+                       sum(freq["330"],freq["030"], freq["300"],freq["000"], na.rm=T))
+names(freq.18)    <- c("3", "0"); freq.18[is.na(freq.18)] <- 0
 
 # create accuracy maps ------------------------------------
 
-accuracy.estimate(freq.18, ct$MAP_VAL.18c$table , filename=paste0(FCC.VAL.DIR, "/", VALSET, "_Acc_18.xlsx"))
-accuracy.estimate(freq.15, ct$MAP_VAL.15c$table , filename=paste0(FCC.VAL.DIR, "/", VALSET, "_Acc_15.xlsx"))
-accuracy.estimate(freq.03, ct$MAP_VAL.03c$table , filename=paste0(FCC.VAL.DIR, "/", VALSET, "_Acc_03.xlsx"))
+accuracy.estimate(freq.18, ct$MAP_VAL.18c$table , filename=paste0(VAL.DIR, "/", VALSET, "_Acc_18.xlsx"))
+accuracy.estimate(freq.15, ct$MAP_VAL.15c$table , filename=paste0(VAL.DIR, "/", VALSET, "_Acc_15.xlsx"))
+accuracy.estimate(freq.03, ct$MAP_VAL.03c$table , filename=paste0(VAL.DIR, "/", VALSET, "_Acc_03.xlsx"))
 
-accuracy.estimate(freq.03.15, ct$MAP_VAL.03.15c$table , filename=paste0(FCC.VAL.DIR, "/", VALSET, "_Acc_03-15.xlsx"))
-accuracy.estimate(freq.15.18, ct$MAP_VAL.15.18c$table , filename=paste0(FCC.VAL.DIR, "/", VALSET, "_Acc_15-18.xlsx"))
-accuracy.estimate(freq.03.18, ct$MAP_VAL.03.18c$table , filename=paste0(FCC.VAL.DIR, "/", VALSET, "_Acc_03-18.xlsx"))
+accuracy.estimate(freq.03.15, ct$MAP_VAL.03.15c$table , filename=paste0(VAL.DIR, "/", VALSET, "_Acc_03-15.xlsx"))
+accuracy.estimate(freq.15.18, ct$MAP_VAL.15.18c$table , filename=paste0(VAL.DIR, "/", VALSET, "_Acc_15-18.xlsx"))
+accuracy.estimate(freq.03.18, ct$MAP_VAL.03.18c$table , filename=paste0(VAL.DIR, "/", VALSET, "_Acc_03-18.xlsx"))
 
-accuracy.estimate(freq.03.15.18, ct$MAP_VAL.03.15.18c$table , filename=paste0(FCC.VAL.DIR, "/", VALSET, "_Acc_03-15-18.xlsx"))
+accuracy.estimate(freq.03.15.18, ct$MAP_VAL.03.15.18c$table , filename=paste0(VAL.DIR, "/", VALSET, "_Acc_03-15-18.xlsx"))
 
 # calculate forest cover, loss and gains ---------------------
 
 res <- data.frame(year     = c(2003,         2015,             2018),
-                  total.ha = c(freq.03["1"], freq.15["1"],     freq.18["1"])     * 30^2/10000,
-                  defor.ha = c(NA,           freq.03.15["13"], freq.15.18["13"]) * 30^2/10000,
-                  regen.ha = c(NA,           freq.03.15["31"], freq.15.18["31"]) * 30^2/10000)
+                  total.ha = c(freq.03["3"], freq.15["3"],     freq.18["3"])     * 30^2/10000,
+                  defor.ha = c(NA,           freq.03.15["30"], freq.15.18["30"]) * 30^2/10000,
+                  regen.ha = c(NA,           freq.03.15["03"], freq.15.18["03"]) * 30^2/10000)
                   
 
 

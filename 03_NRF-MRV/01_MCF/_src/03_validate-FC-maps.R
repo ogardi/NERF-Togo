@@ -28,7 +28,7 @@ ct <- list()      # liste des matrices d'érreurs (tableaux de confusion)
 # Charger cartes et points d'entraînment --------
 
 # Cartes brutes et cartes néttoyées
-maps <- stack(c(paste0(RAW.DIR, "/FC", COV.FC, "/TGO/TGO_", YEARS.REF, "_F", COV.FC, "r.tif"),
+maps <- raster::stack(c(paste0(RAW.DIR, "/FC", COV.FC, "/TGO/TGO_", YEARS.REF, "_F", COV.FC, "r.tif"),
                 paste0(CLN.DIR, "/FC", COV.FC, "/TGO/TGO_", YEARS.REF, "_F", COV.FC, "c.tif")))
 names(maps) <- sub("TGO\\_", "X", sub("\\_F[[:digit:]]{2}", "", names(maps)))
 
@@ -53,36 +53,51 @@ val.points <- SpatialPointsDataFrame(gCentroid(val.plots, byid=TRUE),
                                                 V2003=as.numeric(substr(val.plots$lc_03, 1, 1)), 
                                                 V2015=as.numeric(substr(val.plots$lc_15, 1, 1)), 
                                                 V2018=as.numeric(substr(val.plots$lc_18, 1, 1))))
+
 # ... et classes correspondantes dans les cartes
 val.points <- raster::extract(maps, val.points, sp=TRUE)
 
 # supprimer lignes avec NA
 val.points <- val.points[rowSums(is.na(val.points@data)) == 0, ]
 
+# Changer les codes: forêt (1), terres boisées (2), non-forêt (3) et nuages-sombre (4) ---------
 
-# Ajustements terres boisées (classe 2) ---------
+val.points$V1987[val.points$V1987 == 3] <- NONFOR
+val.points$V2003[val.points$V2003 == 3] <- NONFOR
+val.points$V2015[val.points$V2015 == 3] <- NONFOR
+val.points$V2018[val.points$V2018 == 3] <- NONFOR
 
-if(COV.FC == 30) {
-  # terre boisée -> non-forêt
-  val.points$V1987[val.points$V1987 == 2] <- NONFOR
-  val.points$V2003[val.points$V2003 == 2] <- NONFOR
-  val.points$V2015[val.points$V2015 == 2] <- NONFOR
-  val.points$V2018[val.points$V2018 == 2] <- NONFOR
-}
-if(COV.FC == 10) {
-  # terre boisée -> forêt
-  val.points$V1987[val.points$V1987 == 2] <- FOREST
-  val.points$V2003[val.points$V2003 == 2] <- FOREST
-  val.points$V2015[val.points$V2015 == 2] <- FOREST
-  val.points$V2018[val.points$V2018 == 2] <- FOREST
-}
-
-# Ajustements nuages/ombre (classe 4) -----------
+val.points$V1987[val.points$V1987 == 1] <- FOREST
+val.points$V2003[val.points$V2003 == 1] <- FOREST
+val.points$V2015[val.points$V2015 == 1] <- FOREST
+val.points$V2018[val.points$V2018 == 1] <- FOREST
 
 val.points$V1987r <- val.points$V1987c <- val.points$V1987; 
 val.points$V2003r <- val.points$V2003c <- val.points$V2003; 
 val.points$V2015r <- val.points$V2015c <- val.points$V2015; 
 val.points$V2018r <- val.points$V2018c <- val.points$V2018; 
+
+# Ajustements terres boisées (classe 2) 
+
+# if(COV.FC == 30) {
+#   # terre boisée -> non-forêt
+#   val.points$V1987r[val.points$V1987 == 2] <- val.points$V1987c[val.points$V1987 == 2] <- NONFOR
+#   val.points$V2003r[val.points$V2003 == 2] <- val.points$V2003c[val.points$V2003 == 2] <- NONFOR
+#   val.points$V2015r[val.points$V2015 == 2] <- val.points$V2015c[val.points$V2015 == 2] <- NONFOR
+#   val.points$V2018r[val.points$V2018 == 2] <- val.points$V2018c[val.points$V2018 == 2] <- NONFOR
+# }
+# if(COV.FC == 10) {
+#   # terre boisée -> forêt
+#   val.points$V1987r[val.points$V1987 == 2] <- val.points$V1987c[val.points$V1987 == 2] <- FOREST
+#   val.points$V2003r[val.points$V2003 == 2] <- val.points$V2003c[val.points$V2003 == 2] <- FOREST
+#   val.points$V2015r[val.points$V2015 == 2] <- val.points$V2015c[val.points$V2015 == 2] <- FOREST
+#   val.points$V2018r[val.points$V2018 == 2] <- val.points$V2018c[val.points$V2018 == 2] <- FOREST
+# }
+
+
+# Ajustements nuages/ombre (classe 4) 
+
+
 
 # Prendre la classe dans les carte brutes ...
 val.points$V1987r[val.points$V1987 %in% c(2,4)] <- val.points$X1987r[val.points$V1987 %in% c(2,4)]
@@ -105,11 +120,11 @@ val.points$X2003c[val.points$X2003c == PREGEN] <- val.points$V2003c[val.points$X
 val.points$X2015c[val.points$X2015c == PREGEN] <- val.points$V2015c[val.points$X2015c == PREGEN] 
 val.points$X2018c[val.points$X2018c == PREGEN] <- val.points$V2018c[val.points$X2018c == PREGEN] 
 
-# Non-forêt où "régénération potentielle" dans la carte et "terre boisée" dans les parcelles de validation
-val.points$X1987c[val.points$X1987c == NONFOR] <- val.points$V1987c[val.points$X1987c == 2] <- NONFOR
-val.points$X2003c[val.points$X2003c == NONFOR] <- val.points$V2003c[val.points$X2003c == 2] <- NONFOR
-val.points$X2015c[val.points$X2015c == NONFOR] <- val.points$V2015c[val.points$X2015c == 2] <- NONFOR
-val.points$X2018c[val.points$X2018c == NONFOR] <- val.points$V2018c[val.points$X2018c == 2] <- NONFOR
+# Non-forêt où "régénération potentielle" dans la carte et "terre boisée/nuage-sombre" dans les parcelles de validation
+val.points$X1987c[val.points$X1987c == PREGEN] <- val.points$V1987c[val.points$X1987c == PREGEN] <- NONFOR
+val.points$X2003c[val.points$X2003c == PREGEN] <- val.points$V2003c[val.points$X2003c == PREGEN] <- NONFOR
+val.points$X2015c[val.points$X2015c == PREGEN] <- val.points$V2015c[val.points$X2015c == PREGEN] <- NONFOR
+val.points$X2018c[val.points$X2018c == PREGEN] <- val.points$V2018c[val.points$X2018c == PREGEN] <- NONFOR
 
 
 val.points@data <- mutate_all(val.points@data, as.factor)
@@ -123,11 +138,11 @@ ref.map <- raster(paste0(REF.DIR, "/FC", COV.FC, "/TGO_2018_FC", COV.FC, "_R.tif
 ct[["MAP_REF.18r"]] <- confusionMatrix(as.factor(maps$X2018r[]), as.factor(ref.map[]))
 
 pdf(paste0(VAL.DIR, "/FC2018_vs_COV2018_FC", COV.FC, ".pdf"))
-plot(factor(train.points$X2018r, labels=c("Forest", "Non-Forest")) ~ train.points$COV, xlab="Tree Cover 2018", ylab="Forest Cover Map 2018")
+plot(factor(train.points$X2018r, labels=c("Non-Forest", "Forest")) ~ train.points$COV, xlab="Tree Cover 2018", ylab="Forest Cover Map 2018")
 dev.off()
 
 pdf(paste0(VAL.DIR, "/COV2018_vs_FC2018_FC", COV.FC, ".pdf"))
-plot(train.points$COV ~ factor(train.points$X2018r, labels=c("Forest", "Non-Forest")), xlab="Forest Cover Map 2018", ylab="Tree Cover 2018")
+plot(train.points$COV ~ factor(train.points$X2018r, labels=c("Non-Forest", "Forest")), xlab="Forest Cover Map 2018", ylab="Tree Cover 2018")
 dev.off()
 
 
@@ -177,22 +192,22 @@ for(t in c("r", "c")) {
 
 # Validation RapidEye map 2015 --------------------------------
 
-rey <- raster(paste0(DATA.DIR, "/RapidEye/TGO_30m.tif"))
-names(rey) <- "R2015"
-val.points <- raster::extract(rey, val.points, sp=TRUE)
+occsol <- raster(paste0(DIR.SST.DAT, "/ProREDD/OCCSOL_30m.tif"))
+names(occsol) <- "R2015"
+val.points <- raster::extract(occsol, val.points, sp=TRUE)
 
-val.points$Rr2015 <- 3
-val.points$Rr2015[val.points$R2015 %in% c(11, 12, 16, 18, 19)] <- 1
+val.points$Rr2015 <- NONFOR
+val.points$Rr2015[val.points$R2015 %in% c(11, 12, 16, 18, 19)] <- FOREST
 val.points$VR2015 <- val.points$V2015
-val.points$VR2015[val.points$V2015 == 2] <- val.points$Rr2015[val.points$V2015 == 2]
+val.points$VR2015[val.points$V2015 %in% c(2,4)] <- val.points$Rr2015[val.points$V2015 %in% c(2,4)]
 
-ct[["REY_VAL.15"]]         <- confMat(paste0("x",        "x",        val.points$Rr2015, "x"       ), paste0("x",         "x",         val.points$VR2015, "x"        ))
+ct[["OCC_VAL.15"]]         <- confMat(paste0("x",        "x",        val.points$Rr2015, "x"       ), paste0("x",         "x",         val.points$VR2015, "x"        ))
 
 # Write confusion tables -------------------------------------
-save(ct, file=paste0(FCC.VAL.DIR, "/FC", COV.FC, "_flex_ConfTab.RData"))
+save(ct, file=paste0(VAL.DIR, "/FC", COV.FC, "_flex_ConfTab.RData"))
 
 # write error matrices to Excel File
 write.xlsx(lapply(ct, "[[", "table"),
-           file=paste0(FCC.VAL.DIR, "/FC", COV.FC, "_flex_ConfTab.xlsx"),
+           file=paste0(VAL.DIR, "/FC", COV.FC, "_flex_ConfTab.xlsx"),
            colnames=TRUE, overwrite=TRUE) 
 

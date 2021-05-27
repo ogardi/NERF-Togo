@@ -59,6 +59,7 @@ library("knitr")        # pour la documentation html
 .snsf$DIR.MRV.MCF.RAW   <- paste0(.snsf$DIR.MRV.MCF, "/02_raw-maps")
 .snsf$DIR.MRV.MCF.CLN   <- paste0(.snsf$DIR.MRV.MCF, "/03_cln-maps")
 .snsf$DIR.MRV.MCF.VAL   <- paste0(.snsf$DIR.MRV.MCF, "/04_validation")
+.snsf$DIR.MRV.MCF.RES   <- paste0(.snsf$DIR.MRV.MCF, "/05_results")
 
 .snsf$DIR.MRV.AGB   <- paste0(.snsf$DIR.MRV, "/02_AGB")
 .snsf$DIR.MRV.AGB.REF   <- paste0(.snsf$DIR.MRV.AGB, "/01_ref-maps")

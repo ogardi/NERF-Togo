@@ -13,6 +13,49 @@ COV.FC         <- 30
 RAW.DIR <- DIR.MRV.MCF.RAW
 CLN.DIR <- DIR.MRV.MCF.CLN
 
+# clean.temporal.pktools <- function(path) {
+#   
+#   # 0. créer des stacks temporaires
+#   
+#   empty <- raster(raster(paste0(RAW.DIR, "/FC30/p192/p192_1986_F30r.tif")))
+#   writeRaster(empty, paste0(CLN.DIR, "/empty.tif"), datatype="INT1U", format="GTiff", overwrite=TRUE)
+#   
+#   system(paste("gdalbuildvrt -separate", paste0(CLN.DIR, "/stack.vrt"),
+#                paste0(RAW.DIR, "/FC30/p192/p192_1986_F30r.tif"),
+#                paste0(RAW.DIR, "/FC30/p192/p192_1987_F30r.tif"),
+#                paste0(CLN.DIR, "/empty.tif"),
+#                paste0(CLN.DIR, "/empty.tif"),
+#                paste0(RAW.DIR, "/FC30/p192/p192_1991_F30r.tif"),
+#                paste0(RAW.DIR, "/FC30/p192/p192_2001_F30r.tif")))
+#   
+#   
+#   # 1. Supprimer les NA isolées ----
+#   system(paste("pkfilter -i", paste0(CLN.DIR, "/stack.vrt"),
+#                         "-o", paste0(CLN.DIR, "/smoothed.tif"),
+#                         "-dz 1 -f smoothnodata -interp linear -nodata 255 -ot Byte"))
+#   
+#   system(paste("pkreclass -i", paste0(CLN.DIR, "/smoothed.tif"),
+#                "-o", paste0(CLN.DIR, "/masked.tif"),
+#                "-c 1 -r 255 -c 2 -r 255 --nodata 255 -b 0 -b 1 -b 2 -b 3 -b 4 -b 5"))
+#   
+#   # 2. nettoyer les trajectoires avec fenêtre coulissante ----
+#   # no solution found so far (mode not available as function for temporal filters, NA counted as 255, ...)
+#   
+#   system(paste("pkfilter -i", paste0(CLN.DIR, "/masked.tif"),
+#                "-o", paste0(CLN.DIR, "/filt1.tif"),
+#                "-dz 5 -f mean"))
+#   
+#   system(paste("pkcomposite -i", paste0(CLN.DIR, "/masked.tif"),
+#                            "-o", paste0(CLN.DIR, "/comp1b2.tif"),
+#                            "-cband 0 -cband 1 -cband 2",
+#                            "-cr mode"))
+#                
+#   
+#   system(paste("gdalinfo", paste0(CLN.DIR, "/smoothed.tif")))
+#                         
+#   
+# }
+
 # Définitions des fonctions ===================================================
 
 # Nettoyage temporel d'une série d'images -------------------------------------
@@ -27,12 +70,12 @@ clean.temporal <- function(path) {
   # Préparation des images --------------------------------
   
   # Charger les cartes brutes
-  maps <- stack(dir(paste0(RAW.DIR, "/FC", COV.FC, "/", path), 
-                    pattern=".*[[:digit:]]{4}\\_F.*\\.tif$", full.names=TRUE))
+  maps <- raster::stack(dir(paste0(RAW.DIR, "/FC", COV.FC, "/", path), 
+                    pattern=".*[[:digit:]]{4}\\_F.*r[.]tif$", full.names=TRUE))
   map.names <- sub("r$", "", names(maps))
   # Noms de cartes à utiliser dans les colonnes de la matrice
   map.cols  <- sub(paste0(path, "\\_"), "X", sub("\\_[[:alnum:]]+$", "M", map.names))
-  # Names à utiliser pour les années sans carte
+  # Noms à utiliser pour les années sans carte
   no.map.cols <- paste0("X", YEARS.ALL[!YEARS.ALL %in% gsub("[[:alpha:]]", "", map.cols)], "_")
   # Joindre et ordonner les noms de colonnes
   col.order <- c(map.cols, no.map.cols)[order(c(map.cols, no.map.cols))]
@@ -199,11 +242,6 @@ clean.spatial.forest <- function(maps, exclude = NULL, size=6, connectedness=8){
 
 # COMMENCER LE TRAITEMENT #####################################################
 
-# changer l'étendue de p192_2019 à l'étendue des autres images p192 -----------
-# TODO : à faire déjà dans 01_SSTS/01_data/_src/prep-Landsat.R
-extend(brick(paste0(RAW.DIR, "/FC", COV.FC, "/p192/p192_2019_F", COV.FC, "r.tif")), raster(paste0(RAW.DIR, "/FC", COV.FC, "/p192/p192_2018_F", COV.FC, "r.tif")), 
-       filename=paste0(RAW.DIR, "/FC", COV.FC, "/p192/p192_2019_F", COV.FC, "rt.tif"), format="GTiff", datatype="INT2U")
-file.rename(paste0(RAW.DIR, "/FC", COV.FC, "/p192/p192_2019_F", COV.FC, "rt.tif"), paste0(RAW.DIR, "/FC", COV.FC, "/p192/p192_2019_F", COV.FC, "r.tif"))
 
 # Nettoyage temporel des chemins ----------------------------------------------
 for(path in c("p192", "p193", "p194")) {
